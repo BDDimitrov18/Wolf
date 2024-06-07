@@ -2,14 +2,16 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using NuGet.Common;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using UserManagamentService.Models;
+using UserManagamentService.Models.Authentication.Login;
+using UserManagamentService.Models.Authentication.SignUp;
 using UserManagamentService.Services.Interfaces;
 using WolfApi.Models;
-using WolfApi.Models.Authentication.Login;
-using WolfApi.Models.Authentication.SignUp;
+
 
 namespace WolfApi.Controllers
 {
@@ -18,57 +20,37 @@ namespace WolfApi.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailService _emailService;
+        private readonly IUserManagament _userManagament;
         private readonly IConfiguration _config;
 
         public AuthenticationController(UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager, IConfiguration config,
-            IEmailService emailService)
+            IConfiguration config,
+            IEmailService emailService, 
+            IUserManagament userManagament)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
+            
             _config = config;
             _emailService = emailService;
+            _userManagament = userManagament;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] RegisterUser registerUser, string role = "User") { 
-            var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
+        public async Task<IActionResult> Register([FromBody] RegisterUser registerUser) {
+            var token = await _userManagament.CreateUserWithTokenAsync(registerUser);
 
-            if (userExist != null) {
-                return StatusCode(StatusCodes.Status403Forbidden, new Response { Status = "Error", Message = "User already Exist" });
-            }
-
-            IdentityUser user = new()
+            if (token.IsSuccess)
             {
-                Email = registerUser.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = registerUser.username,
-            };
-
-            if (await _roleManager.RoleExistsAsync(role))
-            {
-                var result = await _userManager.CreateAsync(user, registerUser.Password);
-
-                if (!result.Succeeded)
-                {
-                    return StatusCode(StatusCodes.Status403Forbidden, new Response { Status = "Error", Message = "User could not Be created" });
-                }
-
-                await _userManager.AddToRoleAsync(user, role);
-
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
-                var message = new Message(new string[] { user.Email!},"Confirmation email link", confirmationLink!);
+                var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = registerUser.Email }, Request.Scheme);
+                var message = new Message(new string[] { registerUser.Email! }, "Confirmation email link", confirmationLink!);
                 _emailService.SendEmail(message);
 
-                return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = $"User created and email sent to {user.Email} successfully!" });
-
+                return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = "Email Confirmed successfully!" });
             }
-            else {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Role Does not exist!" });
+            else
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new Response { Status = "Error", Message = token.Message });
             }
         }
 
@@ -76,33 +58,14 @@ namespace WolfApi.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginUser loginUser) 
         {
-                var user = await _userManager.FindByNameAsync(loginUser.Username);
+            var tokenResponse =  await _userManagament.LoginUserWithJwtTokenAsync(loginUser);
 
-                if (user != null && await _userManager.CheckPasswordAsync(user, loginUser.Password) && user.EmailConfirmed)
-                {
-                    var authClaims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    };
+            if (tokenResponse.IsSuccess)
+            {
+                return Ok(tokenResponse.Response);
+            }
 
-                    var userRoles = await _userManager.GetRolesAsync(user);
-                    foreach (var role in userRoles) {
-                        authClaims.Add(new Claim(ClaimTypes.Role, role));
-                    }
-
-                var jwtToken = GetToken(authClaims);
-
-                return Ok(
-                    new
-                    {
-                        token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-                        expiration = jwtToken.ValidTo
-                    });
-                }
-                else {
-                    return Unauthorized();
-                }
+            return StatusCode(StatusCodes.Status401Unauthorized, new Response { Status = "Error", Message = tokenResponse.Message });
         }
         
 
@@ -121,19 +84,6 @@ namespace WolfApi.Controllers
             }
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internally" });
         }
-        private JwtSecurityToken GetToken(List<Claim> authClaims)
-        {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Secret"]));
-
-            var token = new JwtSecurityToken(
-                    issuer: _config["JWT:ValidIssuer"],
-                    audience: _config["JWT:ValidAudience"],
-                    expires: DateTime.Now.AddHours(3),
-                    claims: authClaims,
-                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-
-                );
-            return token;
-        }
+       
     }
 }

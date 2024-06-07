@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection.Metadata.Ecma335;
 
-namespace WolfApi.Models.Authentication.SignUp
+namespace UserManagamentService.Models.Authentication.SignUp
 {
     public class RegisterUser
     {
@@ -14,5 +14,7 @@ namespace WolfApi.Models.Authentication.SignUp
 
         [Required(ErrorMessage = "Password is required")]
         public string? Password { get; set; }
+
+        public string Role { get; set; }
     }
 }

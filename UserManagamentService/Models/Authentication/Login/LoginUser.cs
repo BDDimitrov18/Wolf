@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WolfApi.Models.Authentication.Login
+namespace UserManagamentService.Models.Authentication.Login
 {
     public class LoginUser
     {
