@@ -38,11 +38,12 @@ namespace WolfApi.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterUser registerUser) {
-            var token = await _userManagament.CreateUserWithTokenAsync(registerUser);
+            var response = await _userManagament.CreateUserWithTokenAsync(registerUser);
 
-            if (token.IsSuccess)
+            if (response.IsSuccess)
             {
-                var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = registerUser.Email }, Request.Scheme);
+                var token = response.Response;
+                var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token , email = registerUser.Email }, Request.Scheme);
                 var message = new Message(new string[] { registerUser.Email! }, "Confirmation email link", confirmationLink!);
                 _emailService.SendEmail(message);
 
@@ -50,7 +51,7 @@ namespace WolfApi.Controllers
             }
             else
             {
-                return StatusCode(StatusCodes.Status403Forbidden, new Response { Status = "Error", Message = token.Message });
+                return StatusCode(StatusCodes.Status403Forbidden, new Response { Status = "Error", Message = response.Message });
             }
         }
 

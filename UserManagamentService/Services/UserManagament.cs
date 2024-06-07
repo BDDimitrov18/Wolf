@@ -56,7 +56,8 @@ namespace UserManagamentService.Services
                 return new ApiResponse<object> { IsSuccess = true, StatusCode = 200, Message = $"Token Created", Response = new
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-                    expiration = jwtToken.ValidTo
+                    expiration = jwtToken.ValidTo,
+                    role = userRoles,
                 }};
                 
             }
