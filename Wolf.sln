@@ -5,9 +5,11 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wolf", "Wolf\Wolf.csproj", "{069688EE-3947-4F58-989C-753B51A1E53B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WolfAPI", "WolfAPI\WolfAPI.csproj", "{4ECCCC69-4216-454B-8EF7-C5ED592F46FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolfAPI", "WolfAPI\WolfAPI.csproj", "{4ECCCC69-4216-454B-8EF7-C5ED592F46FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataLayer\DataAccessLayer.csproj", "{0C777C86-E2DB-4B10-80B2-8A11BC0E58CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataLayer\DataAccessLayer.csproj", "{0C777C86-E2DB-4B10-80B2-8A11BC0E58CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagamentService", "UserManagamentService\UserManagamentService.csproj", "{57DC44E0-2ADA-41D6-BEF7-187FE219987E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{0C777C86-E2DB-4B10-80B2-8A11BC0E58CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C777C86-E2DB-4B10-80B2-8A11BC0E58CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C777C86-E2DB-4B10-80B2-8A11BC0E58CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57DC44E0-2ADA-41D6-BEF7-187FE219987E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57DC44E0-2ADA-41D6-BEF7-187FE219987E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57DC44E0-2ADA-41D6-BEF7-187FE219987E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57DC44E0-2ADA-41D6-BEF7-187FE219987E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

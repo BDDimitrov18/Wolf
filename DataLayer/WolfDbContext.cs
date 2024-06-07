@@ -1,4 +1,6 @@
 ﻿using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
-    public class WolfDbContext : DbContext
+    public class WolfDbContext : IdentityDbContext<IdentityUser>
     {
         public WolfDbContext(DbContextOptions<WolfDbContext> options) : base(options)
         {
@@ -40,6 +42,7 @@ namespace DataAccessLayer
         public DbSet<Request_WorkObjectRelashionship> Request_WorkObjectRelashionships  { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            base.OnModelCreating(modelBuilder);
 
             #region WorkTaskRelashionshipConfig         
             modelBuilder.Entity<WorkTask>()
