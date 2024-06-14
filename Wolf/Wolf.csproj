@@ -76,6 +76,48 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddActivityTaskForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddActivityTaskForm.Designer.cs">
+      <DependentUpon>AddActivityTaskForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddClientForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddClientForm.Designer.cs">
+      <DependentUpon>AddClientForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddEmployeeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddEmployeeForm.Designer.cs">
+      <DependentUpon>AddEmployeeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddInvoiceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddInvoiceForm.Designer.cs">
+      <DependentUpon>AddInvoiceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddPlotToRequestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddPlotToRequestForm.Designer.cs">
+      <DependentUpon>AddPlotToRequestForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddRequestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddRequestForm.Designer.cs">
+      <DependentUpon>AddRequestForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddWorkObjectsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddWorkObjectsForm.Designer.cs">
+      <DependentUpon>AddWorkObjectsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DTO\LoginUserDto.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -89,6 +131,30 @@
     <Compile Include="LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MenuClientsUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MenuClientsUserControl.Designer.cs">
+      <DependentUpon>MenuClientsUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenuEmployeesUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MenuEmployeesUserControl.Designer.cs">
+      <DependentUpon>MenuEmployeesUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenuObjectsUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MenuObjectsUserControl.Designer.cs">
+      <DependentUpon>MenuObjectsUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenuRequestsUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MenuRequestsUserControl.Designer.cs">
+      <DependentUpon>MenuRequestsUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ClientResponse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,11 +164,44 @@
     <Compile Include="Services\Interfaces\IApiClient.cs" />
     <Compile Include="Services\Interfaces\IUserClient.cs" />
     <Compile Include="Services\UserClient.cs" />
+    <EmbeddedResource Include="AddActivityTaskForm.resx">
+      <DependentUpon>AddActivityTaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddClientForm.resx">
+      <DependentUpon>AddClientForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddEmployeeForm.resx">
+      <DependentUpon>AddEmployeeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddInvoiceForm.resx">
+      <DependentUpon>AddInvoiceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddPlotToRequestForm.resx">
+      <DependentUpon>AddPlotToRequestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddRequestForm.resx">
+      <DependentUpon>AddRequestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddWorkObjectsForm.resx">
+      <DependentUpon>AddWorkObjectsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenuClientsUserControl.resx">
+      <DependentUpon>MenuClientsUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenuEmployeesUserControl.resx">
+      <DependentUpon>MenuEmployeesUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenuObjectsUserControl.resx">
+      <DependentUpon>MenuObjectsUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenuRequestsUserControl.resx">
+      <DependentUpon>MenuRequestsUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -76,5 +76,58 @@ namespace Wolf
         {
 
         }
+
+        private void toolStrip2_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void PlotsDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void LoadUserControl(UserControl userControl)
+        {
+            // Clear existing controls
+            panelContent.Controls.Clear();
+
+            // Set the Dock property to Fill to make it responsive
+            userControl.Dock = DockStyle.Fill;
+
+            // Add the new UserControl
+            panelContent.Controls.Add(userControl);
+        }
+        
+
+        private void RequestToolStripButton_Click(object sender, EventArgs e)
+        {
+            LoadUserControl(new MenuRequestsUserControl());
+        }
+
+        private void ObjectToolStripButton_Click(object sender, EventArgs e)
+        {
+            LoadUserControl(new MenuObjectsUserControl());
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panelContent_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void ClientsStripButton_Click(object sender, EventArgs e)
+        {
+            LoadUserControl(new MenuClientsUserControl());
+        }
+
+        private void EmployeesStripLabel_Click(object sender, EventArgs e)
+        {
+            LoadUserControl(new MenuEmployeesUserControl());
+        }
     }
 }
