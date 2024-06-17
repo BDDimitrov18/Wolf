@@ -100,11 +100,11 @@
     <Compile Include="AddInvoiceForm.Designer.cs">
       <DependentUpon>AddInvoiceForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="AddPlotToRequestForm.cs">
+    <Compile Include="AddPlotToObjectForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddPlotToRequestForm.Designer.cs">
-      <DependentUpon>AddPlotToRequestForm.cs</DependentUpon>
+    <Compile Include="AddPlotToObjectForm.Designer.cs">
+      <DependentUpon>AddPlotToObjectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AddRequestForm.cs">
       <SubType>Form</SubType>
@@ -176,8 +176,8 @@
     <EmbeddedResource Include="AddInvoiceForm.resx">
       <DependentUpon>AddInvoiceForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AddPlotToRequestForm.resx">
-      <DependentUpon>AddPlotToRequestForm.cs</DependentUpon>
+    <EmbeddedResource Include="AddPlotToObjectForm.resx">
+      <DependentUpon>AddPlotToObjectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddRequestForm.resx">
       <DependentUpon>AddRequestForm.cs</DependentUpon>

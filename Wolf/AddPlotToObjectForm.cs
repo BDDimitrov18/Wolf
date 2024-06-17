@@ -10,10 +10,10 @@ using System.Windows.Forms;
 
 namespace Wolf
 {
-    public partial class AddPlotToRequestForm : Form
+    public partial class AddPlotToObjectForm : Form
     {
         //Населено място,община, област останалото в Kaisa
-        public AddPlotToRequestForm()
+        public AddPlotToObjectForm()
         {
             InitializeComponent();
         }
