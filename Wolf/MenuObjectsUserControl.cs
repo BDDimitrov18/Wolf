@@ -34,7 +34,8 @@ namespace Wolf
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            AddPlotToObjectForm addPlotToObjectForm = new AddPlotToObjectForm();
+            addPlotToObjectForm.Show();
         }
 
         private void button3_Click(object sender, EventArgs e)

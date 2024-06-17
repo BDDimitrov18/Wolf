@@ -46,9 +46,9 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(22, 29);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(374, 42);
+            this.label1.Size = new System.Drawing.Size(361, 42);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Добавяне на обекти";
+            this.label1.Text = "Добавяне на Обект";
             // 
             // label2
             // 
@@ -90,9 +90,9 @@
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(56, 105);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(190, 25);
+            this.label5.Size = new System.Drawing.Size(327, 25);
             this.label5.TabIndex = 6;
-            this.label5.Text = "Заявка към обекта";
+            this.label5.Text = "Добавяне на Обект към заявката";
             // 
             // comboBox1
             // 

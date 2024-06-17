@@ -28,14 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.DestinationOfPlotLabel = new System.Windows.Forms.Label();
+            this.PathToObjectFileLabel = new System.Windows.Forms.Label();
+            this.ActivityAddButton = new System.Windows.Forms.Button();
+            this.WorkObjectsAddButton = new System.Windows.Forms.Button();
+            this.PlotsTableLabel = new System.Windows.Forms.Label();
+            this.ActivityTableLabel = new System.Windows.Forms.Label();
+            this.WorkObjectsTableLabel = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Activity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Task = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -58,8 +58,8 @@
             this.WorkObjectId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NameOfObject = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PriceOfObject = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
+            this.PlotsAddButton = new System.Windows.Forms.Button();
+            this.ObjectsTitleLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -71,77 +71,77 @@
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label6
+            // DestinationOfPlotLabel
             // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.DestinationOfPlotLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(4, 297);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(189, 16);
-            this.label6.TabIndex = 30;
-            this.label6.Text = "Местоположение на имота: ";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
+            this.DestinationOfPlotLabel.AutoSize = true;
+            this.DestinationOfPlotLabel.Location = new System.Drawing.Point(4, 297);
+            this.DestinationOfPlotLabel.Name = "DestinationOfPlotLabel";
+            this.DestinationOfPlotLabel.Size = new System.Drawing.Size(189, 16);
+            this.DestinationOfPlotLabel.TabIndex = 30;
+            this.DestinationOfPlotLabel.Text = "Местоположение на имота: ";
+            this.DestinationOfPlotLabel.Click += new System.EventHandler(this.label6_Click);
             // 
-            // label4
+            // PathToObjectFileLabel
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.PathToObjectFileLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(-1, 297);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(114, 16);
-            this.label4.TabIndex = 29;
-            this.label4.Text = "Път Към обекта:";
+            this.PathToObjectFileLabel.AutoSize = true;
+            this.PathToObjectFileLabel.Location = new System.Drawing.Point(-1, 297);
+            this.PathToObjectFileLabel.Name = "PathToObjectFileLabel";
+            this.PathToObjectFileLabel.Size = new System.Drawing.Size(114, 16);
+            this.PathToObjectFileLabel.TabIndex = 29;
+            this.PathToObjectFileLabel.Text = "Път Към обекта:";
             // 
-            // button3
+            // ActivityAddButton
             // 
-            this.button3.Location = new System.Drawing.Point(89, 8);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(24, 26);
-            this.button3.TabIndex = 28;
-            this.button3.Text = "+";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.ActivityAddButton.Location = new System.Drawing.Point(89, 8);
+            this.ActivityAddButton.Name = "ActivityAddButton";
+            this.ActivityAddButton.Size = new System.Drawing.Size(24, 26);
+            this.ActivityAddButton.TabIndex = 28;
+            this.ActivityAddButton.Text = "+";
+            this.ActivityAddButton.UseVisualStyleBackColor = true;
+            this.ActivityAddButton.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button2
+            // WorkObjectsAddButton
             // 
-            this.button2.Location = new System.Drawing.Point(72, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(24, 26);
-            this.button2.TabIndex = 26;
-            this.button2.Text = "+";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.WorkObjectsAddButton.Location = new System.Drawing.Point(72, 2);
+            this.WorkObjectsAddButton.Name = "WorkObjectsAddButton";
+            this.WorkObjectsAddButton.Size = new System.Drawing.Size(24, 26);
+            this.WorkObjectsAddButton.TabIndex = 26;
+            this.WorkObjectsAddButton.Text = "+";
+            this.WorkObjectsAddButton.UseVisualStyleBackColor = true;
+            this.WorkObjectsAddButton.Click += new System.EventHandler(this.button2_Click);
             // 
-            // label3
+            // PlotsTableLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Location = new System.Drawing.Point(-3, 7);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(196, 16);
-            this.label3.TabIndex = 25;
-            this.label3.Text = "Имоти в селектирания обект";
+            this.PlotsTableLabel.AutoSize = true;
+            this.PlotsTableLabel.BackColor = System.Drawing.Color.Transparent;
+            this.PlotsTableLabel.Location = new System.Drawing.Point(-3, 7);
+            this.PlotsTableLabel.Name = "PlotsTableLabel";
+            this.PlotsTableLabel.Size = new System.Drawing.Size(196, 16);
+            this.PlotsTableLabel.TabIndex = 25;
+            this.PlotsTableLabel.Text = "Имоти в селектирания обект";
             // 
-            // label1
+            // ActivityTableLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(70, 16);
-            this.label1.TabIndex = 24;
-            this.label1.Text = "Дейности";
+            this.ActivityTableLabel.AutoSize = true;
+            this.ActivityTableLabel.Location = new System.Drawing.Point(13, 13);
+            this.ActivityTableLabel.Name = "ActivityTableLabel";
+            this.ActivityTableLabel.Size = new System.Drawing.Size(70, 16);
+            this.ActivityTableLabel.TabIndex = 24;
+            this.ActivityTableLabel.Text = "Дейности";
             // 
-            // label2
+            // WorkObjectsTableLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 7);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 16);
-            this.label2.TabIndex = 23;
-            this.label2.Text = "Обекти";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
+            this.WorkObjectsTableLabel.AutoSize = true;
+            this.WorkObjectsTableLabel.Location = new System.Drawing.Point(11, 7);
+            this.WorkObjectsTableLabel.Name = "WorkObjectsTableLabel";
+            this.WorkObjectsTableLabel.Size = new System.Drawing.Size(55, 16);
+            this.WorkObjectsTableLabel.TabIndex = 23;
+            this.WorkObjectsTableLabel.Text = "Обекти";
+            this.WorkObjectsTableLabel.Click += new System.EventHandler(this.label2_Click);
             // 
             // dataGridView1
             // 
@@ -216,8 +216,8 @@
             // 
             this.PlotsDataGrid.AllowUserToResizeColumns = false;
             this.PlotsDataGrid.AllowUserToResizeRows = false;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.PlotsDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.PlotsDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.PlotsDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PlotsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -337,33 +337,33 @@
             this.PriceOfObject.MinimumWidth = 6;
             this.PriceOfObject.Name = "PriceOfObject";
             // 
-            // button1
+            // PlotsAddButton
             // 
-            this.button1.Location = new System.Drawing.Point(205, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(24, 26);
-            this.button1.TabIndex = 31;
-            this.button1.Text = "+";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.PlotsAddButton.Location = new System.Drawing.Point(205, 2);
+            this.PlotsAddButton.Name = "PlotsAddButton";
+            this.PlotsAddButton.Size = new System.Drawing.Size(24, 26);
+            this.PlotsAddButton.TabIndex = 31;
+            this.PlotsAddButton.Text = "+";
+            this.PlotsAddButton.UseVisualStyleBackColor = true;
+            this.PlotsAddButton.Click += new System.EventHandler(this.button1_Click);
             // 
-            // label5
+            // ObjectsTitleLabel
             // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(604, 34);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(146, 42);
-            this.label5.TabIndex = 32;
-            this.label5.Text = "Обекти";
+            this.ObjectsTitleLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.ObjectsTitleLabel.AutoSize = true;
+            this.ObjectsTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ObjectsTitleLabel.Location = new System.Drawing.Point(604, 34);
+            this.ObjectsTitleLabel.Name = "ObjectsTitleLabel";
+            this.ObjectsTitleLabel.Size = new System.Drawing.Size(146, 42);
+            this.ObjectsTitleLabel.TabIndex = 32;
+            this.ObjectsTitleLabel.Text = "Обекти";
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.ObjectDataGrid);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.WorkObjectsTableLabel);
+            this.panel1.Controls.Add(this.WorkObjectsAddButton);
+            this.panel1.Controls.Add(this.PathToObjectFileLabel);
             this.panel1.Location = new System.Drawing.Point(29, 105);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(407, 325);
@@ -373,10 +373,10 @@
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.Controls.Add(this.label3);
+            this.panel2.Controls.Add(this.PlotsTableLabel);
             this.panel2.Controls.Add(this.PlotsDataGrid);
-            this.panel2.Controls.Add(this.button1);
-            this.panel2.Controls.Add(this.label6);
+            this.panel2.Controls.Add(this.PlotsAddButton);
+            this.panel2.Controls.Add(this.DestinationOfPlotLabel);
             this.panel2.Location = new System.Drawing.Point(487, 105);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(863, 325);
@@ -388,9 +388,9 @@
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel3.Controls.Add(this.label1);
+            this.panel3.Controls.Add(this.ActivityTableLabel);
             this.panel3.Controls.Add(this.dataGridView1);
-            this.panel3.Controls.Add(this.button3);
+            this.panel3.Controls.Add(this.ActivityAddButton);
             this.panel3.Location = new System.Drawing.Point(29, 489);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1321, 263);
@@ -404,7 +404,7 @@
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.ObjectsTitleLabel);
             this.Name = "MenuObjectsUserControl";
             this.Size = new System.Drawing.Size(1350, 787);
             this.Load += new System.EventHandler(this.MenuObjectsUserControl_Load);
@@ -424,13 +424,13 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label DestinationOfPlotLabel;
+        private System.Windows.Forms.Label PathToObjectFileLabel;
+        private System.Windows.Forms.Button ActivityAddButton;
+        private System.Windows.Forms.Button WorkObjectsAddButton;
+        private System.Windows.Forms.Label PlotsTableLabel;
+        private System.Windows.Forms.Label ActivityTableLabel;
+        private System.Windows.Forms.Label WorkObjectsTableLabel;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Activity;
         private System.Windows.Forms.DataGridViewTextBoxColumn Task;
@@ -453,8 +453,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn WorkObjectId;
         private System.Windows.Forms.DataGridViewTextBoxColumn NameOfObject;
         private System.Windows.Forms.DataGridViewTextBoxColumn PriceOfObject;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button PlotsAddButton;
+        private System.Windows.Forms.Label ObjectsTitleLabel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;

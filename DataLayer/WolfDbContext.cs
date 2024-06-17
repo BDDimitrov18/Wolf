@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Models;
+﻿using DataAccessLayer.Interfaces;
+using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
-    public class WolfDbContext : IdentityDbContext<IdentityUser>
+    public class WolfDbContext : IdentityDbContext<IdentityUser>, IWolfDbContext
     {
         public WolfDbContext(DbContextOptions<WolfDbContext> options) : base(options)
         {

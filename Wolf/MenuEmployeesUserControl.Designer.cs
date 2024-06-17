@@ -35,9 +35,9 @@
             this.LastName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Phone = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.Label2 = new System.Windows.Forms.Label();
+            this.EmployeesTableLabel = new System.Windows.Forms.Label();
+            this.EmployeesAddButton = new System.Windows.Forms.Button();
+            this.EmployeesTitleLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -103,44 +103,44 @@
             this.Email.MinimumWidth = 6;
             this.Email.Name = "Email";
             // 
-            // label1
+            // EmployeesTableLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(66, 135);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 16);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Служители";
+            this.EmployeesTableLabel.AutoSize = true;
+            this.EmployeesTableLabel.Location = new System.Drawing.Point(66, 135);
+            this.EmployeesTableLabel.Name = "EmployeesTableLabel";
+            this.EmployeesTableLabel.Size = new System.Drawing.Size(80, 16);
+            this.EmployeesTableLabel.TabIndex = 1;
+            this.EmployeesTableLabel.Text = "Служители";
             // 
-            // button1
+            // EmployeesAddButton
             // 
-            this.button1.Location = new System.Drawing.Point(152, 132);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(22, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "+";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.EmployeesAddButton.Location = new System.Drawing.Point(152, 132);
+            this.EmployeesAddButton.Name = "EmployeesAddButton";
+            this.EmployeesAddButton.Size = new System.Drawing.Size(22, 23);
+            this.EmployeesAddButton.TabIndex = 2;
+            this.EmployeesAddButton.Text = "+";
+            this.EmployeesAddButton.UseVisualStyleBackColor = true;
+            this.EmployeesAddButton.Click += new System.EventHandler(this.button1_Click);
             // 
-            // Label2
+            // EmployeesTitleLabel
             // 
-            this.Label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.Label2.AutoSize = true;
-            this.Label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label2.Location = new System.Drawing.Point(604, 34);
-            this.Label2.Name = "Label2";
-            this.Label2.Size = new System.Drawing.Size(212, 42);
-            this.Label2.TabIndex = 3;
-            this.Label2.Text = "Служители";
+            this.EmployeesTitleLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.EmployeesTitleLabel.AutoSize = true;
+            this.EmployeesTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EmployeesTitleLabel.Location = new System.Drawing.Point(604, 34);
+            this.EmployeesTitleLabel.Name = "EmployeesTitleLabel";
+            this.EmployeesTitleLabel.Size = new System.Drawing.Size(212, 42);
+            this.EmployeesTitleLabel.TabIndex = 3;
+            this.EmployeesTitleLabel.Text = "Служители";
             // 
             // MenuEmployeesUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.Label2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.EmployeesTitleLabel);
+            this.Controls.Add(this.EmployeesAddButton);
+            this.Controls.Add(this.EmployeesTableLabel);
             this.Controls.Add(this.dataGridView1);
             this.Name = "MenuEmployeesUserControl";
             this.Size = new System.Drawing.Size(1350, 785);
@@ -159,8 +159,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LastName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Phone;
         private System.Windows.Forms.DataGridViewTextBoxColumn Email;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label Label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label EmployeesTableLabel;
+        private System.Windows.Forms.Label EmployeesTitleLabel;
+        private System.Windows.Forms.Button EmployeesAddButton;
     }
 }

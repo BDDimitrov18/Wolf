@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WolfAPI.DTO;
 
 namespace WolfApi.Controllers
 {
@@ -15,5 +16,9 @@ namespace WolfApi.Controllers
         public IEnumerable<Employee> GetEmployees(){
             return new Employee[] { null };            
         }
+
+        //public async Task<bool> CreateEmployee([FromBody] CreateEmployeeDTO employeeDTO) { 
+            
+        //}
     }
 }
