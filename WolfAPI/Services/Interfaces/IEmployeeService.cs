@@ -1,4 +1,5 @@
-﻿using WolfAPI.DTO;
+﻿using DTOS.DTO;
+
 
 namespace WolfAPI.Services.Interfaces
 {

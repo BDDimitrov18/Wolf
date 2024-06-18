@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wolf", "Wolf\Wolf.csproj", "{069688EE-3947-4F58-989C-753B51A1E53B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolfAPI", "WolfAPI\WolfAPI.csproj", "{4ECCCC69-4216-454B-8EF7-C5ED592F46FE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataLayer\DataAccessLayer.csproj", "{0C777C86-E2DB-4B10-80B2-8A11BC0E58CB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagamentService", "UserManagamentService\UserManagamentService.csproj", "{57DC44E0-2ADA-41D6-BEF7-187FE219987E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTOS", "DTOS\DTOS.csproj", "{CFCDE2ED-83B3-4DAB-93B2-3B797ED0ACB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WolfClient", "WolfClient\WolfClient.csproj", "{6FD3250C-63B2-43CE-8C86-C35EB83BDAAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{069688EE-3947-4F58-989C-753B51A1E53B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{069688EE-3947-4F58-989C-753B51A1E53B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{069688EE-3947-4F58-989C-753B51A1E53B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{069688EE-3947-4F58-989C-753B51A1E53B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4ECCCC69-4216-454B-8EF7-C5ED592F46FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4ECCCC69-4216-454B-8EF7-C5ED592F46FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4ECCCC69-4216-454B-8EF7-C5ED592F46FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +31,14 @@ Global
 		{57DC44E0-2ADA-41D6-BEF7-187FE219987E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57DC44E0-2ADA-41D6-BEF7-187FE219987E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57DC44E0-2ADA-41D6-BEF7-187FE219987E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFCDE2ED-83B3-4DAB-93B2-3B797ED0ACB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFCDE2ED-83B3-4DAB-93B2-3B797ED0ACB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFCDE2ED-83B3-4DAB-93B2-3B797ED0ACB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFCDE2ED-83B3-4DAB-93B2-3B797ED0ACB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FD3250C-63B2-43CE-8C86-C35EB83BDAAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FD3250C-63B2-43CE-8C86-C35EB83BDAAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FD3250C-63B2-43CE-8C86-C35EB83BDAAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FD3250C-63B2-43CE-8C86-C35EB83BDAAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataLayer\DataAccessLayer.csproj" />
+    <ProjectReference Include="..\DTOS\DTOS.csproj" />
     <ProjectReference Include="..\UserManagamentService\UserManagamentService.csproj" />
   </ItemGroup>
 

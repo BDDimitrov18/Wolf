@@ -59,7 +59,6 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
     };
 });
-
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Auth API", Version = "v1" });
@@ -113,14 +112,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
-
 app.UseHttpsRedirection();
+
+app.UseRouting(); // Ensures that routing is enabled
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapControllers();
 
 app.UseEndpoints(endpoints =>
 {
@@ -128,3 +125,4 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
+

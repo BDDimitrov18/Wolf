@@ -2,21 +2,21 @@
 using DataAccessLayer.Models;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Repositories.Interfaces;
-using WolfAPI.DTO;
 using WolfAPI.Services.Interfaces;
+using DTOS.DTO;
 
 namespace WolfAPI.Services
 {
     public class EmployeeService : IEmployeeService
     {
 
-        private readonly IEmployeeModelRepository _employeeRepository;
-        private readonly IMapper _mapper;
+        private readonly EmployeeModelRepository _employeeRepository;
+        private readonly Mapper _mapper;
 
         public EmployeeService(IEmployeeModelRepository employeeRepository, IMapper mapper)
         {
-            _employeeRepository = employeeRepository;
-            _mapper = mapper;
+            _employeeRepository = employeeRepository as EmployeeModelRepository;
+            _mapper = mapper as Mapper;
         }
 
         public void Add(CreateEmployeeDTO employeeDto)

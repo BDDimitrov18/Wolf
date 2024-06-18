@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DataAccessLayer.Models;
-using WolfAPI.DTO;
+using DTOS.DTO;
 
 namespace WolfAPI.Mapping
 {

@@ -2,23 +2,35 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WolfAPI.DTO;
+using NETCore.MailKit.Core;
+using WolfAPI.Services;
+using WolfAPI.Services.Interfaces;
+using DTOS.DTO;
 
 namespace WolfApi.Controllers
 {
     [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
+
+    
     public class AdminController : ControllerBase
     {
+        private readonly IEmployeeService _employeeService;
+
+        public AdminController(EmployeeService employeeService)
+        {
+            _employeeService = employeeService;
+        }
+
         [HttpGet("Employees")]
 
         public IEnumerable<Employee> GetEmployees(){
             return new Employee[] { null };            
         }
-
-        //public async Task<bool> CreateEmployee([FromBody] CreateEmployeeDTO employeeDTO) { 
-            
-        //}
+        [HttpPost("CreateEmployee")]
+        public void CreateEmployee([FromBody] CreateEmployeeDTO employeeDTO) {
+            _employeeService.Add(employeeDTO);
+        }
     }
 }
