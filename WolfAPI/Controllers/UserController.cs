@@ -19,8 +19,8 @@ namespace WolfAPI.Controllers
         }
 
         [HttpPost("CreateClient")]
-        public void CreateClient([FromBody] CreateClientDTO clientDTO) { 
-            _clientService.AddClient(clientDTO);
+        public GetClientDTO CreateClient([FromBody] CreateClientDTO clientDTO) {
+            return _clientService.AddClient(clientDTO);
         }
 
         [HttpGet("GetAllClients")]

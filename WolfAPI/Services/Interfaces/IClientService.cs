@@ -5,7 +5,7 @@ namespace WolfAPI.Services.Interfaces
 {
     public interface IClientService
     {
-        public void AddClient(CreateClientDTO client);
+        public GetClientDTO AddClient(CreateClientDTO client);
 
         public IEnumerable<GetClientDTO> GetAllClients();
     }

@@ -18,10 +18,11 @@ namespace DataAccessLayer.Repositories
             _WolfDbContext = wolfDbContext;
         }
 
-        public void Add(Client client) {
+        public Client Add(Client client) {
 
             _WolfDbContext.Clients.Add(client);
             _WolfDbContext.SaveChanges();
+            return client;
         }
 
         public IEnumerable<Client> GetAll()

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Wolf.Models;
 using WolfClient.Models;
 using WolfClient.Services.Interfaces;
+using static System.Windows.Forms.Design.AxImporter;
 
 namespace WolfClient.Services
 {
@@ -98,7 +99,7 @@ namespace WolfClient.Services
             }
         }
 
-        public async Task<ClientResponse<HttpResponseMessage?>> AddClient(CreateClientDTO client)
+        public async Task<ClientResponse<GetClientDTO>> AddClient(CreateClientDTO client)
         {
             var jsonContent = JsonSerializer.Serialize(client);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -110,7 +111,13 @@ namespace WolfClient.Services
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show("Client added successfully!");
-                    return new ClientResponse<HttpResponseMessage?> { IsSuccess = true, Message = "Client Created Successfully", ResponseObj = response };
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseClient = JsonSerializer.Deserialize<GetClientDTO>(jsonResponse, options);
+                    return new ClientResponse<GetClientDTO> { IsSuccess = true, Message = "Client Created Successfully", ResponseObj = responseClient };
                 }
                 else
                 {
@@ -118,25 +125,25 @@ namespace WolfClient.Services
                     {
                         // Optionally refresh the token and retry
                         MessageBox.Show("You are not authorized or your session has expired.");
-                        return new ClientResponse<HttpResponseMessage?> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                        return new ClientResponse<GetClientDTO> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
                     }
                     else
                     {
                         var error = await response.Content.ReadAsStringAsync();
                         MessageBox.Show($"Failed to add client: {response.ReasonPhrase}\nDetails: {error}");
-                        return new ClientResponse<HttpResponseMessage?> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                        return new ClientResponse<GetClientDTO> { IsSuccess = false, Message = "Error", ResponseObj = null };
                     }
                 }
             }
             catch (HttpRequestException ex)
             {
                 MessageBox.Show($"Network error: {ex.Message}");
-                return new ClientResponse<HttpResponseMessage?> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+                return new ClientResponse<GetClientDTO> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Exception occurred: {ex.Message}");
-                return new ClientResponse<HttpResponseMessage?> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+                return new ClientResponse<GetClientDTO> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
             }
         }
     }

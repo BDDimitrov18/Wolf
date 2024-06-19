@@ -9,7 +9,7 @@ namespace DataAccessLayer.Repositories.Interfaces
 {
     public interface IClientModelRepository
     {
-        public void Add(Client client);
+        public Client Add(Client client);
 
         public IEnumerable<Client> GetAll();
     }

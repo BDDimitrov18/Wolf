@@ -29,8 +29,17 @@ namespace WolfClient.NewForms
 
         private void AddNonExistingClientButton_Click(object sender, EventArgs e)
         {
-            AddClientForm addClientFrom = new AddClientForm(_apiClient, _userClient, _adminClient);
-            addClientFrom.Show();
+            
+
+            using (AddClientForm form = new AddClientForm(_apiClient, _userClient, _adminClient))
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    GetClientDTO clientDTO = form.getClientResponseObj();
+                    _clientsList.Add(clientDTO);
+                    AddNewPanelWithUserControlAddClientsFromNotAvailable(clientDTO);
+                }
+            } // 
         }
 
         private async void AddRequestForm_Load(object sender, EventArgs e)
@@ -54,15 +63,28 @@ namespace WolfClient.NewForms
 
         private void AddClientComboBoxButton_Click(object sender, EventArgs e)
         {
-            AddNewPanelWithUserControl();
+            AddNewPanelWithUserControlAddClientsFromAvailable();
         }
-        private void AddNewPanelWithUserControl()
+        private void AddNewPanelWithUserControlAddClientsFromAvailable()
         {
             Panel panel = new Panel();
             panel.Size = new Size(412, 28);  // Adjust size according to your needs
             panel.BorderStyle = BorderStyle.FixedSingle;
 
             AddClientFromAvailable userControl = new AddClientFromAvailable(_apiClient,_userClient,_adminClient,_clientsList, panel);
+            userControl.Dock = DockStyle.Fill;  // Make the user control fill the panel
+            panel.Controls.Add(userControl);
+
+            AvailableClientsFlowPanel.Controls.Add(panel);
+        }
+
+        private void AddNewPanelWithUserControlAddClientsFromNotAvailable(GetClientDTO clientDTO)
+        {
+            Panel panel = new Panel();
+            panel.Size = new Size(410, 28);  // Adjust size according to your needs
+            panel.BorderStyle = BorderStyle.FixedSingle;
+
+            AddClientFromNotAvalable userControl = new AddClientFromNotAvalable(clientDTO,panel);
             userControl.Dock = DockStyle.Fill;  // Make the user control fill the panel
             panel.Controls.Add(userControl);
 

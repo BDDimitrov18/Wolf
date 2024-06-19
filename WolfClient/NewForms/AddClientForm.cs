@@ -17,6 +17,8 @@ namespace WolfClient.NewForms
         private readonly IApiClient _apiClient;
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
+
+        private GetClientDTO _clientDTO;
         public AddClientForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient)
         {
             InitializeComponent();
@@ -32,8 +34,6 @@ namespace WolfClient.NewForms
 
         private async void AddClientButton_Click(object sender, EventArgs e)
         {
-            
-
             var client = new CreateClientDTO
             {
                 FirstName = NameTextBox.Text,
@@ -45,7 +45,16 @@ namespace WolfClient.NewForms
                 ClientLegalType = LegalTypeTextBox.Text
             };
 
-            await _userClient.AddClient(client);
+            var response = await _userClient.AddClient(client);
+            if (response.IsSuccess)
+            {
+                _clientDTO = response.ResponseObj;       
+            }
+            Close();
+        }
+
+        public GetClientDTO getClientResponseObj() {
+            return _clientDTO;
         }
     }
 }
