@@ -32,7 +32,6 @@
             AddNonExistingClientButton = new Button();
             AddNonExistingClientLabel = new Label();
             AddClientComboBoxButton = new Button();
-            ChooseClientToAddComboBox = new ComboBox();
             AddExistingClientToRequestLabel = new Label();
             richTextBox1 = new RichTextBox();
             label5 = new Label();
@@ -43,6 +42,10 @@
             NameOfRequestTextBox = new TextBox();
             NameOfRequestTiltleLabel = new Label();
             AddRequestTitleLabel = new Label();
+            panel3 = new Panel();
+            AvailableClientsFlowPanel = new FlowLayoutPanel();
+            panel1 = new Panel();
+            AvailableClientsFlowPanel.SuspendLayout();
             SuspendLayout();
             // 
             // button3
@@ -85,15 +88,7 @@
             AddClientComboBoxButton.TabIndex = 26;
             AddClientComboBoxButton.Text = "Добави Поле";
             AddClientComboBoxButton.UseVisualStyleBackColor = true;
-            // 
-            // ChooseClientToAddComboBox
-            // 
-            ChooseClientToAddComboBox.FormattingEnabled = true;
-            ChooseClientToAddComboBox.Location = new Point(420, 182);
-            ChooseClientToAddComboBox.Margin = new Padding(3, 4, 3, 4);
-            ChooseClientToAddComboBox.Name = "ChooseClientToAddComboBox";
-            ChooseClientToAddComboBox.Size = new Size(294, 28);
-            ChooseClientToAddComboBox.TabIndex = 25;
+            AddClientComboBoxButton.Click += AddClientComboBoxButton_Click;
             // 
             // AddExistingClientToRequestLabel
             // 
@@ -188,17 +183,46 @@
             AddRequestTitleLabel.TabIndex = 15;
             AddRequestTitleLabel.Text = "Добавяне На Заявка";
             // 
+            // panel3
+            // 
+            panel3.BackColor = SystemColors.ActiveCaption;
+            panel3.BorderStyle = BorderStyle.Fixed3D;
+            panel3.Location = new Point(415, 584);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(410, 216);
+            panel3.TabIndex = 31;
+            // 
+            // AvailableClientsFlowPanel
+            // 
+            AvailableClientsFlowPanel.AutoScroll = true;
+            AvailableClientsFlowPanel.BackColor = SystemColors.ActiveCaption;
+            AvailableClientsFlowPanel.BorderStyle = BorderStyle.Fixed3D;
+            AvailableClientsFlowPanel.Controls.Add(panel1);
+            AvailableClientsFlowPanel.Location = new Point(415, 172);
+            AvailableClientsFlowPanel.Name = "AvailableClientsFlowPanel";
+            AvailableClientsFlowPanel.Size = new Size(461, 283);
+            AvailableClientsFlowPanel.TabIndex = 32;
+            // 
+            // panel1
+            // 
+            panel1.Location = new Point(3, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(412, 28);
+            panel1.TabIndex = 0;
+            // 
             // AddRequestForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(1047, 836);
+            Controls.Add(AvailableClientsFlowPanel);
+            Controls.Add(panel3);
             Controls.Add(button3);
             Controls.Add(AddNonExistingClientButton);
             Controls.Add(AddNonExistingClientLabel);
             Controls.Add(AddClientComboBoxButton);
-            Controls.Add(ChooseClientToAddComboBox);
             Controls.Add(AddExistingClientToRequestLabel);
             Controls.Add(richTextBox1);
             Controls.Add(label5);
@@ -209,9 +233,12 @@
             Controls.Add(NameOfRequestTextBox);
             Controls.Add(NameOfRequestTiltleLabel);
             Controls.Add(AddRequestTitleLabel);
+            MaximumSize = new Size(1065, 883);
+            MinimumSize = new Size(1065, 883);
             Name = "AddRequestForm";
             Text = "AddRequestForm";
             Load += AddRequestForm_Load;
+            AvailableClientsFlowPanel.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -222,7 +249,6 @@
         private Button AddNonExistingClientButton;
         private Label AddNonExistingClientLabel;
         private Button AddClientComboBoxButton;
-        private ComboBox ChooseClientToAddComboBox;
         private Label AddExistingClientToRequestLabel;
         private RichTextBox richTextBox1;
         private Label label5;
@@ -233,5 +259,8 @@
         private TextBox NameOfRequestTextBox;
         private Label NameOfRequestTiltleLabel;
         private Label AddRequestTitleLabel;
+        private Panel panel3;
+        private FlowLayoutPanel AvailableClientsFlowPanel;
+        private Panel panel1;
     }
 }

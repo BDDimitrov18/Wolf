@@ -115,9 +115,9 @@
             AddRequestToWorkObjectLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
             AddRequestToWorkObjectLabel.Location = new Point(131, 129);
             AddRequestToWorkObjectLabel.Name = "AddRequestToWorkObjectLabel";
-            AddRequestToWorkObjectLabel.Size = new Size(327, 25);
+            AddRequestToWorkObjectLabel.Size = new Size(360, 25);
             AddRequestToWorkObjectLabel.TabIndex = 11;
-            AddRequestToWorkObjectLabel.Text = "Добавяне на Обект към заявката";
+            AddRequestToWorkObjectLabel.Text = "Залагане Към коя заявка да е обекта";
             // 
             // AddWorkObjectTitleLabel
             // 
