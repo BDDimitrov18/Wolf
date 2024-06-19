@@ -10,6 +10,6 @@ namespace Wolf.Models
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
-        public T ResponseObj { get; set; }     
+        public T? ResponseObj { get; set; }     
     }
 }

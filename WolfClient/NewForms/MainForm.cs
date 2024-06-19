@@ -51,7 +51,7 @@ namespace WolfClient.NewForms
 
         private void RequestToolStripButton_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new MenuRequestsUserControl());
+            LoadUserControl(new MenuRequestsUserControl(_apiClient, _userClient, _adminClient));
         }
 
         private void ObjectToolStripButton_Click(object sender, EventArgs e)
@@ -61,7 +61,7 @@ namespace WolfClient.NewForms
 
         private void ClientsStripButton_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new MenuClientsUserControl());
+            LoadUserControl(new MenuClientsUserControl(_apiClient, _userClient, _adminClient));
         }
 
         private void EmployeesStripLabel_Click(object sender, EventArgs e)

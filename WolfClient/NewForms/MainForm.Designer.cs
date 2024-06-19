@@ -90,6 +90,7 @@ namespace WolfClient.NewForms
             // 
             // LoginButton
             // 
+            LoginButton.Anchor = AnchorStyles.Bottom;
             LoginButton.Location = new Point(1211, 665);
             LoginButton.Name = "LoginButton";
             LoginButton.Size = new Size(135, 29);

@@ -36,5 +36,22 @@ namespace WolfClient.UserControls
         {
 
         }
+
+        private async void Refresh_Click(object sender, EventArgs e)
+        {
+            var response = await _adminClient.GetAllEmployees();
+            if (response.IsSuccess)
+            {
+                var employees = response.ResponseObj;
+                EmployeesDataGridView.AutoGenerateColumns = false;
+                EmployeesDataGridView.DataSource = employees;
+                EmployeesDataGridView.Refresh();
+            }
+        }
+
+        private void EmployeesDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

@@ -29,15 +29,16 @@
         private void InitializeComponent()
         {
             EmployeesDataGridView = new DataGridView();
+            EmployeesTableLabel = new Label();
+            EmployeesAddButton = new Button();
+            EmployeesTitleLabel = new Label();
+            Refresh = new Button();
             EmployeeId = new DataGridViewTextBoxColumn();
             FirstName = new DataGridViewTextBoxColumn();
             SecondName = new DataGridViewTextBoxColumn();
             LastName = new DataGridViewTextBoxColumn();
             Phone = new DataGridViewTextBoxColumn();
             Email = new DataGridViewTextBoxColumn();
-            EmployeesTableLabel = new Label();
-            EmployeesAddButton = new Button();
-            EmployeesTitleLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)EmployeesDataGridView).BeginInit();
             SuspendLayout();
             // 
@@ -57,44 +58,9 @@
             EmployeesDataGridView.Name = "EmployeesDataGridView";
             EmployeesDataGridView.RowHeadersWidth = 51;
             EmployeesDataGridView.RowTemplate.Height = 24;
-            EmployeesDataGridView.Size = new Size(802, 639);
+            EmployeesDataGridView.Size = new Size(1237, 639);
             EmployeesDataGridView.TabIndex = 0;
-            // 
-            // EmployeeId
-            // 
-            EmployeeId.HeaderText = "Номер";
-            EmployeeId.MinimumWidth = 6;
-            EmployeeId.Name = "EmployeeId";
-            // 
-            // FirstName
-            // 
-            FirstName.HeaderText = "Име";
-            FirstName.MinimumWidth = 6;
-            FirstName.Name = "FirstName";
-            // 
-            // SecondName
-            // 
-            SecondName.HeaderText = "Презиме";
-            SecondName.MinimumWidth = 6;
-            SecondName.Name = "SecondName";
-            // 
-            // LastName
-            // 
-            LastName.HeaderText = "Фамилия";
-            LastName.MinimumWidth = 6;
-            LastName.Name = "LastName";
-            // 
-            // Phone
-            // 
-            Phone.HeaderText = "Телефон";
-            Phone.MinimumWidth = 6;
-            Phone.Name = "Phone";
-            // 
-            // Email
-            // 
-            Email.HeaderText = "Email";
-            Email.MinimumWidth = 6;
-            Email.Name = "Email";
+            EmployeesDataGridView.CellContentClick += EmployeesDataGridView_CellContentClick;
             // 
             // EmployeesTableLabel
             // 
@@ -127,11 +93,64 @@
             EmployeesTitleLabel.TabIndex = 3;
             EmployeesTitleLabel.Text = "Служители";
             // 
+            // Refresh
+            // 
+            Refresh.Location = new Point(180, 165);
+            Refresh.Name = "Refresh";
+            Refresh.Size = new Size(122, 29);
+            Refresh.TabIndex = 4;
+            Refresh.Text = "Обновяване";
+            Refresh.UseVisualStyleBackColor = true;
+            Refresh.Click += Refresh_Click;
+            // 
+            // EmployeeId
+            // 
+            EmployeeId.DataPropertyName = "EmployeeId";
+            EmployeeId.HeaderText = "Номер";
+            EmployeeId.MinimumWidth = 6;
+            EmployeeId.Name = "EmployeeId";
+            // 
+            // FirstName
+            // 
+            FirstName.DataPropertyName = "FirstName";
+            FirstName.HeaderText = "Име";
+            FirstName.MinimumWidth = 6;
+            FirstName.Name = "FirstName";
+            // 
+            // SecondName
+            // 
+            SecondName.DataPropertyName = "SecondName";
+            SecondName.HeaderText = "Презиме";
+            SecondName.MinimumWidth = 6;
+            SecondName.Name = "SecondName";
+            // 
+            // LastName
+            // 
+            LastName.DataPropertyName = "LastName";
+            LastName.HeaderText = "Фамилия";
+            LastName.MinimumWidth = 6;
+            LastName.Name = "LastName";
+            // 
+            // Phone
+            // 
+            Phone.DataPropertyName = "Phone";
+            Phone.HeaderText = "Телефон";
+            Phone.MinimumWidth = 6;
+            Phone.Name = "Phone";
+            // 
+            // Email
+            // 
+            Email.DataPropertyName = "Email";
+            Email.HeaderText = "Email";
+            Email.MinimumWidth = 6;
+            Email.Name = "Email";
+            // 
             // MenuEmployeesUserControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
+            Controls.Add(Refresh);
             Controls.Add(EmployeesTitleLabel);
             Controls.Add(EmployeesAddButton);
             Controls.Add(EmployeesTableLabel);
@@ -148,14 +167,15 @@
         #endregion
 
         private System.Windows.Forms.DataGridView EmployeesDataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn EmployeeId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FirstName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SecondName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LastName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Phone;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Email;
         private System.Windows.Forms.Label EmployeesTableLabel;
         private System.Windows.Forms.Label EmployeesTitleLabel;
         private System.Windows.Forms.Button EmployeesAddButton;
+        private Button Refresh;
+        private DataGridViewTextBoxColumn EmployeeId;
+        private DataGridViewTextBoxColumn FirstName;
+        private DataGridViewTextBoxColumn SecondName;
+        private DataGridViewTextBoxColumn LastName;
+        private DataGridViewTextBoxColumn Phone;
+        private DataGridViewTextBoxColumn Email;
     }
 }

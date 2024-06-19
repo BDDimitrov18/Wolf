@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Models;
 using DataAccessLayer.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,24 +9,24 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories
 {
-    public class EmployeeModelRepository : IEmployeeModelRepository
+    public class ClientModelRepository : IClientModelRepository
     {
         private WolfDbContext _WolfDbContext { get; set; }
 
-        public EmployeeModelRepository(WolfDbContext wolfDbContext)
+        public ClientModelRepository(WolfDbContext wolfDbContext)
         {
             _WolfDbContext = wolfDbContext;
         }
 
-        public void Add(Employee employee)
-        {
-            _WolfDbContext.Employees.Add(employee);
+        public void Add(Client client) {
+
+            _WolfDbContext.Clients.Add(client);
             _WolfDbContext.SaveChanges();
         }
 
-        public IEnumerable<Employee> GetAll()
+        public IEnumerable<Client> GetAll()
         {
-            return _WolfDbContext.Employees.ToList();
+            return _WolfDbContext.Clients.ToList();
         }
     }
 }

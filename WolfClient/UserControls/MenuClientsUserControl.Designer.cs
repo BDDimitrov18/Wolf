@@ -34,7 +34,7 @@ namespace WolfClient.UserControls
             ClientsDataGridView = new DataGridView();
             ClientId = new DataGridViewTextBoxColumn();
             FirstName = new DataGridViewTextBoxColumn();
-            SecondName = new DataGridViewTextBoxColumn();
+            MiddleName = new DataGridViewTextBoxColumn();
             LastName = new DataGridViewTextBoxColumn();
             Phone = new DataGridViewTextBoxColumn();
             Email = new DataGridViewTextBoxColumn();
@@ -43,6 +43,7 @@ namespace WolfClient.UserControls
             ClientsTableLabel = new Label();
             ClientsAddButton = new Button();
             ClientsTitleLabel = new Label();
+            RefreshButton = new Button();
             ((System.ComponentModel.ISupportInitialize)ClientsDataGridView).BeginInit();
             SuspendLayout();
             // 
@@ -50,63 +51,72 @@ namespace WolfClient.UserControls
             // 
             ClientsDataGridView.AllowUserToResizeColumns = false;
             ClientsDataGridView.AllowUserToResizeRows = false;
-            ClientsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            ClientsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             ClientsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             ClientsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             ClientsDataGridView.BackgroundColor = Color.Moccasin;
             ClientsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            ClientsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ClientId, FirstName, SecondName, LastName, Phone, Email, Address, ClientLegalType });
+            ClientsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ClientId, FirstName, MiddleName, LastName, Phone, Email, Address, ClientLegalType });
             ClientsDataGridView.Location = new Point(46, 142);
             ClientsDataGridView.Name = "ClientsDataGridView";
             ClientsDataGridView.RowHeadersWidth = 51;
             ClientsDataGridView.RowTemplate.Height = 24;
-            ClientsDataGridView.Size = new Size(1053, 582);
+            ClientsDataGridView.Size = new Size(1277, 582);
             ClientsDataGridView.TabIndex = 0;
+            ClientsDataGridView.CellContentClick += ClientsDataGridView_CellContentClick;
             // 
             // ClientId
             // 
+            ClientId.DataPropertyName = "ClientId";
             ClientId.HeaderText = "Номер";
             ClientId.MinimumWidth = 6;
             ClientId.Name = "ClientId";
             // 
             // FirstName
             // 
+            FirstName.DataPropertyName = "FirstName";
             FirstName.HeaderText = "Име";
             FirstName.MinimumWidth = 6;
             FirstName.Name = "FirstName";
             // 
-            // SecondName
+            // MiddleName
             // 
-            SecondName.HeaderText = "Презиме";
-            SecondName.MinimumWidth = 6;
-            SecondName.Name = "SecondName";
+            MiddleName.DataPropertyName = "MiddleName";
+            MiddleName.HeaderText = "Презиме";
+            MiddleName.MinimumWidth = 6;
+            MiddleName.Name = "MiddleName";
             // 
             // LastName
             // 
+            LastName.DataPropertyName = "LastName";
             LastName.HeaderText = "Фамилия";
             LastName.MinimumWidth = 6;
             LastName.Name = "LastName";
             // 
             // Phone
             // 
+            Phone.DataPropertyName = "Phone";
             Phone.HeaderText = "телефон";
             Phone.MinimumWidth = 6;
             Phone.Name = "Phone";
             // 
             // Email
             // 
+            Email.DataPropertyName = "Email";
             Email.HeaderText = "Email";
             Email.MinimumWidth = 6;
             Email.Name = "Email";
             // 
             // Address
             // 
+            Address.DataPropertyName = "Address";
             Address.HeaderText = "Адрес";
             Address.MinimumWidth = 6;
             Address.Name = "Address";
             // 
             // ClientLegalType
             // 
+            ClientLegalType.DataPropertyName = "ClientLegalType";
             ClientLegalType.HeaderText = "Лице";
             ClientLegalType.MinimumWidth = 6;
             ClientLegalType.Name = "ClientLegalType";
@@ -142,17 +152,29 @@ namespace WolfClient.UserControls
             ClientsTitleLabel.TabIndex = 3;
             ClientsTitleLabel.Text = "Клиенти";
             // 
+            // RefreshButton
+            // 
+            RefreshButton.Location = new Point(162, 104);
+            RefreshButton.Name = "RefreshButton";
+            RefreshButton.Size = new Size(111, 29);
+            RefreshButton.TabIndex = 4;
+            RefreshButton.Text = "Обновяване";
+            RefreshButton.UseVisualStyleBackColor = true;
+            RefreshButton.Click += RefreshButton_Click;
+            // 
             // MenuClientsUserControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
+            Controls.Add(RefreshButton);
             Controls.Add(ClientsTitleLabel);
             Controls.Add(ClientsAddButton);
             Controls.Add(ClientsTableLabel);
             Controls.Add(ClientsDataGridView);
             Name = "MenuClientsUserControl";
             Size = new Size(1350, 785);
+            Load += MenuClientsUserControl_Load;
             ((System.ComponentModel.ISupportInitialize)ClientsDataGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -161,16 +183,17 @@ namespace WolfClient.UserControls
         #endregion
 
         private System.Windows.Forms.DataGridView ClientsDataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ClientId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FirstName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SecondName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LastName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Phone;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Email;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Address;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ClientLegalType;
         private System.Windows.Forms.Label ClientsTableLabel;
         private System.Windows.Forms.Button ClientsAddButton;
         private System.Windows.Forms.Label ClientsTitleLabel;
+        private Button RefreshButton;
+        private DataGridViewTextBoxColumn ClientId;
+        private DataGridViewTextBoxColumn FirstName;
+        private DataGridViewTextBoxColumn MiddleName;
+        private DataGridViewTextBoxColumn LastName;
+        private DataGridViewTextBoxColumn Phone;
+        private DataGridViewTextBoxColumn Email;
+        private DataGridViewTextBoxColumn Address;
+        private DataGridViewTextBoxColumn ClientLegalType;
     }
 }

@@ -9,8 +9,9 @@ namespace WolfAPI.Mapping
         public MappingProfile()
         {
             CreateMap<CreateEmployeeDTO, Employee>();
-
-
+            CreateMap<CreateClientDTO, Client>();
+            CreateMap<Client, GetClientDTO>();
+            CreateMap<Employee, GetEmployeeDTO>();
         }
     }
 }

@@ -28,33 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            comboBox1 = new ComboBox();
+            LegalTypeTextBox = new ComboBox();
             label8 = new Label();
-            textBox6 = new TextBox();
+            AddressTextBox = new TextBox();
             label7 = new Label();
-            textBox5 = new TextBox();
+            EmailTextBox = new TextBox();
             label6 = new Label();
-            textBox4 = new TextBox();
+            PhoneTextBox = new TextBox();
             label5 = new Label();
-            textBox3 = new TextBox();
+            LastNameTextBox = new TextBox();
             label4 = new Label();
-            textBox2 = new TextBox();
+            SecondNameTextBox = new TextBox();
             label3 = new Label();
-            textBox1 = new TextBox();
+            NameTextBox = new TextBox();
             label2 = new Label();
             label1 = new Label();
-            button1 = new Button();
+            AddClientButton = new Button();
             SuspendLayout();
             // 
-            // comboBox1
+            // LegalTypeTextBox
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Физическо лице", "Юридическо лице", "Държавата", "Общината" });
-            comboBox1.Location = new Point(108, 853);
-            comboBox1.Margin = new Padding(3, 4, 3, 4);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(232, 28);
-            comboBox1.TabIndex = 29;
+            LegalTypeTextBox.FormattingEnabled = true;
+            LegalTypeTextBox.Items.AddRange(new object[] { "Физическо лице", "Юридическо лице", "Държавата", "Общината" });
+            LegalTypeTextBox.Location = new Point(108, 853);
+            LegalTypeTextBox.Margin = new Padding(3, 4, 3, 4);
+            LegalTypeTextBox.Name = "LegalTypeTextBox";
+            LegalTypeTextBox.Size = new Size(232, 28);
+            LegalTypeTextBox.TabIndex = 29;
             // 
             // label8
             // 
@@ -66,13 +66,13 @@
             label8.TabIndex = 28;
             label8.Text = "Лице";
             // 
-            // textBox6
+            // AddressTextBox
             // 
-            textBox6.Location = new Point(108, 744);
-            textBox6.Margin = new Padding(3, 4, 3, 4);
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(232, 27);
-            textBox6.TabIndex = 27;
+            AddressTextBox.Location = new Point(108, 744);
+            AddressTextBox.Margin = new Padding(3, 4, 3, 4);
+            AddressTextBox.Name = "AddressTextBox";
+            AddressTextBox.Size = new Size(232, 27);
+            AddressTextBox.TabIndex = 27;
             // 
             // label7
             // 
@@ -84,13 +84,13 @@
             label7.TabIndex = 26;
             label7.Text = "Address";
             // 
-            // textBox5
+            // EmailTextBox
             // 
-            textBox5.Location = new Point(108, 630);
-            textBox5.Margin = new Padding(3, 4, 3, 4);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(232, 27);
-            textBox5.TabIndex = 25;
+            EmailTextBox.Location = new Point(108, 630);
+            EmailTextBox.Margin = new Padding(3, 4, 3, 4);
+            EmailTextBox.Name = "EmailTextBox";
+            EmailTextBox.Size = new Size(232, 27);
+            EmailTextBox.TabIndex = 25;
             // 
             // label6
             // 
@@ -102,13 +102,13 @@
             label6.TabIndex = 24;
             label6.Text = "Email";
             // 
-            // textBox4
+            // PhoneTextBox
             // 
-            textBox4.Location = new Point(108, 509);
-            textBox4.Margin = new Padding(3, 4, 3, 4);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(232, 27);
-            textBox4.TabIndex = 23;
+            PhoneTextBox.Location = new Point(108, 509);
+            PhoneTextBox.Margin = new Padding(3, 4, 3, 4);
+            PhoneTextBox.Name = "PhoneTextBox";
+            PhoneTextBox.Size = new Size(232, 27);
+            PhoneTextBox.TabIndex = 23;
             // 
             // label5
             // 
@@ -120,13 +120,13 @@
             label5.TabIndex = 22;
             label5.Text = "Телефон";
             // 
-            // textBox3
+            // LastNameTextBox
             // 
-            textBox3.Location = new Point(108, 395);
-            textBox3.Margin = new Padding(3, 4, 3, 4);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(232, 27);
-            textBox3.TabIndex = 21;
+            LastNameTextBox.Location = new Point(108, 395);
+            LastNameTextBox.Margin = new Padding(3, 4, 3, 4);
+            LastNameTextBox.Name = "LastNameTextBox";
+            LastNameTextBox.Size = new Size(232, 27);
+            LastNameTextBox.TabIndex = 21;
             // 
             // label4
             // 
@@ -138,13 +138,13 @@
             label4.TabIndex = 20;
             label4.Text = "Фамилия";
             // 
-            // textBox2
+            // SecondNameTextBox
             // 
-            textBox2.Location = new Point(108, 283);
-            textBox2.Margin = new Padding(3, 4, 3, 4);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(232, 27);
-            textBox2.TabIndex = 19;
+            SecondNameTextBox.Location = new Point(108, 283);
+            SecondNameTextBox.Margin = new Padding(3, 4, 3, 4);
+            SecondNameTextBox.Name = "SecondNameTextBox";
+            SecondNameTextBox.Size = new Size(232, 27);
+            SecondNameTextBox.TabIndex = 19;
             // 
             // label3
             // 
@@ -156,13 +156,13 @@
             label3.TabIndex = 18;
             label3.Text = "Презиме";
             // 
-            // textBox1
+            // NameTextBox
             // 
-            textBox1.Location = new Point(108, 177);
-            textBox1.Margin = new Padding(3, 4, 3, 4);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(232, 27);
-            textBox1.TabIndex = 17;
+            NameTextBox.Location = new Point(108, 177);
+            NameTextBox.Margin = new Padding(3, 4, 3, 4);
+            NameTextBox.Name = "NameTextBox";
+            NameTextBox.Size = new Size(232, 27);
+            NameTextBox.TabIndex = 17;
             // 
             // label2
             // 
@@ -184,16 +184,17 @@
             label1.TabIndex = 15;
             label1.Text = "Добавяне на клиент";
             // 
-            // button1
+            // AddClientButton
             // 
-            button1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Location = new Point(215, 914);
-            button1.Margin = new Padding(3, 4, 3, 4);
-            button1.Name = "button1";
-            button1.Size = new Size(125, 42);
-            button1.TabIndex = 30;
-            button1.Text = "Запази";
-            button1.UseVisualStyleBackColor = true;
+            AddClientButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            AddClientButton.Location = new Point(215, 914);
+            AddClientButton.Margin = new Padding(3, 4, 3, 4);
+            AddClientButton.Name = "AddClientButton";
+            AddClientButton.Size = new Size(125, 42);
+            AddClientButton.TabIndex = 30;
+            AddClientButton.Text = "Запази";
+            AddClientButton.UseVisualStyleBackColor = true;
+            AddClientButton.Click += AddClientButton_Click;
             // 
             // AddClientForm
             // 
@@ -201,45 +202,46 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(602, 1002);
-            Controls.Add(button1);
-            Controls.Add(comboBox1);
+            Controls.Add(AddClientButton);
+            Controls.Add(LegalTypeTextBox);
             Controls.Add(label8);
-            Controls.Add(textBox6);
+            Controls.Add(AddressTextBox);
             Controls.Add(label7);
-            Controls.Add(textBox5);
+            Controls.Add(EmailTextBox);
             Controls.Add(label6);
-            Controls.Add(textBox4);
+            Controls.Add(PhoneTextBox);
             Controls.Add(label5);
-            Controls.Add(textBox3);
+            Controls.Add(LastNameTextBox);
             Controls.Add(label4);
-            Controls.Add(textBox2);
+            Controls.Add(SecondNameTextBox);
             Controls.Add(label3);
-            Controls.Add(textBox1);
+            Controls.Add(NameTextBox);
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "AddClientForm";
             Text = "AddClientForm";
+            Load += AddClientForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private ComboBox comboBox1;
+        private ComboBox LegalTypeTextBox;
         private Label label8;
-        private TextBox textBox6;
+        private TextBox AddressTextBox;
         private Label label7;
-        private TextBox textBox5;
+        private TextBox EmailTextBox;
         private Label label6;
-        private TextBox textBox4;
+        private TextBox PhoneTextBox;
         private Label label5;
-        private TextBox textBox3;
+        private TextBox LastNameTextBox;
         private Label label4;
-        private TextBox textBox2;
+        private TextBox SecondNameTextBox;
         private Label label3;
-        private TextBox textBox1;
+        private TextBox NameTextBox;
         private Label label2;
         private Label label1;
-        private Button button1;
+        private Button AddClientButton;
     }
 }

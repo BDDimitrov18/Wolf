@@ -13,10 +13,10 @@ using UserManagamentService.Services.Interfaces;
 using WolfAPI.Mapping;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Repositories.Interfaces;
-using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 using WolfAPI.Services;
 using WolfAPI.Services.Interfaces;
+using AutoMapper;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -86,22 +86,28 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
+
 builder.Services.AddAutoMapper(config =>
 {
     config.AddProfile<MappingProfile>();
 });
-
+builder.Services.AddScoped<IMapper, Mapper>();
 builder.Services.AddControllers();
 
-builder.Services.AddTransient<IEmployeeModelRepository, EmployeeModelRepository>();
-builder.Services.AddTransient<IWolfDbContext, WolfDbContext>();
+builder.Services.AddScoped<IEmployeeModelRepository, EmployeeModelRepository>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
+builder.Services.AddScoped<IClientModelRepository, ClientModelRepository>();
+builder.Services.AddScoped<IClientService, ClientService>();
+
+
 
 var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserManagament, UserManagament>();
-builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
 
 var app = builder.Build();
 

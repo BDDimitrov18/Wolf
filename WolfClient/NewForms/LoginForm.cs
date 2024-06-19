@@ -65,6 +65,7 @@ namespace WolfClient.NewForms
                 var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(response.ResponseObj);
                 _adminClient.SetToken(tokenResponse.token);
                 _apiClient.SetToken(tokenResponse.token);
+                _userClient.SetToken(tokenResponse.token);
                 return true;
             }
             return false;

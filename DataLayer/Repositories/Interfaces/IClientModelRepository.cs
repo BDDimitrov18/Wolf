@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories.Interfaces
 {
-    public interface IEmployeeModelRepository
+    public interface IClientModelRepository
     {
-        public void Add(Employee employee);
+        public void Add(Client client);
 
-        public IEnumerable<Employee> GetAll();
+        public IEnumerable<Client> GetAll();
     }
 }

@@ -8,15 +8,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WolfClient.NewForms;
+using WolfClient.Services.Interfaces;
 
 namespace WolfClient.UserControls
 {
     public partial class MenuRequestsUserControl : UserControl
     {
-        public MenuRequestsUserControl()
+        private readonly IApiClient _apiClient;
+        private readonly IUserClient _userClient;
+        private readonly IAdminClient _adminClient;
+        public MenuRequestsUserControl(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient)
         {
             InitializeComponent();
+            _apiClient = apiClient;
+            _userClient = userClient;
+            _adminClient = adminClient;
         }
+       
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -60,7 +68,7 @@ namespace WolfClient.UserControls
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddRequestForm addRequestForm = new AddRequestForm();
+            AddRequestForm addRequestForm = new AddRequestForm(_apiClient, _userClient, _adminClient);
             addRequestForm.Show();
             
         }
@@ -79,7 +87,7 @@ namespace WolfClient.UserControls
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            AddClientToRequest addClientsToRequest = new AddClientToRequest();
+            AddClientToRequest addClientsToRequest = new AddClientToRequest(_apiClient, _userClient, _adminClient);
             addClientsToRequest.Show();
         }
     }

@@ -60,7 +60,6 @@ namespace WolfApi.Controllers
         public async Task<IActionResult> Login([FromBody] LoginUser loginUser) 
         {
             var tokenResponse =  await _userManagament.LoginUserWithJwtTokenAsync(loginUser);
-
             if (tokenResponse.IsSuccess)
             {
                 return Ok(tokenResponse.Response);
@@ -68,7 +67,6 @@ namespace WolfApi.Controllers
 
             return StatusCode(StatusCodes.Status401Unauthorized, new Response { Status = "Error", Message = tokenResponse.Message });
         }
-        
 
         [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string token, string email)

@@ -18,15 +18,15 @@ namespace WolfApi.Controllers
     {
         private readonly IEmployeeService _employeeService;
 
-        public AdminController(EmployeeService employeeService)
+        public AdminController(IEmployeeService employeeService)
         {
             _employeeService = employeeService;
         }
 
-        [HttpGet("Employees")]
+        [HttpGet("GetAllEmployees")]
 
-        public IEnumerable<Employee> GetEmployees(){
-            return new Employee[] { null };            
+        public  IEnumerable<GetEmployeeDTO> GetAllEmployees(){
+            return  _employeeService.GetAllEmployees();         
         }
         [HttpPost("CreateEmployee")]
         public void CreateEmployee([FromBody] CreateEmployeeDTO employeeDTO) {
