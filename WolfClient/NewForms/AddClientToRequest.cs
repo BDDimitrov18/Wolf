@@ -26,7 +26,7 @@ namespace WolfClient.NewForms
 
         private void AddNonExistingClientButton_Click(object sender, EventArgs e)
         {
-            AddClientForm addClientForm = new AddClientForm(_apiClient,_userClient,_adminClient);
+            AddClientForm addClientForm = new AddClientForm(_apiClient,_userClient,_adminClient,false);
             addClientForm.Show();
         }
     }

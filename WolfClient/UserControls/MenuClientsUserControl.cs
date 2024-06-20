@@ -32,7 +32,7 @@ namespace WolfClient.UserControls
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddClientForm addClientFrom = new AddClientForm(_apiClient, _userClient, _adminClient);
+            AddClientForm addClientFrom = new AddClientForm(_apiClient, _userClient, _adminClient,true);
             addClientFrom.Show();
         }
 

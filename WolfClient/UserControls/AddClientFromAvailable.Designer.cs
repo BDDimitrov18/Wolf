@@ -39,6 +39,7 @@
             ClientsListComboBox.Name = "ClientsListComboBox";
             ClientsListComboBox.Size = new Size(270, 28);
             ClientsListComboBox.TabIndex = 0;
+            ClientsListComboBox.SelectedIndexChanged += ClientsListComboBox_SelectedIndexChanged;
             // 
             // DeleteUserControlButton
             // 

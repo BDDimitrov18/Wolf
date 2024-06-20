@@ -100,6 +100,9 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IClientModelRepository, ClientModelRepository>();
 builder.Services.AddScoped<IClientService, ClientService>();
 
+builder.Services.AddScoped<IRequestModelRepository, RequestModelRepository>();
+builder.Services.AddScoped<IRequestService, RequestService>();
+
 
 
 var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();

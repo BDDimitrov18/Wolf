@@ -12,15 +12,19 @@ namespace WolfAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IClientService _clientService;
+        private readonly IRequestService _requestService;
+        private readonly IClient_RequestRelashionshipService _client_RequestRelashionshipService;
 
-        public UserController(IClientService clientService)
+        public UserController(IClientService clientService, IRequestService requestService, IClient_RequestRelashionshipService requestRelashionshipService)
         {
             _clientService = clientService;
+            _requestService = requestService;
+            _client_RequestRelashionshipService = requestRelashionshipService;
         }
 
         [HttpPost("CreateClient")]
-        public GetClientDTO CreateClient([FromBody] CreateClientDTO clientDTO) {
-            return _clientService.AddClient(clientDTO);
+        public List<GetClientDTO> CreateClient([FromBody] List<CreateClientDTO> clientDTOs) {
+            return _clientService.AddClient(clientDTOs);
         }
 
         [HttpGet("GetAllClients")]
@@ -29,5 +33,19 @@ namespace WolfAPI.Controllers
         {
             return _clientService.GetAllClients();
         }
+
+        [HttpPost("CreateWorkRequest")]
+
+        public List<GetRequestDTO> CreateWorkRequest([FromBody] List<CreateRequestDTO> requestDTO) {
+            return _requestService.Add(requestDTO);
+        }
+
+        [HttpPost("LinkClientsAndRequest")]
+
+        public List<GetClient_RequestRelashionshipDTO> LinkClientsWithRequest([FromBody]GetRequestDTO requestDTO, [FromBody]List<GetClientDTO> _clientsList) { 
+             return _client_RequestRelashionshipService.CreateClient_RequestRelashionship(requestDTO, _clientsList);
+        }
+
+        //public void LinkClientsAdnRequest([FromBody] IEnumerable<GetClientDTO>)
     }
 }

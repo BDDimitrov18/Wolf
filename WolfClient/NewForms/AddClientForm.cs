@@ -18,13 +18,16 @@ namespace WolfClient.NewForms
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
 
-        private GetClientDTO _clientDTO;
-        public AddClientForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient)
+        private readonly bool _canCreate;
+
+        private CreateClientDTO _clientDTO;
+        public AddClientForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, bool canCreate)
         {
             InitializeComponent();
             _apiClient = apiClient;
             _userClient = userClient;
             _adminClient = adminClient;
+            _canCreate = canCreate;
         }
 
         private void AddClientForm_Load(object sender, EventArgs e)
@@ -44,17 +47,22 @@ namespace WolfClient.NewForms
                 Address = AddressTextBox.Text,
                 ClientLegalType = LegalTypeTextBox.Text
             };
-
-            var response = await _userClient.AddClient(client);
-            if (response.IsSuccess)
+            if (!_canCreate)
             {
-                _clientDTO = response.ResponseObj;       
+                _clientDTO = client;
+                DialogResult = DialogResult.OK;
+            }
+            else {
+                List<CreateClientDTO> clientsList = new List<CreateClientDTO>();
+                clientsList.Add(client);
+                await _userClient.AddClients(clientsList);
             }
             Close();
         }
 
-        public GetClientDTO getClientResponseObj() {
+        public CreateClientDTO getClientResponseObj() {
             return _clientDTO;
         }
+
     }
 }

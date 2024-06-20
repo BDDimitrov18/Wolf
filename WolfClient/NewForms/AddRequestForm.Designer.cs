@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button3 = new Button();
+            AddRequestButton = new Button();
             AddNonExistingClientButton = new Button();
             AddNonExistingClientLabel = new Label();
             AddClientComboBoxButton = new Button();
             AddExistingClientToRequestLabel = new Label();
-            richTextBox1 = new RichTextBox();
-            label5 = new Label();
+            CommentsRichTextBox = new RichTextBox();
+            NewClientsFlowPanel = new Label();
             AdvanceTextBox = new TextBox();
             AdvanceLabel = new Label();
             PriceOfRequestTextBox = new TextBox();
@@ -42,21 +42,20 @@
             NameOfRequestTextBox = new TextBox();
             NameOfRequestTiltleLabel = new Label();
             AddRequestTitleLabel = new Label();
-            panel3 = new Panel();
             AvailableClientsFlowPanel = new FlowLayoutPanel();
-            panel1 = new Panel();
-            AvailableClientsFlowPanel.SuspendLayout();
+            NotAvailableClientsFlowPanel = new FlowLayoutPanel();
             SuspendLayout();
             // 
-            // button3
+            // AddRequestButton
             // 
-            button3.Location = new Point(833, 755);
-            button3.Margin = new Padding(3, 4, 3, 4);
-            button3.Name = "button3";
-            button3.Size = new Size(174, 46);
-            button3.TabIndex = 29;
-            button3.Text = "Добави Заявка";
-            button3.UseVisualStyleBackColor = true;
+            AddRequestButton.Location = new Point(833, 755);
+            AddRequestButton.Margin = new Padding(3, 4, 3, 4);
+            AddRequestButton.Name = "AddRequestButton";
+            AddRequestButton.Size = new Size(174, 46);
+            AddRequestButton.TabIndex = 29;
+            AddRequestButton.Text = "Добави Заявка";
+            AddRequestButton.UseVisualStyleBackColor = true;
+            AddRequestButton.Click += AddRequestButton_Click;
             // 
             // AddNonExistingClientButton
             // 
@@ -100,24 +99,24 @@
             AddExistingClientToRequestLabel.TabIndex = 24;
             AddExistingClientToRequestLabel.Text = "Заложи Клиент От Наличните";
             // 
-            // richTextBox1
+            // CommentsRichTextBox
             // 
-            richTextBox1.Location = new Point(45, 584);
-            richTextBox1.Margin = new Padding(3, 4, 3, 4);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(316, 216);
-            richTextBox1.TabIndex = 23;
-            richTextBox1.Text = "";
+            CommentsRichTextBox.Location = new Point(45, 584);
+            CommentsRichTextBox.Margin = new Padding(3, 4, 3, 4);
+            CommentsRichTextBox.Name = "CommentsRichTextBox";
+            CommentsRichTextBox.Size = new Size(316, 216);
+            CommentsRichTextBox.TabIndex = 23;
+            CommentsRichTextBox.Text = "";
             // 
-            // label5
+            // NewClientsFlowPanel
             // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label5.Location = new Point(40, 534);
-            label5.Name = "label5";
-            label5.Size = new Size(107, 25);
-            label5.TabIndex = 22;
-            label5.Text = "Коментар";
+            NewClientsFlowPanel.AutoSize = true;
+            NewClientsFlowPanel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            NewClientsFlowPanel.Location = new Point(40, 534);
+            NewClientsFlowPanel.Name = "NewClientsFlowPanel";
+            NewClientsFlowPanel.Size = new Size(107, 25);
+            NewClientsFlowPanel.TabIndex = 22;
+            NewClientsFlowPanel.Text = "Коментар";
             // 
             // AdvanceTextBox
             // 
@@ -183,32 +182,25 @@
             AddRequestTitleLabel.TabIndex = 15;
             AddRequestTitleLabel.Text = "Добавяне На Заявка";
             // 
-            // panel3
-            // 
-            panel3.BackColor = SystemColors.ActiveCaption;
-            panel3.BorderStyle = BorderStyle.Fixed3D;
-            panel3.Location = new Point(415, 584);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(410, 216);
-            panel3.TabIndex = 31;
-            // 
             // AvailableClientsFlowPanel
             // 
             AvailableClientsFlowPanel.AutoScroll = true;
             AvailableClientsFlowPanel.BackColor = SystemColors.ActiveCaption;
             AvailableClientsFlowPanel.BorderStyle = BorderStyle.Fixed3D;
-            AvailableClientsFlowPanel.Controls.Add(panel1);
             AvailableClientsFlowPanel.Location = new Point(415, 172);
             AvailableClientsFlowPanel.Name = "AvailableClientsFlowPanel";
             AvailableClientsFlowPanel.Size = new Size(461, 283);
             AvailableClientsFlowPanel.TabIndex = 32;
             // 
-            // panel1
+            // NotAvailableClientsFlowPanel
             // 
-            panel1.Location = new Point(3, 3);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(412, 28);
-            panel1.TabIndex = 0;
+            NotAvailableClientsFlowPanel.AutoScroll = true;
+            NotAvailableClientsFlowPanel.BackColor = SystemColors.ActiveCaption;
+            NotAvailableClientsFlowPanel.BorderStyle = BorderStyle.Fixed3D;
+            NotAvailableClientsFlowPanel.Location = new Point(415, 584);
+            NotAvailableClientsFlowPanel.Name = "NotAvailableClientsFlowPanel";
+            NotAvailableClientsFlowPanel.Size = new Size(410, 216);
+            NotAvailableClientsFlowPanel.TabIndex = 33;
             // 
             // AddRequestForm
             // 
@@ -217,15 +209,15 @@
             AutoSize = true;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(1047, 836);
+            Controls.Add(NotAvailableClientsFlowPanel);
             Controls.Add(AvailableClientsFlowPanel);
-            Controls.Add(panel3);
-            Controls.Add(button3);
+            Controls.Add(AddRequestButton);
             Controls.Add(AddNonExistingClientButton);
             Controls.Add(AddNonExistingClientLabel);
             Controls.Add(AddClientComboBoxButton);
             Controls.Add(AddExistingClientToRequestLabel);
-            Controls.Add(richTextBox1);
-            Controls.Add(label5);
+            Controls.Add(CommentsRichTextBox);
+            Controls.Add(NewClientsFlowPanel);
             Controls.Add(AdvanceTextBox);
             Controls.Add(AdvanceLabel);
             Controls.Add(PriceOfRequestTextBox);
@@ -238,20 +230,19 @@
             Name = "AddRequestForm";
             Text = "AddRequestForm";
             Load += AddRequestForm_Load;
-            AvailableClientsFlowPanel.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Button button3;
+        private Button AddRequestButton;
         private Button AddNonExistingClientButton;
         private Label AddNonExistingClientLabel;
         private Button AddClientComboBoxButton;
         private Label AddExistingClientToRequestLabel;
-        private RichTextBox richTextBox1;
-        private Label label5;
+        private RichTextBox CommentsRichTextBox;
+        private Label NewClientsFlowPanel;
         private TextBox AdvanceTextBox;
         private Label AdvanceLabel;
         private TextBox PriceOfRequestTextBox;
@@ -259,8 +250,9 @@
         private TextBox NameOfRequestTextBox;
         private Label NameOfRequestTiltleLabel;
         private Label AddRequestTitleLabel;
-        private Panel panel3;
+        private Panel NewClientsPanel;
         private FlowLayoutPanel AvailableClientsFlowPanel;
         private Panel panel1;
+        private FlowLayoutPanel NotAvailableClientsFlowPanel;
     }
 }

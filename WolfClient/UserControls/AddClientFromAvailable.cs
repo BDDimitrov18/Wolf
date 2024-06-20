@@ -40,5 +40,10 @@ namespace WolfClient.UserControls
         {
             Parent.Dispose();
         }
+
+        private void ClientsListComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

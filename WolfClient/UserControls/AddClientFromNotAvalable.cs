@@ -13,9 +13,9 @@ namespace WolfClient.UserControls
 {
     public partial class AddClientFromNotAvalable : UserControl
     {
-        private GetClientDTO _clientObject;
+        public CreateClientDTO _clientObject;
         private Panel _parent;
-        public AddClientFromNotAvalable(GetClientDTO clientObject, Panel parent)
+        public AddClientFromNotAvalable(CreateClientDTO clientObject, Panel parent)
         {
             InitializeComponent();
             _clientObject = clientObject;

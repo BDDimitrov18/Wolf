@@ -16,12 +16,26 @@ namespace WolfAPI.Services
             _clientRepository = clientRepository;
             _mapper = mapper;
         }
-        public GetClientDTO AddClient(CreateClientDTO clientDTO)
+        public List<GetClientDTO> AddClient(List<CreateClientDTO> clientDTOs)
         {
-            var client = _mapper.Map<Client>(clientDTO);
-            var clientRet = _clientRepository.Add(client);
-            GetClientDTO getClientDTO = _mapper.Map<GetClientDTO>(client);
-            return getClientDTO;
+            List<GetClientDTO> returnList = new List<GetClientDTO>();
+            List<Client> clients = new List<Client>();
+            foreach (var clientDTO in clientDTOs)
+            {
+                var client = _mapper.Map<Client>(clientDTO);
+                clients.Add(client);
+            }
+
+            _clientRepository.Add(clients);
+
+            foreach (var client in clients)
+            {
+                var clientDTO = _mapper.Map<GetClientDTO>(client);
+                returnList.Add(clientDTO);
+            }
+
+            return returnList;
+            
         }
 
         public IEnumerable<GetClientDTO> GetAllClients() { 
