@@ -55,8 +55,8 @@ namespace WolfClient.UserControls
             RequestDataGridView.AutoGenerateColumns = false;
             RequestDataGridView.DataSource = employees;
             RequestDataGridView.Refresh();
-            
-            
+
+
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -117,19 +117,57 @@ namespace WolfClient.UserControls
 
         private void UpdateClientsDataGridView()
         {
-            var matchingRequestWithClients = _fetchedLinkedClients
-            .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _selectedRequest.RequestId);
+            try
+            {
+                if (_selectedRequest == null || _fetchedLinkedClients == null)
+                {
+                    clientsDataGridView.DataSource = null;
+                    clientsDataGridView.Refresh();
+                    return;
+                }
+
+                var matchingRequestWithClients = _fetchedLinkedClients
+                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _selectedRequest.RequestId);
+
+                if (clientsDataGridView.InvokeRequired)
+                {
+                    clientsDataGridView.Invoke(new MethodInvoker(delegate
+                    {
+                        BindClientsDataGridView(matchingRequestWithClients);
+                    }));
+                }
+                else
+                {
+                    BindClientsDataGridView(matchingRequestWithClients);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception in UpdateClientsDataGridView: " + ex.Message);
+                MessageBox.Show("Exception in UpdateClientsDataGridView: " + ex.Message);
+            }
+        }
+
+        private void BindClientsDataGridView(RequestWithClientsDTO matchingRequestWithClients)
+        {
+            clientsDataGridView.AutoGenerateColumns = false;
+            clientsDataGridView.DataSource = null; // Force reset DataSource
 
             if (matchingRequestWithClients != null)
             {
-                clientsDataGridView.AutoGenerateColumns = false;
                 clientsDataGridView.DataSource = matchingRequestWithClients.clientDTOs;
             }
             else
             {
                 clientsDataGridView.DataSource = null;
             }
+
+            clientsDataGridView.Refresh();
         }
+
+
+
+
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
 
@@ -137,9 +175,24 @@ namespace WolfClient.UserControls
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddRequestForm addRequestForm = new AddRequestForm(_apiClient, _userClient, _adminClient);
-            addRequestForm.Show();
+            using (AddRequestForm form = new AddRequestForm(_apiClient, _userClient, _adminClient))
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    GetRequestDTO requestDTO = form.returnRequest();
+                    List<GetClientDTO> getClientDTOs = form.returnClients();
+                    
 
+                    RequestWithClientsDTO requestWithClients = new RequestWithClientsDTO() { 
+                        requestDTO = requestDTO,
+                        clientDTOs  =    getClientDTOs,
+                    };
+
+                    _fetchedLinkedClients.Add(requestWithClients);
+                    _fetchedRequests.Add(requestDTO);
+                }
+            }
+            UpdateRequestDataGridView(_fetchedRequests);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -156,20 +209,70 @@ namespace WolfClient.UserControls
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-           AddClientToRequest addClientsToRequest = new AddClientToRequest(_apiClient, _userClient, _adminClient,_selectedRequest);
-           addClientsToRequest.Show();
+            using (AddClientToRequest form = new AddClientToRequest(_apiClient, _userClient, _adminClient,_selectedRequest))
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    List<GetClientDTO> getClientDTOs = form.returnClientsList();
+
+                    foreach (RequestWithClientsDTO requestWithClientsDTO in _fetchedLinkedClients) { 
+                        if(requestWithClientsDTO.requestDTO.RequestId == _selectedRequest.RequestId) {
+                            requestWithClientsDTO.clientDTOs.AddRange(getClientDTOs);                       
+                        }
+                    }
+                }
+            }
+            UpdateClientsDataGridView();
+
         }
 
         private async void RefreshButton_Click(object sender, EventArgs e)
         {
             var response = await _userClient.GetAllRequests();
+            var linkedResponse = await _userClient.GetLinkedClients(response.ResponseObj);
+            _fetchedLinkedClients = linkedResponse.ResponseObj;
             if (response.IsSuccess)
             {
-                var employees = response.ResponseObj;
-                RequestDataGridView.AutoGenerateColumns = false;
-                RequestDataGridView.DataSource = employees;
-                RequestDataGridView.Refresh();
+                var requestDTOs = response.ResponseObj;
+                UpdateRequestDataGridView(requestDTOs);
                 _fetchedRequests = response.ResponseObj;
+            }
+        }
+
+
+        private void UpdateRequestDataGridView(List<GetRequestDTO> requestDTOs)
+        {
+            try
+            {
+                if (requestDTOs == null)
+                {
+                    throw new ArgumentNullException(nameof(requestDTOs), "requestDTOs is null.");
+                }
+
+                if (RequestDataGridView.InvokeRequired)
+                {
+                    RequestDataGridView.Invoke(new MethodInvoker(delegate
+                    {
+                        RequestDataGridView.AutoGenerateColumns = false;
+                        RequestDataGridView.DataSource = null; // Force reset DataSource
+                        RequestDataGridView.DataSource = requestDTOs;
+                        RequestDataGridView.Refresh();
+                    }));
+                }
+                else
+                {
+                    RequestDataGridView.AutoGenerateColumns = false;
+                    RequestDataGridView.DataSource = null; // Force reset DataSource
+                    RequestDataGridView.DataSource = requestDTOs;
+                    RequestDataGridView.Refresh();
+                }
+
+                Console.WriteLine("DataSource set successfully with " + requestDTOs.Count + " items.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception in UpdateRequestDataGridView: " + ex.Message);
+                MessageBox.Show("Exception in UpdateRequestDataGridView: " + ex.Message);
             }
         }
     }

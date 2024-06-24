@@ -21,6 +21,8 @@ namespace WolfClient.NewForms
         private List<GetClientDTO> _availableClientsList;
         private List<CreateClientDTO> _clientsList;
         private GetRequestDTO _requestDTO;
+
+        private List<GetClientDTO> _clientsToReturn;
         public AddClientToRequest(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, GetRequestDTO requestDTO)
         {
             InitializeComponent();
@@ -30,6 +32,7 @@ namespace WolfClient.NewForms
             _availableClientsList = new List<GetClientDTO>();
             _clientsList = new List<CreateClientDTO>();
             _requestDTO = requestDTO;
+            _clientsToReturn = null;
         }
 
         private void AddNonExistingClientButton_Click(object sender, EventArgs e)
@@ -101,19 +104,22 @@ namespace WolfClient.NewForms
                 if (response.IsSuccess)
                 {
                     SelectedClients.AddRange(response.ResponseObj);
+                    
                 }
             }
             var linkResponse = await _userClient.LinkClientsWithRequest(_requestDTO, SelectedClients);
             if (linkResponse.IsSuccess)
             {
                 MessageBox.Show("Success");
+                _clientsToReturn = SelectedClients;
+                DialogResult = DialogResult.OK;
             }
             else
             {
                 MessageBox.Show("Not Success");
             }
 
-            Dispose();
+            Close();
         }
 
         private List<GetClientDTO> GetAllComboBoxClients(Panel parentPanel)
@@ -156,6 +162,10 @@ namespace WolfClient.NewForms
                 }
             }
             return clientDTOs;
+        }
+
+        public List<GetClientDTO> returnClientsList() {
+            return _clientsToReturn;
         }
     }
 }

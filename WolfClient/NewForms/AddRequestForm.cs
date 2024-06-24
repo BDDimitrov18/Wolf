@@ -21,6 +21,9 @@ namespace WolfClient.NewForms
         private readonly IAdminClient _adminClient;
         private List<CreateClientDTO> _clientsList;
         private List<GetClientDTO> _availableClientsList;
+
+        private GetRequestDTO _returnRequest;
+        private List<GetClientDTO> _returnClients;
         public AddRequestForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient)
         {
             InitializeComponent();
@@ -30,6 +33,7 @@ namespace WolfClient.NewForms
             _clientsList = new List<CreateClientDTO>();
             _availableClientsList = new List<GetClientDTO>();
         }
+
 
         private void AddNonExistingClientButton_Click(object sender, EventArgs e)
         {
@@ -131,13 +135,16 @@ namespace WolfClient.NewForms
             if (linkResponse.IsSuccess)
             {
                 MessageBox.Show("Success");
+                _returnRequest = requestsResponseDTOs[0];
+                _returnClients = SelectedClients;
+                DialogResult = DialogResult.OK;
             }
             else
             {
                 MessageBox.Show("Not Success");
             }
 
-            Dispose();
+            Close();
         }
 
         private string createPaymentStatus(string advance, string price)
@@ -201,7 +208,15 @@ namespace WolfClient.NewForms
             return clientDTOs;
         }
 
-        
+        public GetRequestDTO returnRequest()
+        {
+            return _returnRequest;
+        }
+        public List<GetClientDTO> returnClients()
+        {
+            return _returnClients;
+        }
+
     }
 }
 
