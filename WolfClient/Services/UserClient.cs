@@ -194,5 +194,182 @@ namespace WolfClient.Services
                 return new ClientResponse<List<GetRequestDTO>> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
             }
         }
+
+        public async Task<ClientResponse<List<GetClient_RequestRelashionshipDTO>>> LinkClientsWithRequest(GetRequestDTO requestDTO, List<GetClientDTO> _clientsList) {
+            var compositeRequest = new CompositeRequestDTO
+            {
+                RequestDTO = requestDTO,
+                ClientsList = _clientsList
+            };
+
+            var jsonContent = JsonSerializer.Serialize(compositeRequest);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/LinkClientsAndRequest", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Requests added successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseRequests = JsonSerializer.Deserialize<List<GetClient_RequestRelashionshipDTO>>(jsonResponse, options);
+                    return new ClientResponse<List<GetClient_RequestRelashionshipDTO>> { IsSuccess = true, Message = "Links Created Successfully", ResponseObj = responseRequests };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<List<GetClient_RequestRelashionshipDTO>> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to add links: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<List<GetClient_RequestRelashionshipDTO>> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<List<GetClient_RequestRelashionshipDTO>> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<List<GetClient_RequestRelashionshipDTO>> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<List<GetRequestDTO>>> GetAllRequests()
+        {
+            try
+            {
+                var response = await _client.GetAsync("https://localhost:44359/api/User/GetAllRequests");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Requests fetched  successfully!");
+
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var employees = JsonSerializer.Deserialize<List<GetRequestDTO>>(jsonResponse, options);
+                    return new ClientResponse<List<GetRequestDTO>> { IsSuccess = true, Message = "Employee Created Successfully", ResponseObj = employees };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<List<GetRequestDTO>> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to fetch requests client: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<List<GetRequestDTO>> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<List<GetRequestDTO>> { IsSuccess = false, Message = "Network error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<List<GetRequestDTO>> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<List<RequestWithClientsDTO>>> GetLinkedClients(List<GetRequestDTO> requestDTOs)
+        {
+            try
+            {
+                var jsonContent = JsonSerializer.Serialize(requestDTOs);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                var response = await _client.PostAsync("https://localhost:44359/api/User/GetLinkedClients", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Linked Clients fetched  successfully!");
+
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var linkedList = JsonSerializer.Deserialize<List<RequestWithClientsDTO>>(jsonResponse, options);
+                    return new ClientResponse<List<RequestWithClientsDTO>>
+                    {
+                        IsSuccess = true,
+                        Message = "Employee Created Successfully",
+                        ResponseObj = linkedList
+                    };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<List<RequestWithClientsDTO>>
+                        {
+                            IsSuccess = false,
+                            Message = "Unauthorized",
+                            ResponseObj = null
+                        };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to fetch Linked Cliens client: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<List<RequestWithClientsDTO>>
+                        {
+                            IsSuccess = false,
+                            Message = "Error",
+                            ResponseObj = null
+                        };
+                    }
+                }
+
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<List<RequestWithClientsDTO>>
+                {
+                    IsSuccess = false,
+                    Message = "Network Error",
+                    ResponseObj = null
+                };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<List<RequestWithClientsDTO>>
+                {
+                    IsSuccess = false,
+                    Message = ex.Message,
+                    ResponseObj = null
+                };
+            }
+        }
     }
 }

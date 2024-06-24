@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataLaye
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagamentService", "UserManagamentService\UserManagamentService.csproj", "{57DC44E0-2ADA-41D6-BEF7-187FE219987E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTOS", "DTOS\DTOS.csproj", "{CFCDE2ED-83B3-4DAB-93B2-3B797ED0ACB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTOS", "DTOS\DTOS.csproj", "{CFCDE2ED-83B3-4DAB-93B2-3B797ED0ACB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WolfClient", "WolfClient\WolfClient.csproj", "{6FD3250C-63B2-43CE-8C86-C35EB83BDAAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolfClient", "WolfClient\WolfClient.csproj", "{6FD3250C-63B2-43CE-8C86-C35EB83BDAAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

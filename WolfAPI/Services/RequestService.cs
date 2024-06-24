@@ -36,7 +36,7 @@ namespace WolfAPI.Services
             return returnList;
         }
 
-        public IEnumerable<GetRequestDTO> GetAllRequest()
+        public List<GetRequestDTO> GetAllRequest()
         {
             var requestsList = _requestRepository.GetAll();
             List<GetRequestDTO> createRequestsDTOs = new List<GetRequestDTO>();

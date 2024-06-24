@@ -11,5 +11,7 @@ namespace DataAccessLayer.Repositories.Interfaces
     {
         public void Add(List<Request> requests);
         public IEnumerable<Request> GetAll();
+
+        
     }
 }

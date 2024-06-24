@@ -12,5 +12,6 @@ namespace DataAccessLayer.Repositories.Interfaces
         public List<Client> Add(List<Client> client);
 
         public IEnumerable<Client> GetAll();
+        public List<Client> GetLinked(Request request);
     }
 }

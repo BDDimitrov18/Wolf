@@ -12,6 +12,8 @@ namespace DataAccessLayer.Models
         [Key]
         public int RequestId { get; set; }
 
+        public string RequestName { get; set; }
+
         public float Price { get; set; }
 
         public string PaymentStatus { get; set; }

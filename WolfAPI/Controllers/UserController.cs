@@ -42,10 +42,21 @@ namespace WolfAPI.Controllers
 
         [HttpPost("LinkClientsAndRequest")]
 
-        public List<GetClient_RequestRelashionshipDTO> LinkClientsWithRequest([FromBody]GetRequestDTO requestDTO, [FromBody]List<GetClientDTO> _clientsList) { 
-             return _client_RequestRelashionshipService.CreateClient_RequestRelashionship(requestDTO, _clientsList);
+        public List<GetClient_RequestRelashionshipDTO> LinkClientsWithRequest([FromBody] CompositeRequestDTO compositeRequestDTO) { 
+             return _client_RequestRelashionshipService.CreateClient_RequestRelashionship(compositeRequestDTO.RequestDTO, compositeRequestDTO.ClientsList);
         }
 
+        [HttpGet("GetAllRequests")]
+
+        public List<GetRequestDTO> getAllRequests() {
+            return _requestService.GetAllRequest();
+        }
+
+        [HttpPost("GetLinkedClients")]
+
+        public List<RequestWithClientsDTO> getLinkedClients([FromBody] List<GetRequestDTO> requestDTOs) {
+            return _clientService.GetLinkedClients(requestDTOs);    
+        }
         //public void LinkClientsAdnRequest([FromBody] IEnumerable<GetClientDTO>)
     }
 }

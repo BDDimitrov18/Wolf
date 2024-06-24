@@ -21,7 +21,7 @@ namespace WolfAPI.Services
         {
             var request = _mapper.Map<Request>(requestDTO);
             List<Client> clients = new List<Client>();
-            foreach (var clientDTO in clientDTOs)
+            foreach (GetClientDTO clientDTO in clientDTOs)
             {
                 var client = _mapper.Map<Client>(clientDTO);
                 clients.Add(client);

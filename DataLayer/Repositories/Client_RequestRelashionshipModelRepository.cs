@@ -22,8 +22,8 @@ namespace DataAccessLayer.Repositories
             foreach (var client in clients)
             {
                 Client_RequestRelashionship client_RequestRelashionship = new Client_RequestRelashionship() { 
-                    Request = request,
-                    Client = client
+                    RequestId = request.RequestId,
+                    ClientId = client.ClientId,
                 };
                 _WolfDbContext.Client_RequestRelashionships.Add(client_RequestRelashionship);
                 client_RequestRelashionships.Add(client_RequestRelashionship);

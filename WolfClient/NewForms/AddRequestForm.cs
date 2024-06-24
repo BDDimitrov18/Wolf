@@ -103,37 +103,45 @@ namespace WolfClient.NewForms
                 Price = float.Parse(PriceOfRequestTextBox.Text),
                 PaymentStatus = paymentStatus,
                 Advance = float.Parse(AdvanceTextBox.Text),
-                Comments = CommentsRichTextBox.Text
+                Comments = CommentsRichTextBox.Text,
+                RequestName = NameOfRequestTextBox.Text,
             };
             List<CreateRequestDTO> requestDTOs = new List<CreateRequestDTO>();
             requestDTOs.Add(createRequestDTO);
 
-            await _userClient.AddRequests(requestDTOs);
+            var requestResponse = await _userClient.AddRequests(requestDTOs);
+            List<GetRequestDTO> requestsResponseDTOs = new List<GetRequestDTO>();
+            if (requestResponse.IsSuccess)
+            {
+                requestsResponseDTOs = requestResponse.ResponseObj;
+            }
 
             List<GetClientDTO> SelectedClients = GetAllComboBoxClients(AvailableClientsFlowPanel);
             List<CreateClientDTO> newClientsToAdd = GetAllClientDtoFromLabels(NotAvailableClientsFlowPanel);
 
-            newClientsToAdd.Count();
             if (newClientsToAdd.Count() > 0)
             {
                 var response = await _userClient.AddClients(newClientsToAdd);
                 if (response.IsSuccess)
                 {
-                    List<GetClientDTO> allClients = response.ResponseObj;
-                    allClients.Concat(SelectedClients);
-
-                }
-                else
-                {
-                    MessageBox.Show("Could Add Nex Clients");
+                    SelectedClients.AddRange(response.ResponseObj);
                 }
             }
-            
-            Console.WriteLine("asd");
+            var linkResponse = await _userClient.LinkClientsWithRequest(requestsResponseDTOs[0], SelectedClients);
+            if (linkResponse.IsSuccess)
+            {
+                MessageBox.Show("Success");
+            }
+            else
+            {
+                MessageBox.Show("Not Success");
+            }
+
             Dispose();
         }
 
-        private string createPaymentStatus(string advance, string price) {
+        private string createPaymentStatus(string advance, string price)
+        {
             string paymentStatus;
             if (float.Parse(advance) == float.Parse(price))
             {
@@ -154,13 +162,13 @@ namespace WolfClient.NewForms
         private List<GetClientDTO> GetAllComboBoxClients(Panel parentPanel)
         {
             List<GetClientDTO> comboBoxClients = new List<GetClientDTO>();
-            foreach (Control panel in parentPanel.Controls) // Assuming 'parentPanel' is your main container panel
+            foreach (Panel panel in parentPanel.Controls.OfType<Panel>()) // Assuming 'parentPanel' is your main container panel
             {
-                if (panel is Panel) // Check if the control is a Panel
+                foreach (AddClientFromAvailable userControl in panel.Controls.OfType<AddClientFromAvailable>())
                 {
-                    foreach (Control control in panel.Controls) // Access each control within the panel
+                    foreach (Control control in userControl.Controls)
                     {
-                        if (control is ComboBox) // Check if the control is a ComboBox
+                        if (control is ComboBox)
                         {
                             ComboBox comboBox = control as ComboBox;
                             if (comboBox.SelectedItem != null)
@@ -171,6 +179,7 @@ namespace WolfClient.NewForms
                             }
                         }
                     }
+
                 }
             }
             return comboBoxClients;

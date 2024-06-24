@@ -32,9 +32,10 @@
             AddNonExistingClientButton = new Button();
             AddNonExistingClientLabel = new Label();
             AddClientComboBoxButton = new Button();
-            ChooseClientToAddComboBox = new ComboBox();
             AddExistingClientToRequestLabel = new Label();
             AddClientToRequestTitleLabel = new Label();
+            AvailableClientsFlowPanel = new FlowLayoutPanel();
+            NotAvailableClientsFlowPanel = new FlowLayoutPanel();
             SuspendLayout();
             // 
             // AddClientToRequestSubmitButton
@@ -46,6 +47,7 @@
             AddClientToRequestSubmitButton.TabIndex = 26;
             AddClientToRequestSubmitButton.Text = "Запази";
             AddClientToRequestSubmitButton.UseVisualStyleBackColor = true;
+            AddClientToRequestSubmitButton.Click += AddClientToRequestSubmitButton_Click;
             // 
             // AddNonExistingClientButton
             // 
@@ -77,15 +79,7 @@
             AddClientComboBoxButton.TabIndex = 23;
             AddClientComboBoxButton.Text = "Добави Поле";
             AddClientComboBoxButton.UseVisualStyleBackColor = true;
-            // 
-            // ChooseClientToAddComboBox
-            // 
-            ChooseClientToAddComboBox.FormattingEnabled = true;
-            ChooseClientToAddComboBox.Location = new Point(112, 147);
-            ChooseClientToAddComboBox.Margin = new Padding(3, 4, 3, 4);
-            ChooseClientToAddComboBox.Name = "ChooseClientToAddComboBox";
-            ChooseClientToAddComboBox.Size = new Size(294, 28);
-            ChooseClientToAddComboBox.TabIndex = 22;
+            AddClientComboBoxButton.Click += AddClientComboBoxButton_Click;
             // 
             // AddExistingClientToRequestLabel
             // 
@@ -107,21 +101,42 @@
             AddClientToRequestTitleLabel.TabIndex = 20;
             AddClientToRequestTitleLabel.Text = "Добавяне На Клиент Към Заявка";
             // 
+            // AvailableClientsFlowPanel
+            // 
+            AvailableClientsFlowPanel.BackColor = SystemColors.ActiveCaption;
+            AvailableClientsFlowPanel.BorderStyle = BorderStyle.Fixed3D;
+            AvailableClientsFlowPanel.Location = new Point(107, 147);
+            AvailableClientsFlowPanel.Name = "AvailableClientsFlowPanel";
+            AvailableClientsFlowPanel.Size = new Size(461, 326);
+            AvailableClientsFlowPanel.TabIndex = 27;
+            AvailableClientsFlowPanel.Paint += flowLayoutPanel1_Paint;
+            // 
+            // NotAvailableClientsFlowPanel
+            // 
+            NotAvailableClientsFlowPanel.BackColor = SystemColors.ActiveCaption;
+            NotAvailableClientsFlowPanel.BorderStyle = BorderStyle.Fixed3D;
+            NotAvailableClientsFlowPanel.Location = new Point(107, 562);
+            NotAvailableClientsFlowPanel.Name = "NotAvailableClientsFlowPanel";
+            NotAvailableClientsFlowPanel.Size = new Size(410, 216);
+            NotAvailableClientsFlowPanel.TabIndex = 28;
+            // 
             // AddClientToRequest
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(800, 876);
+            Controls.Add(NotAvailableClientsFlowPanel);
+            Controls.Add(AvailableClientsFlowPanel);
             Controls.Add(AddClientToRequestSubmitButton);
             Controls.Add(AddNonExistingClientButton);
             Controls.Add(AddNonExistingClientLabel);
             Controls.Add(AddClientComboBoxButton);
-            Controls.Add(ChooseClientToAddComboBox);
             Controls.Add(AddExistingClientToRequestLabel);
             Controls.Add(AddClientToRequestTitleLabel);
             Name = "AddClientToRequest";
             Text = "AddClientToRequest";
+            Load += AddClientToRequest_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -132,8 +147,9 @@
         private Button AddNonExistingClientButton;
         private Label AddNonExistingClientLabel;
         private Button AddClientComboBoxButton;
-        private ComboBox ChooseClientToAddComboBox;
         private Label AddExistingClientToRequestLabel;
         private Label AddClientToRequestTitleLabel;
+        private FlowLayoutPanel AvailableClientsFlowPanel;
+        private FlowLayoutPanel NotAvailableClientsFlowPanel;
     }
 }

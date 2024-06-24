@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Wolf.DTO;
+using WolfClient.Events;
 using WolfClient.Models;
 using WolfClient.Services;
 using WolfClient.Services.Interfaces;
@@ -43,7 +44,6 @@ namespace WolfClient.NewForms
             if (await ValidateCredentials(username, password))
             {
                 MessageBox.Show("LoggedIn");
-                
             }
             else
             {
@@ -66,6 +66,7 @@ namespace WolfClient.NewForms
                 _adminClient.SetToken(tokenResponse.token);
                 _apiClient.SetToken(tokenResponse.token);
                 _userClient.SetToken(tokenResponse.token);
+                LogInEvent.OnLogIn(username, tokenResponse.role[0]);
                 return true;
             }
             return false;

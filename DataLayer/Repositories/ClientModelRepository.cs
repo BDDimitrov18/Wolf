@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Models;
 using DataAccessLayer.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,15 @@ namespace DataAccessLayer.Repositories
         public IEnumerable<Client> GetAll()
         {
             return _WolfDbContext.Clients.ToList();
+        }
+
+        public List<Client> GetLinked(Request request) {
+            var linkedClients = (from cr in _WolfDbContext.Client_RequestRelashionships
+                                 join c in _WolfDbContext.Clients on cr.ClientId equals c.ClientId
+                                 where cr.RequestId == request.RequestId
+                                 select c).ToList();
+
+            return linkedClients;
         }
     }
 }

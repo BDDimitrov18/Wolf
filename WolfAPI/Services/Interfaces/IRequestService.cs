@@ -6,6 +6,6 @@ namespace WolfAPI.Services.Interfaces
     public interface IRequestService
     {
         public List<GetRequestDTO> Add(List<CreateRequestDTO> requestsDto);
-        public IEnumerable<GetRequestDTO> GetAllRequest();
+        public List<GetRequestDTO> GetAllRequest();
     }
 }

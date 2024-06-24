@@ -16,5 +16,7 @@ namespace DTOS.DTO
         public float Advance { get; set; }
 
         public string? Comments { get; set; }
+
+        public string RequestName { get; set; }
     }
 }
