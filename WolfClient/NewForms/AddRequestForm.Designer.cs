@@ -59,18 +59,18 @@
             AddRequestButton.Name = "AddRequestButton";
             AddRequestButton.Size = new Size(174, 46);
             AddRequestButton.TabIndex = 29;
-            AddRequestButton.Text = "Добави Заявка";
+            AddRequestButton.Text = "Добави Обект";
             AddRequestButton.UseVisualStyleBackColor = true;
             AddRequestButton.Click += AddRequestButton_Click;
             // 
             // AddNonExistingClientButton
             // 
-            AddNonExistingClientButton.Location = new Point(833, 536);
+            AddNonExistingClientButton.Location = new Point(652, 534);
             AddNonExistingClientButton.Margin = new Padding(3, 4, 3, 4);
             AddNonExistingClientButton.Name = "AddNonExistingClientButton";
-            AddNonExistingClientButton.Size = new Size(134, 29);
+            AddNonExistingClientButton.Size = new Size(163, 29);
             AddNonExistingClientButton.TabIndex = 28;
-            AddNonExistingClientButton.Text = "Добави Клиент";
+            AddNonExistingClientButton.Text = "Добави заложител";
             AddNonExistingClientButton.UseVisualStyleBackColor = true;
             AddNonExistingClientButton.Click += AddNonExistingClientButton_Click;
             // 
@@ -80,13 +80,13 @@
             AddNonExistingClientLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
             AddNonExistingClientLabel.Location = new Point(415, 534);
             AddNonExistingClientLabel.Name = "AddNonExistingClientLabel";
-            AddNonExistingClientLabel.Size = new Size(412, 25);
+            AddNonExistingClientLabel.Size = new Size(231, 25);
             AddNonExistingClientLabel.TabIndex = 27;
-            AddNonExistingClientLabel.Text = "Добави нов клиент и го заложи в заявката";
+            AddNonExistingClientLabel.Text = "Добави нов заложител";
             // 
             // AddClientComboBoxButton
             // 
-            AddClientComboBoxButton.Location = new Point(730, 136);
+            AddClientComboBoxButton.Location = new Point(745, 136);
             AddClientComboBoxButton.Margin = new Padding(3, 4, 3, 4);
             AddClientComboBoxButton.Name = "AddClientComboBoxButton";
             AddClientComboBoxButton.Size = new Size(131, 29);
@@ -101,9 +101,9 @@
             AddExistingClientToRequestLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
             AddExistingClientToRequestLabel.Location = new Point(415, 134);
             AddExistingClientToRequestLabel.Name = "AddExistingClientToRequestLabel";
-            AddExistingClientToRequestLabel.Size = new Size(299, 25);
+            AddExistingClientToRequestLabel.Size = new Size(331, 25);
             AddExistingClientToRequestLabel.TabIndex = 24;
-            AddExistingClientToRequestLabel.Text = "Заложи Клиент От Наличните";
+            AddExistingClientToRequestLabel.Text = "Избери заложител от наличните ";
             // 
             // CommentsRichTextBox
             // 
@@ -174,9 +174,9 @@
             NameOfRequestTiltleLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
             NameOfRequestTiltleLabel.Location = new Point(40, 134);
             NameOfRequestTiltleLabel.Name = "NameOfRequestTiltleLabel";
-            NameOfRequestTiltleLabel.Size = new Size(173, 25);
+            NameOfRequestTiltleLabel.Size = new Size(156, 25);
             NameOfRequestTiltleLabel.TabIndex = 16;
-            NameOfRequestTiltleLabel.Text = "Име На Заявката";
+            NameOfRequestTiltleLabel.Text = "Име На Обекта";
             // 
             // AddRequestTitleLabel
             // 
@@ -184,9 +184,9 @@
             AddRequestTitleLabel.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
             AddRequestTitleLabel.Location = new Point(319, 35);
             AddRequestTitleLabel.Name = "AddRequestTitleLabel";
-            AddRequestTitleLabel.Size = new Size(384, 42);
+            AddRequestTitleLabel.Size = new Size(367, 42);
             AddRequestTitleLabel.TabIndex = 15;
-            AddRequestTitleLabel.Text = "Добавяне На Заявка";
+            AddRequestTitleLabel.Text = "Добавяне На Обект";
             // 
             // AvailableClientsFlowPanel
             // 

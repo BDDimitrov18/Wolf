@@ -30,6 +30,7 @@ namespace WolfClient.UserControls
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             RequestDataGridView = new DataGridView();
             RequestId = new DataGridViewTextBoxColumn();
             RequestName = new DataGridViewTextBoxColumn();
@@ -39,31 +40,33 @@ namespace WolfClient.UserControls
             Comments = new DataGridViewTextBoxColumn();
             RequestTableLabel = new Label();
             RequestAddButton = new Button();
-            dataGridView2 = new DataGridView();
-            Activity = new DataGridViewTextBoxColumn();
-            TaskName = new DataGridViewTextBoxColumn();
-            ExecutantId = new DataGridViewTextBoxColumn();
-            Date = new DataGridViewTextBoxColumn();
-            Duration = new DataGridViewTextBoxColumn();
-            Control = new DataGridViewTextBoxColumn();
-            Comment = new DataGridViewTextBoxColumn();
-            ActivityTableLabel = new Label();
-            button2 = new Button();
             RequestTitleLabel = new Label();
-            clientsDataGridView = new DataGridView();
-            ClientsTableLabel = new Label();
             label5 = new Label();
             InvoicesDataGridView = new DataGridView();
             InvoiceId = new DataGridViewTextBoxColumn();
             Sum = new DataGridViewTextBoxColumn();
             InvoicesTableLabel = new Label();
             button3 = new Button();
-            ActivityDataGridView = new Panel();
             panel1 = new Panel();
             panel3 = new Panel();
             RefreshButton = new Button();
+            tabPage2 = new TabPage();
+            panel2 = new Panel();
+            ActivityTableLabel = new Label();
+            ActivityDataGridView = new DataGridView();
+            Activity = new DataGridViewTextBoxColumn();
+            Task = new DataGridViewTextBoxColumn();
+            Executant = new DataGridViewTextBoxColumn();
+            StartDate = new DataGridViewTextBoxColumn();
+            Duration = new DataGridViewTextBoxColumn();
+            Control = new DataGridViewTextBoxColumn();
+            Comment = new DataGridViewTextBoxColumn();
+            ActivityAddButton = new Button();
+            tabPage1 = new TabPage();
             panel4 = new Panel();
             button1 = new Button();
+            ClientsTableLabel = new Label();
+            clientsDataGridView = new DataGridView();
             ClientNumber = new DataGridViewTextBoxColumn();
             FirstName = new DataGridViewTextBoxColumn();
             MiddleName = new DataGridViewTextBoxColumn();
@@ -72,14 +75,36 @@ namespace WolfClient.UserControls
             Email = new DataGridViewTextBoxColumn();
             Address = new DataGridViewTextBoxColumn();
             ClientLegalType = new DataGridViewTextBoxColumn();
+            tabControl1 = new TabControl();
+            tabPage3 = new TabPage();
+            panel5 = new Panel();
+            PlotsTableLabel = new Label();
+            PlotsDataGridView = new DataGridView();
+            PlotId = new DataGridViewTextBoxColumn();
+            RegulatedPlotNumber = new DataGridViewTextBoxColumn();
+            neighborhood = new DataGridViewTextBoxColumn();
+            City = new DataGridViewTextBoxColumn();
+            Municipality = new DataGridViewTextBoxColumn();
+            Street = new DataGridViewTextBoxColumn();
+            StreetNumber = new DataGridViewTextBoxColumn();
+            designation = new DataGridViewTextBoxColumn();
+            locality = new DataGridViewTextBoxColumn();
+            PlotsAddButton = new Button();
+            DestinationOfPlotLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)RequestDataGridView).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)clientsDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).BeginInit();
-            ActivityDataGridView.SuspendLayout();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
+            tabPage2.SuspendLayout();
+            panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ActivityDataGridView).BeginInit();
+            tabPage1.SuspendLayout();
             panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)clientsDataGridView).BeginInit();
+            tabControl1.SuspendLayout();
+            tabPage3.SuspendLayout();
+            panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)PlotsDataGridView).BeginInit();
             SuspendLayout();
             // 
             // RequestDataGridView
@@ -97,7 +122,7 @@ namespace WolfClient.UserControls
             RequestDataGridView.Name = "RequestDataGridView";
             RequestDataGridView.RowHeadersWidth = 51;
             RequestDataGridView.RowTemplate.Height = 24;
-            RequestDataGridView.Size = new Size(798, 335);
+            RequestDataGridView.Size = new Size(882, 335);
             RequestDataGridView.TabIndex = 0;
             // 
             // RequestId
@@ -147,9 +172,9 @@ namespace WolfClient.UserControls
             RequestTableLabel.AutoSize = true;
             RequestTableLabel.Location = new Point(-3, 52);
             RequestTableLabel.Name = "RequestTableLabel";
-            RequestTableLabel.Size = new Size(57, 20);
+            RequestTableLabel.Size = new Size(59, 20);
             RequestTableLabel.TabIndex = 1;
-            RequestTableLabel.Text = "Заявки";
+            RequestTableLabel.Text = "Обекти";
             RequestTableLabel.Click += label1_Click_1;
             // 
             // RequestAddButton
@@ -163,25 +188,167 @@ namespace WolfClient.UserControls
             RequestAddButton.UseVisualStyleBackColor = true;
             RequestAddButton.Click += button1_Click;
             // 
-            // dataGridView2
+            // RequestTitleLabel
             // 
-            dataGridView2.AllowUserToResizeColumns = false;
-            dataGridView2.AllowUserToResizeRows = false;
-            dataGridView2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridView2.BackgroundColor = Color.Moccasin;
-            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.Columns.AddRange(new DataGridViewColumn[] { Activity, TaskName, ExecutantId, Date, Duration, Control, Comment });
-            dataGridView2.GridColor = SystemColors.ActiveCaptionText;
-            dataGridView2.Location = new Point(0, 100);
-            dataGridView2.Margin = new Padding(3, 4, 3, 4);
-            dataGridView2.Name = "dataGridView2";
-            dataGridView2.RowHeadersWidth = 51;
-            dataGridView2.RowTemplate.Height = 24;
-            dataGridView2.Size = new Size(940, 231);
-            dataGridView2.TabIndex = 3;
-            dataGridView2.CellContentClick += dataGridView2_CellContentClick;
+            RequestTitleLabel.Anchor = AnchorStyles.Top;
+            RequestTitleLabel.AutoSize = true;
+            RequestTitleLabel.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
+            RequestTitleLabel.Location = new Point(604, 42);
+            RequestTitleLabel.Name = "RequestTitleLabel";
+            RequestTitleLabel.Size = new Size(146, 42);
+            RequestTitleLabel.TabIndex = 6;
+            RequestTitleLabel.Text = "Обекти";
+            RequestTitleLabel.Click += label3_Click;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(5, 432);
+            label5.Name = "label5";
+            label5.Size = new Size(124, 20);
+            label5.TabIndex = 10;
+            label5.Text = "Път Към Обекта:";
+            // 
+            // InvoicesDataGridView
+            // 
+            InvoicesDataGridView.AllowUserToResizeColumns = false;
+            InvoicesDataGridView.AllowUserToResizeRows = false;
+            InvoicesDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            InvoicesDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            InvoicesDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            InvoicesDataGridView.BackgroundColor = Color.Moccasin;
+            InvoicesDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            InvoicesDataGridView.Columns.AddRange(new DataGridViewColumn[] { InvoiceId, Sum });
+            InvoicesDataGridView.Location = new Point(0, 84);
+            InvoicesDataGridView.Margin = new Padding(3, 4, 3, 4);
+            InvoicesDataGridView.Name = "InvoicesDataGridView";
+            InvoicesDataGridView.RowHeadersWidth = 51;
+            InvoicesDataGridView.RowTemplate.Height = 24;
+            InvoicesDataGridView.Size = new Size(359, 335);
+            InvoicesDataGridView.TabIndex = 11;
+            InvoicesDataGridView.CellContentClick += InvoicesDataGridView_CellContentClick;
+            // 
+            // InvoiceId
+            // 
+            InvoiceId.HeaderText = "Номер";
+            InvoiceId.MinimumWidth = 6;
+            InvoiceId.Name = "InvoiceId";
+            // 
+            // Sum
+            // 
+            Sum.HeaderText = "Сума";
+            Sum.MinimumWidth = 6;
+            Sum.Name = "Sum";
+            // 
+            // InvoicesTableLabel
+            // 
+            InvoicesTableLabel.AutoSize = true;
+            InvoicesTableLabel.Location = new Point(3, 53);
+            InvoicesTableLabel.Name = "InvoicesTableLabel";
+            InvoicesTableLabel.Size = new Size(66, 20);
+            InvoicesTableLabel.TabIndex = 12;
+            InvoicesTableLabel.Text = "Фактури";
+            // 
+            // button3
+            // 
+            button3.Location = new Point(73, 49);
+            button3.Margin = new Padding(3, 4, 3, 4);
+            button3.Name = "button3";
+            button3.Size = new Size(23, 30);
+            button3.TabIndex = 13;
+            button3.Text = "+";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
+            // panel1
+            // 
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel1.BackColor = SystemColors.GradientActiveCaption;
+            panel1.Controls.Add(InvoicesDataGridView);
+            panel1.Controls.Add(InvoicesTableLabel);
+            panel1.Controls.Add(button3);
+            panel1.Location = new Point(962, 119);
+            panel1.Margin = new Padding(3, 4, 3, 4);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(359, 467);
+            panel1.TabIndex = 16;
+            panel1.Paint += panel1_Paint;
+            // 
+            // panel3
+            // 
+            panel3.Controls.Add(RefreshButton);
+            panel3.Controls.Add(RequestDataGridView);
+            panel3.Controls.Add(label5);
+            panel3.Controls.Add(RequestTableLabel);
+            panel3.Controls.Add(RequestAddButton);
+            panel3.Location = new Point(33, 119);
+            panel3.Margin = new Padding(3, 4, 3, 4);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(882, 467);
+            panel3.TabIndex = 17;
+            panel3.Paint += panel3_Paint;
+            // 
+            // RefreshButton
+            // 
+            RefreshButton.Location = new Point(89, 49);
+            RefreshButton.Name = "RefreshButton";
+            RefreshButton.Size = new Size(94, 29);
+            RefreshButton.TabIndex = 11;
+            RefreshButton.Text = "Обнови";
+            RefreshButton.UseVisualStyleBackColor = true;
+            RefreshButton.Click += RefreshButton_Click;
+            // 
+            // tabPage2
+            // 
+            tabPage2.Controls.Add(panel2);
+            tabPage2.Location = new Point(4, 29);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(1283, 304);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "Дейности";
+            tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            panel2.Controls.Add(ActivityTableLabel);
+            panel2.Controls.Add(ActivityDataGridView);
+            panel2.Controls.Add(ActivityAddButton);
+            panel2.Dock = DockStyle.Fill;
+            panel2.Location = new Point(3, 3);
+            panel2.Margin = new Padding(3, 4, 3, 4);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(1277, 298);
+            panel2.TabIndex = 36;
+            // 
+            // ActivityTableLabel
+            // 
+            ActivityTableLabel.AutoSize = true;
+            ActivityTableLabel.Location = new Point(13, 16);
+            ActivityTableLabel.Name = "ActivityTableLabel";
+            ActivityTableLabel.Size = new Size(76, 20);
+            ActivityTableLabel.TabIndex = 24;
+            ActivityTableLabel.Text = "Дейности";
+            // 
+            // ActivityDataGridView
+            // 
+            ActivityDataGridView.AllowUserToResizeColumns = false;
+            ActivityDataGridView.AllowUserToResizeRows = false;
+            ActivityDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            ActivityDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            ActivityDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            ActivityDataGridView.BackgroundColor = Color.Moccasin;
+            ActivityDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            ActivityDataGridView.Columns.AddRange(new DataGridViewColumn[] { Activity, Task, Executant, StartDate, Duration, Control, Comment });
+            ActivityDataGridView.Location = new Point(0, 50);
+            ActivityDataGridView.Margin = new Padding(3, 4, 3, 4);
+            ActivityDataGridView.MinimumSize = new Size(933, 188);
+            ActivityDataGridView.Name = "ActivityDataGridView";
+            ActivityDataGridView.RowHeadersWidth = 51;
+            ActivityDataGridView.RowTemplate.Height = 24;
+            ActivityDataGridView.Size = new Size(1277, 247);
+            ActivityDataGridView.TabIndex = 22;
             // 
             // Activity
             // 
@@ -189,23 +356,23 @@ namespace WolfClient.UserControls
             Activity.MinimumWidth = 6;
             Activity.Name = "Activity";
             // 
-            // TaskName
+            // Task
             // 
-            TaskName.HeaderText = "Задача";
-            TaskName.MinimumWidth = 6;
-            TaskName.Name = "TaskName";
+            Task.HeaderText = "Задача";
+            Task.MinimumWidth = 6;
+            Task.Name = "Task";
             // 
-            // ExecutantId
+            // Executant
             // 
-            ExecutantId.HeaderText = "Изпълнител";
-            ExecutantId.MinimumWidth = 6;
-            ExecutantId.Name = "ExecutantId";
+            Executant.HeaderText = "Изпълнител";
+            Executant.MinimumWidth = 6;
+            Executant.Name = "Executant";
             // 
-            // Date
+            // StartDate
             // 
-            Date.HeaderText = "Дата";
-            Date.MinimumWidth = 6;
-            Date.Name = "Date";
+            StartDate.HeaderText = "Дата";
+            StartDate.MinimumWidth = 6;
+            StartDate.Name = "StartDate";
             // 
             // Duration
             // 
@@ -225,38 +392,60 @@ namespace WolfClient.UserControls
             Comment.MinimumWidth = 6;
             Comment.Name = "Comment";
             // 
-            // ActivityTableLabel
+            // ActivityAddButton
             // 
-            ActivityTableLabel.AutoSize = true;
-            ActivityTableLabel.Location = new Point(-4, 68);
-            ActivityTableLabel.Name = "ActivityTableLabel";
-            ActivityTableLabel.Size = new Size(76, 20);
-            ActivityTableLabel.TabIndex = 4;
-            ActivityTableLabel.Text = "Дейности";
-            ActivityTableLabel.Click += label2_Click;
+            ActivityAddButton.Location = new Point(89, 10);
+            ActivityAddButton.Margin = new Padding(3, 4, 3, 4);
+            ActivityAddButton.Name = "ActivityAddButton";
+            ActivityAddButton.Size = new Size(24, 32);
+            ActivityAddButton.TabIndex = 28;
+            ActivityAddButton.Text = "+";
+            ActivityAddButton.UseVisualStyleBackColor = true;
+            ActivityAddButton.Click += ActivityAddButton_Click;
             // 
-            // button2
+            // tabPage1
             // 
-            button2.Location = new Point(72, 64);
-            button2.Margin = new Padding(3, 4, 3, 4);
-            button2.Name = "button2";
-            button2.Size = new Size(26, 29);
-            button2.TabIndex = 5;
-            button2.Text = "+";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            tabPage1.Controls.Add(panel4);
+            tabPage1.Location = new Point(4, 29);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(1283, 304);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "Клиенти";
+            tabPage1.UseVisualStyleBackColor = true;
             // 
-            // RequestTitleLabel
+            // panel4
             // 
-            RequestTitleLabel.Anchor = AnchorStyles.Top;
-            RequestTitleLabel.AutoSize = true;
-            RequestTitleLabel.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
-            RequestTitleLabel.Location = new Point(604, 42);
-            RequestTitleLabel.Name = "RequestTitleLabel";
-            RequestTitleLabel.Size = new Size(142, 42);
-            RequestTitleLabel.TabIndex = 6;
-            RequestTitleLabel.Text = "Заявки";
-            RequestTitleLabel.Click += label3_Click;
+            panel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel4.Controls.Add(button1);
+            panel4.Controls.Add(ClientsTableLabel);
+            panel4.Controls.Add(clientsDataGridView);
+            panel4.Dock = DockStyle.Fill;
+            panel4.Location = new Point(3, 3);
+            panel4.Margin = new Padding(3, 4, 3, 4);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(1277, 298);
+            panel4.TabIndex = 18;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(154, 8);
+            button1.Margin = new Padding(3, 4, 3, 4);
+            button1.Name = "button1";
+            button1.Size = new Size(26, 29);
+            button1.TabIndex = 11;
+            button1.Text = "+";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click_1;
+            // 
+            // ClientsTableLabel
+            // 
+            ClientsTableLabel.AutoSize = true;
+            ClientsTableLabel.Location = new Point(0, 13);
+            ClientsTableLabel.Name = "ClientsTableLabel";
+            ClientsTableLabel.Size = new Size(155, 20);
+            ClientsTableLabel.TabIndex = 9;
+            ClientsTableLabel.Text = "Клиенти На Заявката";
             // 
             // clientsDataGridView
             // 
@@ -269,157 +458,13 @@ namespace WolfClient.UserControls
             clientsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             clientsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ClientNumber, FirstName, MiddleName, LastName, Phone, Email, Address, ClientLegalType });
             clientsDataGridView.GridColor = SystemColors.ControlText;
-            clientsDataGridView.Location = new Point(0, 84);
+            clientsDataGridView.Location = new Point(1, 37);
             clientsDataGridView.Margin = new Padding(3, 4, 3, 4);
             clientsDataGridView.Name = "clientsDataGridView";
             clientsDataGridView.RowHeadersWidth = 51;
             clientsDataGridView.RowTemplate.Height = 24;
-            clientsDataGridView.Size = new Size(459, 335);
+            clientsDataGridView.Size = new Size(1273, 260);
             clientsDataGridView.TabIndex = 8;
-            // 
-            // ClientsTableLabel
-            // 
-            ClientsTableLabel.AutoSize = true;
-            ClientsTableLabel.Location = new Point(3, 49);
-            ClientsTableLabel.Name = "ClientsTableLabel";
-            ClientsTableLabel.Size = new Size(155, 20);
-            ClientsTableLabel.TabIndex = 9;
-            ClientsTableLabel.Text = "Клиенти На Заявката";
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(21, 418);
-            label5.Name = "label5";
-            label5.Size = new Size(136, 20);
-            label5.TabIndex = 10;
-            label5.Text = "Път Към Заявката:";
-            // 
-            // InvoicesDataGridView
-            // 
-            InvoicesDataGridView.AllowUserToResizeColumns = false;
-            InvoicesDataGridView.AllowUserToResizeRows = false;
-            InvoicesDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            InvoicesDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            InvoicesDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            InvoicesDataGridView.BackgroundColor = Color.Moccasin;
-            InvoicesDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            InvoicesDataGridView.Columns.AddRange(new DataGridViewColumn[] { InvoiceId, Sum });
-            InvoicesDataGridView.Location = new Point(0, 100);
-            InvoicesDataGridView.Margin = new Padding(3, 4, 3, 4);
-            InvoicesDataGridView.Name = "InvoicesDataGridView";
-            InvoicesDataGridView.RowHeadersWidth = 51;
-            InvoicesDataGridView.RowTemplate.Height = 24;
-            InvoicesDataGridView.Size = new Size(331, 231);
-            InvoicesDataGridView.TabIndex = 11;
-            // 
-            // InvoiceId
-            // 
-            InvoiceId.HeaderText = "Номер";
-            InvoiceId.MinimumWidth = 6;
-            InvoiceId.Name = "InvoiceId";
-            // 
-            // Sum
-            // 
-            Sum.HeaderText = "Сума";
-            Sum.MinimumWidth = 6;
-            Sum.Name = "Sum";
-            // 
-            // InvoicesTableLabel
-            // 
-            InvoicesTableLabel.AutoSize = true;
-            InvoicesTableLabel.Location = new Point(0, 68);
-            InvoicesTableLabel.Name = "InvoicesTableLabel";
-            InvoicesTableLabel.Size = new Size(66, 20);
-            InvoicesTableLabel.TabIndex = 12;
-            InvoicesTableLabel.Text = "Фактури";
-            // 
-            // button3
-            // 
-            button3.Location = new Point(70, 64);
-            button3.Margin = new Padding(3, 4, 3, 4);
-            button3.Name = "button3";
-            button3.Size = new Size(23, 30);
-            button3.TabIndex = 13;
-            button3.Text = "+";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
-            // 
-            // ActivityDataGridView
-            // 
-            ActivityDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            ActivityDataGridView.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ActivityDataGridView.Controls.Add(ActivityTableLabel);
-            ActivityDataGridView.Controls.Add(dataGridView2);
-            ActivityDataGridView.Controls.Add(button2);
-            ActivityDataGridView.Location = new Point(33, 585);
-            ActivityDataGridView.Margin = new Padding(3, 4, 3, 4);
-            ActivityDataGridView.Name = "ActivityDataGridView";
-            ActivityDataGridView.Size = new Size(943, 339);
-            ActivityDataGridView.TabIndex = 15;
-            // 
-            // panel1
-            // 
-            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panel1.BackColor = SystemColors.GradientActiveCaption;
-            panel1.Controls.Add(InvoicesDataGridView);
-            panel1.Controls.Add(InvoicesTableLabel);
-            panel1.Controls.Add(button3);
-            panel1.Location = new Point(998, 585);
-            panel1.Margin = new Padding(3, 4, 3, 4);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(331, 339);
-            panel1.TabIndex = 16;
-            panel1.Paint += panel1_Paint;
-            // 
-            // panel3
-            // 
-            panel3.Controls.Add(RefreshButton);
-            panel3.Controls.Add(RequestDataGridView);
-            panel3.Controls.Add(label5);
-            panel3.Controls.Add(RequestTableLabel);
-            panel3.Controls.Add(RequestAddButton);
-            panel3.Location = new Point(33, 119);
-            panel3.Margin = new Padding(3, 4, 3, 4);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(798, 419);
-            panel3.TabIndex = 17;
-            panel3.Paint += panel3_Paint;
-            // 
-            // RefreshButton
-            // 
-            RefreshButton.Location = new Point(89, 49);
-            RefreshButton.Name = "RefreshButton";
-            RefreshButton.Size = new Size(94, 29);
-            RefreshButton.TabIndex = 11;
-            RefreshButton.Text = "Обнови";
-            RefreshButton.UseVisualStyleBackColor = true;
-            RefreshButton.Click += RefreshButton_Click;
-            // 
-            // panel4
-            // 
-            panel4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            panel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panel4.Controls.Add(button1);
-            panel4.Controls.Add(ClientsTableLabel);
-            panel4.Controls.Add(clientsDataGridView);
-            panel4.Location = new Point(870, 119);
-            panel4.Margin = new Padding(3, 4, 3, 4);
-            panel4.Name = "panel4";
-            panel4.Size = new Size(459, 419);
-            panel4.TabIndex = 18;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(157, 44);
-            button1.Margin = new Padding(3, 4, 3, 4);
-            button1.Name = "button1";
-            button1.Size = new Size(26, 29);
-            button1.TabIndex = 11;
-            button1.Text = "+";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click_1;
             // 
             // ClientNumber
             // 
@@ -477,32 +522,179 @@ namespace WolfClient.UserControls
             ClientLegalType.MinimumWidth = 6;
             ClientLegalType.Name = "ClientLegalType";
             // 
+            // tabControl1
+            // 
+            tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabControl1.Controls.Add(tabPage1);
+            tabControl1.Controls.Add(tabPage2);
+            tabControl1.Controls.Add(tabPage3);
+            tabControl1.Location = new Point(30, 624);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new Size(1291, 337);
+            tabControl1.TabIndex = 12;
+            // 
+            // tabPage3
+            // 
+            tabPage3.Controls.Add(panel5);
+            tabPage3.Location = new Point(4, 29);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Padding = new Padding(3);
+            tabPage3.Size = new Size(1283, 304);
+            tabPage3.TabIndex = 2;
+            tabPage3.Text = "имоти";
+            tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // panel5
+            // 
+            panel5.Controls.Add(PlotsTableLabel);
+            panel5.Controls.Add(PlotsDataGridView);
+            panel5.Controls.Add(PlotsAddButton);
+            panel5.Controls.Add(DestinationOfPlotLabel);
+            panel5.Dock = DockStyle.Fill;
+            panel5.Location = new Point(3, 3);
+            panel5.Margin = new Padding(3, 4, 3, 4);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(1277, 298);
+            panel5.TabIndex = 35;
+            // 
+            // PlotsTableLabel
+            // 
+            PlotsTableLabel.AutoSize = true;
+            PlotsTableLabel.BackColor = Color.Transparent;
+            PlotsTableLabel.Location = new Point(-3, 9);
+            PlotsTableLabel.Name = "PlotsTableLabel";
+            PlotsTableLabel.Size = new Size(210, 20);
+            PlotsTableLabel.TabIndex = 25;
+            PlotsTableLabel.Text = "Имоти в селектирания обект";
+            // 
+            // PlotsDataGridView
+            // 
+            PlotsDataGridView.AllowUserToResizeColumns = false;
+            PlotsDataGridView.AllowUserToResizeRows = false;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            PlotsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            PlotsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            PlotsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            PlotsDataGridView.BackgroundColor = Color.Moccasin;
+            PlotsDataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            PlotsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            PlotsDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlotId, RegulatedPlotNumber, neighborhood, City, Municipality, Street, StreetNumber, designation, locality });
+            PlotsDataGridView.Location = new Point(0, 42);
+            PlotsDataGridView.Margin = new Padding(100, 4, 3, 4);
+            PlotsDataGridView.Name = "PlotsDataGridView";
+            PlotsDataGridView.RowHeadersWidth = 51;
+            PlotsDataGridView.RowTemplate.Height = 24;
+            PlotsDataGridView.Size = new Size(1277, 259);
+            PlotsDataGridView.TabIndex = 21;
+            // 
+            // PlotId
+            // 
+            PlotId.HeaderText = "Номер на имота";
+            PlotId.MinimumWidth = 6;
+            PlotId.Name = "PlotId";
+            // 
+            // RegulatedPlotNumber
+            // 
+            RegulatedPlotNumber.HeaderText = "Номер на урегулиран поземлен имот";
+            RegulatedPlotNumber.MinimumWidth = 6;
+            RegulatedPlotNumber.Name = "RegulatedPlotNumber";
+            // 
+            // neighborhood
+            // 
+            neighborhood.HeaderText = "квартал";
+            neighborhood.MinimumWidth = 6;
+            neighborhood.Name = "neighborhood";
+            // 
+            // City
+            // 
+            City.HeaderText = "град/село";
+            City.MinimumWidth = 6;
+            City.Name = "City";
+            // 
+            // Municipality
+            // 
+            Municipality.HeaderText = "Община";
+            Municipality.MinimumWidth = 6;
+            Municipality.Name = "Municipality";
+            // 
+            // Street
+            // 
+            Street.HeaderText = "улица";
+            Street.MinimumWidth = 6;
+            Street.Name = "Street";
+            // 
+            // StreetNumber
+            // 
+            StreetNumber.HeaderText = "Номер На Улицата";
+            StreetNumber.MinimumWidth = 6;
+            StreetNumber.Name = "StreetNumber";
+            // 
+            // designation
+            // 
+            designation.HeaderText = "Предназначение";
+            designation.MinimumWidth = 6;
+            designation.Name = "designation";
+            // 
+            // locality
+            // 
+            locality.HeaderText = "район";
+            locality.MinimumWidth = 6;
+            locality.Name = "locality";
+            // 
+            // PlotsAddButton
+            // 
+            PlotsAddButton.Location = new Point(213, 4);
+            PlotsAddButton.Margin = new Padding(3, 4, 3, 4);
+            PlotsAddButton.Name = "PlotsAddButton";
+            PlotsAddButton.Size = new Size(24, 32);
+            PlotsAddButton.TabIndex = 31;
+            PlotsAddButton.Text = "+";
+            PlotsAddButton.UseVisualStyleBackColor = true;
+            // 
+            // DestinationOfPlotLabel
+            // 
+            DestinationOfPlotLabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            DestinationOfPlotLabel.AutoSize = true;
+            DestinationOfPlotLabel.Location = new Point(4, 371);
+            DestinationOfPlotLabel.Name = "DestinationOfPlotLabel";
+            DestinationOfPlotLabel.Size = new Size(207, 20);
+            DestinationOfPlotLabel.TabIndex = 30;
+            DestinationOfPlotLabel.Text = "Местоположение на имота: ";
+            // 
             // MenuRequestsUserControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
-            Controls.Add(panel4);
+            Controls.Add(tabControl1);
             Controls.Add(panel3);
             Controls.Add(panel1);
-            Controls.Add(ActivityDataGridView);
             Controls.Add(RequestTitleLabel);
             Margin = new Padding(3, 4, 3, 4);
             Name = "MenuRequestsUserControl";
-            Size = new Size(1350, 961);
+            Size = new Size(1350, 972);
             Load += MenuRequestsUserControl_Load;
             ((System.ComponentModel.ISupportInitialize)RequestDataGridView).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)clientsDataGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).EndInit();
-            ActivityDataGridView.ResumeLayout(false);
-            ActivityDataGridView.PerformLayout();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
+            tabPage2.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)ActivityDataGridView).EndInit();
+            tabPage1.ResumeLayout(false);
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)clientsDataGridView).EndInit();
+            tabControl1.ResumeLayout(false);
+            tabPage3.ResumeLayout(false);
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)PlotsDataGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -512,30 +704,15 @@ namespace WolfClient.UserControls
         private System.Windows.Forms.DataGridView RequestDataGridView;
         private System.Windows.Forms.Label RequestTableLabel;
         private System.Windows.Forms.Button RequestAddButton;
-        private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Activity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TaskName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ExecutantId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Date;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Duration;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Control;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Comment;
-        private System.Windows.Forms.Label ActivityTableLabel;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label RequestTitleLabel;
-        private System.Windows.Forms.DataGridView clientsDataGridView;
-        private System.Windows.Forms.Label ClientsTableLabel;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridView InvoicesDataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn InvoiceId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Sum;
         private System.Windows.Forms.Label InvoicesTableLabel;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Panel ActivityDataGridView;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Button button1;
         private Button RefreshButton;
         private DataGridViewTextBoxColumn RequestId;
         private DataGridViewTextBoxColumn RequestName;
@@ -543,6 +720,23 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn PaymentStatus;
         private DataGridViewTextBoxColumn Advance;
         private DataGridViewTextBoxColumn Comments;
+        private TabPage tabPage2;
+        private Panel panel2;
+        private Label ActivityTableLabel;
+        private DataGridView ActivityDataGridView;
+        private DataGridViewTextBoxColumn Activity;
+        private DataGridViewTextBoxColumn Task;
+        private DataGridViewTextBoxColumn Executant;
+        private DataGridViewTextBoxColumn StartDate;
+        private DataGridViewTextBoxColumn Duration;
+        private DataGridViewTextBoxColumn Control;
+        private DataGridViewTextBoxColumn Comment;
+        private Button ActivityAddButton;
+        private TabPage tabPage1;
+        private Panel panel4;
+        private Button button1;
+        private Label ClientsTableLabel;
+        private DataGridView clientsDataGridView;
         private DataGridViewTextBoxColumn ClientNumber;
         private DataGridViewTextBoxColumn FirstName;
         private DataGridViewTextBoxColumn MiddleName;
@@ -551,5 +745,21 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn Email;
         private DataGridViewTextBoxColumn Address;
         private DataGridViewTextBoxColumn ClientLegalType;
+        private TabControl tabControl1;
+        private TabPage tabPage3;
+        private Panel panel5;
+        private Label PlotsTableLabel;
+        private DataGridView PlotsDataGridView;
+        private DataGridViewTextBoxColumn PlotId;
+        private DataGridViewTextBoxColumn RegulatedPlotNumber;
+        private DataGridViewTextBoxColumn neighborhood;
+        private DataGridViewTextBoxColumn City;
+        private DataGridViewTextBoxColumn Municipality;
+        private DataGridViewTextBoxColumn Street;
+        private DataGridViewTextBoxColumn StreetNumber;
+        private DataGridViewTextBoxColumn designation;
+        private DataGridViewTextBoxColumn locality;
+        private Button PlotsAddButton;
+        private Label DestinationOfPlotLabel;
     }
 }

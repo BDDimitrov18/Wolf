@@ -22,6 +22,6 @@ namespace DataAccessLayer.Models
 
         public string Email { get; set; }
 
-        public ICollection<Employee_WorkObjectRelashionship> Employee_WorkObjectRelationships { get; set; }
+        
     }
 }

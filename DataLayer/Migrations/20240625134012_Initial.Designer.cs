@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(WolfDbContext))]
-    [Migration("20240605140752_initial")]
-    partial class initial
+    [Migration("20240625134012_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.29")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -48,8 +48,6 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("ActivityId");
 
                     b.HasIndex("RequestId");
-
-                    b.HasIndex("WorkObjectId");
 
                     b.ToTable("Activities");
                 });
@@ -140,21 +138,6 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Employee_WorkObjectRelashionship", b =>
-                {
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkObjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmployeeId", "WorkObjectId");
-
-                    b.HasIndex("WorkObjectId");
-
-                    b.ToTable("Employee_WorkObjectRelashionships");
-                });
-
             modelBuilder.Entity("DataAccessLayer.Models.Invoice", b =>
                 {
                     b.Property<int>("InvoiceId")
@@ -238,59 +221,28 @@ namespace DataAccessLayer.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
+                    b.Property<string>("RequestName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("RequestId");
 
                     b.ToTable("Requests");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Request_WorkObjectRelashionship", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.Request_PlotRelashionship", b =>
                 {
-                    b.Property<int>("RequestId")
+                    b.Property<int>("requestId")
                         .HasColumnType("int");
 
-                    b.Property<int>("WorkObjectId")
+                    b.Property<int>("plotId")
                         .HasColumnType("int");
 
-                    b.HasKey("RequestId", "WorkObjectId");
+                    b.HasKey("requestId", "plotId");
 
-                    b.HasIndex("WorkObjectId");
+                    b.HasIndex("plotId");
 
-                    b.ToTable("Request_WorkObjectRelashionships");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.WorkObject", b =>
-                {
-                    b.Property<int>("WorkObjectId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkObjectId"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
-
-                    b.HasKey("WorkObjectId");
-
-                    b.ToTable("WorkObjects");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.WorkObject_PlotRelashionship", b =>
-                {
-                    b.Property<int>("WorkObjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlotId")
-                        .HasColumnType("int");
-
-                    b.HasKey("WorkObjectId", "PlotId");
-
-                    b.HasIndex("PlotId");
-
-                    b.ToTable("Object_PlotRelashionships");
+                    b.ToTable("Request_PlotRelashionships");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.WorkTask", b =>
@@ -334,6 +286,204 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Tasks");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Activity", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.Request", "Request")
@@ -342,15 +492,7 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccessLayer.Models.WorkObject", "WorkObject")
-                        .WithMany("Activities")
-                        .HasForeignKey("WorkObjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Request");
-
-                    b.Navigation("WorkObject");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Client_RequestRelashionship", b =>
@@ -372,25 +514,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Request");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Employee_WorkObjectRelashionship", b =>
-                {
-                    b.HasOne("DataAccessLayer.Models.Employee", "Employee")
-                        .WithMany("Employee_WorkObjectRelationships")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DataAccessLayer.Models.WorkObject", "WorkObject")
-                        .WithMany("Employee_WorkObjectRelationships")
-                        .HasForeignKey("WorkObjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("WorkObject");
-                });
-
             modelBuilder.Entity("DataAccessLayer.Models.Invoice", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.Request", "Request")
@@ -402,42 +525,23 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Request");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Request_WorkObjectRelashionship", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.Request_PlotRelashionship", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.Request", "Request")
-                        .WithMany("Request_WorkObjectRelationships")
-                        .HasForeignKey("RequestId")
+                    b.HasOne("DataAccessLayer.Models.Plot", "plot")
+                        .WithMany("request_PlotRelashionships")
+                        .HasForeignKey("plotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccessLayer.Models.WorkObject", "WorkObject")
-                        .WithMany("Request_WorkObjectRelationships")
-                        .HasForeignKey("WorkObjectId")
+                    b.HasOne("DataAccessLayer.Models.Request", "Request")
+                        .WithMany("request_PlotRelashionships")
+                        .HasForeignKey("requestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Request");
 
-                    b.Navigation("WorkObject");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.WorkObject_PlotRelashionship", b =>
-                {
-                    b.HasOne("DataAccessLayer.Models.Plot", "Plot")
-                        .WithMany("WorkObject_PlotRelationships")
-                        .HasForeignKey("PlotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DataAccessLayer.Models.WorkObject", "WorkObject")
-                        .WithMany("WorkObject_PlotRelationships")
-                        .HasForeignKey("WorkObjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Plot");
-
-                    b.Navigation("WorkObject");
+                    b.Navigation("plot");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.WorkTask", b =>
@@ -465,19 +569,65 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Executant");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Client", b =>
                 {
                     b.Navigation("Client_RequestRelationships");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Employee", b =>
-                {
-                    b.Navigation("Employee_WorkObjectRelationships");
-                });
-
             modelBuilder.Entity("DataAccessLayer.Models.Plot", b =>
                 {
-                    b.Navigation("WorkObject_PlotRelationships");
+                    b.Navigation("request_PlotRelashionships");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Request", b =>
@@ -488,18 +638,7 @@ namespace DataAccessLayer.Migrations
 
                     b.Navigation("Invoices");
 
-                    b.Navigation("Request_WorkObjectRelationships");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.WorkObject", b =>
-                {
-                    b.Navigation("Activities");
-
-                    b.Navigation("Employee_WorkObjectRelationships");
-
-                    b.Navigation("Request_WorkObjectRelationships");
-
-                    b.Navigation("WorkObject_PlotRelationships");
+                    b.Navigation("request_PlotRelashionships");
                 });
 #pragma warning restore 612, 618
         }

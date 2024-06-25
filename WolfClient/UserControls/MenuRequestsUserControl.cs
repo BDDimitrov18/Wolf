@@ -43,7 +43,7 @@ namespace WolfClient.UserControls
         private async void OnUserLoggedIn(object sender, LogInEventArgs e)
         {
             var response = await _userClient.GetAllRequests();
-            
+
             var employees = response.ResponseObj;
             _fetchedRequests = response.ResponseObj;
             _selectedRequest = _fetchedRequests[0];
@@ -89,7 +89,7 @@ namespace WolfClient.UserControls
 
         }
 
-        
+
         private void RequestDataGridView_SelectionChanged(object sender, EventArgs e)
         {
             if (RequestDataGridView.SelectedRows.Count > 0)
@@ -101,7 +101,8 @@ namespace WolfClient.UserControls
                     _isSelectedRequest = true;
                 }
             }
-            else{
+            else
+            {
                 if (_isSelectedRequest)
                 {
                     _isSelectedRequest = false;
@@ -181,11 +182,12 @@ namespace WolfClient.UserControls
                 {
                     GetRequestDTO requestDTO = form.returnRequest();
                     List<GetClientDTO> getClientDTOs = form.returnClients();
-                    
 
-                    RequestWithClientsDTO requestWithClients = new RequestWithClientsDTO() { 
+
+                    RequestWithClientsDTO requestWithClients = new RequestWithClientsDTO()
+                    {
                         requestDTO = requestDTO,
-                        clientDTOs  =    getClientDTOs,
+                        clientDTOs = getClientDTOs,
                     };
 
                     _fetchedLinkedClients.Add(requestWithClients);
@@ -209,15 +211,17 @@ namespace WolfClient.UserControls
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            using (AddClientToRequest form = new AddClientToRequest(_apiClient, _userClient, _adminClient,_selectedRequest))
+            using (AddClientToRequest form = new AddClientToRequest(_apiClient, _userClient, _adminClient, _selectedRequest))
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     List<GetClientDTO> getClientDTOs = form.returnClientsList();
 
-                    foreach (RequestWithClientsDTO requestWithClientsDTO in _fetchedLinkedClients) { 
-                        if(requestWithClientsDTO.requestDTO.RequestId == _selectedRequest.RequestId) {
-                            requestWithClientsDTO.clientDTOs.AddRange(getClientDTOs);                       
+                    foreach (RequestWithClientsDTO requestWithClientsDTO in _fetchedLinkedClients)
+                    {
+                        if (requestWithClientsDTO.requestDTO.RequestId == _selectedRequest.RequestId)
+                        {
+                            requestWithClientsDTO.clientDTOs.AddRange(getClientDTOs);
                         }
                     }
                 }
@@ -274,6 +278,22 @@ namespace WolfClient.UserControls
                 Console.WriteLine("Exception in UpdateRequestDataGridView: " + ex.Message);
                 MessageBox.Show("Exception in UpdateRequestDataGridView: " + ex.Message);
             }
+        }
+
+        private void ActivityAddButton_Click(object sender, EventArgs e)
+        {
+            AddActivityTaskForm addActivityTaskForm = new AddActivityTaskForm();
+            addActivityTaskForm.Show();
+        }
+
+        private void PlotsDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void InvoicesDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

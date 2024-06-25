@@ -22,8 +22,7 @@ namespace DataAccessLayer.Models
 
         public string? Comments { get; set; }
 
-        public ICollection<Request_WorkObjectRelashionship> Request_WorkObjectRelationships { get; set; }
-
+        public ICollection<Request_PlotRelashionship> request_PlotRelashionships { get; set; }
         public ICollection<Client_RequestRelashionship> Client_RequestRelationships { get; set; }
         public ICollection<Invoice> Invoices { get; set; }
 

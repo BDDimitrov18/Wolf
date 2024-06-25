@@ -19,7 +19,6 @@ namespace DataAccessLayer
         }
 
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<WorkObject> WorkObjects { get; set; }
 
         public DbSet<Activity> Activities { get; set; }
 
@@ -35,11 +34,8 @@ namespace DataAccessLayer
 
         public DbSet<Client_RequestRelashionship> Client_RequestRelashionships { get; set; }
 
-        public DbSet<Employee_WorkObjectRelashionship> Employee_WorkObjectRelashionships  { get; set; }
+        public DbSet<Request_PlotRelashionship> Request_PlotRelashionships { get; set; }
 
-        public DbSet<WorkObject_PlotRelashionship> Object_PlotRelashionships  { get; set; }
-
-        public DbSet<Request_WorkObjectRelashionship> Request_WorkObjectRelashionships  { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
@@ -63,58 +59,11 @@ namespace DataAccessLayer
                 .HasForeignKey(wt => wt.ControlId);
             #endregion
 
-            #region WorkObject_PlotRelashionshipConfig
-            modelBuilder.Entity<WorkObject_PlotRelashionship>()
-        .HasKey(wopr => new { wopr.WorkObjectId, wopr.PlotId });
-
-            modelBuilder.Entity<WorkObject_PlotRelashionship>()
-                .HasOne(wopr => wopr.WorkObject)
-                .WithMany(wo => wo.WorkObject_PlotRelationships)
-                .HasForeignKey(wopr => wopr.WorkObjectId);
-
-            modelBuilder.Entity<WorkObject_PlotRelashionship>()
-                .HasOne(wopr => wopr.Plot)
-                .WithMany(p => p.WorkObject_PlotRelationships)
-                .HasForeignKey(wopr => wopr.PlotId);
-            #endregion
-
-            #region Request_WorkObjectRelashionshipConfig
-
-            modelBuilder.Entity<Request_WorkObjectRelashionship>()
-        .HasKey(rwor => new { rwor.RequestId, rwor.WorkObjectId });
-
-            modelBuilder.Entity<Request_WorkObjectRelashionship>()
-                .HasOne(rwor => rwor.Request)
-                .WithMany(r => r.Request_WorkObjectRelationships)
-                .HasForeignKey(rwor => rwor.RequestId);
-
-            modelBuilder.Entity<Request_WorkObjectRelashionship>()
-                .HasOne(rwor => rwor.WorkObject)
-                .WithMany(w => w.Request_WorkObjectRelationships)
-                .HasForeignKey(rwor => rwor.WorkObjectId);
-
-            #endregion
-
             #region InvoiceConfig
             modelBuilder.Entity<Invoice>()
               .HasOne(inv => inv.Request)
               .WithMany(r => r.Invoices)
               .HasForeignKey(inv => inv.RequestId);
-            #endregion
-
-            #region Employee_WorkObjectRelashionshipConfig
-            modelBuilder.Entity<Employee_WorkObjectRelashionship>()
-        .HasKey(ewor => new { ewor.EmployeeId, ewor.WorkObjectId });
-
-            modelBuilder.Entity<Employee_WorkObjectRelashionship>()
-                .HasOne(ewor => ewor.Employee)
-                .WithMany(e => e.Employee_WorkObjectRelationships)
-                .HasForeignKey(ewor => ewor.EmployeeId);
-
-            modelBuilder.Entity<Employee_WorkObjectRelashionship>()
-                .HasOne(ewor => ewor.WorkObject)
-                .WithMany(w => w.Employee_WorkObjectRelationships)
-                .HasForeignKey(ewor => ewor.WorkObjectId);
             #endregion
 
             #region Client_RequestRelashionshipConfig
@@ -131,16 +80,49 @@ namespace DataAccessLayer
                 .WithMany(c => c.Client_RequestRelationships)
                 .HasForeignKey(crr => crr.ClientId);
             #endregion
+
             #region ActivityConfig
             modelBuilder.Entity<Activity>()
         .HasOne(a => a.Request)
         .WithMany(r => r.Activities)
         .HasForeignKey(a => a.RequestId);
 
-            modelBuilder.Entity<Activity>()
-                .HasOne(a => a.WorkObject)
-                .WithMany(w => w.Activities)
-                .HasForeignKey(a => a.WorkObjectId);
+
+            #endregion
+
+            #region Request_PlotRelashionShip
+            modelBuilder.Entity<Request_PlotRelashionship>()
+             .HasKey(rp => new { rp.requestId, rp.plotId });
+
+            modelBuilder.Entity<Request_PlotRelashionship>()
+                .HasOne(rp => rp.Request)
+                .WithMany(r => r.request_PlotRelashionships)
+                .HasForeignKey(rp => rp.requestId);
+
+            modelBuilder.Entity<Request_PlotRelashionship>()
+                .HasOne(rp => rp.plot)
+                .WithMany(p => p.request_PlotRelashionships)
+                .HasForeignKey(rp => rp.plotId);
+
+            #endregion
+
+            #region 
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Id = "1",
+                    Name = "admin",
+                    NormalizedName = "Admin",
+                    ConcurrencyStamp = "1"
+                },
+                new IdentityRole
+                {
+                    Id = "2",
+                    Name = "user",
+                    NormalizedName = "User",
+                    ConcurrencyStamp = "2"
+                }
+            );
             #endregion
         }
     }

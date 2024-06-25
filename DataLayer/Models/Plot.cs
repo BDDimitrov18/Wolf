@@ -30,6 +30,7 @@ namespace DataAccessLayer.Models
 
         public string? locality { get; set; }
 
-        public ICollection<WorkObject_PlotRelashionship> WorkObject_PlotRelationships { get; set; }
+        public ICollection<Request_PlotRelashionship> request_PlotRelashionships { get; set; }
+
     }
 }

@@ -32,7 +32,6 @@ namespace WolfClient.NewForms
         {
             toolStrip1 = new ToolStrip();
             RequestToolStripButton = new ToolStripLabel();
-            ObjectToolStripButton = new ToolStripLabel();
             ClientsStripButton = new ToolStripLabel();
             EmployeesStripLabel = new ToolStripLabel();
             panelContent = new Panel();
@@ -44,7 +43,7 @@ namespace WolfClient.NewForms
             // 
             toolStrip1.BackColor = SystemColors.ActiveCaption;
             toolStrip1.ImageScalingSize = new Size(20, 20);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { RequestToolStripButton, ObjectToolStripButton, ClientsStripButton, EmployeesStripLabel });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { RequestToolStripButton, ClientsStripButton, EmployeesStripLabel });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(1358, 25);
@@ -54,16 +53,9 @@ namespace WolfClient.NewForms
             // RequestToolStripButton
             // 
             RequestToolStripButton.Name = "RequestToolStripButton";
-            RequestToolStripButton.Size = new Size(57, 22);
-            RequestToolStripButton.Text = "Заявки";
+            RequestToolStripButton.Size = new Size(59, 22);
+            RequestToolStripButton.Text = "Обекти";
             RequestToolStripButton.Click += RequestToolStripButton_Click;
-            // 
-            // ObjectToolStripButton
-            // 
-            ObjectToolStripButton.Name = "ObjectToolStripButton";
-            ObjectToolStripButton.Size = new Size(59, 22);
-            ObjectToolStripButton.Text = "Обекти";
-            ObjectToolStripButton.Click += ObjectToolStripButton_Click;
             // 
             // ClientsStripButton
             // 
@@ -119,7 +111,6 @@ namespace WolfClient.NewForms
         #endregion
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripLabel RequestToolStripButton;
-        private System.Windows.Forms.ToolStripLabel ObjectToolStripButton;
         private System.Windows.Forms.Panel panelContent;
         private System.Windows.Forms.ToolStripLabel ClientsStripButton;
         private System.Windows.Forms.ToolStripLabel EmployeesStripLabel;

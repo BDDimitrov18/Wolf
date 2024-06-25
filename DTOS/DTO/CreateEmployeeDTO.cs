@@ -5,13 +5,13 @@ namespace DTOS.DTO
 {
     public class CreateEmployeeDTO
     {
-        [Required]
+        [Required(ErrorMessage = "First Name Required")]
         public string FirstName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Middle Name Required")]
         public string SecondName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Middle Name Required")]
         public string LastName { get; set; }
 
         [Required]

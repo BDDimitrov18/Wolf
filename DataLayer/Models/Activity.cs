@@ -16,7 +16,6 @@ namespace DataAccessLayer.Models
         public Request Request { get; set; }
 
         public int WorkObjectId { get; set; }
-        public WorkObject? WorkObject { get; set; }
 
         public string ActivityName { get; set; }
 

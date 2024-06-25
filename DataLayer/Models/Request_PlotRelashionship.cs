@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Models
 {
-    public class Request_WorkObjectRelashionship
+    public class Request_PlotRelashionship
     {
-        public int RequestId { get; set; }
+        public int requestId { get; set; }
         public Request Request { get; set; }
 
-        public int WorkObjectId { get; set; }
-        public WorkObject WorkObject { get; set; }
+        public int plotId { get; set; }
+        public Plot plot { get; set; }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             AddEmployeeSubmitButton = new Button();
             EmailTextBox = new TextBox();
             EmailLabel = new Label();
@@ -40,6 +41,13 @@
             NameTextBox = new TextBox();
             NameLabel = new Label();
             label1 = new Label();
+            EmployeeFormErrorProvider = new ErrorProvider(components);
+            NameErrorLabel = new Label();
+            SurnameErrorLabel = new Label();
+            LastNameErrorLabel = new Label();
+            PhoneErrorLabel = new Label();
+            EmailErrorLabel = new Label();
+            ((System.ComponentModel.ISupportInitialize)EmployeeFormErrorProvider).BeginInit();
             SuspendLayout();
             // 
             // AddEmployeeSubmitButton
@@ -66,7 +74,7 @@
             // 
             EmailLabel.AutoSize = true;
             EmailLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            EmailLabel.Location = new Point(140, 499);
+            EmailLabel.Location = new Point(140, 491);
             EmailLabel.Name = "EmailLabel";
             EmailLabel.Size = new Size(60, 25);
             EmailLabel.TabIndex = 21;
@@ -84,7 +92,7 @@
             // 
             PhoneLabel.AutoSize = true;
             PhoneLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            PhoneLabel.Location = new Point(140, 405);
+            PhoneLabel.Location = new Point(140, 395);
             PhoneLabel.Name = "PhoneLabel";
             PhoneLabel.Size = new Size(99, 25);
             PhoneLabel.TabIndex = 19;
@@ -102,11 +110,12 @@
             // 
             LastNameLabel.AutoSize = true;
             LastNameLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            LastNameLabel.Location = new Point(140, 309);
+            LastNameLabel.Location = new Point(140, 301);
             LastNameLabel.Name = "LastNameLabel";
             LastNameLabel.Size = new Size(103, 25);
             LastNameLabel.TabIndex = 17;
             LastNameLabel.Text = "Фамилия";
+            LastNameLabel.Click += LastNameLabel_Click;
             // 
             // SecondNameTextBox
             // 
@@ -120,11 +129,12 @@
             // 
             SecondNameLabel.AutoSize = true;
             SecondNameLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            SecondNameLabel.Location = new Point(140, 221);
+            SecondNameLabel.Location = new Point(140, 212);
             SecondNameLabel.Name = "SecondNameLabel";
             SecondNameLabel.Size = new Size(98, 25);
             SecondNameLabel.TabIndex = 15;
             SecondNameLabel.Text = "Презиме";
+            SecondNameLabel.Click += SecondNameLabel_Click;
             // 
             // NameTextBox
             // 
@@ -138,11 +148,12 @@
             // 
             NameLabel.AutoSize = true;
             NameLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            NameLabel.Location = new Point(140, 132);
+            NameLabel.Location = new Point(140, 123);
             NameLabel.Name = "NameLabel";
             NameLabel.Size = new Size(54, 25);
             NameLabel.TabIndex = 13;
             NameLabel.Text = "Име";
+            NameLabel.Click += NameLabel_Click;
             // 
             // label1
             // 
@@ -154,12 +165,84 @@
             label1.TabIndex = 12;
             label1.Text = "Добавяне На Служител";
             // 
+            // EmployeeFormErrorProvider
+            // 
+            EmployeeFormErrorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+            EmployeeFormErrorProvider.ContainerControl = this;
+            // 
+            // NameErrorLabel
+            // 
+            NameErrorLabel.AutoSize = true;
+            NameErrorLabel.BackColor = Color.Transparent;
+            NameErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            NameErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            NameErrorLabel.Location = new Point(145, 148);
+            NameErrorLabel.Name = "NameErrorLabel";
+            NameErrorLabel.Size = new Size(125, 15);
+            NameErrorLabel.TabIndex = 24;
+            NameErrorLabel.Text = "Моля попълнете име";
+            // 
+            // SurnameErrorLabel
+            // 
+            SurnameErrorLabel.AutoSize = true;
+            SurnameErrorLabel.BackColor = Color.Transparent;
+            SurnameErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            SurnameErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            SurnameErrorLabel.Location = new Point(145, 237);
+            SurnameErrorLabel.Name = "SurnameErrorLabel";
+            SurnameErrorLabel.Size = new Size(150, 15);
+            SurnameErrorLabel.TabIndex = 25;
+            SurnameErrorLabel.Text = "Моля попълнете презиме";
+            SurnameErrorLabel.Click += label3_Click;
+            // 
+            // LastNameErrorLabel
+            // 
+            LastNameErrorLabel.AutoSize = true;
+            LastNameErrorLabel.BackColor = Color.Transparent;
+            LastNameErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            LastNameErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            LastNameErrorLabel.Location = new Point(145, 326);
+            LastNameErrorLabel.Name = "LastNameErrorLabel";
+            LastNameErrorLabel.Size = new Size(154, 15);
+            LastNameErrorLabel.TabIndex = 26;
+            LastNameErrorLabel.Text = "Моля попълнете фамилия";
+            // 
+            // PhoneErrorLabel
+            // 
+            PhoneErrorLabel.AutoSize = true;
+            PhoneErrorLabel.BackColor = Color.Transparent;
+            PhoneErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            PhoneErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            PhoneErrorLabel.Location = new Point(145, 420);
+            PhoneErrorLabel.Name = "PhoneErrorLabel";
+            PhoneErrorLabel.Size = new Size(219, 15);
+            PhoneErrorLabel.TabIndex = 27;
+            PhoneErrorLabel.Text = "Моля спазвайте формата на телефона";
+            // 
+            // EmailErrorLabel
+            // 
+            EmailErrorLabel.AutoSize = true;
+            EmailErrorLabel.BackColor = Color.Transparent;
+            EmailErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            EmailErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            EmailErrorLabel.Location = new Point(145, 516);
+            EmailErrorLabel.Name = "EmailErrorLabel";
+            EmailErrorLabel.Size = new Size(208, 15);
+            EmailErrorLabel.TabIndex = 28;
+            EmailErrorLabel.Text = "Моля спазвайте формата на имейла";
+            EmailErrorLabel.Click += label6_Click;
+            // 
             // AddEmployeeForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(738, 691);
+            Controls.Add(EmailErrorLabel);
+            Controls.Add(PhoneErrorLabel);
+            Controls.Add(LastNameErrorLabel);
+            Controls.Add(SurnameErrorLabel);
+            Controls.Add(NameErrorLabel);
             Controls.Add(AddEmployeeSubmitButton);
             Controls.Add(EmailTextBox);
             Controls.Add(EmailLabel);
@@ -175,6 +258,7 @@
             Name = "AddEmployeeForm";
             Text = "AddEmployeeForm";
             Load += AddEmployeeForm_Load;
+            ((System.ComponentModel.ISupportInitialize)EmployeeFormErrorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -193,5 +277,11 @@
         private TextBox NameTextBox;
         private Label NameLabel;
         private Label label1;
+        private ErrorProvider EmployeeFormErrorProvider;
+        private Label NameErrorLabel;
+        private Label SurnameErrorLabel;
+        private Label LastNameErrorLabel;
+        private Label PhoneErrorLabel;
+        private Label EmailErrorLabel;
     }
 }

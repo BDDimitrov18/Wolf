@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(WolfDbContext))]
-    [Migration("20240606070639_ConfigIdentityInitial")]
-    partial class ConfigIdentityInitial
+    [Migration("20240625135240_SeedRoles")]
+    partial class SeedRoles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.29")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -48,8 +48,6 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("ActivityId");
 
                     b.HasIndex("RequestId");
-
-                    b.HasIndex("WorkObjectId");
 
                     b.ToTable("Activities");
                 });
@@ -140,21 +138,6 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Employee_WorkObjectRelashionship", b =>
-                {
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkObjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmployeeId", "WorkObjectId");
-
-                    b.HasIndex("WorkObjectId");
-
-                    b.ToTable("Employee_WorkObjectRelashionships");
-                });
-
             modelBuilder.Entity("DataAccessLayer.Models.Invoice", b =>
                 {
                     b.Property<int>("InvoiceId")
@@ -238,59 +221,28 @@ namespace DataAccessLayer.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
+                    b.Property<string>("RequestName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("RequestId");
 
                     b.ToTable("Requests");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Request_WorkObjectRelashionship", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.Request_PlotRelashionship", b =>
                 {
-                    b.Property<int>("RequestId")
+                    b.Property<int>("requestId")
                         .HasColumnType("int");
 
-                    b.Property<int>("WorkObjectId")
+                    b.Property<int>("plotId")
                         .HasColumnType("int");
 
-                    b.HasKey("RequestId", "WorkObjectId");
+                    b.HasKey("requestId", "plotId");
 
-                    b.HasIndex("WorkObjectId");
+                    b.HasIndex("plotId");
 
-                    b.ToTable("Request_WorkObjectRelashionships");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.WorkObject", b =>
-                {
-                    b.Property<int>("WorkObjectId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkObjectId"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
-
-                    b.HasKey("WorkObjectId");
-
-                    b.ToTable("WorkObjects");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.WorkObject_PlotRelashionship", b =>
-                {
-                    b.Property<int>("WorkObjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlotId")
-                        .HasColumnType("int");
-
-                    b.HasKey("WorkObjectId", "PlotId");
-
-                    b.HasIndex("PlotId");
-
-                    b.ToTable("Object_PlotRelashionships");
+                    b.ToTable("Request_PlotRelashionships");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.WorkTask", b =>
@@ -359,6 +311,22 @@ namespace DataAccessLayer.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            ConcurrencyStamp = "1",
+                            Name = "admin",
+                            NormalizedName = "Admin"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            ConcurrencyStamp = "2",
+                            Name = "user",
+                            NormalizedName = "User"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -479,12 +447,10 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -521,12 +487,10 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -544,15 +508,7 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccessLayer.Models.WorkObject", "WorkObject")
-                        .WithMany("Activities")
-                        .HasForeignKey("WorkObjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Request");
-
-                    b.Navigation("WorkObject");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Client_RequestRelashionship", b =>
@@ -574,25 +530,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Request");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Employee_WorkObjectRelashionship", b =>
-                {
-                    b.HasOne("DataAccessLayer.Models.Employee", "Employee")
-                        .WithMany("Employee_WorkObjectRelationships")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DataAccessLayer.Models.WorkObject", "WorkObject")
-                        .WithMany("Employee_WorkObjectRelationships")
-                        .HasForeignKey("WorkObjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("WorkObject");
-                });
-
             modelBuilder.Entity("DataAccessLayer.Models.Invoice", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.Request", "Request")
@@ -604,42 +541,23 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Request");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Request_WorkObjectRelashionship", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.Request_PlotRelashionship", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.Request", "Request")
-                        .WithMany("Request_WorkObjectRelationships")
-                        .HasForeignKey("RequestId")
+                    b.HasOne("DataAccessLayer.Models.Plot", "plot")
+                        .WithMany("request_PlotRelashionships")
+                        .HasForeignKey("plotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccessLayer.Models.WorkObject", "WorkObject")
-                        .WithMany("Request_WorkObjectRelationships")
-                        .HasForeignKey("WorkObjectId")
+                    b.HasOne("DataAccessLayer.Models.Request", "Request")
+                        .WithMany("request_PlotRelashionships")
+                        .HasForeignKey("requestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Request");
 
-                    b.Navigation("WorkObject");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.WorkObject_PlotRelashionship", b =>
-                {
-                    b.HasOne("DataAccessLayer.Models.Plot", "Plot")
-                        .WithMany("WorkObject_PlotRelationships")
-                        .HasForeignKey("PlotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DataAccessLayer.Models.WorkObject", "WorkObject")
-                        .WithMany("WorkObject_PlotRelationships")
-                        .HasForeignKey("WorkObjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Plot");
-
-                    b.Navigation("WorkObject");
+                    b.Navigation("plot");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.WorkTask", b =>
@@ -723,14 +641,9 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Client_RequestRelationships");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Employee", b =>
-                {
-                    b.Navigation("Employee_WorkObjectRelationships");
-                });
-
             modelBuilder.Entity("DataAccessLayer.Models.Plot", b =>
                 {
-                    b.Navigation("WorkObject_PlotRelationships");
+                    b.Navigation("request_PlotRelashionships");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Request", b =>
@@ -741,18 +654,7 @@ namespace DataAccessLayer.Migrations
 
                     b.Navigation("Invoices");
 
-                    b.Navigation("Request_WorkObjectRelationships");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.WorkObject", b =>
-                {
-                    b.Navigation("Activities");
-
-                    b.Navigation("Employee_WorkObjectRelationships");
-
-                    b.Navigation("Request_WorkObjectRelationships");
-
-                    b.Navigation("WorkObject_PlotRelationships");
+                    b.Navigation("request_PlotRelashionships");
                 });
 #pragma warning restore 612, 618
         }
