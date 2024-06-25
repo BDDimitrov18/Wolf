@@ -104,6 +104,7 @@ namespace WolfClient.Services
             var jsonContent = JsonSerializer.Serialize(clients);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
+
             try
             {
                 var response = await _client.PostAsync("https://localhost:44359/api/User/CreateClient", content);

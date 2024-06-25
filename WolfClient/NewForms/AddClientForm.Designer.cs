@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             LegalTypeTextBox = new ComboBox();
             label8 = new Label();
             AddressTextBox = new TextBox();
@@ -44,6 +45,11 @@
             label2 = new Label();
             label1 = new Label();
             AddClientButton = new Button();
+            UsernameErrorProvider = new ErrorProvider(components);
+            NameErrorLabel = new Label();
+            PhoneErrorLabel = new Label();
+            EmailErrorLabel = new Label();
+            ((System.ComponentModel.ISupportInitialize)UsernameErrorProvider).BeginInit();
             SuspendLayout();
             // 
             // LegalTypeTextBox
@@ -196,12 +202,55 @@
             AddClientButton.UseVisualStyleBackColor = true;
             AddClientButton.Click += AddClientButton_Click;
             // 
+            // UsernameErrorProvider
+            // 
+            UsernameErrorProvider.ContainerControl = this;
+            // 
+            // NameErrorLabel
+            // 
+            NameErrorLabel.AutoSize = true;
+            NameErrorLabel.BackColor = Color.Transparent;
+            NameErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            NameErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            NameErrorLabel.Location = new Point(108, 158);
+            NameErrorLabel.Name = "NameErrorLabel";
+            NameErrorLabel.Size = new Size(158, 15);
+            NameErrorLabel.TabIndex = 31;
+            NameErrorLabel.Text = "Задължително въвдете име";
+            // 
+            // PhoneErrorLabel
+            // 
+            PhoneErrorLabel.AutoSize = true;
+            PhoneErrorLabel.BackColor = Color.Transparent;
+            PhoneErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            PhoneErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            PhoneErrorLabel.Location = new Point(108, 490);
+            PhoneErrorLabel.Name = "PhoneErrorLabel";
+            PhoneErrorLabel.Size = new Size(187, 15);
+            PhoneErrorLabel.TabIndex = 32;
+            PhoneErrorLabel.Text = "Спазвайте формата на телефона";
+            // 
+            // EmailErrorLabel
+            // 
+            EmailErrorLabel.AutoSize = true;
+            EmailErrorLabel.BackColor = Color.Transparent;
+            EmailErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            EmailErrorLabel.ForeColor = SystemColors.GradientInactiveCaption;
+            EmailErrorLabel.Location = new Point(108, 611);
+            EmailErrorLabel.Name = "EmailErrorLabel";
+            EmailErrorLabel.Size = new Size(163, 15);
+            EmailErrorLabel.TabIndex = 33;
+            EmailErrorLabel.Text = "Спазвайте формата на Email";
+            // 
             // AddClientForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(602, 1002);
+            Controls.Add(EmailErrorLabel);
+            Controls.Add(PhoneErrorLabel);
+            Controls.Add(NameErrorLabel);
             Controls.Add(AddClientButton);
             Controls.Add(LegalTypeTextBox);
             Controls.Add(label8);
@@ -221,6 +270,7 @@
             Name = "AddClientForm";
             Text = "AddClientForm";
             Load += AddClientForm_Load;
+            ((System.ComponentModel.ISupportInitialize)UsernameErrorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -243,5 +293,9 @@
         private Label label2;
         private Label label1;
         private Button AddClientButton;
+        private ErrorProvider UsernameErrorProvider;
+        private Label NameErrorLabel;
+        private Label EmailErrorLabel;
+        private Label PhoneErrorLabel;
     }
 }
