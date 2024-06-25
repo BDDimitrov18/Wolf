@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             AddRequestButton = new Button();
             AddNonExistingClientButton = new Button();
             AddNonExistingClientLabel = new Label();
@@ -44,6 +45,11 @@
             AddRequestTitleLabel = new Label();
             AvailableClientsFlowPanel = new FlowLayoutPanel();
             NotAvailableClientsFlowPanel = new FlowLayoutPanel();
+            RequestErrorProvider = new ErrorProvider(components);
+            NameOfRequestErrorLabel = new Label();
+            FinalPriceErrorLabel = new Label();
+            AdvancePriceErrorLabel = new Label();
+            ((System.ComponentModel.ISupportInitialize)RequestErrorProvider).BeginInit();
             SuspendLayout();
             // 
             // AddRequestButton
@@ -202,6 +208,44 @@
             NotAvailableClientsFlowPanel.Size = new Size(410, 216);
             NotAvailableClientsFlowPanel.TabIndex = 33;
             // 
+            // RequestErrorProvider
+            // 
+            RequestErrorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+            RequestErrorProvider.ContainerControl = this;
+            // 
+            // NameOfRequestErrorLabel
+            // 
+            NameOfRequestErrorLabel.AutoSize = true;
+            NameOfRequestErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            NameOfRequestErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            NameOfRequestErrorLabel.Location = new Point(45, 166);
+            NameOfRequestErrorLabel.Name = "NameOfRequestErrorLabel";
+            NameOfRequestErrorLabel.Size = new Size(114, 15);
+            NameOfRequestErrorLabel.TabIndex = 34;
+            NameOfRequestErrorLabel.Text = "Моля въведете име";
+            // 
+            // FinalPriceErrorLabel
+            // 
+            FinalPriceErrorLabel.AutoSize = true;
+            FinalPriceErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            FinalPriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            FinalPriceErrorLabel.Location = new Point(45, 297);
+            FinalPriceErrorLabel.Name = "FinalPriceErrorLabel";
+            FinalPriceErrorLabel.Size = new Size(171, 15);
+            FinalPriceErrorLabel.TabIndex = 35;
+            FinalPriceErrorLabel.Text = "Спазвайте формата на цената";
+            // 
+            // AdvancePriceErrorLabel
+            // 
+            AdvancePriceErrorLabel.AutoSize = true;
+            AdvancePriceErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            AdvancePriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            AdvancePriceErrorLabel.Location = new Point(45, 426);
+            AdvancePriceErrorLabel.Name = "AdvancePriceErrorLabel";
+            AdvancePriceErrorLabel.Size = new Size(171, 15);
+            AdvancePriceErrorLabel.TabIndex = 36;
+            AdvancePriceErrorLabel.Text = "Спазвайте формата на цената";
+            // 
             // AddRequestForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -209,6 +253,9 @@
             AutoSize = true;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(1047, 836);
+            Controls.Add(AdvancePriceErrorLabel);
+            Controls.Add(FinalPriceErrorLabel);
+            Controls.Add(NameOfRequestErrorLabel);
             Controls.Add(NotAvailableClientsFlowPanel);
             Controls.Add(AvailableClientsFlowPanel);
             Controls.Add(AddRequestButton);
@@ -230,6 +277,7 @@
             Name = "AddRequestForm";
             Text = "AddRequestForm";
             Load += AddRequestForm_Load;
+            ((System.ComponentModel.ISupportInitialize)RequestErrorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -254,5 +302,9 @@
         private FlowLayoutPanel AvailableClientsFlowPanel;
         private Panel panel1;
         private FlowLayoutPanel NotAvailableClientsFlowPanel;
+        private ErrorProvider RequestErrorProvider;
+        private Label NameOfRequestErrorLabel;
+        private Label AdvancePriceErrorLabel;
+        private Label FinalPriceErrorLabel;
     }
 }

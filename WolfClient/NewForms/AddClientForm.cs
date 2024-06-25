@@ -124,6 +124,9 @@ namespace WolfClient.NewForms
 
         private async void AddClientButton_Click(object sender, EventArgs e)
         {
+            EmailErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            PhoneErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            NameErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
             bool flag = false;
             ValidateModel();
             if (!string.IsNullOrEmpty(UsernameErrorProvider.GetError(EmailTextBox))) {

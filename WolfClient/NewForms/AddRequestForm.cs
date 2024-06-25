@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -24,6 +25,8 @@ namespace WolfClient.NewForms
 
         private GetRequestDTO _returnRequest;
         private List<GetClientDTO> _returnClients;
+
+        private CreateRequestDTO _requestValidator;
         public AddRequestForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient)
         {
             InitializeComponent();
@@ -32,8 +35,96 @@ namespace WolfClient.NewForms
             _adminClient = adminClient;
             _clientsList = new List<CreateClientDTO>();
             _availableClientsList = new List<GetClientDTO>();
+
+            _requestValidator = new CreateRequestDTO();
+
+            this.SetStyle(ControlStyles.DoubleBuffer |
+                      ControlStyles.UserPaint |
+                      ControlStyles.AllPaintingInWmPaint, true);
+            this.UpdateStyles();
         }
 
+
+
+        private void ValidateModel()
+        {
+            // Temporarily disable redrawing to reduce flickering
+            SuspendLayout();
+
+            try
+            {
+                // Clear previous error messages
+                RequestErrorProvider.Clear();
+
+                // Bind the form controls to the model properties
+                _requestValidator.RequestName = NameOfRequestTextBox.Text;
+
+                if (float.TryParse(PriceOfRequestTextBox.Text, out float price))
+                {
+                    _requestValidator.Price = price;
+                }
+                else
+                {
+                    RequestErrorProvider.SetError(PriceOfRequestTextBox, "Invalid Price format");
+                }
+
+                if (float.TryParse(AdvanceTextBox.Text, out float advance))
+                {
+                    _requestValidator.Advance = advance;
+                }
+                else
+                {
+                    RequestErrorProvider.SetError(AdvanceTextBox, "Invalid Advance format");
+                }
+                // Validate the model
+                IList<ValidationResult> memberNameResults = WolfClient.Validators.Validator.Validate(_requestValidator);
+
+                if (memberNameResults.Any())
+                {
+                    foreach (var result in memberNameResults)
+                    {
+                        foreach (var memberName in result.MemberNames)
+                        {
+                            // Map property names to control names
+                            string controlName = GetControlNameForMember(memberName);
+                            if (controlName != null)
+                            {
+                                Control control = Controls.Find(controlName, true).FirstOrDefault();
+                                if (control != null)
+                                {
+                                    RequestErrorProvider.SetError(control, result.ErrorMessage);
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // Clear all error messages if validation passes
+                    foreach (Control control in Controls)
+                    {
+                        RequestErrorProvider.SetError(control, string.Empty);
+                    }
+                }
+            }
+            finally
+            {
+                // Re-enable redrawing
+                ResumeLayout();
+            }
+        }
+
+        private string GetControlNameForMember(string memberName)
+        {
+            return memberName switch
+            {
+                nameof(_requestValidator.RequestName) => "NameOfRequestTextBox",
+                nameof(_requestValidator.Price) => "PriceOfRequestTextBox",
+                nameof(_requestValidator.Advance) => "AdvanceTextBox",
+                nameof(_requestValidator.Comments) => "CommentsRichTextBox",
+                _ => null
+            };
+        }
 
         private void AddNonExistingClientButton_Click(object sender, EventArgs e)
         {
@@ -101,6 +192,29 @@ namespace WolfClient.NewForms
 
         private async void AddRequestButton_Click(object sender, EventArgs e)
         {
+            ValidateModel();
+
+            NameOfRequestErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            AdvancePriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            FinalPriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            bool flag = false;
+            ValidateModel();
+            if (!string.IsNullOrEmpty(RequestErrorProvider.GetError(NameOfRequestTextBox)))
+            {
+                NameOfRequestErrorLabel.ForeColor = Color.Red;
+                flag = true;
+            }
+            if (!string.IsNullOrEmpty(RequestErrorProvider.GetError(PriceOfRequestTextBox)))
+            {
+                FinalPriceErrorLabel.ForeColor = Color.Red;
+                flag = true;
+            }
+            if (!string.IsNullOrEmpty(RequestErrorProvider.GetError(AdvanceTextBox)))
+            {
+                AdvancePriceErrorLabel.ForeColor = Color.Red;
+                flag = true;
+            }
+            if (flag) { return; }
             string paymentStatus = createPaymentStatus(AdvanceTextBox.Text, PriceOfRequestTextBox.Text);
             CreateRequestDTO createRequestDTO = new CreateRequestDTO()
             {

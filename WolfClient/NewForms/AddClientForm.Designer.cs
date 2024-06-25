@@ -204,6 +204,7 @@
             // 
             // UsernameErrorProvider
             // 
+            UsernameErrorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
             UsernameErrorProvider.ContainerControl = this;
             // 
             // NameErrorLabel
@@ -235,7 +236,7 @@
             EmailErrorLabel.AutoSize = true;
             EmailErrorLabel.BackColor = Color.Transparent;
             EmailErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
-            EmailErrorLabel.ForeColor = SystemColors.GradientInactiveCaption;
+            EmailErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
             EmailErrorLabel.Location = new Point(108, 611);
             EmailErrorLabel.Name = "EmailErrorLabel";
             EmailErrorLabel.Size = new Size(163, 15);
