@@ -17,6 +17,7 @@ using DataAccessLayer.Models;
 using WolfAPI.Services;
 using WolfAPI.Services.Interfaces;
 using AutoMapper;
+using System.Text.Json.Serialization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -87,6 +88,8 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
+
+
 builder.Services.AddAutoMapper(config =>
 {
     config.AddProfile<MappingProfile>();
@@ -106,9 +109,8 @@ builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IClient_RequestRelashionshipModelRepository, Client_RequestRelashionshipModelRepository>();
 builder.Services.AddScoped<IClient_RequestRelashionshipService, Client_RequestRelashionshipService>();
 
-
-
-
+builder.Services.AddScoped<IActivityTypesModelRepository, ActivityTypesModelRepository>();
+builder.Services.AddScoped<IActivityTypesService, ActivityTypesService>();
 
 var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);

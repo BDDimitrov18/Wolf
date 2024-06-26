@@ -28,34 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
+            AddActivitySubmit = new Button();
             richTextBox1 = new RichTextBox();
             label8 = new Label();
-            comboBox2 = new ComboBox();
-            label7 = new Label();
-            textBox3 = new TextBox();
+            ControlComboBox = new ComboBox();
+            ControlLabel = new Label();
             label6 = new Label();
             dateTimePicker1 = new DateTimePicker();
             label5 = new Label();
-            comboBox1 = new ComboBox();
+            ExecitantComboBox = new ComboBox();
             label4 = new Label();
-            textBox2 = new TextBox();
             label3 = new Label();
-            textBox1 = new TextBox();
             label2 = new Label();
             label1 = new Label();
+            ActivityComboBox = new ComboBox();
+            TaskComboBox = new ComboBox();
+            numericUpDown1 = new NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             SuspendLayout();
             // 
-            // button1
+            // AddActivitySubmit
             // 
-            button1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Location = new Point(606, 820);
-            button1.Margin = new Padding(3, 4, 3, 4);
-            button1.Name = "button1";
-            button1.Size = new Size(195, 56);
-            button1.TabIndex = 31;
-            button1.Text = "Добави дейност";
-            button1.UseVisualStyleBackColor = true;
+            AddActivitySubmit.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            AddActivitySubmit.Location = new Point(606, 820);
+            AddActivitySubmit.Margin = new Padding(3, 4, 3, 4);
+            AddActivitySubmit.Name = "AddActivitySubmit";
+            AddActivitySubmit.Size = new Size(195, 56);
+            AddActivitySubmit.TabIndex = 31;
+            AddActivitySubmit.Text = "Добави дейност";
+            AddActivitySubmit.UseVisualStyleBackColor = true;
+            AddActivitySubmit.Click += AddActivitySubmit_Click;
             // 
             // richTextBox1
             // 
@@ -76,32 +78,25 @@
             label8.TabIndex = 29;
             label8.Text = "Коментар";
             // 
-            // comboBox2
+            // ControlComboBox
             // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(61, 820);
-            comboBox2.Margin = new Padding(3, 4, 3, 4);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(302, 28);
-            comboBox2.TabIndex = 28;
+            ControlComboBox.FormattingEnabled = true;
+            ControlComboBox.Location = new Point(61, 820);
+            ControlComboBox.Margin = new Padding(3, 4, 3, 4);
+            ControlComboBox.Name = "ControlComboBox";
+            ControlComboBox.Size = new Size(302, 28);
+            ControlComboBox.TabIndex = 28;
+            ControlComboBox.SelectedIndexChanged += ControlComboBox_SelectedIndexChanged;
             // 
-            // label7
+            // ControlLabel
             // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label7.Location = new Point(56, 765);
-            label7.Name = "label7";
-            label7.Size = new Size(129, 25);
-            label7.TabIndex = 27;
-            label7.Text = "Изпълнител";
-            // 
-            // textBox3
-            // 
-            textBox3.Location = new Point(61, 694);
-            textBox3.Margin = new Padding(3, 4, 3, 4);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(302, 27);
-            textBox3.TabIndex = 26;
+            ControlLabel.AutoSize = true;
+            ControlLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            ControlLabel.Location = new Point(56, 765);
+            ControlLabel.Name = "ControlLabel";
+            ControlLabel.Size = new Size(92, 25);
+            ControlLabel.TabIndex = 27;
+            ControlLabel.Text = "Контрол";
             // 
             // label6
             // 
@@ -131,14 +126,14 @@
             label5.TabIndex = 23;
             label5.Text = "Дата";
             // 
-            // comboBox1
+            // ExecitantComboBox
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(61, 429);
-            comboBox1.Margin = new Padding(3, 4, 3, 4);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(302, 28);
-            comboBox1.TabIndex = 22;
+            ExecitantComboBox.FormattingEnabled = true;
+            ExecitantComboBox.Location = new Point(61, 429);
+            ExecitantComboBox.Margin = new Padding(3, 4, 3, 4);
+            ExecitantComboBox.Name = "ExecitantComboBox";
+            ExecitantComboBox.Size = new Size(302, 28);
+            ExecitantComboBox.TabIndex = 22;
             // 
             // label4
             // 
@@ -150,14 +145,6 @@
             label4.TabIndex = 21;
             label4.Text = "Изпълнител";
             // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(61, 306);
-            textBox2.Margin = new Padding(3, 4, 3, 4);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(302, 27);
-            textBox2.TabIndex = 20;
-            // 
             // label3
             // 
             label3.AutoSize = true;
@@ -167,14 +154,6 @@
             label3.Size = new Size(78, 25);
             label3.TabIndex = 19;
             label3.Text = "Задача";
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(61, 179);
-            textBox1.Margin = new Padding(3, 4, 3, 4);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(302, 27);
-            textBox1.TabIndex = 18;
             // 
             // label2
             // 
@@ -196,51 +175,80 @@
             label1.TabIndex = 16;
             label1.Text = "Добавяне На Дейност";
             // 
+            // ActivityComboBox
+            // 
+            ActivityComboBox.DropDownHeight = 230;
+            ActivityComboBox.FormattingEnabled = true;
+            ActivityComboBox.IntegralHeight = false;
+            ActivityComboBox.ItemHeight = 20;
+            ActivityComboBox.Location = new Point(61, 170);
+            ActivityComboBox.Name = "ActivityComboBox";
+            ActivityComboBox.Size = new Size(302, 28);
+            ActivityComboBox.TabIndex = 32;
+            ActivityComboBox.SelectedIndexChanged += ActivityComboBox_SelectedIndexChanged;
+            // 
+            // TaskComboBox
+            // 
+            TaskComboBox.FormattingEnabled = true;
+            TaskComboBox.Location = new Point(61, 307);
+            TaskComboBox.Name = "TaskComboBox";
+            TaskComboBox.Size = new Size(302, 28);
+            TaskComboBox.TabIndex = 33;
+            // 
+            // numericUpDown1
+            // 
+            numericUpDown1.Location = new Point(61, 695);
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.Size = new Size(302, 27);
+            numericUpDown1.TabIndex = 34;
+            // 
             // AddActivityTaskForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(853, 896);
-            Controls.Add(button1);
+            Controls.Add(numericUpDown1);
+            Controls.Add(TaskComboBox);
+            Controls.Add(ActivityComboBox);
+            Controls.Add(AddActivitySubmit);
             Controls.Add(richTextBox1);
             Controls.Add(label8);
-            Controls.Add(comboBox2);
-            Controls.Add(label7);
-            Controls.Add(textBox3);
+            Controls.Add(ControlComboBox);
+            Controls.Add(ControlLabel);
             Controls.Add(label6);
             Controls.Add(dateTimePicker1);
             Controls.Add(label5);
-            Controls.Add(comboBox1);
+            Controls.Add(ExecitantComboBox);
             Controls.Add(label4);
-            Controls.Add(textBox2);
             Controls.Add(label3);
-            Controls.Add(textBox1);
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "AddActivityTaskForm";
             Text = "AddActivityTaskForm";
+            Load += AddActivityTaskForm_Load;
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Button button1;
+        private Button AddActivitySubmit;
         private RichTextBox richTextBox1;
         private Label label8;
-        private ComboBox comboBox2;
-        private Label label7;
-        private TextBox textBox3;
+        private ComboBox ControlComboBox;
+        private Label ControlLabel;
         private Label label6;
         private DateTimePicker dateTimePicker1;
         private Label label5;
-        private ComboBox comboBox1;
+        private ComboBox ExecitantComboBox;
         private Label label4;
-        private TextBox textBox2;
         private Label label3;
-        private TextBox textBox1;
         private Label label2;
         private Label label1;
+        private ComboBox ActivityComboBox;
+        private ComboBox TaskComboBox;
+        private NumericUpDown numericUpDown1;
     }
 }

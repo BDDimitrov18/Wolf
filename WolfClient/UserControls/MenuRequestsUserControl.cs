@@ -20,43 +20,57 @@ namespace WolfClient.UserControls
         private readonly IApiClient _apiClient;
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
+        private readonly IDataService _dataService;
         private GetRequestDTO _selectedRequest;
-        private List<RequestWithClientsDTO> _fetchedLinkedClients;
         private List<GetRequestDTO> _fetchedRequests;
         private bool _isSelectedRequest;
-        public MenuRequestsUserControl(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient)
+
+        private bool loaded;
+        public MenuRequestsUserControl(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
             _apiClient = apiClient;
             _userClient = userClient;
             _adminClient = adminClient;
             _selectedRequest = null;
-            _fetchedLinkedClients = null;
             _fetchedRequests = null;
             _isSelectedRequest = false;
+            _dataService = dataService;
         }
         private void MenuRequestsUserControl_Load(object sender, EventArgs e)
         {
             RequestDataGridView.SelectionChanged += RequestDataGridView_SelectionChanged;
+            if (_apiClient.getLoginStatus())
+            {
+                setRequestsDataGridView();
+                loaded = true;
+            }
             LogInEvent.logIn += OnUserLoggedIn;
         }
-        private async void OnUserLoggedIn(object sender, LogInEventArgs e)
-        {
+
+        private async void setRequestsDataGridView() {
             var response = await _userClient.GetAllRequests();
 
             var employees = response.ResponseObj;
-            _fetchedRequests = response.ResponseObj;
-            _selectedRequest = _fetchedRequests[0];
-            var linkedClientsResponse = await _userClient.GetLinkedClients(_fetchedRequests);
-            if (linkedClientsResponse.IsSuccess)
+            if (response.ResponseObj.Count() > 0)
             {
-                _fetchedLinkedClients = linkedClientsResponse.ResponseObj;
+                _fetchedRequests = response.ResponseObj;
+                _selectedRequest = _fetchedRequests[0];
+                var linkedClientsResponse = await _userClient.GetLinkedClients(_fetchedRequests);
+                if (linkedClientsResponse.IsSuccess)
+                {
+                    _dataService.SetFetchedLinkedRequests(linkedClientsResponse.ResponseObj);
+                }
+                RequestDataGridView.AutoGenerateColumns = false;
+                RequestDataGridView.DataSource = employees;
+                RequestDataGridView.Refresh();
             }
-            RequestDataGridView.AutoGenerateColumns = false;
-            RequestDataGridView.DataSource = employees;
-            RequestDataGridView.Refresh();
-
-
+        }
+        private async void OnUserLoggedIn(object sender, LogInEventArgs e)
+        {
+            if (!loaded) {
+                setRequestsDataGridView();
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -120,14 +134,14 @@ namespace WolfClient.UserControls
         {
             try
             {
-                if (_selectedRequest == null || _fetchedLinkedClients == null)
+                if (_selectedRequest == null || _dataService.GetFetchedLinkedRequests() == null)
                 {
                     clientsDataGridView.DataSource = null;
                     clientsDataGridView.Refresh();
                     return;
                 }
 
-                var matchingRequestWithClients = _fetchedLinkedClients
+                var matchingRequestWithClients = _dataService.GetFetchedLinkedRequests()
                     .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _selectedRequest.RequestId);
 
                 if (clientsDataGridView.InvokeRequired)
@@ -190,7 +204,7 @@ namespace WolfClient.UserControls
                         clientDTOs = getClientDTOs,
                     };
 
-                    _fetchedLinkedClients.Add(requestWithClients);
+                    _dataService.AddSingleRequest(requestWithClients);
                     _fetchedRequests.Add(requestDTO);
                 }
             }
@@ -199,7 +213,7 @@ namespace WolfClient.UserControls
 
         private void button2_Click(object sender, EventArgs e)
         {
-            AddActivityTaskForm addActivityTaskForm = new AddActivityTaskForm();
+            AddActivityTaskForm addActivityTaskForm = new AddActivityTaskForm(_apiClient,_userClient,_adminClient,_dataService);
             addActivityTaskForm.Show();
         }
 
@@ -217,7 +231,7 @@ namespace WolfClient.UserControls
                 {
                     List<GetClientDTO> getClientDTOs = form.returnClientsList();
 
-                    foreach (RequestWithClientsDTO requestWithClientsDTO in _fetchedLinkedClients)
+                    foreach (RequestWithClientsDTO requestWithClientsDTO in _dataService.GetFetchedLinkedRequests())
                     {
                         if (requestWithClientsDTO.requestDTO.RequestId == _selectedRequest.RequestId)
                         {
@@ -234,7 +248,7 @@ namespace WolfClient.UserControls
         {
             var response = await _userClient.GetAllRequests();
             var linkedResponse = await _userClient.GetLinkedClients(response.ResponseObj);
-            _fetchedLinkedClients = linkedResponse.ResponseObj;
+            _dataService.SetFetchedLinkedRequests(linkedResponse.ResponseObj);
             if (response.IsSuccess)
             {
                 var requestDTOs = response.ResponseObj;
@@ -282,7 +296,7 @@ namespace WolfClient.UserControls
 
         private void ActivityAddButton_Click(object sender, EventArgs e)
         {
-            AddActivityTaskForm addActivityTaskForm = new AddActivityTaskForm();
+            AddActivityTaskForm addActivityTaskForm = new AddActivityTaskForm(_apiClient,_userClient,_adminClient,_dataService);
             addActivityTaskForm.Show();
         }
 

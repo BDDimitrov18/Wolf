@@ -5,7 +5,7 @@ namespace WolfAPI.Services.Interfaces
 {
     public interface IEmployeeService
     {
-        public void Add(CreateEmployeeDTO employeeDto);
+        public List<GetEmployeeDTO> Add(List<CreateEmployeeDTO> employeeDto);
 
         public IEnumerable<GetEmployeeDTO> GetAllEmployees();
     }

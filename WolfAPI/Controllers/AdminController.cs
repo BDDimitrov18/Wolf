@@ -9,7 +9,7 @@ using DTOS.DTO;
 
 namespace WolfApi.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -23,14 +23,10 @@ namespace WolfApi.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpGet("GetAllEmployees")]
-
-        public  IEnumerable<GetEmployeeDTO> GetAllEmployees(){
-            return  _employeeService.GetAllEmployees();         
-        }
+        
         [HttpPost("CreateEmployee")]
-        public void CreateEmployee([FromBody] CreateEmployeeDTO employeeDTO) {
-            _employeeService.Add(employeeDTO);
+        public List<GetEmployeeDTO> CreateEmployee([FromBody]List<CreateEmployeeDTO> employeeDTO) {
+            return _employeeService.Add(employeeDTO);
         }
     }
 }

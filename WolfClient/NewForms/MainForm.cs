@@ -20,13 +20,24 @@ namespace WolfClient.NewForms
         private readonly IApiClient _apiClient;
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
+        private readonly IDataService _dataService;
 
-        public MainForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient)
+        private MenuRequestsUserControl _requestsUserControl;
+        private MenuClientsUserControl _clientsUserControl;
+        private MenuEmployeesUserControl _employeesUserControl;
+
+        public MainForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService, 
+            MenuRequestsUserControl requestsUserControl, MenuClientsUserControl clientsUserControl, MenuEmployeesUserControl employeesUserControl)
         {
             InitializeComponent();
             _apiClient = apiClient;
             _userClient = userClient;
             _adminClient = adminClient;
+            _dataService = dataService;
+
+            _requestsUserControl = requestsUserControl;
+            _clientsUserControl = clientsUserControl;
+            _employeesUserControl = employeesUserControl;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -51,29 +62,30 @@ namespace WolfClient.NewForms
 
         private void RequestToolStripButton_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new MenuRequestsUserControl(_apiClient, _userClient, _adminClient));
+            LoadUserControl(_requestsUserControl);
         }
 
-        private void ObjectToolStripButton_Click(object sender, EventArgs e)
-        {
-            LoadUserControl(new MenuObjectsUserControl());
-        }
+        
 
         private void ClientsStripButton_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new MenuClientsUserControl(_apiClient, _userClient, _adminClient));
+            LoadUserControl(_clientsUserControl);
         }
 
         private void EmployeesStripLabel_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new MenuEmployeesUserControl(_apiClient, _userClient, _adminClient));
+            LoadUserControl(_employeesUserControl);
         }
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Hello, welcome to .NET 6 Windows Forms!");
             LoginForm loginForm = new LoginForm(_apiClient, _userClient, _adminClient);
             loginForm.Show();
+        }
+
+        private void panelContent_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

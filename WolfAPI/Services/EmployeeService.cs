@@ -19,10 +19,25 @@ namespace WolfAPI.Services
             _mapper = mapper;
         }
 
-        public void Add(CreateEmployeeDTO employeeDto)
+        public List<GetEmployeeDTO> Add(List<CreateEmployeeDTO> employeeDto)
         {
-            var employee = _mapper.Map<Employee>(employeeDto);
-            _employeeRepository.Add(employee);
+            List<GetEmployeeDTO> returnList = new List<GetEmployeeDTO>();
+            List<Employee> employees = new List<Employee>();
+            foreach (var employeeDTO in employeeDto)
+            {
+                var employee = _mapper.Map<Employee>(employeeDTO);
+                employees.Add(employee);
+            }
+
+            _employeeRepository.Add(employees);
+
+            foreach (var employee in employees)
+            {
+                var employeeDTO = _mapper.Map<GetEmployeeDTO>(employee);
+                returnList.Add(employeeDTO);
+            }
+
+            return returnList;
         }
 
         public IEnumerable<GetEmployeeDTO> GetAllEmployees() {

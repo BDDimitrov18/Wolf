@@ -27,7 +27,8 @@ namespace DataAccessLayer.Models
 
         public string? Comments { get; set; }
 
-        public string TaskName { get; set; }
+        public int TaskTypeId { get; set; }
+        public TaskType taskType { get; set; }
 
     }
 }

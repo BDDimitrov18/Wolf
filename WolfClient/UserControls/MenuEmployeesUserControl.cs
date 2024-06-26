@@ -18,17 +18,19 @@ namespace WolfClient.UserControls
         private readonly IApiClient _apiClient;
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
-        public MenuEmployeesUserControl(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient)
+        private readonly IDataService _dataService;
+        public MenuEmployeesUserControl(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
             _apiClient = apiClient;
             _userClient = userClient;
             _adminClient = adminClient;
+            _dataService = dataService;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddEmployeeForm addEmployeeForm = new AddEmployeeForm(_apiClient, _userClient, _adminClient);
+            AddEmployeeForm addEmployeeForm = new AddEmployeeForm(_apiClient, _userClient, _adminClient,_dataService);
             addEmployeeForm.Show();
         }
 
@@ -39,7 +41,7 @@ namespace WolfClient.UserControls
 
         private async void Refresh_Click(object sender, EventArgs e)
         {
-            var response = await _adminClient.GetAllEmployees();
+            var response = await _userClient.GetAllEmployees();
             if (response.IsSuccess)
             {
                 var employees = response.ResponseObj;

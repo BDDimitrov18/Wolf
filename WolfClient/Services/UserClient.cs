@@ -197,10 +197,10 @@ namespace WolfClient.Services
         }
 
         public async Task<ClientResponse<List<GetClient_RequestRelashionshipDTO>>> LinkClientsWithRequest(GetRequestDTO requestDTO, List<GetClientDTO> _clientsList) {
-            var compositeRequest = new CompositeRequestDTO
+            var compositeRequest = new RequestWithClientsDTO
             {
-                RequestDTO = requestDTO,
-                ClientsList = _clientsList
+                requestDTO = requestDTO,
+                clientDTOs = _clientsList
             };
 
             var jsonContent = JsonSerializer.Serialize(compositeRequest);
@@ -266,7 +266,7 @@ namespace WolfClient.Services
 
                     string jsonResponse = await response.Content.ReadAsStringAsync();
                     var employees = JsonSerializer.Deserialize<List<GetRequestDTO>>(jsonResponse, options);
-                    return new ClientResponse<List<GetRequestDTO>> { IsSuccess = true, Message = "Employee Created Successfully", ResponseObj = employees };
+                    return new ClientResponse<List<GetRequestDTO>> { IsSuccess = true, Message = "Requests fetched successfully!", ResponseObj = employees };
                 }
                 else
                 {
@@ -370,6 +370,103 @@ namespace WolfClient.Services
                     Message = ex.Message,
                     ResponseObj = null
                 };
+            }
+        }
+
+        public async Task<ClientResponse<List<GetActivityTypeDTO>>> GetActivityTypes() 
+        {
+
+            try
+            {
+                var response = await _client.GetAsync("https://localhost:44359/api/User/GetActivityTypes");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Activity Types fetched successfully!");
+
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var activityTypeDTOs = JsonSerializer.Deserialize<List<GetActivityTypeDTO>>(jsonResponse, options);
+                    return new ClientResponse<List<GetActivityTypeDTO>> { IsSuccess = true, Message = "ActivityType fetched Successfully", ResponseObj = activityTypeDTOs };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<List<GetActivityTypeDTO>> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to fetch ActivityTypes client: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<List<GetActivityTypeDTO>> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<List<GetActivityTypeDTO>> { IsSuccess = false, Message = "Network error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<List<GetActivityTypeDTO>> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<IEnumerable<GetEmployeeDTO>>> GetAllEmployees()
+        {
+            try
+            {
+                var response = await _client.GetAsync("https://localhost:44359/api/User/GetAllEmployees");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Employees fetched  successfully!");
+
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var employees = JsonSerializer.Deserialize<List<GetEmployeeDTO>>(jsonResponse, options);
+                    return new ClientResponse<IEnumerable<GetEmployeeDTO>> { IsSuccess = true, Message = "Employee Created Successfully", ResponseObj = employees };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<IEnumerable<GetEmployeeDTO>> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to fetch employees client: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<IEnumerable<GetEmployeeDTO>> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<IEnumerable<GetEmployeeDTO>> { IsSuccess = false, Message = "Network error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<IEnumerable<GetEmployeeDTO>> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
             }
         }
     }

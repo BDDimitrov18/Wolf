@@ -17,10 +17,9 @@ namespace DataAccessLayer.Models
 
         public int WorkObjectId { get; set; }
 
-        public string ActivityName { get; set; }
+        public int ActivityTypeID { get; set; }
+        public ActivityType ActivityType { get; set; }
 
         public TimeSpan ExpectedDuration { get; set; }
-
-       
     }
 }

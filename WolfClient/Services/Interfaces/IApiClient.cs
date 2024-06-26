@@ -12,6 +12,8 @@ namespace WolfClient.Services.Interfaces
     {
        void SetToken(string token);
        Task<ClientResponse<string>> GetJwtToken(LoginUserDto loginUser);
+
+        bool getLoginStatus();
     }
 
 }

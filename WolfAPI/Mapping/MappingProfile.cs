@@ -23,6 +23,20 @@ namespace WolfAPI.Mapping
             .ForMember(dest => dest.OwnershipType, opt => opt.MapFrom(src => src.OwnershipType))
             .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RequestId))
             .ForMember(dest => dest.ClientId, opt => opt.MapFrom(src => src.ClientId));
+
+            CreateMap<ActivityType, GetActivityTypeDTO>()
+            .ForMember(dest => dest.TaskTypes, opt => opt.MapFrom(src => src.TaskTypes));
+
+            // Mapping from TaskType to GetTaskTypeDTO
+            CreateMap<TaskType, GetTaskTypeDTO>();
+
+            // Reverse mapping from GetActivityTypeDTO to ActivityType
+            CreateMap<GetActivityTypeDTO, ActivityType>()
+                .ForMember(dest => dest.TaskTypes, opt => opt.MapFrom(src => src.TaskTypes));
+
+            // Reverse mapping from GetTaskTypeDTO to TaskType
+            CreateMap<GetTaskTypeDTO, TaskType>();
+
         }
     }
 }

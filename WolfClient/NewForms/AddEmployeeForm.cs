@@ -20,14 +20,16 @@ namespace WolfClient.NewForms
         private readonly IApiClient _apiClient;
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
+        private readonly IDataService _dataService;
 
         private CreateEmployeeDTO _employeeValidation;
-        public AddEmployeeForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient)
+        public AddEmployeeForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
             _apiClient = apiClient;
             _userClient = userClient;
             _adminClient = adminClient;
+            _dataService = dataService;
         }
 
         private void AddEmployeeForm_Load(object sender, EventArgs e)
@@ -151,8 +153,10 @@ namespace WolfClient.NewForms
                 phone = PhoneTextBox.Text,
                 Email = EmailTextBox.Text
             };
-
-            await _adminClient.AddEmployee(employee);
+            List<CreateEmployeeDTO> createEmployeeDTOs = new List<CreateEmployeeDTO>();
+            createEmployeeDTOs.Add(employee);
+           var response =  await _adminClient.AddEmployee(createEmployeeDTOs);
+            _dataService.AddMultipleEmployees(response.ResponseObj);
         }
 
         private void NameLabel_Click(object sender, EventArgs e)

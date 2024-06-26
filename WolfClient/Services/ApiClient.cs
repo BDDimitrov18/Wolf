@@ -16,15 +16,21 @@ namespace WolfClient.Services
     public class ApiClient : IApiClient
     {
         private readonly HttpClient _client;
+        private bool LoggedIn { get; set; }
 
         public ApiClient()
         {
             _client = new HttpClient();
         }
 
+        public bool getLoginStatus() {
+            return LoggedIn;
+        }
+
         public void SetToken(string token)
         {
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                LoggedIn= true;
         }
 
         public async Task<ClientResponse<string>> GetJwtToken(LoginUserDto loginUser)

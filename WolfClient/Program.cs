@@ -2,6 +2,7 @@
 using WolfClient.Services.Interfaces;
 using WolfClient.Services;
 using WolfClient.NewForms;
+using WolfClient.UserControls;
 
 namespace WolfClient
 {
@@ -16,10 +17,17 @@ namespace WolfClient
             IApiClient apiClient = new ApiClient(); // Replace SomeApiClient with your actual implementation
             IUserClient userClient = new UserClient(); // Replace SomeUserClient with your actual implementation
             IAdminClient adminClient = new AdminClient(); // Replace SomeAdminClient with your actual implementation
+            IDataService dataService = new DataService(); // Replace SomeAdminClient with your actual implementation
+
+            
+
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm(apiClient, userClient, adminClient));
+            MenuRequestsUserControl menuRequestsUserControl = new MenuRequestsUserControl(apiClient, userClient, adminClient, dataService);
+            MenuClientsUserControl menuClientsUserControl = new MenuClientsUserControl(apiClient, userClient, adminClient);
+            MenuEmployeesUserControl menuEmployeesUserControl = new MenuEmployeesUserControl(apiClient, userClient, adminClient,dataService);
+            Application.Run(new MainForm(apiClient, userClient, adminClient, dataService, menuRequestsUserControl, menuClientsUserControl, menuEmployeesUserControl));
         }
     }
 }

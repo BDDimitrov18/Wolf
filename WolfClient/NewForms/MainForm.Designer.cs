@@ -79,6 +79,7 @@ namespace WolfClient.NewForms
             panelContent.Name = "panelContent";
             panelContent.Size = new Size(1358, 620);
             panelContent.TabIndex = 21;
+            panelContent.Paint += panelContent_Paint;
             // 
             // LoginButton
             // 

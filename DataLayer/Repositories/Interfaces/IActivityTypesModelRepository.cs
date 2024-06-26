@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories.Interfaces
 {
-    public interface IEmployeeModelRepository
+    public interface IActivityTypesModelRepository
     {
-        public List<Employee> Add(List<Employee> employees);
-
-        public IEnumerable<Employee> GetAll();
+        public List<ActivityType> GetAllActivityTypes();
     }
 }

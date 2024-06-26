@@ -17,10 +17,14 @@ namespace DataAccessLayer.Repositories
             _WolfDbContext = wolfDbContext;
         }
 
-        public void Add(Employee employee)
+        public List<Employee> Add(List<Employee> employees)
         {
-            _WolfDbContext.Employees.Add(employee);
+            foreach (var employee in employees)
+            {
+                _WolfDbContext.Employees.Add(employee);
+            }
             _WolfDbContext.SaveChanges();
+            return employees;
         }
 
         public IEnumerable<Employee> GetAll()

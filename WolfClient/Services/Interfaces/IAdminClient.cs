@@ -12,9 +12,9 @@ namespace WolfClient.Services.Interfaces
     {
         public void SetToken(string token);
 
-        public Task<ClientResponse<HttpResponseMessage?>> AddEmployee(CreateEmployeeDTO employee);
+        public Task<ClientResponse<List<GetEmployeeDTO>?>> AddEmployee(List<CreateEmployeeDTO> employee);
 
-        public Task<ClientResponse<IEnumerable<GetEmployeeDTO>>> GetAllEmployees();
+        
     }
 
    
