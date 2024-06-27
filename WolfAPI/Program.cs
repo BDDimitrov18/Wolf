@@ -112,6 +112,17 @@ builder.Services.AddScoped<IClient_RequestRelashionshipService, Client_RequestRe
 builder.Services.AddScoped<IActivityTypesModelRepository, ActivityTypesModelRepository>();
 builder.Services.AddScoped<IActivityTypesService, ActivityTypesService>();
 
+builder.Services.AddScoped<ITaskTypeModelRepository, TaskTypeModelRepository>();
+builder.Services.AddScoped<ItaskTypesService, TaskTypeService>();
+
+builder.Services.AddScoped<IActivityModelRespository, ActivityModelRespository>();
+builder.Services.AddScoped<IAcitvityService, ActivityService>();
+
+builder.Services.AddScoped<ItaskModelRepository, TaskModelRepository>();
+builder.Services.AddScoped<ItaskServices, TaskService>();
+
+
+
 var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
 

@@ -13,6 +13,7 @@ namespace WolfClient.Services
 
         
         private List<RequestWithClientsDTO> _fetchedLinkedClients { get; set; }
+        private GetRequestDTO _selectedRequest { get; set; }
         private List<GetClientDTO> _clientDTOs { get; set; }
 
         private List<GetEmployeeDTO> _employeeDTOs { get; set; }
@@ -65,6 +66,15 @@ namespace WolfClient.Services
 
         public void AddMultipleEmployees(List<GetEmployeeDTO> employeeDTOs) {
             _employeeDTOs.AddRange(employeeDTOs);
+        }
+
+        public void SetSelectedRequest(GetRequestDTO getRequestDTO) { 
+            _selectedRequest = getRequestDTO;
+        }
+
+        public GetRequestDTO GetSelectedRequest()
+        {
+            return _selectedRequest;
         }
     }
 }

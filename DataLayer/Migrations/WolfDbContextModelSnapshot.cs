@@ -33,13 +33,10 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("ActivityTypeID")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("ExpectedDuration")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("ExpectedDuration")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("RequestId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkObjectId")
                         .HasColumnType("int");
 
                     b.HasKey("ActivityId");
@@ -1756,7 +1753,7 @@ namespace DataAccessLayer.Migrations
                     b.HasOne("DataAccessLayer.Models.ActivityType", "Activity")
                         .WithMany("TaskTypes")
                         .HasForeignKey("ActivityTypeID")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Activity");
@@ -1765,7 +1762,7 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.WorkTask", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.Activity", "Activity")
-                        .WithMany()
+                        .WithMany("Tasks")
                         .HasForeignKey("ActivityId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -1845,6 +1842,11 @@ namespace DataAccessLayer.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Activity", b =>
+                {
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.ActivityType", b =>

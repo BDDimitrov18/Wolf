@@ -10,5 +10,11 @@ namespace DataAccessLayer.Repositories.Interfaces
     public interface IActivityTypesModelRepository
     {
         public List<ActivityType> GetAllActivityTypes();
+
+        public Task AddActivityTypes(List<ActivityType> activityTypes);
+
+        public Task<ActivityType> GetActivityType(int id);
+
+
     }
 }

@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             AddActivitySubmit = new Button();
-            richTextBox1 = new RichTextBox();
+            CommentsRichTextBox = new RichTextBox();
             label8 = new Label();
             ControlComboBox = new ComboBox();
             ControlLabel = new Label();
             label6 = new Label();
-            dateTimePicker1 = new DateTimePicker();
+            startDateDateTimePicker = new DateTimePicker();
             label5 = new Label();
             ExecitantComboBox = new ComboBox();
             label4 = new Label();
@@ -43,8 +43,10 @@
             label1 = new Label();
             ActivityComboBox = new ComboBox();
             TaskComboBox = new ComboBox();
-            numericUpDown1 = new NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            DurationNumericUpDown = new NumericUpDown();
+            expectedDurationDateTime = new DateTimePicker();
+            label7 = new Label();
+            ((System.ComponentModel.ISupportInitialize)DurationNumericUpDown).BeginInit();
             SuspendLayout();
             // 
             // AddActivitySubmit
@@ -59,14 +61,14 @@
             AddActivitySubmit.UseVisualStyleBackColor = true;
             AddActivitySubmit.Click += AddActivitySubmit_Click;
             // 
-            // richTextBox1
+            // CommentsRichTextBox
             // 
-            richTextBox1.Location = new Point(487, 179);
-            richTextBox1.Margin = new Padding(3, 4, 3, 4);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(314, 279);
-            richTextBox1.TabIndex = 30;
-            richTextBox1.Text = "";
+            CommentsRichTextBox.Location = new Point(487, 179);
+            CommentsRichTextBox.Margin = new Padding(3, 4, 3, 4);
+            CommentsRichTextBox.Name = "CommentsRichTextBox";
+            CommentsRichTextBox.Size = new Size(314, 279);
+            CommentsRichTextBox.TabIndex = 30;
+            CommentsRichTextBox.Text = "";
             // 
             // label8
             // 
@@ -108,13 +110,13 @@
             label6.TabIndex = 25;
             label6.Text = "Времетраене";
             // 
-            // dateTimePicker1
+            // startDateDateTimePicker
             // 
-            dateTimePicker1.Location = new Point(61, 566);
-            dateTimePicker1.Margin = new Padding(3, 4, 3, 4);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(302, 27);
-            dateTimePicker1.TabIndex = 24;
+            startDateDateTimePicker.Location = new Point(61, 566);
+            startDateDateTimePicker.Margin = new Padding(3, 4, 3, 4);
+            startDateDateTimePicker.Name = "startDateDateTimePicker";
+            startDateDateTimePicker.Size = new Size(302, 27);
+            startDateDateTimePicker.TabIndex = 24;
             // 
             // label5
             // 
@@ -169,11 +171,11 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(220, 25);
+            label1.Location = new Point(186, 24);
             label1.Name = "label1";
-            label1.Size = new Size(409, 42);
+            label1.Size = new Size(508, 42);
             label1.TabIndex = 16;
-            label1.Text = "Добавяне На Дейност";
+            label1.Text = "Добавяне На Нова Дейност";
             // 
             // ActivityComboBox
             // 
@@ -195,12 +197,30 @@
             TaskComboBox.Size = new Size(302, 28);
             TaskComboBox.TabIndex = 33;
             // 
-            // numericUpDown1
+            // DurationNumericUpDown
             // 
-            numericUpDown1.Location = new Point(61, 695);
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(302, 27);
-            numericUpDown1.TabIndex = 34;
+            DurationNumericUpDown.Location = new Point(61, 695);
+            DurationNumericUpDown.Name = "DurationNumericUpDown";
+            DurationNumericUpDown.Size = new Size(302, 27);
+            DurationNumericUpDown.TabIndex = 34;
+            // 
+            // expectedDurationDateTime
+            // 
+            expectedDurationDateTime.Location = new Point(482, 566);
+            expectedDurationDateTime.Margin = new Padding(3, 4, 3, 4);
+            expectedDurationDateTime.Name = "expectedDurationDateTime";
+            expectedDurationDateTime.Size = new Size(302, 27);
+            expectedDurationDateTime.TabIndex = 36;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label7.Location = new Point(477, 503);
+            label7.Name = "label7";
+            label7.Size = new Size(217, 25);
+            label7.TabIndex = 35;
+            label7.Text = "Дата На приключване";
             // 
             // AddActivityTaskForm
             // 
@@ -208,16 +228,18 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(853, 896);
-            Controls.Add(numericUpDown1);
+            Controls.Add(expectedDurationDateTime);
+            Controls.Add(label7);
+            Controls.Add(DurationNumericUpDown);
             Controls.Add(TaskComboBox);
             Controls.Add(ActivityComboBox);
             Controls.Add(AddActivitySubmit);
-            Controls.Add(richTextBox1);
+            Controls.Add(CommentsRichTextBox);
             Controls.Add(label8);
             Controls.Add(ControlComboBox);
             Controls.Add(ControlLabel);
             Controls.Add(label6);
-            Controls.Add(dateTimePicker1);
+            Controls.Add(startDateDateTimePicker);
             Controls.Add(label5);
             Controls.Add(ExecitantComboBox);
             Controls.Add(label4);
@@ -227,7 +249,7 @@
             Name = "AddActivityTaskForm";
             Text = "AddActivityTaskForm";
             Load += AddActivityTaskForm_Load;
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)DurationNumericUpDown).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -235,12 +257,12 @@
         #endregion
 
         private Button AddActivitySubmit;
-        private RichTextBox richTextBox1;
+        private RichTextBox CommentsRichTextBox;
         private Label label8;
         private ComboBox ControlComboBox;
         private Label ControlLabel;
         private Label label6;
-        private DateTimePicker dateTimePicker1;
+        private DateTimePicker startDateDateTimePicker;
         private Label label5;
         private ComboBox ExecitantComboBox;
         private Label label4;
@@ -249,6 +271,8 @@
         private Label label1;
         private ComboBox ActivityComboBox;
         private ComboBox TaskComboBox;
-        private NumericUpDown numericUpDown1;
+        private NumericUpDown DurationNumericUpDown;
+        private DateTimePicker expectedDurationDateTime;
+        private Label label7;
     }
 }

@@ -23,5 +23,15 @@ namespace DataAccessLayer.Repositories
                                 .Include(at => at.TaskTypes)
                                 .ToList();
         }
+
+        public async Task AddActivityTypes(List<ActivityType> activityTypes) { 
+            _WolfDbContext.activityTypes.AddRange(activityTypes);
+            await _WolfDbContext.SaveChangesAsync();
+        }
+
+        public async Task<ActivityType> GetActivityType(int id)
+        {
+            return await _WolfDbContext.activityTypes.FindAsync(id);
+        }
     }
 }

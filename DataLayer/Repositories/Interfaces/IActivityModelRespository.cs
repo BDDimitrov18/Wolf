@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories.Interfaces
 {
-    public interface IRequestModelRepository
+    public interface IActivityModelRespository
     {
-        public void Add(List<Request> requests);
-        public IEnumerable<Request> GetAll();
-
-        
-        
+        public Task CreateActivity(Activity activity);
+        public List<DataAccessLayer.Models.Activity> FindLinkedActivity(Request request);
     }
 }

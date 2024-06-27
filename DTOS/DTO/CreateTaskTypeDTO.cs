@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DTOS.DTO
 {
-    public class CreateActivityTypeDTO
+    public class CreateTaskTypeDTO
     {
-        public string ActivityTypeName { get; set; }
+
+        public string TaskTypeName { get; set; }
+
+        public int ActivityTypeID { get; set; }
 
     }
 }

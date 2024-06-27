@@ -42,5 +42,11 @@ namespace WolfAPI.Services
             }
             return activityTypeDTOs;
         }
+
+        public async Task<GetActivityTypeDTO> GetActivityType(int id)
+        {
+            var ActivityType = await _activityTypesModelRepository.GetActivityType(id);
+            return _mapper.Map<GetActivityTypeDTO>(ActivityType);
+        }
     }
 }

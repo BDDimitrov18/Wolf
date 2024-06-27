@@ -200,7 +200,8 @@ namespace WolfClient.Services
             var compositeRequest = new RequestWithClientsDTO
             {
                 requestDTO = requestDTO,
-                clientDTOs = _clientsList
+                clientDTOs = _clientsList,
+                activityDTOs = null
             };
 
             var jsonContent = JsonSerializer.Serialize(compositeRequest);
@@ -297,7 +298,7 @@ namespace WolfClient.Services
             }
         }
 
-        public async Task<ClientResponse<List<RequestWithClientsDTO>>> GetLinkedClients(List<GetRequestDTO> requestDTOs)
+        public async Task<ClientResponse<List<RequestWithClientsDTO>>> GetLinked(List<GetRequestDTO> requestDTOs)
         {
             try
             {
@@ -467,6 +468,198 @@ namespace WolfClient.Services
             {
                 MessageBox.Show($"Exception occurred: {ex.Message}");
                 return new ClientResponse<IEnumerable<GetEmployeeDTO>> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<List<GetActivityTypeDTO>>> AddActivityTypes(List<CreateActivityTypeDTO> activityTypeDTOs)
+        {
+            var jsonContent = JsonSerializer.Serialize(activityTypeDTOs);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateActivityTypes", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("ActivityTypes added successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseRequests = JsonSerializer.Deserialize<List<GetActivityTypeDTO>>(jsonResponse, options);
+                    return new ClientResponse<List<GetActivityTypeDTO>> { IsSuccess = true, Message = "ActivityTypes Created Successfully", ResponseObj = responseRequests };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<List<GetActivityTypeDTO>> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to add AddActivityType: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<List<GetActivityTypeDTO>> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<List<GetActivityTypeDTO>> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<List<GetActivityTypeDTO>> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<GetActivityTypeDTO>> AddTaskTypes(List<CreateTaskTypeDTO> taskTypesDTOs)
+        {
+            var jsonContent = JsonSerializer.Serialize(taskTypesDTOs);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateTaskType", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("TaskTypes added successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseTasks = JsonSerializer.Deserialize<GetActivityTypeDTO>(jsonResponse, options);
+                    return new ClientResponse<GetActivityTypeDTO> { IsSuccess = true, Message = "TaskTypes Created Successfully", ResponseObj = responseTasks };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<GetActivityTypeDTO> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to add TaskType: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<GetActivityTypeDTO> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<GetActivityTypeDTO> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<GetActivityTypeDTO> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<GetActivityDTO>> AddActivity(CreateActivityDTO activityDTO)
+        {
+            var jsonContent = JsonSerializer.Serialize(activityDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateActivity", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Activity added successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseActivity = JsonSerializer.Deserialize<GetActivityDTO>(jsonResponse, options);
+                    return new ClientResponse<GetActivityDTO> { IsSuccess = true, Message = "Acitivity Created Successfully", ResponseObj = responseActivity };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<GetActivityDTO> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to add TaskType: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<GetActivityDTO> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<GetActivityDTO> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<GetActivityDTO> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+
+        }
+
+        public async Task<ClientResponse<GetActivityDTO>> AddTask(CreateTaskDTO taskDTO) {
+            var jsonContent = JsonSerializer.Serialize(taskDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateTask", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Tasks added successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseTasks = JsonSerializer.Deserialize<GetActivityDTO>(jsonResponse, options);
+                    return new ClientResponse<GetActivityDTO> { IsSuccess = true, Message = "Task Created Successfully", ResponseObj = responseTasks };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<GetActivityDTO> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to add Task: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<GetActivityDTO> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<GetActivityDTO> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<GetActivityDTO> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
             }
         }
     }

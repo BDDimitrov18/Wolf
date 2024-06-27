@@ -46,27 +46,10 @@ namespace WolfAPI.Services
                 var clientDTO = _mapper.Map<GetClientDTO>(client);
                 createClientDTOs.Add(clientDTO);
             } 
+
             return createClientDTOs;
         }
 
-        public List<RequestWithClientsDTO> GetLinkedClients(List<GetRequestDTO> requestsDTO)
-        {
-            List<RequestWithClientsDTO> requestWithClientsDTOs = new List<RequestWithClientsDTO>();
-            foreach (var requestDTO in requestsDTO)
-            {
-                List<Client> clients = _clientRepository.GetLinked(_mapper.Map<Request>(requestDTO));
-                List<GetClientDTO> getClientDTOs = new List<GetClientDTO>();
-                foreach (Client client in clients)
-                {
-                    getClientDTOs.Add(_mapper.Map<GetClientDTO>(client));
-                }
-                RequestWithClientsDTO requestLink = new RequestWithClientsDTO() { 
-                    requestDTO = requestDTO,
-                    clientDTOs = getClientDTOs,
-                };
-                requestWithClientsDTOs.Add(requestLink);
-            }
-            return requestWithClientsDTOs; 
-        }
+        
     }
 }

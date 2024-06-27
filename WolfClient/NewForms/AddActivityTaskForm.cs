@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -74,7 +76,7 @@ namespace WolfClient.NewForms
         }
         private bool ValidateTaskComboBox()
         {
-            if (ActivityComboBox.SelectedItem is GetActivityTypeDTO selectedItem)
+            if (TaskComboBox.SelectedItem is GetTaskTypeDTO selectedItem)
             {
                 return true;
             }
@@ -101,9 +103,76 @@ namespace WolfClient.NewForms
             }
         }
 
-        private void AddActivitySubmit_Click(object sender, EventArgs e)
+        private async void AddActivitySubmit_Click(object sender, EventArgs e)
         {
+            if (ValidateActivityComboBox())
+            {
+                if (ValidateTaskComboBox())
+                {
+                    
+                }
+                else
+                {
+                    GetActivityTypeDTO activityTypeDTO = ActivityComboBox.SelectedItem as GetActivityTypeDTO;
+                    CreateTaskTypeDTO createTaskTypeDTO = new CreateTaskTypeDTO()
+                    {
+                        ActivityTypeID = activityTypeDTO.ActivityTypeID,
+                        TaskTypeName = TaskComboBox.Text,
+                    };
+                    List<CreateTaskTypeDTO> listTaksTypesDTO = new List<CreateTaskTypeDTO>();
+                    listTaksTypesDTO.Add(createTaskTypeDTO);
+                    var createTaskTypeResponse = await _userClient.AddTaskTypes(listTaksTypesDTO);
+                    //Create Activity and task Logik
 
+                    CreateActivityDTO createActivityDTO = new CreateActivityDTO()
+                    {
+                        RequestId = _dataService.GetSelectedRequest().RequestId,
+                        ActivityTypeID = activityTypeDTO.ActivityTypeID,
+                        ExpectedDuration = expectedDurationDateTime.Value,
+                    };
+
+                    //DOESNT MAP THE TASKS PROPERLY
+                    var responseActivityDTO = await _userClient.AddActivity(createActivityDTO);
+
+                    CreateTaskDTO createTaskDTO = new CreateTaskDTO()
+                    {
+                        ActivityId = responseActivityDTO.ResponseObj.ActivityId,
+                        Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
+                        StartDate = startDateDateTimePicker.Value,
+                        ExecutantId = (int)ExecitantComboBox.SelectedValue,
+                        ControlId = (int)ControlComboBox.SelectedValue,
+                        Comments = CommentsRichTextBox.Text,
+                        TaskTypeId = responseActivityDTO.ResponseObj.Tasks.First().TaskId,
+                    };
+
+                    var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
+
+
+                    RequestWithClientsDTO requestWithClientsDTO = _dataService.GetFetchedLinkedRequests().Where(opt => opt.requestDTO == _dataService.GetSelectedRequest()).FirstOrDefault();
+                    requestWithClientsDTO.activityDTOs.Add(responseActivityFromTask.ResponseObj);
+
+                    Dispose();
+                }
+            }
+            else
+            {
+                //create new ActivityType with corresponding Task
+                CreateActivityTypeDTO activityTypeDTO = new CreateActivityTypeDTO() { 
+                    ActivityTypeName = ActivityComboBox.Text,
+                };
+                List<CreateActivityTypeDTO> listActivityTypesDTO = new List<CreateActivityTypeDTO>();
+                listActivityTypesDTO.Add(activityTypeDTO);
+                var createActivityTypeResponse = await _userClient.AddActivityTypes(listActivityTypesDTO);
+                CreateTaskTypeDTO createTaskTypeDTO = new CreateTaskTypeDTO() { 
+                    ActivityTypeID = createActivityTypeResponse.ResponseObj[0].ActivityTypeID,
+                    TaskTypeName = TaskComboBox.Text,
+                };
+                List<CreateTaskTypeDTO> listTaksTypesDTO = new List<CreateTaskTypeDTO>();
+                listTaksTypesDTO.Add(createTaskTypeDTO);
+                var createTaskTypeResponse = await _userClient.AddTaskTypes(listTaksTypesDTO);
+
+                //Create Activity and task Logik
+            }
         }
     }
 }

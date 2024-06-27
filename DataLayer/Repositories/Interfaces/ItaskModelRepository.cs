@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories.Interfaces
 {
-    public interface IRequestModelRepository
+    public interface ItaskModelRepository
     {
-        public void Add(List<Request> requests);
-        public IEnumerable<Request> GetAll();
-
-        
-        
+        public Task createTask(WorkTask task);
     }
 }

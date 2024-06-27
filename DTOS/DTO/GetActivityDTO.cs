@@ -5,21 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.Models
+namespace DTOS.DTO
 {
-    public class Activity
+    public class GetActivityDTO
     {
-        [Key]
         public int ActivityId { get; set; }
 
         public int RequestId { get; set; }
-        public Request Request { get; set; }
+        public GetRequestDTO Request { get; set; }
 
         public int ActivityTypeID { get; set; }
-        public ActivityType ActivityType { get; set; }
+        public GetActivityTypeDTO ActivityType { get; set; }
 
         public DateTime ExpectedDuration { get; set; }
 
-        public ICollection<WorkTask> Tasks { get; set; }
+        public ICollection<GetTaskDTO> Tasks { get; set; }
     }
 }

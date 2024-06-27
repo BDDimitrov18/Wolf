@@ -21,10 +21,19 @@ namespace WolfClient.Services.Interfaces
 
         public Task<ClientResponse<List<GetRequestDTO>>> GetAllRequests();
 
-        public Task<ClientResponse<List<RequestWithClientsDTO>>> GetLinkedClients(List<GetRequestDTO> requestDTOs);
+        public Task<ClientResponse<List<RequestWithClientsDTO>>> GetLinked(List<GetRequestDTO> requestDTOs);
 
         public Task<ClientResponse<List<GetActivityTypeDTO>>> GetActivityTypes();
 
         public Task<ClientResponse<IEnumerable<GetEmployeeDTO>>> GetAllEmployees();
+
+        public Task<ClientResponse<List<GetActivityTypeDTO>>> AddActivityTypes(List<CreateActivityTypeDTO> activityTypeDTOs);
+
+        public Task<ClientResponse<GetActivityTypeDTO>> AddTaskTypes(List<CreateTaskTypeDTO> taskTypesDTOs);
+
+        public Task<ClientResponse<GetActivityDTO>> AddActivity(CreateActivityDTO activityDTO);
+
+        public Task<ClientResponse<GetActivityDTO>> AddTask(CreateTaskDTO taskDTO);
+
     }
 }

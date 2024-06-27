@@ -151,7 +151,8 @@ namespace DataAccessLayer.Migrations
                         name: "FK_taskTypes_activityTypes_ActivityTypeID",
                         column: x => x.ActivityTypeID,
                         principalTable: "activityTypes",
-                        principalColumn: "ActivityTypeID");
+                        principalColumn: "ActivityTypeID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -267,9 +268,8 @@ namespace DataAccessLayer.Migrations
                     ActivityId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RequestId = table.Column<int>(type: "int", nullable: false),
-                    WorkObjectId = table.Column<int>(type: "int", nullable: false),
                     ActivityTypeID = table.Column<int>(type: "int", nullable: false),
-                    ExpectedDuration = table.Column<TimeSpan>(type: "time", nullable: false)
+                    ExpectedDuration = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

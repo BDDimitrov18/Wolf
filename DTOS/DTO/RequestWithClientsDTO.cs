@@ -11,5 +11,7 @@ namespace DTOS.DTO
         public GetRequestDTO requestDTO { get; set; }
 
         public List<GetClientDTO> clientDTOs { get; set; }
+
+        public List<GetActivityDTO>? activityDTOs { get; set; }
     }
 }

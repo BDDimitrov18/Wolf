@@ -56,7 +56,7 @@ namespace WolfClient.UserControls
             {
                 _fetchedRequests = response.ResponseObj;
                 _selectedRequest = _fetchedRequests[0];
-                var linkedClientsResponse = await _userClient.GetLinkedClients(_fetchedRequests);
+                var linkedClientsResponse = await _userClient.GetLinked(_fetchedRequests);
                 if (linkedClientsResponse.IsSuccess)
                 {
                     _dataService.SetFetchedLinkedRequests(linkedClientsResponse.ResponseObj);
@@ -113,6 +113,7 @@ namespace WolfClient.UserControls
                 {
                     _selectedRequest = selectedRequest;
                     _isSelectedRequest = true;
+                    _dataService.SetSelectedRequest(_selectedRequest);
                 }
             }
             else
@@ -247,7 +248,7 @@ namespace WolfClient.UserControls
         private async void RefreshButton_Click(object sender, EventArgs e)
         {
             var response = await _userClient.GetAllRequests();
-            var linkedResponse = await _userClient.GetLinkedClients(response.ResponseObj);
+            var linkedResponse = await _userClient.GetLinked(response.ResponseObj);
             _dataService.SetFetchedLinkedRequests(linkedResponse.ResponseObj);
             if (response.IsSuccess)
             {

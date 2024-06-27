@@ -9,6 +9,5 @@ namespace WolfAPI.Services.Interfaces
 
         public IEnumerable<GetClientDTO> GetAllClients();
 
-        public List<RequestWithClientsDTO> GetLinkedClients(List<GetRequestDTO> requestsDTO);
     }
 }

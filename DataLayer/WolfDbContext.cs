@@ -70,55 +70,53 @@ namespace DataAccessLayer
 
             #region // Configure Activity
             modelBuilder.Entity<Activity>()
-                .HasOne(a => a.Request)
-                .WithMany(r => r.Activities)
-                .HasForeignKey(a => a.RequestId)
-                .OnDelete(DeleteBehavior.NoAction);
+        .HasOne(a => a.Request)
+        .WithMany(r => r.Activities)
+        .HasForeignKey(a => a.RequestId)
+        .OnDelete(DeleteBehavior.NoAction);
 
+            // Configure Activity - ActivityType relationship
             modelBuilder.Entity<Activity>()
                 .HasOne(a => a.ActivityType)
                 .WithMany()
                 .HasForeignKey(a => a.ActivityTypeID)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // Configure ActivityType
+            // Configure ActivityType - TaskType relationship
             modelBuilder.Entity<ActivityType>()
                 .HasMany(at => at.TaskTypes)
                 .WithOne(tt => tt.Activity)
                 .HasForeignKey(tt => tt.ActivityTypeID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Configure WorkTask
-            modelBuilder.Entity<WorkTask>()
-                .HasOne(wt => wt.Activity)
-                .WithMany()
+            // Configure Activity - WorkTask relationship
+            modelBuilder.Entity<Activity>()
+                .HasMany(a => a.Tasks)
+                .WithOne(wt => wt.Activity)
                 .HasForeignKey(wt => wt.ActivityId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            // Configure WorkTask - Executant relationship
             modelBuilder.Entity<WorkTask>()
                 .HasOne(wt => wt.Executant)
                 .WithMany()
                 .HasForeignKey(wt => wt.ExecutantId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            // Configure WorkTask - Control relationship
             modelBuilder.Entity<WorkTask>()
                 .HasOne(wt => wt.Control)
                 .WithMany()
                 .HasForeignKey(wt => wt.ControlId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            // Configure WorkTask - TaskType relationship
             modelBuilder.Entity<WorkTask>()
                 .HasOne(wt => wt.taskType)
                 .WithMany()
                 .HasForeignKey(wt => wt.TaskTypeId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // Configure TaskType
-            modelBuilder.Entity<TaskType>()
-                .HasOne(tt => tt.Activity)
-                .WithMany(at => at.TaskTypes)
-                .HasForeignKey(tt => tt.ActivityTypeID)
-                .OnDelete(DeleteBehavior.NoAction);
 
             #endregion
 
