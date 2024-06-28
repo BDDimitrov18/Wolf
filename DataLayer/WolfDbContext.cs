@@ -34,8 +34,6 @@ namespace DataAccessLayer
 
         public DbSet<Client_RequestRelashionship> Client_RequestRelashionships { get; set; }
 
-        public DbSet<Request_PlotRelashionship> Request_PlotRelashionships { get; set; }
-
         public DbSet<ActivityType> activityTypes { get; set; }
 
         public DbSet<TaskType> taskTypes   { get; set; }
@@ -69,11 +67,12 @@ namespace DataAccessLayer
             #endregion
 
             #region // Configure Activity
+            // Configure Activity - Request relationship
             modelBuilder.Entity<Activity>()
-        .HasOne(a => a.Request)
-        .WithMany(r => r.Activities)
-        .HasForeignKey(a => a.RequestId)
-        .OnDelete(DeleteBehavior.NoAction);
+                .HasOne(a => a.Request)
+                .WithMany(r => r.Activities)
+                .HasForeignKey(a => a.RequestId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             // Configure Activity - ActivityType relationship
             modelBuilder.Entity<Activity>()
@@ -117,22 +116,12 @@ namespace DataAccessLayer
                 .HasForeignKey(wt => wt.TaskTypeId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-
-            #endregion
-
-            #region Request_PlotRelashionShip
-            modelBuilder.Entity<Request_PlotRelashionship>()
-             .HasKey(rp => new { rp.requestId, rp.plotId });
-
-            modelBuilder.Entity<Request_PlotRelashionship>()
-                .HasOne(rp => rp.Request)
-                .WithMany(r => r.request_PlotRelashionships)
-                .HasForeignKey(rp => rp.requestId);
-
-            modelBuilder.Entity<Request_PlotRelashionship>()
-                .HasOne(rp => rp.plot)
-                .WithMany(p => p.request_PlotRelashionships)
-                .HasForeignKey(rp => rp.plotId);
+            // Configure Activity - Plot relationship
+            modelBuilder.Entity<Activity>()
+                .HasMany(a => a.Plots)
+                .WithOne(p => p.Activity)
+                .HasForeignKey(p => p.ActivityId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
 

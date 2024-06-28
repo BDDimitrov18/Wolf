@@ -53,9 +53,9 @@
             PasswordLabel.AutoSize = true;
             PasswordLabel.Location = new Point(301, 196);
             PasswordLabel.Name = "PasswordLabel";
-            PasswordLabel.Size = new Size(72, 20);
+            PasswordLabel.Size = new Size(62, 20);
             PasswordLabel.TabIndex = 13;
-            PasswordLabel.Text = "password";
+            PasswordLabel.Text = "Парола";
             // 
             // PasswordTextBox
             // 
@@ -72,9 +72,10 @@
             usernameLabel.AutoSize = true;
             usernameLabel.Location = new Point(301, 125);
             usernameLabel.Name = "usernameLabel";
-            usernameLabel.Size = new Size(75, 20);
+            usernameLabel.Size = new Size(149, 20);
             usernameLabel.TabIndex = 11;
-            usernameLabel.Text = "Username";
+            usernameLabel.Text = "Потребителско Име";
+            usernameLabel.Click += usernameLabel_Click;
             // 
             // userNameTextBox
             // 

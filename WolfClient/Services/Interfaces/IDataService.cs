@@ -34,5 +34,7 @@ namespace WolfClient.Services.Interfaces
 
         public void AddActivityToTheList(GetActivityDTO activityDTO);
 
+        public void ReplaceActivity(GetActivityDTO activityDTO);
+
     }
 }

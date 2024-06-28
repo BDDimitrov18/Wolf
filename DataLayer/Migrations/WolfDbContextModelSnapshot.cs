@@ -332,6 +332,9 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlotId"), 1L, 1);
 
+                    b.Property<int>("ActivityId")
+                        .HasColumnType("int");
+
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
@@ -361,6 +364,8 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PlotId");
+
+                    b.HasIndex("ActivityId");
 
                     b.ToTable("Plots");
                 });
@@ -393,21 +398,6 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("RequestId");
 
                     b.ToTable("Requests");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.Request_PlotRelashionship", b =>
-                {
-                    b.Property<int>("requestId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("plotId")
-                        .HasColumnType("int");
-
-                    b.HasKey("requestId", "plotId");
-
-                    b.HasIndex("plotId");
-
-                    b.ToTable("Request_PlotRelashionships");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.TaskType", b =>
@@ -1729,23 +1719,15 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Request");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Request_PlotRelashionship", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.Plot", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.Plot", "plot")
-                        .WithMany("request_PlotRelashionships")
-                        .HasForeignKey("plotId")
+                    b.HasOne("DataAccessLayer.Models.Activity", "Activity")
+                        .WithMany("Plots")
+                        .HasForeignKey("ActivityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccessLayer.Models.Request", "Request")
-                        .WithMany("request_PlotRelashionships")
-                        .HasForeignKey("requestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Request");
-
-                    b.Navigation("plot");
+                    b.Navigation("Activity");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.TaskType", b =>
@@ -1846,6 +1828,8 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.Activity", b =>
                 {
+                    b.Navigation("Plots");
+
                     b.Navigation("Tasks");
                 });
 
@@ -1859,11 +1843,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Client_RequestRelationships");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Plot", b =>
-                {
-                    b.Navigation("request_PlotRelashionships");
-                });
-
             modelBuilder.Entity("DataAccessLayer.Models.Request", b =>
                 {
                     b.Navigation("Activities");
@@ -1871,8 +1850,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Client_RequestRelationships");
 
                     b.Navigation("Invoices");
-
-                    b.Navigation("request_PlotRelashionships");
                 });
 #pragma warning restore 612, 618
         }

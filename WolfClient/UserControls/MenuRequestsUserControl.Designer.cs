@@ -30,7 +30,7 @@ namespace WolfClient.UserControls
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             RequestDataGridView = new DataGridView();
             RequestId = new DataGridViewTextBoxColumn();
             RequestName = new DataGridViewTextBoxColumn();
@@ -54,6 +54,13 @@ namespace WolfClient.UserControls
             panel2 = new Panel();
             ActivityTableLabel = new Label();
             ActivityDataGridView = new DataGridView();
+            Activity = new DataGridViewTextBoxColumn();
+            Task = new DataGridViewTextBoxColumn();
+            Executant = new DataGridViewTextBoxColumn();
+            StartDate = new DataGridViewTextBoxColumn();
+            Duration = new DataGridViewTextBoxColumn();
+            Control = new DataGridViewTextBoxColumn();
+            Comment = new DataGridViewTextBoxColumn();
             ActivityAddButton = new Button();
             tabPage1 = new TabPage();
             panel4 = new Panel();
@@ -84,13 +91,6 @@ namespace WolfClient.UserControls
             locality = new DataGridViewTextBoxColumn();
             PlotsAddButton = new Button();
             DestinationOfPlotLabel = new Label();
-            Activity = new DataGridViewTextBoxColumn();
-            Task = new DataGridViewTextBoxColumn();
-            Executant = new DataGridViewTextBoxColumn();
-            StartDate = new DataGridViewTextBoxColumn();
-            Duration = new DataGridViewTextBoxColumn();
-            Control = new DataGridViewTextBoxColumn();
-            Comment = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)RequestDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).BeginInit();
             panel1.SuspendLayout();
@@ -172,14 +172,14 @@ namespace WolfClient.UserControls
             RequestTableLabel.AutoSize = true;
             RequestTableLabel.Location = new Point(-3, 52);
             RequestTableLabel.Name = "RequestTableLabel";
-            RequestTableLabel.Size = new Size(59, 20);
+            RequestTableLabel.Size = new Size(71, 20);
             RequestTableLabel.TabIndex = 1;
-            RequestTableLabel.Text = "Обекти";
+            RequestTableLabel.Text = "Поръчки";
             RequestTableLabel.Click += label1_Click_1;
             // 
             // RequestAddButton
             // 
-            RequestAddButton.Location = new Point(57, 49);
+            RequestAddButton.Location = new Point(70, 49);
             RequestAddButton.Margin = new Padding(3, 4, 3, 4);
             RequestAddButton.Name = "RequestAddButton";
             RequestAddButton.Size = new Size(26, 29);
@@ -195,9 +195,9 @@ namespace WolfClient.UserControls
             RequestTitleLabel.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
             RequestTitleLabel.Location = new Point(604, 42);
             RequestTitleLabel.Name = "RequestTitleLabel";
-            RequestTitleLabel.Size = new Size(146, 42);
+            RequestTitleLabel.Size = new Size(170, 42);
             RequestTitleLabel.TabIndex = 6;
-            RequestTitleLabel.Text = "Обекти";
+            RequestTitleLabel.Text = "Поръчки";
             RequestTitleLabel.Click += label3_Click;
             // 
             // label5
@@ -291,7 +291,7 @@ namespace WolfClient.UserControls
             // 
             // RefreshButton
             // 
-            RefreshButton.Location = new Point(89, 49);
+            RefreshButton.Location = new Point(102, 49);
             RefreshButton.Name = "RefreshButton";
             RefreshButton.Size = new Size(94, 29);
             RefreshButton.TabIndex = 11;
@@ -350,6 +350,55 @@ namespace WolfClient.UserControls
             ActivityDataGridView.Size = new Size(1277, 247);
             ActivityDataGridView.TabIndex = 22;
             // 
+            // Activity
+            // 
+            Activity.DataPropertyName = "ActivityTypeName";
+            Activity.HeaderText = "Дейност";
+            Activity.MinimumWidth = 6;
+            Activity.Name = "Activity";
+            // 
+            // Task
+            // 
+            Task.DataPropertyName = "TaskTypeName";
+            Task.HeaderText = "Задача";
+            Task.MinimumWidth = 6;
+            Task.Name = "Task";
+            // 
+            // Executant
+            // 
+            Executant.DataPropertyName = "ExecutantFullName";
+            Executant.HeaderText = "Изпълнител";
+            Executant.MinimumWidth = 6;
+            Executant.Name = "Executant";
+            // 
+            // StartDate
+            // 
+            StartDate.DataPropertyName = "StartDate";
+            StartDate.HeaderText = "Дата";
+            StartDate.MinimumWidth = 6;
+            StartDate.Name = "StartDate";
+            // 
+            // Duration
+            // 
+            Duration.DataPropertyName = "Duration";
+            Duration.HeaderText = "Времетраене";
+            Duration.MinimumWidth = 6;
+            Duration.Name = "Duration";
+            // 
+            // Control
+            // 
+            Control.DataPropertyName = "ControlFullName";
+            Control.HeaderText = "Контрол";
+            Control.MinimumWidth = 6;
+            Control.Name = "Control";
+            // 
+            // Comment
+            // 
+            Comment.DataPropertyName = "Comments";
+            Comment.HeaderText = "Коментар";
+            Comment.MinimumWidth = 6;
+            Comment.Name = "Comment";
+            // 
             // ActivityAddButton
             // 
             ActivityAddButton.Location = new Point(89, 10);
@@ -387,7 +436,7 @@ namespace WolfClient.UserControls
             // 
             // button1
             // 
-            button1.Location = new Point(154, 8);
+            button1.Location = new Point(166, 9);
             button1.Margin = new Padding(3, 4, 3, 4);
             button1.Name = "button1";
             button1.Size = new Size(26, 29);
@@ -401,9 +450,9 @@ namespace WolfClient.UserControls
             ClientsTableLabel.AutoSize = true;
             ClientsTableLabel.Location = new Point(0, 13);
             ClientsTableLabel.Name = "ClientsTableLabel";
-            ClientsTableLabel.Size = new Size(155, 20);
+            ClientsTableLabel.Size = new Size(169, 20);
             ClientsTableLabel.TabIndex = 9;
-            ClientsTableLabel.Text = "Клиенти На Заявката";
+            ClientsTableLabel.Text = "Клиенти На Поръчката";
             // 
             // clientsDataGridView
             // 
@@ -530,8 +579,8 @@ namespace WolfClient.UserControls
             // 
             PlotsDataGridView.AllowUserToResizeColumns = false;
             PlotsDataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             PlotsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             PlotsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             PlotsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
@@ -620,55 +669,6 @@ namespace WolfClient.UserControls
             DestinationOfPlotLabel.Size = new Size(207, 20);
             DestinationOfPlotLabel.TabIndex = 30;
             DestinationOfPlotLabel.Text = "Местоположение на имота: ";
-            // 
-            // Activity
-            // 
-            Activity.DataPropertyName = "ActivityTypeName";
-            Activity.HeaderText = "Дейност";
-            Activity.MinimumWidth = 6;
-            Activity.Name = "Activity";
-            // 
-            // Task
-            // 
-            Task.DataPropertyName = "TaskTypeName";
-            Task.HeaderText = "Задача";
-            Task.MinimumWidth = 6;
-            Task.Name = "Task";
-            // 
-            // Executant
-            // 
-            Executant.DataPropertyName = "ExecutantFullName";
-            Executant.HeaderText = "Изпълнител";
-            Executant.MinimumWidth = 6;
-            Executant.Name = "Executant";
-            // 
-            // StartDate
-            // 
-            StartDate.DataPropertyName = "StartDate";
-            StartDate.HeaderText = "Дата";
-            StartDate.MinimumWidth = 6;
-            StartDate.Name = "StartDate";
-            // 
-            // Duration
-            // 
-            Duration.DataPropertyName = "Duration";
-            Duration.HeaderText = "Времетраене";
-            Duration.MinimumWidth = 6;
-            Duration.Name = "Duration";
-            // 
-            // Control
-            // 
-            Control.DataPropertyName = "ControlFullName";
-            Control.HeaderText = "Контрол";
-            Control.MinimumWidth = 6;
-            Control.Name = "Control";
-            // 
-            // Comment
-            // 
-            Comment.DataPropertyName = "Comments";
-            Comment.HeaderText = "Коментар";
-            Comment.MinimumWidth = 6;
-            Comment.Name = "Comment";
             // 
             // MenuRequestsUserControl
             // 

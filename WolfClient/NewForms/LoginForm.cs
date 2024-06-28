@@ -72,6 +72,9 @@ namespace WolfClient.NewForms
             return false;
         }
 
-       
+        private void usernameLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

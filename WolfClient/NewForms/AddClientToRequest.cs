@@ -90,6 +90,7 @@ namespace WolfClient.NewForms
             {
                 _availableClientsList = response.ResponseObj.ToList();
             }
+            AddClientToRequestTitleLabel.Text = "Добавяне На Клиент Към Поръчка #" + _requestDTO.RequestId.ToString();
         }
 
         private async void AddClientToRequestSubmitButton_Click(object sender, EventArgs e)

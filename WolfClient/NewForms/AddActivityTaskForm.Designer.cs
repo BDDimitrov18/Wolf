@@ -28,251 +28,57 @@
         /// </summary>
         private void InitializeComponent()
         {
-            AddActivitySubmit = new Button();
-            CommentsRichTextBox = new RichTextBox();
-            label8 = new Label();
-            ControlComboBox = new ComboBox();
-            ControlLabel = new Label();
-            label6 = new Label();
-            startDateDateTimePicker = new DateTimePicker();
-            label5 = new Label();
-            ExecitantComboBox = new ComboBox();
-            label4 = new Label();
-            label3 = new Label();
-            label2 = new Label();
             label1 = new Label();
-            ActivityComboBox = new ComboBox();
-            TaskComboBox = new ComboBox();
-            DurationNumericUpDown = new NumericUpDown();
-            expectedDurationDateTime = new DateTimePicker();
-            label7 = new Label();
-            ((System.ComponentModel.ISupportInitialize)DurationNumericUpDown).BeginInit();
+            ActivityChoiceComboBox = new ComboBox();
+            AvailableChoicePanel = new Panel();
             SuspendLayout();
-            // 
-            // AddActivitySubmit
-            // 
-            AddActivitySubmit.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            AddActivitySubmit.Location = new Point(606, 820);
-            AddActivitySubmit.Margin = new Padding(3, 4, 3, 4);
-            AddActivitySubmit.Name = "AddActivitySubmit";
-            AddActivitySubmit.Size = new Size(195, 56);
-            AddActivitySubmit.TabIndex = 31;
-            AddActivitySubmit.Text = "Добави дейност";
-            AddActivitySubmit.UseVisualStyleBackColor = true;
-            AddActivitySubmit.Click += AddActivitySubmit_Click;
-            // 
-            // CommentsRichTextBox
-            // 
-            CommentsRichTextBox.Location = new Point(487, 179);
-            CommentsRichTextBox.Margin = new Padding(3, 4, 3, 4);
-            CommentsRichTextBox.Name = "CommentsRichTextBox";
-            CommentsRichTextBox.Size = new Size(314, 279);
-            CommentsRichTextBox.TabIndex = 30;
-            CommentsRichTextBox.Text = "";
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label8.Location = new Point(482, 129);
-            label8.Name = "label8";
-            label8.Size = new Size(107, 25);
-            label8.TabIndex = 29;
-            label8.Text = "Коментар";
-            // 
-            // ControlComboBox
-            // 
-            ControlComboBox.FormattingEnabled = true;
-            ControlComboBox.Location = new Point(61, 820);
-            ControlComboBox.Margin = new Padding(3, 4, 3, 4);
-            ControlComboBox.Name = "ControlComboBox";
-            ControlComboBox.Size = new Size(302, 28);
-            ControlComboBox.TabIndex = 28;
-            ControlComboBox.SelectedIndexChanged += ControlComboBox_SelectedIndexChanged;
-            // 
-            // ControlLabel
-            // 
-            ControlLabel.AutoSize = true;
-            ControlLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            ControlLabel.Location = new Point(56, 765);
-            ControlLabel.Name = "ControlLabel";
-            ControlLabel.Size = new Size(92, 25);
-            ControlLabel.TabIndex = 27;
-            ControlLabel.Text = "Контрол";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label6.Location = new Point(56, 644);
-            label6.Name = "label6";
-            label6.Size = new Size(140, 25);
-            label6.TabIndex = 25;
-            label6.Text = "Времетраене";
-            // 
-            // startDateDateTimePicker
-            // 
-            startDateDateTimePicker.Location = new Point(61, 566);
-            startDateDateTimePicker.Margin = new Padding(3, 4, 3, 4);
-            startDateDateTimePicker.Name = "startDateDateTimePicker";
-            startDateDateTimePicker.Size = new Size(302, 27);
-            startDateDateTimePicker.TabIndex = 24;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label5.Location = new Point(56, 503);
-            label5.Name = "label5";
-            label5.Size = new Size(61, 25);
-            label5.TabIndex = 23;
-            label5.Text = "Дата";
-            // 
-            // ExecitantComboBox
-            // 
-            ExecitantComboBox.FormattingEnabled = true;
-            ExecitantComboBox.Location = new Point(61, 429);
-            ExecitantComboBox.Margin = new Padding(3, 4, 3, 4);
-            ExecitantComboBox.Name = "ExecitantComboBox";
-            ExecitantComboBox.Size = new Size(302, 28);
-            ExecitantComboBox.TabIndex = 22;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.Location = new Point(56, 374);
-            label4.Name = "label4";
-            label4.Size = new Size(129, 25);
-            label4.TabIndex = 21;
-            label4.Text = "Изпълнител";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(56, 256);
-            label3.Name = "label3";
-            label3.Size = new Size(78, 25);
-            label3.TabIndex = 19;
-            label3.Text = "Задача";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(56, 129);
-            label2.Name = "label2";
-            label2.Size = new Size(95, 25);
-            label2.TabIndex = 17;
-            label2.Text = "Дейност";
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(186, 24);
+            label1.Location = new Point(12, 19);
             label1.Name = "label1";
-            label1.Size = new Size(508, 42);
+            label1.Size = new Size(608, 42);
             label1.TabIndex = 16;
-            label1.Text = "Добавяне На Нова Дейност";
+            label1.Text = "Добавяне на задача към дейност";
+            label1.Click += label1_Click;
             // 
-            // ActivityComboBox
+            // ActivityChoiceComboBox
             // 
-            ActivityComboBox.DropDownHeight = 230;
-            ActivityComboBox.FormattingEnabled = true;
-            ActivityComboBox.IntegralHeight = false;
-            ActivityComboBox.ItemHeight = 20;
-            ActivityComboBox.Location = new Point(61, 170);
-            ActivityComboBox.Name = "ActivityComboBox";
-            ActivityComboBox.Size = new Size(302, 28);
-            ActivityComboBox.TabIndex = 32;
-            ActivityComboBox.SelectedIndexChanged += ActivityComboBox_SelectedIndexChanged;
+            ActivityChoiceComboBox.FormattingEnabled = true;
+            ActivityChoiceComboBox.Items.AddRange(new object[] { "От Налични Дейности", "Към Нова дейност" });
+            ActivityChoiceComboBox.Location = new Point(12, 97);
+            ActivityChoiceComboBox.Name = "ActivityChoiceComboBox";
+            ActivityChoiceComboBox.Size = new Size(218, 28);
+            ActivityChoiceComboBox.TabIndex = 17;
+            ActivityChoiceComboBox.SelectedIndexChanged += ActivityChoiceComboBox_SelectedIndexChanged;
             // 
-            // TaskComboBox
+            // AvailableChoicePanel
             // 
-            TaskComboBox.FormattingEnabled = true;
-            TaskComboBox.Location = new Point(61, 307);
-            TaskComboBox.Name = "TaskComboBox";
-            TaskComboBox.Size = new Size(302, 28);
-            TaskComboBox.TabIndex = 33;
-            // 
-            // DurationNumericUpDown
-            // 
-            DurationNumericUpDown.Location = new Point(61, 695);
-            DurationNumericUpDown.Name = "DurationNumericUpDown";
-            DurationNumericUpDown.Size = new Size(302, 27);
-            DurationNumericUpDown.TabIndex = 34;
-            // 
-            // expectedDurationDateTime
-            // 
-            expectedDurationDateTime.Location = new Point(482, 566);
-            expectedDurationDateTime.Margin = new Padding(3, 4, 3, 4);
-            expectedDurationDateTime.Name = "expectedDurationDateTime";
-            expectedDurationDateTime.Size = new Size(302, 27);
-            expectedDurationDateTime.TabIndex = 36;
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label7.Location = new Point(477, 503);
-            label7.Name = "label7";
-            label7.Size = new Size(217, 25);
-            label7.TabIndex = 35;
-            label7.Text = "Дата На приключване";
+            AvailableChoicePanel.Location = new Point(12, 160);
+            AvailableChoicePanel.Name = "AvailableChoicePanel";
+            AvailableChoicePanel.Size = new Size(777, 770);
+            AvailableChoicePanel.TabIndex = 18;
             // 
             // AddActivityTaskForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
-            ClientSize = new Size(853, 896);
-            Controls.Add(expectedDurationDateTime);
-            Controls.Add(label7);
-            Controls.Add(DurationNumericUpDown);
-            Controls.Add(TaskComboBox);
-            Controls.Add(ActivityComboBox);
-            Controls.Add(AddActivitySubmit);
-            Controls.Add(CommentsRichTextBox);
-            Controls.Add(label8);
-            Controls.Add(ControlComboBox);
-            Controls.Add(ControlLabel);
-            Controls.Add(label6);
-            Controls.Add(startDateDateTimePicker);
-            Controls.Add(label5);
-            Controls.Add(ExecitantComboBox);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(label2);
+            ClientSize = new Size(803, 953);
+            Controls.Add(AvailableChoicePanel);
+            Controls.Add(ActivityChoiceComboBox);
             Controls.Add(label1);
             Name = "AddActivityTaskForm";
             Text = "AddActivityTaskForm";
-            Load += AddActivityTaskForm_Load;
-            ((System.ComponentModel.ISupportInitialize)DurationNumericUpDown).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private Button AddActivitySubmit;
-        private RichTextBox CommentsRichTextBox;
-        private Label label8;
-        private ComboBox ControlComboBox;
-        private Label ControlLabel;
-        private Label label6;
-        private DateTimePicker startDateDateTimePicker;
-        private Label label5;
-        private ComboBox ExecitantComboBox;
-        private Label label4;
-        private Label label3;
-        private Label label2;
         private Label label1;
-        private ComboBox ActivityComboBox;
-        private ComboBox TaskComboBox;
-        private NumericUpDown DurationNumericUpDown;
-        private DateTimePicker expectedDurationDateTime;
-        private Label label7;
+        private ComboBox ActivityChoiceComboBox;
+        private Panel AvailableChoicePanel;
     }
 }

@@ -20,5 +20,13 @@ namespace DTOS.DTO
         public DateTime ExpectedDuration { get; set; }
 
         public ICollection<GetTaskDTO> Tasks { get; set; }
+
+        public string ActivityTypeName
+        {
+            get
+            {
+                return $"{ActivityType?.ActivityTypeName ?? "Unknown"} {{ActivityId: {ActivityId}}}";
+            }
+        }
     }
 }

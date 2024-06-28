@@ -81,5 +81,18 @@ namespace WolfClient.Services
             var ChosenLink = _fetchedLinkedClients.Where(opt => opt.requestDTO.RequestId == _selectedRequest.RequestId).FirstOrDefault();
             ChosenLink.activityDTOs.Add(activityDTO);
         }
+
+        public void ReplaceActivity(GetActivityDTO activityDTO) {
+            var ChosenLink = _fetchedLinkedClients.Where(opt => opt.requestDTO.RequestId == _selectedRequest.RequestId).FirstOrDefault();
+            int br = 0;
+            foreach (GetActivityDTO link in ChosenLink.activityDTOs)
+            {
+                if (link.ActivityId == activityDTO.ActivityId) {
+                    ChosenLink.activityDTOs[br] = activityDTO;
+                    break;
+                }
+                br++;
+            }
+        }
     }
 }

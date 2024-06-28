@@ -192,22 +192,25 @@ namespace WolfClient.UserControls
 
             if (matchingRequestWithClients != null)
             {
-                foreach (var activity in matchingRequestWithClients.activityDTOs)
+                if (matchingRequestWithClients.activityDTOs != null)
                 {
-                    foreach (var task in activity.Tasks)
+                    foreach (var activity in matchingRequestWithClients.activityDTOs)
                     {
-                        var viewModel = new ActivityViewModel
+                        foreach (var task in activity.Tasks)
                         {
-                            ActivityTypeName = activity.ActivityType.ActivityTypeName,
-                            TaskTypeName = task.taskType.TaskTypeName,
-                            ExecutantFullName = task.Executant.FullName,
-                            StartDate = task.StartDate,
-                            Duration = task.Duration,
-                            ControlFullName = task.Control?.FullName,
-                            Comments = task.Comments
-                        };
+                            var viewModel = new ActivityViewModel
+                            {
+                                ActivityTypeName = activity.ActivityType.ActivityTypeName + activity.ActivityId.ToString(),
+                                TaskTypeName = task.taskType.TaskTypeName,
+                                ExecutantFullName = task.Executant.FullName,
+                                StartDate = task.StartDate,
+                                Duration = task.Duration,
+                                ControlFullName = task.Control?.FullName,
+                                Comments = task.Comments
+                            };
 
-                        activityViewModels.Add(viewModel);
+                            activityViewModels.Add(viewModel);
+                        }
                     }
                 }
             }

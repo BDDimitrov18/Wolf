@@ -51,7 +51,7 @@
             // 
             // AddNonExistingClientButton
             // 
-            AddNonExistingClientButton.Location = new Point(525, 501);
+            AddNonExistingClientButton.Location = new Point(539, 498);
             AddNonExistingClientButton.Margin = new Padding(3, 4, 3, 4);
             AddNonExistingClientButton.Name = "AddNonExistingClientButton";
             AddNonExistingClientButton.Size = new Size(134, 29);
@@ -66,13 +66,13 @@
             AddNonExistingClientLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
             AddNonExistingClientLabel.Location = new Point(107, 498);
             AddNonExistingClientLabel.Name = "AddNonExistingClientLabel";
-            AddNonExistingClientLabel.Size = new Size(412, 25);
+            AddNonExistingClientLabel.Size = new Size(426, 25);
             AddNonExistingClientLabel.TabIndex = 24;
-            AddNonExistingClientLabel.Text = "Добави нов клиент и го заложи в заявката";
+            AddNonExistingClientLabel.Text = "Добави нов клиент и го заложи в поръчката";
             // 
             // AddClientComboBoxButton
             // 
-            AddClientComboBoxButton.Location = new Point(422, 101);
+            AddClientComboBoxButton.Location = new Point(412, 98);
             AddClientComboBoxButton.Margin = new Padding(3, 4, 3, 4);
             AddClientComboBoxButton.Name = "AddClientComboBoxButton";
             AddClientComboBoxButton.Size = new Size(131, 29);
@@ -95,11 +95,11 @@
             // 
             AddClientToRequestTitleLabel.AutoSize = true;
             AddClientToRequestTitleLabel.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
-            AddClientToRequestTitleLabel.Location = new Point(105, 19);
+            AddClientToRequestTitleLabel.Location = new Point(2, 9);
             AddClientToRequestTitleLabel.Name = "AddClientToRequestTitleLabel";
-            AddClientToRequestTitleLabel.Size = new Size(604, 42);
+            AddClientToRequestTitleLabel.Size = new Size(632, 42);
             AddClientToRequestTitleLabel.TabIndex = 20;
-            AddClientToRequestTitleLabel.Text = "Добавяне На Клиент Към Заявка";
+            AddClientToRequestTitleLabel.Text = "Добавяне На Клиент Към Поръчка";
             // 
             // AvailableClientsFlowPanel
             // 

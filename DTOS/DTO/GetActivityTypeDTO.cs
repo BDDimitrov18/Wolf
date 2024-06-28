@@ -13,5 +13,7 @@ namespace DTOS.DTO
         public string ActivityTypeName { get; set; }
 
         public ICollection<GetTaskTypeDTO> TaskTypes { get; set; }
+
+
     }
 }

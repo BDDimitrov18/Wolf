@@ -98,27 +98,6 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Plots",
-                columns: table => new
-                {
-                    PlotId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PlotNumber = table.Column<int>(type: "int", nullable: false),
-                    RegulatedPlotNumber = table.Column<int>(type: "int", nullable: true),
-                    neighborhood = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Municipality = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StreetNumber = table.Column<int>(type: "int", nullable: true),
-                    designation = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    locality = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Plots", x => x.PlotId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Requests",
                 columns: table => new
                 {
@@ -332,26 +311,30 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Request_PlotRelashionships",
+                name: "Plots",
                 columns: table => new
                 {
-                    requestId = table.Column<int>(type: "int", nullable: false),
-                    plotId = table.Column<int>(type: "int", nullable: false)
+                    PlotId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlotNumber = table.Column<int>(type: "int", nullable: false),
+                    RegulatedPlotNumber = table.Column<int>(type: "int", nullable: true),
+                    neighborhood = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Municipality = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StreetNumber = table.Column<int>(type: "int", nullable: true),
+                    designation = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    locality = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ActivityId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Request_PlotRelashionships", x => new { x.requestId, x.plotId });
+                    table.PrimaryKey("PK_Plots", x => x.PlotId);
                     table.ForeignKey(
-                        name: "FK_Request_PlotRelashionships_Plots_plotId",
-                        column: x => x.plotId,
-                        principalTable: "Plots",
-                        principalColumn: "PlotId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Request_PlotRelashionships_Requests_requestId",
-                        column: x => x.requestId,
-                        principalTable: "Requests",
-                        principalColumn: "RequestId",
+                        name: "FK_Plots_Activities_ActivityId",
+                        column: x => x.ActivityId,
+                        principalTable: "Activities",
+                        principalColumn: "ActivityId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -693,9 +676,9 @@ namespace DataAccessLayer.Migrations
                 column: "RequestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Request_PlotRelashionships_plotId",
-                table: "Request_PlotRelashionships",
-                column: "plotId");
+                name: "IX_Plots_ActivityId",
+                table: "Plots",
+                column: "ActivityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_ActivityId",
@@ -747,7 +730,7 @@ namespace DataAccessLayer.Migrations
                 name: "Invoices");
 
             migrationBuilder.DropTable(
-                name: "Request_PlotRelashionships");
+                name: "Plots");
 
             migrationBuilder.DropTable(
                 name: "Tasks");
@@ -760,9 +743,6 @@ namespace DataAccessLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Clients");
-
-            migrationBuilder.DropTable(
-                name: "Plots");
 
             migrationBuilder.DropTable(
                 name: "Activities");

@@ -21,5 +21,7 @@ namespace DataAccessLayer.Models
         public DateTime ExpectedDuration { get; set; }
 
         public ICollection<WorkTask> Tasks { get; set; }
+
+        public ICollection<Plot> Plots { get; set; }
     }
 }

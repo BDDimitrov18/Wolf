@@ -53,8 +53,8 @@ namespace WolfClient.NewForms
             // RequestToolStripButton
             // 
             RequestToolStripButton.Name = "RequestToolStripButton";
-            RequestToolStripButton.Size = new Size(59, 22);
-            RequestToolStripButton.Text = "Обекти";
+            RequestToolStripButton.Size = new Size(71, 22);
+            RequestToolStripButton.Text = "Поръчки";
             RequestToolStripButton.Click += RequestToolStripButton_Click;
             // 
             // ClientsStripButton
