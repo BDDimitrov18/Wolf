@@ -12,6 +12,7 @@ using WolfClient.Events;
 using WolfClient.Events.EventArgs;
 using WolfClient.NewForms;
 using WolfClient.Services.Interfaces;
+using WolfClient.ViewModels;
 
 namespace WolfClient.UserControls
 {
@@ -128,6 +129,7 @@ namespace WolfClient.UserControls
             if (_selectedRequest != null)
             {
                 UpdateClientsDataGridView();
+                UpdateActivityDataGridView();
             }
         }
 
@@ -181,7 +183,41 @@ namespace WolfClient.UserControls
             clientsDataGridView.Refresh();
         }
 
+        private void BindActivityDataGridView(RequestWithClientsDTO matchingRequestWithClients)
+        {
+            ActivityDataGridView.AutoGenerateColumns = false;
+            ActivityDataGridView.DataSource = null; // Force reset DataSource
 
+            var activityViewModels = new List<ActivityViewModel>();
+
+            if (matchingRequestWithClients != null)
+            {
+                foreach (var activity in matchingRequestWithClients.activityDTOs)
+                {
+                    foreach (var task in activity.Tasks)
+                    {
+                        var viewModel = new ActivityViewModel
+                        {
+                            ActivityTypeName = activity.ActivityType.ActivityTypeName,
+                            TaskTypeName = task.taskType.TaskTypeName,
+                            ExecutantFullName = task.Executant.FullName,
+                            StartDate = task.StartDate,
+                            Duration = task.Duration,
+                            ControlFullName = task.Control?.FullName,
+                            Comments = task.Comments
+                        };
+
+                        activityViewModels.Add(viewModel);
+                    }
+                }
+            }
+            else
+            {
+                clientsDataGridView.DataSource = null;
+            }
+            ActivityDataGridView.DataSource = activityViewModels;
+            ActivityDataGridView.Refresh();
+        }
 
 
         private void panel3_Paint(object sender, PaintEventArgs e)
@@ -226,22 +262,58 @@ namespace WolfClient.UserControls
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            using (AddClientToRequest form = new AddClientToRequest(_apiClient, _userClient, _adminClient, _selectedRequest))
+            if (_dataService.GetSelectedRequest() != null)
             {
-                if (form.ShowDialog() == DialogResult.OK)
+                using (AddClientToRequest form = new AddClientToRequest(_apiClient, _userClient, _adminClient, _selectedRequest))
                 {
-                    List<GetClientDTO> getClientDTOs = form.returnClientsList();
-
-                    foreach (RequestWithClientsDTO requestWithClientsDTO in _dataService.GetFetchedLinkedRequests())
+                    if (form.ShowDialog() == DialogResult.OK)
                     {
-                        if (requestWithClientsDTO.requestDTO.RequestId == _selectedRequest.RequestId)
+                        List<GetClientDTO> getClientDTOs = form.returnClientsList();
+
+                        foreach (RequestWithClientsDTO requestWithClientsDTO in _dataService.GetFetchedLinkedRequests())
                         {
-                            requestWithClientsDTO.clientDTOs.AddRange(getClientDTOs);
+                            if (requestWithClientsDTO.requestDTO.RequestId == _selectedRequest.RequestId)
+                            {
+                                requestWithClientsDTO.clientDTOs.AddRange(getClientDTOs);
+                            }
                         }
                     }
                 }
+                UpdateClientsDataGridView();
             }
-            UpdateClientsDataGridView();
+        }
+
+        public void UpdateActivityDataGridView()
+        {
+            try
+            {
+                if (_selectedRequest == null || _dataService.GetFetchedLinkedRequests() == null)
+                {
+                    ActivityDataGridView.DataSource = null;
+                    ActivityDataGridView.Refresh();
+                    return;
+                }
+
+                var matchingRequestWithClients = _dataService.GetFetchedLinkedRequests()
+                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _selectedRequest.RequestId);
+
+                if (ActivityDataGridView.InvokeRequired)
+                {
+                    ActivityDataGridView.Invoke(new MethodInvoker(delegate
+                    {
+                        BindActivityDataGridView(matchingRequestWithClients);
+                    }));
+                }
+                else
+                {
+                    BindActivityDataGridView(matchingRequestWithClients);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception in UpdateClientsDataGridView: " + ex.Message);
+                MessageBox.Show("Exception in UpdateClientsDataGridView: " + ex.Message);
+            }
 
         }
 
@@ -297,8 +369,12 @@ namespace WolfClient.UserControls
 
         private void ActivityAddButton_Click(object sender, EventArgs e)
         {
-            AddActivityTaskForm addActivityTaskForm = new AddActivityTaskForm(_apiClient,_userClient,_adminClient,_dataService);
-            addActivityTaskForm.Show();
+            if (_dataService.GetSelectedRequest() != null)
+            {
+                AddActivityTaskForm addActivityTaskForm = new AddActivityTaskForm(_apiClient, _userClient, _adminClient, _dataService);
+                addActivityTaskForm.Show();
+                UpdateActivityDataGridView();
+            }
         }
 
         private void PlotsDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)

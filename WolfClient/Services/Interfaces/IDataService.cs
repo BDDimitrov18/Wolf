@@ -31,5 +31,8 @@ namespace WolfClient.Services.Interfaces
         public void AddMultipleEmployees(List<GetEmployeeDTO> employeeDTOs);
         public void SetSelectedRequest(GetRequestDTO getRequestDTO);
         public GetRequestDTO GetSelectedRequest();
+
+        public void AddActivityToTheList(GetActivityDTO activityDTO);
+
     }
 }

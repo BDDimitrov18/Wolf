@@ -11,5 +11,7 @@ namespace DataAccessLayer.Repositories.Interfaces
     {
         public Task CreateActivity(Activity activity);
         public List<DataAccessLayer.Models.Activity> FindLinkedActivity(Request request);
+
+        public Task<Activity> GetActivity(int id);
     }
 }

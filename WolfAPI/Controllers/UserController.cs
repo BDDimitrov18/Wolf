@@ -85,8 +85,8 @@ namespace WolfAPI.Controllers
 
         [HttpPost("CreateActivityTypes")]
 
-        public List<GetActivityTypeDTO> createActivityType([FromBody] List<CreateActivityTypeDTO> activityTypeDTOs) {
-            return _activityTypesService.CreateActivityTypes(activityTypeDTOs);
+        public async Task<List<GetActivityTypeDTO>> createActivityType([FromBody] List<CreateActivityTypeDTO> activityTypeDTOs) {
+            return await _activityTypesService.CreateActivityTypes(activityTypeDTOs);
         }
 
         [HttpPost("CreateTaskType")]

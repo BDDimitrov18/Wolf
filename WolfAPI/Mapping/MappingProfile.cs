@@ -47,17 +47,41 @@ namespace WolfAPI.Mapping
                 .ForMember(dest => dest.Tasks, opt => opt.MapFrom(src => src.Tasks));
 
             CreateMap<WorkTask, GetTaskDTO>()
-                .ForMember(dest => dest.Activity, opt => opt.MapFrom(src => src.Activity))
                 .ForMember(dest => dest.Executant, opt => opt.MapFrom(src => src.Executant))
                 .ForMember(dest => dest.Control, opt => opt.MapFrom(src => src.Control))
                 .ForMember(dest => dest.taskType, opt => opt.MapFrom(src => src.taskType));
 
             CreateMap<GetTaskDTO, WorkTask>()
-                .ForMember(dest => dest.Activity, opt => opt.MapFrom(src => src.Activity))
                 .ForMember(dest => dest.Executant, opt => opt.MapFrom(src => src.Executant))
                 .ForMember(dest => dest.Control, opt => opt.MapFrom(src => src.Control))
                 .ForMember(dest => dest.taskType, opt => opt.MapFrom(src => src.taskType));
 
+            CreateMap<CreateTaskDTO, WorkTask>()
+            .ForMember(dest => dest.TaskId, opt => opt.Ignore()) // Assuming TaskId is auto-generated
+            .ForMember(dest => dest.Activity, opt => opt.Ignore()) // Assuming related entities will be mapped separately
+            .ForMember(dest => dest.Executant, opt => opt.Ignore())
+            .ForMember(dest => dest.Control, opt => opt.Ignore())
+            .ForMember(dest => dest.taskType, opt => opt.Ignore());
+
+
+            CreateMap<Activity, GetActivityDTO>()
+            .ForMember(dest => dest.Request, opt => opt.MapFrom(src => src.Request))
+            .ForMember(dest => dest.ActivityType, opt => opt.MapFrom(src => src.ActivityType))
+            .ForMember(dest => dest.Tasks, opt => opt.MapFrom(src => src.Tasks));
+
+            CreateMap<Request, GetRequestDTO>();
+            CreateMap<ActivityType, GetActivityTypeDTO>();
+            CreateMap<WorkTask, GetTaskDTO>()
+                .ForMember(dest => dest.Executant, opt => opt.MapFrom(src => src.Executant))
+                .ForMember(dest => dest.Control, opt => opt.MapFrom(src => src.Control))
+                .ForMember(dest => dest.taskType, opt => opt.MapFrom(src => src.taskType));
+
+            CreateMap<ActivityType, CreateActivityTypeDTO>()
+            .ForMember(dest => dest.ActivityTypeName, opt => opt.MapFrom(src => src.ActivityTypeName));
+
+            CreateMap<CreateActivityTypeDTO, ActivityType>()
+            .ForMember(dest => dest.ActivityTypeName, opt => opt.MapFrom(src => src.ActivityTypeName))
+            .ForMember(dest => dest.TaskTypes, opt => opt.Ignore()); // Assuming TaskTypes is not set in CreateActivityTypeDTO
         }
     }
 }

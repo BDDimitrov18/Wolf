@@ -27,14 +27,14 @@ namespace WolfAPI.Services
             return returnList;
         }
 
-        public List<GetActivityTypeDTO> CreateActivityTypes(List<CreateActivityTypeDTO> createActivityTypeDTOs) { 
+        public async Task<List<GetActivityTypeDTO>> CreateActivityTypes(List<CreateActivityTypeDTO> createActivityTypeDTOs) { 
             List<ActivityType> activityTypes = new List<ActivityType>();
             List<GetActivityTypeDTO> activityTypeDTOs = new List<GetActivityTypeDTO>();
             foreach (var acitvityTypeDto in createActivityTypeDTOs) {
                 var activityType = _mapper.Map<ActivityType>(acitvityTypeDto);
                 activityTypes.Add(activityType);
             }
-            _activityTypesModelRepository.AddActivityTypes(activityTypes);
+            await _activityTypesModelRepository.AddActivityTypes(activityTypes);
 
             foreach(var activityType in activityTypes) {
                 var activityTypeDto = _mapper.Map<GetActivityTypeDTO>(activityType);    

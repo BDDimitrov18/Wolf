@@ -109,7 +109,35 @@ namespace WolfClient.NewForms
             {
                 if (ValidateTaskComboBox())
                 {
-                    
+                    GetActivityTypeDTO activityTypeDTO = ActivityComboBox.SelectedItem as GetActivityTypeDTO;
+                    GetTaskTypeDTO taskTypeDTO = TaskComboBox.SelectedItem as GetTaskTypeDTO;
+
+                    CreateActivityDTO createActivityDTO = new CreateActivityDTO()
+                    {
+                        RequestId = _dataService.GetSelectedRequest().RequestId,
+                        ActivityTypeID = activityTypeDTO.ActivityTypeID,
+                        ExpectedDuration = expectedDurationDateTime.Value,
+                    };
+
+                    //DOESNT MAP THE TASKS PROPERLY
+                    var responseActivityDTO = await _userClient.AddActivity(createActivityDTO);
+
+                    CreateTaskDTO createTaskDTO = new CreateTaskDTO()
+                    {
+                        ActivityId = responseActivityDTO.ResponseObj.ActivityId,
+                        Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
+                        StartDate = startDateDateTimePicker.Value,
+                        ExecutantId = (int)ExecitantComboBox.SelectedValue,
+                        ControlId = (int)ControlComboBox.SelectedValue,
+                        Comments = CommentsRichTextBox.Text,
+                        TaskTypeId = taskTypeDTO.TaskTypeId,
+                    };
+
+                    var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
+
+
+                    _dataService.AddActivityToTheList(responseActivityFromTask.ResponseObj);
+
                 }
                 else
                 {
@@ -142,16 +170,15 @@ namespace WolfClient.NewForms
                         ExecutantId = (int)ExecitantComboBox.SelectedValue,
                         ControlId = (int)ControlComboBox.SelectedValue,
                         Comments = CommentsRichTextBox.Text,
-                        TaskTypeId = responseActivityDTO.ResponseObj.Tasks.First().TaskId,
+                        TaskTypeId = createTaskTypeResponse.ResponseObj.TaskTypes.ElementAt(0).TaskTypeId,
                     };
 
                     var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
 
 
-                    RequestWithClientsDTO requestWithClientsDTO = _dataService.GetFetchedLinkedRequests().Where(opt => opt.requestDTO == _dataService.GetSelectedRequest()).FirstOrDefault();
-                    requestWithClientsDTO.activityDTOs.Add(responseActivityFromTask.ResponseObj);
+                    _dataService.AddActivityToTheList(responseActivityFromTask.ResponseObj);
 
-                    Dispose();
+                    
                 }
             }
             else
@@ -172,6 +199,35 @@ namespace WolfClient.NewForms
                 var createTaskTypeResponse = await _userClient.AddTaskTypes(listTaksTypesDTO);
 
                 //Create Activity and task Logik
+                GetRequestDTO requestDto = _dataService.GetSelectedRequest();
+
+                CreateActivityDTO createActivityDTO = new CreateActivityDTO()
+                {
+                    RequestId = requestDto.RequestId,
+                    ActivityTypeID = createTaskTypeResponse.ResponseObj.ActivityTypeID,
+                    ExpectedDuration = expectedDurationDateTime.Value,
+                };
+
+                //DOESNT MAP THE TASKS PROPERLY
+                var responseActivityDTO = await _userClient.AddActivity(createActivityDTO);
+
+                CreateTaskDTO createTaskDTO = new CreateTaskDTO()
+                {
+                    ActivityId = responseActivityDTO.ResponseObj.ActivityId,
+                    Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
+                    StartDate = startDateDateTimePicker.Value,
+                    ExecutantId = (int)ExecitantComboBox.SelectedValue,
+                    ControlId = (int)ControlComboBox.SelectedValue,
+                    Comments = CommentsRichTextBox.Text,
+                    TaskTypeId = createTaskTypeResponse.ResponseObj.TaskTypes.ElementAt(0).TaskTypeId,
+                };
+
+                var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
+
+
+                _dataService.AddActivityToTheList(responseActivityFromTask.ResponseObj);
+
+
             }
         }
     }

@@ -30,7 +30,7 @@ namespace WolfClient.UserControls
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             RequestDataGridView = new DataGridView();
             RequestId = new DataGridViewTextBoxColumn();
             RequestName = new DataGridViewTextBoxColumn();
@@ -54,13 +54,6 @@ namespace WolfClient.UserControls
             panel2 = new Panel();
             ActivityTableLabel = new Label();
             ActivityDataGridView = new DataGridView();
-            Activity = new DataGridViewTextBoxColumn();
-            Task = new DataGridViewTextBoxColumn();
-            Executant = new DataGridViewTextBoxColumn();
-            StartDate = new DataGridViewTextBoxColumn();
-            Duration = new DataGridViewTextBoxColumn();
-            Control = new DataGridViewTextBoxColumn();
-            Comment = new DataGridViewTextBoxColumn();
             ActivityAddButton = new Button();
             tabPage1 = new TabPage();
             panel4 = new Panel();
@@ -91,6 +84,13 @@ namespace WolfClient.UserControls
             locality = new DataGridViewTextBoxColumn();
             PlotsAddButton = new Button();
             DestinationOfPlotLabel = new Label();
+            Activity = new DataGridViewTextBoxColumn();
+            Task = new DataGridViewTextBoxColumn();
+            Executant = new DataGridViewTextBoxColumn();
+            StartDate = new DataGridViewTextBoxColumn();
+            Duration = new DataGridViewTextBoxColumn();
+            Control = new DataGridViewTextBoxColumn();
+            Comment = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)RequestDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).BeginInit();
             panel1.SuspendLayout();
@@ -350,48 +350,6 @@ namespace WolfClient.UserControls
             ActivityDataGridView.Size = new Size(1277, 247);
             ActivityDataGridView.TabIndex = 22;
             // 
-            // Activity
-            // 
-            Activity.HeaderText = "Дейност";
-            Activity.MinimumWidth = 6;
-            Activity.Name = "Activity";
-            // 
-            // Task
-            // 
-            Task.HeaderText = "Задача";
-            Task.MinimumWidth = 6;
-            Task.Name = "Task";
-            // 
-            // Executant
-            // 
-            Executant.HeaderText = "Изпълнител";
-            Executant.MinimumWidth = 6;
-            Executant.Name = "Executant";
-            // 
-            // StartDate
-            // 
-            StartDate.HeaderText = "Дата";
-            StartDate.MinimumWidth = 6;
-            StartDate.Name = "StartDate";
-            // 
-            // Duration
-            // 
-            Duration.HeaderText = "Времетраене";
-            Duration.MinimumWidth = 6;
-            Duration.Name = "Duration";
-            // 
-            // Control
-            // 
-            Control.HeaderText = "Контрол";
-            Control.MinimumWidth = 6;
-            Control.Name = "Control";
-            // 
-            // Comment
-            // 
-            Comment.HeaderText = "Коментар";
-            Comment.MinimumWidth = 6;
-            Comment.Name = "Comment";
-            // 
             // ActivityAddButton
             // 
             ActivityAddButton.Location = new Point(89, 10);
@@ -572,8 +530,8 @@ namespace WolfClient.UserControls
             // 
             PlotsDataGridView.AllowUserToResizeColumns = false;
             PlotsDataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             PlotsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             PlotsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             PlotsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
@@ -663,6 +621,55 @@ namespace WolfClient.UserControls
             DestinationOfPlotLabel.TabIndex = 30;
             DestinationOfPlotLabel.Text = "Местоположение на имота: ";
             // 
+            // Activity
+            // 
+            Activity.DataPropertyName = "ActivityTypeName";
+            Activity.HeaderText = "Дейност";
+            Activity.MinimumWidth = 6;
+            Activity.Name = "Activity";
+            // 
+            // Task
+            // 
+            Task.DataPropertyName = "TaskTypeName";
+            Task.HeaderText = "Задача";
+            Task.MinimumWidth = 6;
+            Task.Name = "Task";
+            // 
+            // Executant
+            // 
+            Executant.DataPropertyName = "ExecutantFullName";
+            Executant.HeaderText = "Изпълнител";
+            Executant.MinimumWidth = 6;
+            Executant.Name = "Executant";
+            // 
+            // StartDate
+            // 
+            StartDate.DataPropertyName = "StartDate";
+            StartDate.HeaderText = "Дата";
+            StartDate.MinimumWidth = 6;
+            StartDate.Name = "StartDate";
+            // 
+            // Duration
+            // 
+            Duration.DataPropertyName = "Duration";
+            Duration.HeaderText = "Времетраене";
+            Duration.MinimumWidth = 6;
+            Duration.Name = "Duration";
+            // 
+            // Control
+            // 
+            Control.DataPropertyName = "ControlFullName";
+            Control.HeaderText = "Контрол";
+            Control.MinimumWidth = 6;
+            Control.Name = "Control";
+            // 
+            // Comment
+            // 
+            Comment.DataPropertyName = "Comments";
+            Comment.HeaderText = "Коментар";
+            Comment.MinimumWidth = 6;
+            Comment.Name = "Comment";
+            // 
             // MenuRequestsUserControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -724,13 +731,6 @@ namespace WolfClient.UserControls
         private Panel panel2;
         private Label ActivityTableLabel;
         private DataGridView ActivityDataGridView;
-        private DataGridViewTextBoxColumn Activity;
-        private DataGridViewTextBoxColumn Task;
-        private DataGridViewTextBoxColumn Executant;
-        private DataGridViewTextBoxColumn StartDate;
-        private DataGridViewTextBoxColumn Duration;
-        private DataGridViewTextBoxColumn Control;
-        private DataGridViewTextBoxColumn Comment;
         private Button ActivityAddButton;
         private TabPage tabPage1;
         private Panel panel4;
@@ -761,5 +761,12 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn locality;
         private Button PlotsAddButton;
         private Label DestinationOfPlotLabel;
+        private DataGridViewTextBoxColumn Activity;
+        private DataGridViewTextBoxColumn Task;
+        private DataGridViewTextBoxColumn Executant;
+        private DataGridViewTextBoxColumn StartDate;
+        private DataGridViewTextBoxColumn Duration;
+        private DataGridViewTextBoxColumn Control;
+        private DataGridViewTextBoxColumn Comment;
     }
 }

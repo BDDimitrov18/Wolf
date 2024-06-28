@@ -76,5 +76,10 @@ namespace WolfClient.Services
         {
             return _selectedRequest;
         }
+
+        public void AddActivityToTheList(GetActivityDTO activityDTO) {
+            var ChosenLink = _fetchedLinkedClients.Where(opt => opt.requestDTO.RequestId == _selectedRequest.RequestId).FirstOrDefault();
+            ChosenLink.activityDTOs.Add(activityDTO);
+        }
     }
 }

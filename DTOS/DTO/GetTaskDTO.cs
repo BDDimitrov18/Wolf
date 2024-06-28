@@ -13,7 +13,6 @@ namespace DTOS.DTO
         public int TaskId { get; set; }
 
         public int ActivityId { get; set; }
-        public GetActivityDTO Activity { get; set; }
 
         public TimeSpan Duration { get; set; }
 
