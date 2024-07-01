@@ -36,6 +36,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<DateTime>("ExpectedDuration")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("ParentActivityId")
+                        .HasColumnType("int");
+
                     b.Property<int>("RequestId")
                         .HasColumnType("int");
 
@@ -43,9 +46,26 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("ActivityTypeID");
 
+                    b.HasIndex("ParentActivityId");
+
                     b.HasIndex("RequestId");
 
                     b.ToTable("Activities");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Activity_PlotRelashionship", b =>
+                {
+                    b.Property<int>("ActivityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlotId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActivityId", "PlotId");
+
+                    b.HasIndex("PlotId");
+
+                    b.ToTable("Activity_PlotRelashionships");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.ActivityType", b =>
@@ -332,20 +352,18 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlotId"), 1L, 1);
 
-                    b.Property<int>("ActivityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Municipality")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PlotNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PlotNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RegulatedPlotNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("RegulatedPlotNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
@@ -364,8 +382,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PlotId");
-
-                    b.HasIndex("ActivityId");
 
                     b.ToTable("Plots");
                 });
@@ -1678,6 +1694,10 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("DataAccessLayer.Models.Activity", "ParentActivity")
+                        .WithMany()
+                        .HasForeignKey("ParentActivityId");
+
                     b.HasOne("DataAccessLayer.Models.Request", "Request")
                         .WithMany("Activities")
                         .HasForeignKey("RequestId")
@@ -1686,7 +1706,28 @@ namespace DataAccessLayer.Migrations
 
                     b.Navigation("ActivityType");
 
+                    b.Navigation("ParentActivity");
+
                     b.Navigation("Request");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Activity_PlotRelashionship", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Activity", "Activity")
+                        .WithMany("ActivityPlots")
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccessLayer.Models.Plot", "Plot")
+                        .WithMany("ActivityPlots")
+                        .HasForeignKey("PlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Activity");
+
+                    b.Navigation("Plot");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Client_RequestRelashionship", b =>
@@ -1717,17 +1758,6 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("Request");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.Plot", b =>
-                {
-                    b.HasOne("DataAccessLayer.Models.Activity", "Activity")
-                        .WithMany("Plots")
-                        .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Activity");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.TaskType", b =>
@@ -1828,7 +1858,7 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.Activity", b =>
                 {
-                    b.Navigation("Plots");
+                    b.Navigation("ActivityPlots");
 
                     b.Navigation("Tasks");
                 });
@@ -1841,6 +1871,11 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.Client", b =>
                 {
                     b.Navigation("Client_RequestRelationships");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Plot", b =>
+                {
+                    b.Navigation("ActivityPlots");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Request", b =>

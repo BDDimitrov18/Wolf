@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WolfClient.Services.Interfaces;
+using WolfClient.ViewModels;
 
 namespace WolfClient.Services
 {
@@ -20,11 +21,22 @@ namespace WolfClient.Services
 
         private List<GetActivityTypeDTO> _activityTypesDTOs { get; set; }
 
+        private List<EKTVIewModel> _ektViewModels { get; set; }
+
+
         public DataService()
         {
             _fetchedLinkedClients = new List<RequestWithClientsDTO>();
             _clientDTOs = new List<GetClientDTO>();
             _employeeDTOs = new List<GetEmployeeDTO>();
+        }
+
+        public List<EKTVIewModel> GetEKTViewModels() {
+            return _ektViewModels;
+        }
+
+        public void SetEKTViewModels(List<EKTVIewModel> listEKT) {
+            _ektViewModels = listEKT;
         }
 
         public void SetFetchedLinkedRequests(List<RequestWithClientsDTO> linkedRequests) {
@@ -94,5 +106,7 @@ namespace WolfClient.Services
                 br++;
             }
         }
+
+        
     }
 }

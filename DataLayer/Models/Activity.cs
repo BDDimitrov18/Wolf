@@ -20,8 +20,11 @@ namespace DataAccessLayer.Models
 
         public DateTime ExpectedDuration { get; set; }
 
+        public int? ParentActivityId { get; set; }
+        public Activity? ParentActivity { get; set; }
+
         public ICollection<WorkTask> Tasks { get; set; }
 
-        public ICollection<Plot> Plots { get; set; }
+        public ICollection<Activity_PlotRelashionship> ActivityPlots { get; set; }
     }
 }

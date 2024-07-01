@@ -17,9 +17,14 @@ namespace DTOS.DTO
         public int ActivityTypeID { get; set; }
         public GetActivityTypeDTO ActivityType { get; set; }
 
+        public int? ParentActivityId { get; set; }
+        public GetActivityDTO? ParentActivity { get; set; }
+
         public DateTime ExpectedDuration { get; set; }
 
         public ICollection<GetTaskDTO> Tasks { get; set; }
+
+        public ICollection<GetPlotDTO> Plots { get; set; }
 
         public string ActivityTypeName
         {

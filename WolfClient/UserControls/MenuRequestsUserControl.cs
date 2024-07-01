@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -49,7 +50,8 @@ namespace WolfClient.UserControls
             LogInEvent.logIn += OnUserLoggedIn;
         }
 
-        private async void setRequestsDataGridView() {
+        private async void setRequestsDataGridView()
+        {
             var response = await _userClient.GetAllRequests();
 
             var employees = response.ResponseObj;
@@ -69,7 +71,8 @@ namespace WolfClient.UserControls
         }
         private async void OnUserLoggedIn(object sender, LogInEventArgs e)
         {
-            if (!loaded) {
+            if (!loaded)
+            {
                 setRequestsDataGridView();
             }
         }
@@ -130,6 +133,7 @@ namespace WolfClient.UserControls
             {
                 UpdateClientsDataGridView();
                 UpdateActivityDataGridView();
+                UpdatePlotsDataGridView();
             }
         }
 
@@ -158,6 +162,8 @@ namespace WolfClient.UserControls
                 {
                     BindClientsDataGridView(matchingRequestWithClients);
                 }
+
+                
             }
             catch (Exception ex)
             {
@@ -166,6 +172,25 @@ namespace WolfClient.UserControls
             }
         }
 
+        private void BindPlotDataGridView(RequestWithClientsDTO matchingRequestWithClients) {
+            PlotsDataGridView.AutoGenerateColumns = false;
+            PlotsDataGridView.DataSource = null;
+            List<GetPlotDTO> plotList = new List<GetPlotDTO>();
+            foreach (var activityDTO  in matchingRequestWithClients.activityDTOs) {
+                plotList.AddRange(activityDTO.Plots);
+            }
+
+            if (matchingRequestWithClients != null)
+            {
+                PlotsDataGridView.DataSource = plotList;
+            }
+            else
+            {
+                PlotsDataGridView.DataSource = null;
+            }
+
+            PlotsDataGridView.Refresh();
+        }
         private void BindClientsDataGridView(RequestWithClientsDTO matchingRequestWithClients)
         {
             clientsDataGridView.AutoGenerateColumns = false;
@@ -196,6 +221,12 @@ namespace WolfClient.UserControls
                 {
                     foreach (var activity in matchingRequestWithClients.activityDTOs)
                     {
+                        string Identities = "";
+                        foreach(var plot in activity.Plots)
+                        {
+                            string plotInfo = $"Поземлен имот:{plot.PlotNumber}, {plot.City};";
+                            Identities += plotInfo;
+                        }
                         foreach (var task in activity.Tasks)
                         {
                             var viewModel = new ActivityViewModel
@@ -206,7 +237,9 @@ namespace WolfClient.UserControls
                                 StartDate = task.StartDate,
                                 Duration = task.Duration,
                                 ControlFullName = task.Control?.FullName,
-                                Comments = task.Comments
+                                Comments = task.Comments,
+                                Identities = Identities,
+                                ParentActivity = activity.ParentActivity == null ? "" : activity.ParentActivity.ActivityTypeName,
                             };
 
                             activityViewModels.Add(viewModel);
@@ -253,7 +286,7 @@ namespace WolfClient.UserControls
 
         private void button2_Click(object sender, EventArgs e)
         {
-            AddActivityTaskForm addActivityTaskForm = new AddActivityTaskForm(_apiClient,_userClient,_adminClient,_dataService);
+            AddActivityTaskForm addActivityTaskForm = new AddActivityTaskForm(_apiClient, _userClient, _adminClient, _dataService);
             addActivityTaskForm.Show();
         }
 
@@ -286,6 +319,42 @@ namespace WolfClient.UserControls
             }
         }
 
+        public void UpdatePlotsDataGridView()
+        {
+            try
+            {
+                if (_selectedRequest == null || _dataService.GetFetchedLinkedRequests() == null)
+                {
+                    PlotsDataGridView.DataSource = null;
+                    PlotsDataGridView.Refresh();
+                    return;
+                }
+
+                var matchingRequestWithClients = _dataService.GetFetchedLinkedRequests()
+                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _selectedRequest.RequestId);
+
+                if (PlotsDataGridView.InvokeRequired)
+                {
+                    PlotsDataGridView.Invoke(new MethodInvoker(delegate
+                    {
+                        BindPlotDataGridView(matchingRequestWithClients);
+                    }));
+                }
+                else
+                {
+                    BindPlotDataGridView(matchingRequestWithClients);
+                }
+
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception in UpdateClientsDataGridView: " + ex.Message);
+                MessageBox.Show("Exception in UpdateClientsDataGridView: " + ex.Message);
+            }
+
+        }
+
         public void UpdateActivityDataGridView()
         {
             try
@@ -310,6 +379,10 @@ namespace WolfClient.UserControls
                 else
                 {
                     BindActivityDataGridView(matchingRequestWithClients);
+                }
+                foreach (DataGridViewRow row in ActivityDataGridView.Rows)
+                {
+                    row.Height = 60; // Set the height to 60 pixels
                 }
             }
             catch (Exception ex)
@@ -388,6 +461,13 @@ namespace WolfClient.UserControls
         private void InvoicesDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void PlotsAddButton_Click(object sender, EventArgs e)
+        {
+            AddPlotToObject plotForm = new AddPlotToObject(_apiClient, _userClient, _adminClient, _dataService);
+            plotForm.Show();
+            UpdatePlotsDataGridView();
         }
     }
 }

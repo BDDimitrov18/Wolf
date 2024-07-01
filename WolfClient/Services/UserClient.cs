@@ -662,5 +662,100 @@ namespace WolfClient.Services
                 return new ClientResponse<GetActivityDTO> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
             }
         }
+    
+        public async Task<ClientResponse<GetPlotDTO>> AddPlot(CreatePlotDTO plotDto) {
+            var jsonContent = JsonSerializer.Serialize(plotDto);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/CreatePlot", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Plot added successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseTasks = JsonSerializer.Deserialize<GetPlotDTO>(jsonResponse, options);
+                    return new ClientResponse<GetPlotDTO> { IsSuccess = true, Message = "Plot Created Successfully", ResponseObj = responseTasks };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<GetPlotDTO> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to add Task: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<GetPlotDTO> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<GetPlotDTO> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<GetPlotDTO> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<List<GetActivity_PlotRelashionshipDTO>>> AddActivity_PlotRelashionship(List<CreateActivity_PlotRelashionshipDTO> activity_PlotRelashionshipDTOs)
+        {
+            var jsonContent = JsonSerializer.Serialize(activity_PlotRelashionshipDTOs);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateActivity_PlotRelashionship", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Relashionships added successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseTasks = JsonSerializer.Deserialize<List<GetActivity_PlotRelashionshipDTO>>(jsonResponse, options);
+                    return new ClientResponse<List<GetActivity_PlotRelashionshipDTO>> { IsSuccess = true, Message = "Relashionships Created Successfully", ResponseObj = responseTasks };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<List<GetActivity_PlotRelashionshipDTO>> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to add Task: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<List<GetActivity_PlotRelashionshipDTO>> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<List<GetActivity_PlotRelashionshipDTO>> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<List<GetActivity_PlotRelashionshipDTO>> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
     }
 }

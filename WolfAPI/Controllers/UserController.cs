@@ -20,9 +20,11 @@ namespace WolfAPI.Controllers
         private readonly ItaskTypesService _taskTypesService;
         private readonly IAcitvityService _acitvityService;
         private readonly ItaskServices _taskService;
+        private readonly IPlotService _plotService;
+        private readonly IActivity_PlotReleashionshipService _activityPlotReleashionshipService;
         public UserController(IClientService clientService, IRequestService requestService, IClient_RequestRelashionshipService requestRelashionshipService,
             IActivityTypesService activityTypesService, IEmployeeService employeeService, ItaskTypesService taskTypesService, IAcitvityService acitvityService,
-            ItaskServices taskService)
+            ItaskServices taskService, IPlotService plotService, IActivity_PlotReleashionshipService activityPlotReleashionshipService)
         {
             _clientService = clientService;
             _requestService = requestService;
@@ -32,6 +34,8 @@ namespace WolfAPI.Controllers
             _taskTypesService = taskTypesService;
             _acitvityService = acitvityService;
             _taskService = taskService;
+            _plotService = plotService;
+            _activityPlotReleashionshipService = activityPlotReleashionshipService;
         }
 
         [HttpPost("CreateClient")]
@@ -66,8 +70,8 @@ namespace WolfAPI.Controllers
 
         [HttpPost("GetLinkedClients")]
 
-        public List<RequestWithClientsDTO> getLinkedClients([FromBody] List<GetRequestDTO> requestDTOs) {
-            return _requestService.GetLinked(requestDTOs);
+        public async Task<List<RequestWithClientsDTO>> getLinked([FromBody] List<GetRequestDTO> requestDTOs) {
+            return await _requestService.GetLinked(requestDTOs);
         }
 
         [HttpGet("GetActivityTypes")]
@@ -105,6 +109,18 @@ namespace WolfAPI.Controllers
         public async Task<GetActivityDTO> createTask([FromBody] CreateTaskDTO taskDto) 
         {
             return await _taskService.CreateTask(taskDto);
+        }
+
+        [HttpPost("CreatePlot")]
+
+        public async Task<GetPlotDTO> createPlot([FromBody] CreatePlotDTO plotDTO)
+        {
+            return await _plotService.CreatePlot(plotDTO);
+        }
+
+        [HttpPost("CreateActivity_PlotRelashionship")]
+        public async Task<List<GetActivity_PlotRelashionshipDTO>> CreateActivity_PlotReleashionship(List<CreateActivity_PlotRelashionshipDTO> activity_PlotRelashionshipsDTO) {
+            return await _activityPlotReleashionshipService.CreateActivity_PlotRelashionship(activity_PlotRelashionshipsDTO);
         }
         //public void LinkClientsAdnRequest([FromBody] IEnumerable<GetClientDTO>)
     }

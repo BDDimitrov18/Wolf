@@ -13,6 +13,8 @@ namespace DTOS.DTO
 
         public int ActivityTypeID { get; set; }
 
+        public int? ParentActivityId { get; set; }
+
         public DateTime ExpectedDuration { get; set; }
 
     }

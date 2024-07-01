@@ -38,6 +38,8 @@ namespace DataAccessLayer
 
         public DbSet<TaskType> taskTypes   { get; set; }
 
+        public DbSet<Activity_PlotRelashionship> Activity_PlotRelashionships { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
@@ -117,11 +119,18 @@ namespace DataAccessLayer
                 .OnDelete(DeleteBehavior.NoAction);
 
             // Configure Activity - Plot relationship
-            modelBuilder.Entity<Activity>()
-                .HasMany(a => a.Plots)
-                .WithOne(p => p.Activity)
-                .HasForeignKey(p => p.ActivityId)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Activity_PlotRelashionship>()
+                 .HasKey(ap => new { ap.ActivityId, ap.PlotId });
+
+            modelBuilder.Entity<Activity_PlotRelashionship>()
+                .HasOne(ap => ap.Activity)
+                .WithMany(a => a.ActivityPlots)
+                .HasForeignKey(ap => ap.ActivityId);
+
+            modelBuilder.Entity<Activity_PlotRelashionship>()
+                .HasOne(ap => ap.Plot)
+                .WithMany(p => p.ActivityPlots)
+                .HasForeignKey(ap => ap.PlotId);
 
             #endregion
 

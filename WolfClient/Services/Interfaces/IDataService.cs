@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WolfClient.ViewModels;
 
 namespace WolfClient.Services.Interfaces
 {
@@ -35,6 +36,9 @@ namespace WolfClient.Services.Interfaces
         public void AddActivityToTheList(GetActivityDTO activityDTO);
 
         public void ReplaceActivity(GetActivityDTO activityDTO);
+
+        public List<EKTVIewModel> GetEKTViewModels();
+        public void SetEKTViewModels(List<EKTVIewModel> listEKT);
 
     }
 }

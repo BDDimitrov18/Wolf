@@ -15,5 +15,7 @@ namespace WolfClient.ViewModels
         public TimeSpan Duration { get; set; }
         public string ControlFullName { get; set; }
         public string Comments { get; set; }
+        public string Identities { get; set; }
+        public string ParentActivity { get; set; }
     }
 }

@@ -45,9 +45,10 @@
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
+            ParentActivityComboBox = new ComboBox();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)DurationNumericUpDown).BeginInit();
             SuspendLayout();
-
             // 
             // expectedDurationDateTime
             // 
@@ -56,7 +57,6 @@
             expectedDurationDateTime.Name = "expectedDurationDateTime";
             expectedDurationDateTime.Size = new Size(302, 27);
             expectedDurationDateTime.TabIndex = 53;
-
             // 
             // label7
             // 
@@ -67,7 +67,6 @@
             label7.Size = new Size(217, 25);
             label7.TabIndex = 52;
             label7.Text = "Дата На приключване";
-
             // 
             // DurationNumericUpDown
             // 
@@ -75,8 +74,6 @@
             DurationNumericUpDown.Name = "DurationNumericUpDown";
             DurationNumericUpDown.Size = new Size(302, 27);
             DurationNumericUpDown.TabIndex = 51;
-            ((System.ComponentModel.ISupportInitialize)DurationNumericUpDown).EndInit();
-
             // 
             // TaskComboBox
             // 
@@ -85,7 +82,6 @@
             TaskComboBox.Name = "TaskComboBox";
             TaskComboBox.Size = new Size(302, 28);
             TaskComboBox.TabIndex = 50;
-
             // 
             // ActivityComboBox
             // 
@@ -98,7 +94,6 @@
             ActivityComboBox.Size = new Size(302, 28);
             ActivityComboBox.TabIndex = 49;
             ActivityComboBox.SelectedIndexChanged += ActivityComboBox_SelectedIndexChanged;
-
             // 
             // AddActivitySubmit
             // 
@@ -111,7 +106,6 @@
             AddActivitySubmit.Text = "Добави дейност";
             AddActivitySubmit.UseVisualStyleBackColor = true;
             AddActivitySubmit.Click += AddActivitySubmit_Click;
-
             // 
             // CommentsRichTextBox
             // 
@@ -121,7 +115,6 @@
             CommentsRichTextBox.Size = new Size(314, 279);
             CommentsRichTextBox.TabIndex = 47;
             CommentsRichTextBox.Text = "";
-
             // 
             // label8
             // 
@@ -132,7 +125,6 @@
             label8.Size = new Size(107, 25);
             label8.TabIndex = 46;
             label8.Text = "Коментар";
-
             // 
             // ControlComboBox
             // 
@@ -143,7 +135,6 @@
             ControlComboBox.Size = new Size(302, 28);
             ControlComboBox.TabIndex = 45;
             ControlComboBox.SelectedIndexChanged += ControlComboBox_SelectedIndexChanged;
-
             // 
             // ControlLabel
             // 
@@ -154,7 +145,6 @@
             ControlLabel.Size = new Size(92, 25);
             ControlLabel.TabIndex = 44;
             ControlLabel.Text = "Контрол";
-
             // 
             // label6
             // 
@@ -165,7 +155,6 @@
             label6.Size = new Size(140, 25);
             label6.TabIndex = 43;
             label6.Text = "Времетраене";
-
             // 
             // startDateDateTimePicker
             // 
@@ -174,7 +163,6 @@
             startDateDateTimePicker.Name = "startDateDateTimePicker";
             startDateDateTimePicker.Size = new Size(302, 27);
             startDateDateTimePicker.TabIndex = 42;
-
             // 
             // label5
             // 
@@ -185,7 +173,6 @@
             label5.Size = new Size(61, 25);
             label5.TabIndex = 41;
             label5.Text = "Дата";
-
             // 
             // ExecitantComboBox
             // 
@@ -195,7 +182,6 @@
             ExecitantComboBox.Name = "ExecitantComboBox";
             ExecitantComboBox.Size = new Size(302, 28);
             ExecitantComboBox.TabIndex = 40;
-
             // 
             // label4
             // 
@@ -206,7 +192,6 @@
             label4.Size = new Size(129, 25);
             label4.TabIndex = 39;
             label4.Text = "Изпълнител";
-
             // 
             // label3
             // 
@@ -217,7 +202,6 @@
             label3.Size = new Size(78, 25);
             label3.TabIndex = 38;
             label3.Text = "Задача";
-
             // 
             // label2
             // 
@@ -228,14 +212,35 @@
             label2.Size = new Size(95, 25);
             label2.TabIndex = 37;
             label2.Text = "Дейност";
-
             // 
-            // AddActivityTaskForm
+            // ParentActivityComboBox
+            // 
+            ParentActivityComboBox.DropDownHeight = 230;
+            ParentActivityComboBox.FormattingEnabled = true;
+            ParentActivityComboBox.IntegralHeight = false;
+            ParentActivityComboBox.ItemHeight = 20;
+            ParentActivityComboBox.Location = new Point(431, 602);
+            ParentActivityComboBox.Name = "ParentActivityComboBox";
+            ParentActivityComboBox.Size = new Size(302, 28);
+            ParentActivityComboBox.TabIndex = 55;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(431, 558);
+            label1.Name = "label1";
+            label1.Size = new Size(270, 25);
+            label1.TabIndex = 54;
+            label1.Text = "Пренасочване към дейност";
+            // 
+            // NonExistingActivityAddTask
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
-            ClientSize = new Size(853, 896);
+            Controls.Add(ParentActivityComboBox);
+            Controls.Add(label1);
             Controls.Add(expectedDurationDateTime);
             Controls.Add(label7);
             Controls.Add(DurationNumericUpDown);
@@ -253,8 +258,8 @@
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
-            Name = "AddActivityTaskForm";
-            Text = "AddActivityTaskForm";
+            Name = "NonExistingActivityAddTask";
+            Size = new Size(853, 896);
             Load += AddActivityTaskForm_Load;
             ((System.ComponentModel.ISupportInitialize)DurationNumericUpDown).EndInit();
             ResumeLayout(false);
@@ -280,5 +285,7 @@
         private Label label4;
         private Label label3;
         private Label label2;
+        private ComboBox ParentActivityComboBox;
+        private Label label1;
     }
 }

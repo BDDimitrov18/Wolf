@@ -30,7 +30,9 @@ namespace WolfClient.UserControls
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             RequestDataGridView = new DataGridView();
             RequestId = new DataGridViewTextBoxColumn();
             RequestName = new DataGridViewTextBoxColumn();
@@ -54,13 +56,6 @@ namespace WolfClient.UserControls
             panel2 = new Panel();
             ActivityTableLabel = new Label();
             ActivityDataGridView = new DataGridView();
-            Activity = new DataGridViewTextBoxColumn();
-            Task = new DataGridViewTextBoxColumn();
-            Executant = new DataGridViewTextBoxColumn();
-            StartDate = new DataGridViewTextBoxColumn();
-            Duration = new DataGridViewTextBoxColumn();
-            Control = new DataGridViewTextBoxColumn();
-            Comment = new DataGridViewTextBoxColumn();
             ActivityAddButton = new Button();
             tabPage1 = new TabPage();
             panel4 = new Panel();
@@ -80,7 +75,7 @@ namespace WolfClient.UserControls
             panel5 = new Panel();
             PlotsTableLabel = new Label();
             PlotsDataGridView = new DataGridView();
-            PlotId = new DataGridViewTextBoxColumn();
+            PlotNumber = new DataGridViewTextBoxColumn();
             RegulatedPlotNumber = new DataGridViewTextBoxColumn();
             neighborhood = new DataGridViewTextBoxColumn();
             City = new DataGridViewTextBoxColumn();
@@ -91,6 +86,15 @@ namespace WolfClient.UserControls
             locality = new DataGridViewTextBoxColumn();
             PlotsAddButton = new Button();
             DestinationOfPlotLabel = new Label();
+            ParentActivity = new DataGridViewTextBoxColumn();
+            Activity = new DataGridViewTextBoxColumn();
+            Task = new DataGridViewTextBoxColumn();
+            Executant = new DataGridViewTextBoxColumn();
+            StartDate = new DataGridViewTextBoxColumn();
+            Duration = new DataGridViewTextBoxColumn();
+            Control = new DataGridViewTextBoxColumn();
+            Plots = new DataGridViewTextBoxColumn();
+            Comment = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)RequestDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).BeginInit();
             panel1.SuspendLayout();
@@ -339,65 +343,27 @@ namespace WolfClient.UserControls
             ActivityDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             ActivityDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             ActivityDataGridView.BackgroundColor = Color.Moccasin;
-            ActivityDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            ActivityDataGridView.Columns.AddRange(new DataGridViewColumn[] { Activity, Task, Executant, StartDate, Duration, Control, Comment });
+            ActivityDataGridView.ColumnHeadersHeight = 28;
+            ActivityDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            ActivityDataGridView.Columns.AddRange(new DataGridViewColumn[] { ParentActivity, Activity, Task, Executant, StartDate, Duration, Control, Plots, Comment });
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            ActivityDataGridView.DefaultCellStyle = dataGridViewCellStyle1;
             ActivityDataGridView.Location = new Point(0, 50);
             ActivityDataGridView.Margin = new Padding(3, 4, 3, 4);
             ActivityDataGridView.MinimumSize = new Size(933, 188);
             ActivityDataGridView.Name = "ActivityDataGridView";
             ActivityDataGridView.RowHeadersWidth = 51;
-            ActivityDataGridView.RowTemplate.Height = 24;
+            ActivityDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            ActivityDataGridView.RowTemplate.Height = 350;
+            ActivityDataGridView.RowTemplate.Resizable = DataGridViewTriState.False;
             ActivityDataGridView.Size = new Size(1277, 247);
             ActivityDataGridView.TabIndex = 22;
-            // 
-            // Activity
-            // 
-            Activity.DataPropertyName = "ActivityTypeName";
-            Activity.HeaderText = "Дейност";
-            Activity.MinimumWidth = 6;
-            Activity.Name = "Activity";
-            // 
-            // Task
-            // 
-            Task.DataPropertyName = "TaskTypeName";
-            Task.HeaderText = "Задача";
-            Task.MinimumWidth = 6;
-            Task.Name = "Task";
-            // 
-            // Executant
-            // 
-            Executant.DataPropertyName = "ExecutantFullName";
-            Executant.HeaderText = "Изпълнител";
-            Executant.MinimumWidth = 6;
-            Executant.Name = "Executant";
-            // 
-            // StartDate
-            // 
-            StartDate.DataPropertyName = "StartDate";
-            StartDate.HeaderText = "Дата";
-            StartDate.MinimumWidth = 6;
-            StartDate.Name = "StartDate";
-            // 
-            // Duration
-            // 
-            Duration.DataPropertyName = "Duration";
-            Duration.HeaderText = "Времетраене";
-            Duration.MinimumWidth = 6;
-            Duration.Name = "Duration";
-            // 
-            // Control
-            // 
-            Control.DataPropertyName = "ControlFullName";
-            Control.HeaderText = "Контрол";
-            Control.MinimumWidth = 6;
-            Control.Name = "Control";
-            // 
-            // Comment
-            // 
-            Comment.DataPropertyName = "Comments";
-            Comment.HeaderText = "Коментар";
-            Comment.MinimumWidth = 6;
-            Comment.Name = "Comment";
             // 
             // ActivityAddButton
             // 
@@ -464,6 +430,14 @@ namespace WolfClient.UserControls
             clientsDataGridView.BackgroundColor = Color.Moccasin;
             clientsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             clientsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ClientNumber, FirstName, MiddleName, LastName, Phone, Email, Address, ClientLegalType });
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            clientsDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
             clientsDataGridView.GridColor = SystemColors.ControlText;
             clientsDataGridView.Location = new Point(1, 37);
             clientsDataGridView.Margin = new Padding(3, 4, 3, 4);
@@ -579,73 +553,82 @@ namespace WolfClient.UserControls
             // 
             PlotsDataGridView.AllowUserToResizeColumns = false;
             PlotsDataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             PlotsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             PlotsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             PlotsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             PlotsDataGridView.BackgroundColor = Color.Moccasin;
             PlotsDataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            PlotsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            PlotsDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlotId, RegulatedPlotNumber, neighborhood, City, Municipality, Street, StreetNumber, designation, locality });
+            PlotsDataGridView.ColumnHeadersHeight = 29;
+            PlotsDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlotNumber, RegulatedPlotNumber, neighborhood, City, Municipality, Street, StreetNumber, designation, locality });
             PlotsDataGridView.Location = new Point(0, 42);
             PlotsDataGridView.Margin = new Padding(100, 4, 3, 4);
             PlotsDataGridView.Name = "PlotsDataGridView";
             PlotsDataGridView.RowHeadersWidth = 51;
-            PlotsDataGridView.RowTemplate.Height = 24;
+            PlotsDataGridView.RowTemplate.Height = 50;
             PlotsDataGridView.Size = new Size(1277, 259);
             PlotsDataGridView.TabIndex = 21;
             // 
-            // PlotId
+            // PlotNumber
             // 
-            PlotId.HeaderText = "Номер на имота";
-            PlotId.MinimumWidth = 6;
-            PlotId.Name = "PlotId";
+            PlotNumber.DataPropertyName = "PlotNumber";
+            PlotNumber.HeaderText = "Номер на имота";
+            PlotNumber.MinimumWidth = 6;
+            PlotNumber.Name = "PlotNumber";
             // 
             // RegulatedPlotNumber
             // 
+            RegulatedPlotNumber.DataPropertyName = "RegulatedPlotNumber";
             RegulatedPlotNumber.HeaderText = "Номер на урегулиран поземлен имот";
             RegulatedPlotNumber.MinimumWidth = 6;
             RegulatedPlotNumber.Name = "RegulatedPlotNumber";
             // 
             // neighborhood
             // 
+            neighborhood.DataPropertyName = "neighborhood";
             neighborhood.HeaderText = "квартал";
             neighborhood.MinimumWidth = 6;
             neighborhood.Name = "neighborhood";
             // 
             // City
             // 
+            City.DataPropertyName = "City";
             City.HeaderText = "град/село";
             City.MinimumWidth = 6;
             City.Name = "City";
             // 
             // Municipality
             // 
+            Municipality.DataPropertyName = "Municipality";
             Municipality.HeaderText = "Община";
             Municipality.MinimumWidth = 6;
             Municipality.Name = "Municipality";
             // 
             // Street
             // 
+            Street.DataPropertyName = "Street";
             Street.HeaderText = "улица";
             Street.MinimumWidth = 6;
             Street.Name = "Street";
             // 
             // StreetNumber
             // 
+            StreetNumber.DataPropertyName = "StreetNumber";
             StreetNumber.HeaderText = "Номер На Улицата";
             StreetNumber.MinimumWidth = 6;
             StreetNumber.Name = "StreetNumber";
             // 
             // designation
             // 
+            designation.DataPropertyName = "designation";
             designation.HeaderText = "Предназначение";
             designation.MinimumWidth = 6;
             designation.Name = "designation";
             // 
             // locality
             // 
+            locality.DataPropertyName = "locality";
             locality.HeaderText = "район";
             locality.MinimumWidth = 6;
             locality.Name = "locality";
@@ -659,6 +642,7 @@ namespace WolfClient.UserControls
             PlotsAddButton.TabIndex = 31;
             PlotsAddButton.Text = "+";
             PlotsAddButton.UseVisualStyleBackColor = true;
+            PlotsAddButton.Click += PlotsAddButton_Click;
             // 
             // DestinationOfPlotLabel
             // 
@@ -669,6 +653,69 @@ namespace WolfClient.UserControls
             DestinationOfPlotLabel.Size = new Size(207, 20);
             DestinationOfPlotLabel.TabIndex = 30;
             DestinationOfPlotLabel.Text = "Местоположение на имота: ";
+            // 
+            // ParentActivity
+            // 
+            ParentActivity.DataPropertyName = "ParentActivity";
+            ParentActivity.HeaderText = "Произлиза от";
+            ParentActivity.MinimumWidth = 6;
+            ParentActivity.Name = "ParentActivity";
+            // 
+            // Activity
+            // 
+            Activity.DataPropertyName = "ActivityTypeName";
+            Activity.HeaderText = "Дейност";
+            Activity.MinimumWidth = 6;
+            Activity.Name = "Activity";
+            // 
+            // Task
+            // 
+            Task.DataPropertyName = "TaskTypeName";
+            Task.HeaderText = "Задача";
+            Task.MinimumWidth = 6;
+            Task.Name = "Task";
+            // 
+            // Executant
+            // 
+            Executant.DataPropertyName = "ExecutantFullName";
+            Executant.HeaderText = "Изпълнител";
+            Executant.MinimumWidth = 6;
+            Executant.Name = "Executant";
+            // 
+            // StartDate
+            // 
+            StartDate.DataPropertyName = "StartDate";
+            StartDate.HeaderText = "Дата";
+            StartDate.MinimumWidth = 6;
+            StartDate.Name = "StartDate";
+            // 
+            // Duration
+            // 
+            Duration.DataPropertyName = "Duration";
+            Duration.HeaderText = "Времетраене";
+            Duration.MinimumWidth = 6;
+            Duration.Name = "Duration";
+            // 
+            // Control
+            // 
+            Control.DataPropertyName = "ControlFullName";
+            Control.HeaderText = "Контрол";
+            Control.MinimumWidth = 6;
+            Control.Name = "Control";
+            // 
+            // Plots
+            // 
+            Plots.DataPropertyName = "Identities";
+            Plots.HeaderText = "Идентификатори";
+            Plots.MinimumWidth = 6;
+            Plots.Name = "Plots";
+            // 
+            // Comment
+            // 
+            Comment.DataPropertyName = "Comments";
+            Comment.HeaderText = "Коментар";
+            Comment.MinimumWidth = 6;
+            Comment.Name = "Comment";
             // 
             // MenuRequestsUserControl
             // 
@@ -750,7 +797,9 @@ namespace WolfClient.UserControls
         private Panel panel5;
         private Label PlotsTableLabel;
         private DataGridView PlotsDataGridView;
-        private DataGridViewTextBoxColumn PlotId;
+        private Button PlotsAddButton;
+        private Label DestinationOfPlotLabel;
+        private DataGridViewTextBoxColumn PlotNumber;
         private DataGridViewTextBoxColumn RegulatedPlotNumber;
         private DataGridViewTextBoxColumn neighborhood;
         private DataGridViewTextBoxColumn City;
@@ -759,14 +808,14 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn StreetNumber;
         private DataGridViewTextBoxColumn designation;
         private DataGridViewTextBoxColumn locality;
-        private Button PlotsAddButton;
-        private Label DestinationOfPlotLabel;
+        private DataGridViewTextBoxColumn ParentActivity;
         private DataGridViewTextBoxColumn Activity;
         private DataGridViewTextBoxColumn Task;
         private DataGridViewTextBoxColumn Executant;
         private DataGridViewTextBoxColumn StartDate;
         private DataGridViewTextBoxColumn Duration;
         private DataGridViewTextBoxColumn Control;
+        private DataGridViewTextBoxColumn Plots;
         private DataGridViewTextBoxColumn Comment;
     }
 }

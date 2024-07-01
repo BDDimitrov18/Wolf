@@ -121,6 +121,12 @@ builder.Services.AddScoped<IAcitvityService, ActivityService>();
 builder.Services.AddScoped<ItaskModelRepository, TaskModelRepository>();
 builder.Services.AddScoped<ItaskServices, TaskService>();
 
+builder.Services.AddScoped<IPlotModelRepository, PlotModelRespository>();
+builder.Services.AddScoped<IPlotService, PlotService>();
+
+builder.Services.AddScoped<IActivity_PlotRelashionshipModelRepository, Activity_PlotRelashionshipModelRepository>();
+builder.Services.AddScoped<IActivity_PlotReleashionshipService, Activity_PlotRelashionshipService>();
+
 
 
 var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();

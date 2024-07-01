@@ -39,15 +39,26 @@ namespace DataAccessLayer.Repositories
         public List<DataAccessLayer.Models.Activity> FindLinkedActivity(Request request)
         {
             return _WolfDbContext.Activities
-        .Include(a => a.ActivityType)
-        .Include(a => a.Tasks)
-            .ThenInclude(t => t.Executant)
-        .Include(a => a.Tasks)
-            .ThenInclude(t => t.Control)
-        .Include(a => a.Tasks)
-            .ThenInclude(t => t.taskType)
-        .Where(a => a.RequestId == request.RequestId)
-        .ToList();
+                .Include(a => a.ActivityType)
+                .Include(a => a.Tasks)
+                    .ThenInclude(t => t.Executant)
+                .Include(a => a.Tasks)
+                    .ThenInclude(t => t.Control)
+                .Include(a => a.Tasks)
+                    .ThenInclude(t => t.taskType)
+                .Include(a => a.ParentActivity) // Include the ParentActivity
+                    .ThenInclude(pa => pa.ActivityType) // Optionally include related data for ParentActivity
+                .Include(a => a.ParentActivity)
+                    .ThenInclude(pa => pa.Tasks)
+                        .ThenInclude(t => t.Executant)
+                .Include(a => a.ParentActivity)
+                    .ThenInclude(pa => pa.Tasks)
+                        .ThenInclude(t => t.Control)
+                .Include(a => a.ParentActivity)
+                    .ThenInclude(pa => pa.Tasks)
+                        .ThenInclude(t => t.taskType)
+                .Where(a => a.RequestId == request.RequestId)
+                .ToList();
         }
 
         public async Task<Activity> GetActivity(int id)

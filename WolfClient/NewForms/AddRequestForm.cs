@@ -331,6 +331,10 @@ namespace WolfClient.NewForms
             return _returnClients;
         }
 
+        private void AddRequestTitleLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

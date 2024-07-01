@@ -20,4 +20,13 @@
     <Compile Update="UserControls\MenuRequestsUserControl.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EKT\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.102.2" />
+    <PackageReference Include="EPPlus" Version="6.0.3" />
+  </ItemGroup>
+
 </Project>

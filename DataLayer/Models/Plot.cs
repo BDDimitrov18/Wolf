@@ -12,9 +12,9 @@ namespace DataAccessLayer.Models
         [Key]
         public int PlotId { get; set; }
 
-        public int PlotNumber { get; set; }
+        public string PlotNumber { get; set; }
 
-        public int? RegulatedPlotNumber { get; set; }
+        public string? RegulatedPlotNumber { get; set; }
 
         public string? neighborhood { get; set; }
 
@@ -31,7 +31,6 @@ namespace DataAccessLayer.Models
         public string? locality { get; set; }
 
         // Foreign key to Activity
-        public int ActivityId { get; set; }
-        public Activity Activity { get; set; }
+        public ICollection<Activity_PlotRelashionship> ActivityPlots { get; set; }
     }
 }

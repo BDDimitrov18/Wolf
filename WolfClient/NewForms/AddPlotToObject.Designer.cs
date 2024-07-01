@@ -48,6 +48,8 @@
             PlotNumberComboBox = new ComboBox();
             PlotNumberLabel = new Label();
             AddPlotInObjectTitleLabel = new Label();
+            ActivityComboBox = new ComboBox();
+            label1 = new Label();
             SuspendLayout();
             // 
             // AddPlotToObjectSubmitButton
@@ -59,6 +61,7 @@
             AddPlotToObjectSubmitButton.TabIndex = 48;
             AddPlotToObjectSubmitButton.Text = "Залагане";
             AddPlotToObjectSubmitButton.UseVisualStyleBackColor = true;
+            AddPlotToObjectSubmitButton.Click += AddPlotToObjectSubmitButton_Click;
             // 
             // StreetTextBox
             // 
@@ -95,7 +98,7 @@
             // DesignationComboBox
             // 
             DesignationComboBox.FormattingEnabled = true;
-            DesignationComboBox.Location = new Point(273, 683);
+            DesignationComboBox.Location = new Point(45, 664);
             DesignationComboBox.Margin = new Padding(3, 4, 3, 4);
             DesignationComboBox.Name = "DesignationComboBox";
             DesignationComboBox.Size = new Size(208, 28);
@@ -105,7 +108,7 @@
             // 
             DesignationLabel.AutoSize = true;
             DesignationLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            DesignationLabel.Location = new Point(268, 632);
+            DesignationLabel.Location = new Point(40, 613);
             DesignationLabel.Name = "DesignationLabel";
             DesignationLabel.Size = new Size(168, 25);
             DesignationLabel.TabIndex = 42;
@@ -216,6 +219,7 @@
             PlotNumberComboBox.Name = "PlotNumberComboBox";
             PlotNumberComboBox.Size = new Size(208, 28);
             PlotNumberComboBox.TabIndex = 31;
+            PlotNumberComboBox.TextChanged += PlotNumberComboBox_TextChanged;
             // 
             // PlotNumberLabel
             // 
@@ -237,12 +241,33 @@
             AddPlotInObjectTitleLabel.TabIndex = 29;
             AddPlotInObjectTitleLabel.Text = "Залагане на имот в Обект";
             // 
+            // ActivityComboBox
+            // 
+            ActivityComboBox.FormattingEnabled = true;
+            ActivityComboBox.Location = new Point(414, 664);
+            ActivityComboBox.Margin = new Padding(3, 4, 3, 4);
+            ActivityComboBox.Name = "ActivityComboBox";
+            ActivityComboBox.Size = new Size(208, 28);
+            ActivityComboBox.TabIndex = 50;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(409, 613);
+            label1.Name = "label1";
+            label1.Size = new Size(202, 25);
+            label1.TabIndex = 49;
+            label1.Text = "Обвържи с дейност ";
+            // 
             // AddPlotToObject
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(817, 852);
+            Controls.Add(ActivityComboBox);
+            Controls.Add(label1);
             Controls.Add(AddPlotToObjectSubmitButton);
             Controls.Add(StreetTextBox);
             Controls.Add(StreetNumberTextBox);
@@ -265,6 +290,7 @@
             Controls.Add(AddPlotInObjectTitleLabel);
             Name = "AddPlotToObject";
             Text = "AddPlotToObject";
+            Load += AddPlotToObject_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -291,5 +317,7 @@
         private ComboBox PlotNumberComboBox;
         private Label PlotNumberLabel;
         private Label AddPlotInObjectTitleLabel;
+        private ComboBox ActivityComboBox;
+        private Label label1;
     }
 }

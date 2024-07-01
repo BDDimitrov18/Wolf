@@ -35,5 +35,9 @@ namespace WolfClient.Services.Interfaces
 
         public Task<ClientResponse<GetActivityDTO>> AddTask(CreateTaskDTO taskDTO);
 
+        public Task<ClientResponse<GetPlotDTO>> AddPlot(CreatePlotDTO plotDto);
+
+        public Task<ClientResponse<List<GetActivity_PlotRelashionshipDTO>>> AddActivity_PlotRelashionship(List<CreateActivity_PlotRelashionshipDTO> activity_PlotRelashionshipDTOs);
+
     }
 }

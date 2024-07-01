@@ -8,6 +8,6 @@ namespace WolfAPI.Services.Interfaces
         public List<GetRequestDTO> Add(List<CreateRequestDTO> requestsDto);
         public List<GetRequestDTO> GetAllRequest();
 
-        public List<RequestWithClientsDTO> GetLinked(List<GetRequestDTO> requestsDTO);
+        public Task<List<RequestWithClientsDTO>> GetLinked(List<GetRequestDTO> requestsDTO);
     }
 }

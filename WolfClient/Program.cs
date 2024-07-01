@@ -3,6 +3,7 @@ using WolfClient.Services.Interfaces;
 using WolfClient.Services;
 using WolfClient.NewForms;
 using WolfClient.UserControls;
+using System.IO;
 
 namespace WolfClient
 {
@@ -14,12 +15,17 @@ namespace WolfClient
         [STAThread]
         static void Main()
         {
-            IApiClient apiClient = new ApiClient(); // Replace SomeApiClient with your actual implementation
-            IUserClient userClient = new UserClient(); // Replace SomeUserClient with your actual implementation
-            IAdminClient adminClient = new AdminClient(); // Replace SomeAdminClient with your actual implementation
-            IDataService dataService = new DataService(); // Replace SomeAdminClient with your actual implementation
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string relativePath = @"..\..\..\EKT\ek_atte.xlsx";
+            string filePath = Path.GetFullPath(Path.Combine(currentDirectory, relativePath));
+            // Print the current working directory
+            IApiClient apiClient = new ApiClient(); 
+            IUserClient userClient = new UserClient(); 
+            IAdminClient adminClient = new AdminClient(); 
+            IDataService dataService = new DataService();
+            IReadExcel readExcel = new ReadExcel();
 
-            
+            dataService.SetEKTViewModels(readExcel.ReadExcelFile(filePath));
 
 
             Application.EnableVisualStyles();
@@ -28,6 +34,8 @@ namespace WolfClient
             MenuClientsUserControl menuClientsUserControl = new MenuClientsUserControl(apiClient, userClient, adminClient);
             MenuEmployeesUserControl menuEmployeesUserControl = new MenuEmployeesUserControl(apiClient, userClient, adminClient,dataService);
             Application.Run(new MainForm(apiClient, userClient, adminClient, dataService, menuRequestsUserControl, menuClientsUserControl, menuEmployeesUserControl));
+
+
         }
     }
 }

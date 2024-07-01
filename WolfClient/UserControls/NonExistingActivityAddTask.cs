@@ -47,6 +47,22 @@ namespace WolfClient.UserControls
             ControlComboBox.DataSource = _dataService.GetEmployees();
             ControlComboBox.DisplayMember = "FullName";
             ControlComboBox.ValueMember = "EmployeeId";
+
+
+            var selected = _dataService.GetSelectedRequest();
+            var linkedRequests = _dataService.GetFetchedLinkedRequests();
+            List<GetActivityDTO> activityDTOs = new List<GetActivityDTO>();
+            foreach (var linkedRequest in linkedRequests)
+            {
+                if (selected.RequestId == linkedRequest.requestDTO.RequestId)
+                {
+                    activityDTOs = linkedRequest.activityDTOs;
+                }
+            }
+
+            ParentActivityComboBox.DataSource = activityDTOs;
+            ParentActivityComboBox.DisplayMember = "ActivityTypeName";
+            ParentActivityComboBox.ValueMember = "ActivityId";
         }
 
         private void ActivityComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -116,6 +132,7 @@ namespace WolfClient.UserControls
                         RequestId = _dataService.GetSelectedRequest().RequestId,
                         ActivityTypeID = activityTypeDTO.ActivityTypeID,
                         ExpectedDuration = expectedDurationDateTime.Value,
+                        ParentActivityId = ParentActivityComboBox.SelectedValue != null ? (int)ParentActivityComboBox.SelectedValue : null
                     };
 
                     //DOESNT MAP THE TASKS PROPERLY
@@ -156,6 +173,7 @@ namespace WolfClient.UserControls
                         RequestId = _dataService.GetSelectedRequest().RequestId,
                         ActivityTypeID = activityTypeDTO.ActivityTypeID,
                         ExpectedDuration = expectedDurationDateTime.Value,
+                        ParentActivityId = ParentActivityComboBox.SelectedValue != null ? (int)ParentActivityComboBox.SelectedValue : null
                     };
 
                     //DOESNT MAP THE TASKS PROPERLY
@@ -207,6 +225,7 @@ namespace WolfClient.UserControls
                     RequestId = requestDto.RequestId,
                     ActivityTypeID = createTaskTypeResponse.ResponseObj.ActivityTypeID,
                     ExpectedDuration = expectedDurationDateTime.Value,
+                    ParentActivityId = ParentActivityComboBox.SelectedValue != null ?  (int)ParentActivityComboBox.SelectedValue : null
                 };
 
                 //DOESNT MAP THE TASKS PROPERLY

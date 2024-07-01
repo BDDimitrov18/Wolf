@@ -174,9 +174,9 @@
             NameOfRequestTiltleLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
             NameOfRequestTiltleLabel.Location = new Point(40, 134);
             NameOfRequestTiltleLabel.Name = "NameOfRequestTiltleLabel";
-            NameOfRequestTiltleLabel.Size = new Size(156, 25);
+            NameOfRequestTiltleLabel.Size = new Size(185, 25);
             NameOfRequestTiltleLabel.TabIndex = 16;
-            NameOfRequestTiltleLabel.Text = "Име На Обекта";
+            NameOfRequestTiltleLabel.Text = "Име На поръчката";
             // 
             // AddRequestTitleLabel
             // 
@@ -184,9 +184,10 @@
             AddRequestTitleLabel.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
             AddRequestTitleLabel.Location = new Point(319, 35);
             AddRequestTitleLabel.Name = "AddRequestTitleLabel";
-            AddRequestTitleLabel.Size = new Size(367, 42);
+            AddRequestTitleLabel.Size = new Size(406, 42);
             AddRequestTitleLabel.TabIndex = 15;
-            AddRequestTitleLabel.Text = "Добавяне На Обект";
+            AddRequestTitleLabel.Text = "Добавяне На поръчка";
+            AddRequestTitleLabel.Click += AddRequestTitleLabel_Click;
             // 
             // AvailableClientsFlowPanel
             // 
