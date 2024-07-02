@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataAccessLayer.Models
+{
+    public class DocumentPlot_DocumentOwnerRelashionship
+    {
+        public int DocumentPlotId { get; set; }
+        public Plot_DocumentOfOwnershipRelashionship DocumentPlot { get; set; }
+
+        public int DocumentOwnerID { get; set; }
+
+        public DocumentOfOwnership_OwnerRelashionship DocumentOwner { get; set; }
+
+        public float IdealParts { get; set; }
+
+        public string WayOfAcquiring { get; set; }
+    }
+}

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(WolfDbContext))]
-    [Migration("20240701090110_PlotChanges")]
-    partial class PlotChanges
+    [Migration("20240702140735_Adding Documents Data")]
+    partial class AddingDocumentsData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,6 +38,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<DateTime>("ExpectedDuration")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("ParentActivityId")
+                        .HasColumnType("int");
+
                     b.Property<int>("RequestId")
                         .HasColumnType("int");
 
@@ -45,9 +48,26 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("ActivityTypeID");
 
+                    b.HasIndex("ParentActivityId");
+
                     b.HasIndex("RequestId");
 
                     b.ToTable("Activities");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Activity_PlotRelashionship", b =>
+                {
+                    b.Property<int>("ActivityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlotId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActivityId", "PlotId");
+
+                    b.HasIndex("PlotId");
+
+                    b.ToTable("Activity_PlotRelashionships");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.ActivityType", b =>
@@ -272,6 +292,103 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Client_RequestRelashionships");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.DocumentOfOwnership", b =>
+                {
+                    b.Property<int>("DocumentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentId"), 1L, 1);
+
+                    b.Property<DateTime>("DateOfIssuing")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfRegistering")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DocCase")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Issuer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumberOfDocument")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TOM")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TypeOfDocument")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("register")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DocumentId");
+
+                    b.ToTable("DocumentsOfOwnership");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.DocumentOfOwnership_OwnerRelashionship", b =>
+                {
+                    b.Property<int>("DocumentOwnerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentOwnerID"), 1L, 1);
+
+                    b.Property<int>("DocumentID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OwnerID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DocumentOwnerID");
+
+                    b.HasIndex("DocumentID");
+
+                    b.HasIndex("OwnerID");
+
+                    b.ToTable("DocumentOfOwnership_OwnerRelashionships");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.DocumentPlot_DocumentOwnerRelashionship", b =>
+                {
+                    b.Property<int>("DocumentPlotId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DocumentOwnerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID")
+                        .HasColumnType("int");
+
+                    b.Property<float>("IdealParts")
+                        .HasColumnType("real");
+
+                    b.Property<int?>("Plot_DocumentOfOwnershipRelashionshipDocumentPlotId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WayOfAcquiring")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DocumentPlotId", "DocumentOwnerId");
+
+                    b.HasIndex("DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID");
+
+                    b.HasIndex("DocumentOwnerId");
+
+                    b.HasIndex("Plot_DocumentOfOwnershipRelashionshipDocumentPlotId");
+
+                    b.ToTable("documentPlot_DocumentOwenerRelashionships");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Employee", b =>
                 {
                     b.Property<int>("EmployeeId")
@@ -326,6 +443,37 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Invoices");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Owner", b =>
+                {
+                    b.Property<int>("OwnerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OwnerID"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EGN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OwnerID");
+
+                    b.ToTable("Owners");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Plot", b =>
                 {
                     b.Property<int>("PlotId")
@@ -333,9 +481,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlotId"), 1L, 1);
-
-                    b.Property<int>("ActivityId")
-                        .HasColumnType("int");
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
@@ -368,9 +513,30 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("PlotId");
 
-                    b.HasIndex("ActivityId");
-
                     b.ToTable("Plots");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Plot_DocumentOfOwnershipRelashionship", b =>
+                {
+                    b.Property<int>("DocumentPlotId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentPlotId"), 1L, 1);
+
+                    b.Property<int>("DocumentOfOwnershipId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlotId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DocumentPlotId");
+
+                    b.HasIndex("DocumentOfOwnershipId");
+
+                    b.HasIndex("PlotId");
+
+                    b.ToTable("Plot_DocumentOfOwnerships");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Request", b =>
@@ -1681,6 +1847,10 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("DataAccessLayer.Models.Activity", "ParentActivity")
+                        .WithMany()
+                        .HasForeignKey("ParentActivityId");
+
                     b.HasOne("DataAccessLayer.Models.Request", "Request")
                         .WithMany("Activities")
                         .HasForeignKey("RequestId")
@@ -1689,7 +1859,28 @@ namespace DataAccessLayer.Migrations
 
                     b.Navigation("ActivityType");
 
+                    b.Navigation("ParentActivity");
+
                     b.Navigation("Request");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Activity_PlotRelashionship", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Activity", "Activity")
+                        .WithMany("ActivityPlots")
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccessLayer.Models.Plot", "Plot")
+                        .WithMany("ActivityPlots")
+                        .HasForeignKey("PlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Activity");
+
+                    b.Navigation("Plot");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Client_RequestRelashionship", b =>
@@ -1711,6 +1902,52 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Request");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.DocumentOfOwnership_OwnerRelashionship", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.DocumentOfOwnership", "Document")
+                        .WithMany("DocumentOwners")
+                        .HasForeignKey("DocumentID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DataAccessLayer.Models.Owner", "Owner")
+                        .WithMany("documentOfOwnership_OwnerRelashionships")
+                        .HasForeignKey("OwnerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Document");
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.DocumentPlot_DocumentOwnerRelashionship", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.DocumentOfOwnership_OwnerRelashionship", null)
+                        .WithMany("documentPlot_DocumentOwnerRelashionships")
+                        .HasForeignKey("DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID");
+
+                    b.HasOne("DataAccessLayer.Models.DocumentOfOwnership_OwnerRelashionship", "DocumentOwner")
+                        .WithMany()
+                        .HasForeignKey("DocumentOwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccessLayer.Models.Plot_DocumentOfOwnershipRelashionship", "DocumentPlot")
+                        .WithMany()
+                        .HasForeignKey("DocumentPlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccessLayer.Models.Plot_DocumentOfOwnershipRelashionship", null)
+                        .WithMany("documentPlot_DocumentOwnerRelashionships")
+                        .HasForeignKey("Plot_DocumentOfOwnershipRelashionshipDocumentPlotId");
+
+                    b.Navigation("DocumentOwner");
+
+                    b.Navigation("DocumentPlot");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Invoice", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.Request", "Request")
@@ -1722,15 +1959,23 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Request");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Plot", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.Plot_DocumentOfOwnershipRelashionship", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.Activity", "Activity")
-                        .WithMany("Plots")
-                        .HasForeignKey("ActivityId")
+                    b.HasOne("DataAccessLayer.Models.DocumentOfOwnership", "documentOfOwnership")
+                        .WithMany("PlotsDocuments")
+                        .HasForeignKey("DocumentOfOwnershipId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DataAccessLayer.Models.Plot", "Plot")
+                        .WithMany("PlotDocuments")
+                        .HasForeignKey("PlotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Activity");
+                    b.Navigation("Plot");
+
+                    b.Navigation("documentOfOwnership");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.TaskType", b =>
@@ -1831,7 +2076,7 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.Activity", b =>
                 {
-                    b.Navigation("Plots");
+                    b.Navigation("ActivityPlots");
 
                     b.Navigation("Tasks");
                 });
@@ -1844,6 +2089,35 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.Client", b =>
                 {
                     b.Navigation("Client_RequestRelationships");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.DocumentOfOwnership", b =>
+                {
+                    b.Navigation("DocumentOwners");
+
+                    b.Navigation("PlotsDocuments");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.DocumentOfOwnership_OwnerRelashionship", b =>
+                {
+                    b.Navigation("documentPlot_DocumentOwnerRelashionships");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Owner", b =>
+                {
+                    b.Navigation("documentOfOwnership_OwnerRelashionships");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Plot", b =>
+                {
+                    b.Navigation("ActivityPlots");
+
+                    b.Navigation("PlotDocuments");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Plot_DocumentOfOwnershipRelashionship", b =>
+                {
+                    b.Navigation("documentPlot_DocumentOwnerRelashionships");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Request", b =>

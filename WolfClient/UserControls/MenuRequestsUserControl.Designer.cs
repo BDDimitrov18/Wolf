@@ -30,9 +30,10 @@ namespace WolfClient.UserControls
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
             RequestDataGridView = new DataGridView();
             RequestId = new DataGridViewTextBoxColumn();
             RequestName = new DataGridViewTextBoxColumn();
@@ -56,6 +57,15 @@ namespace WolfClient.UserControls
             panel2 = new Panel();
             ActivityTableLabel = new Label();
             ActivityDataGridView = new DataGridView();
+            ParentActivity = new DataGridViewTextBoxColumn();
+            Activity = new DataGridViewTextBoxColumn();
+            Task = new DataGridViewTextBoxColumn();
+            Executant = new DataGridViewTextBoxColumn();
+            StartDate = new DataGridViewTextBoxColumn();
+            Duration = new DataGridViewTextBoxColumn();
+            Control = new DataGridViewTextBoxColumn();
+            Plots = new DataGridViewTextBoxColumn();
+            Comment = new DataGridViewTextBoxColumn();
             ActivityAddButton = new Button();
             tabPage1 = new TabPage();
             panel4 = new Panel();
@@ -70,7 +80,7 @@ namespace WolfClient.UserControls
             Email = new DataGridViewTextBoxColumn();
             Address = new DataGridViewTextBoxColumn();
             ClientLegalType = new DataGridViewTextBoxColumn();
-            tabControl1 = new TabControl();
+            DocumentsOfOwnershipTab = new TabControl();
             tabPage3 = new TabPage();
             panel5 = new Panel();
             PlotsTableLabel = new Label();
@@ -86,15 +96,26 @@ namespace WolfClient.UserControls
             locality = new DataGridViewTextBoxColumn();
             PlotsAddButton = new Button();
             DestinationOfPlotLabel = new Label();
-            ParentActivity = new DataGridViewTextBoxColumn();
-            Activity = new DataGridViewTextBoxColumn();
-            Task = new DataGridViewTextBoxColumn();
-            Executant = new DataGridViewTextBoxColumn();
-            StartDate = new DataGridViewTextBoxColumn();
-            Duration = new DataGridViewTextBoxColumn();
-            Control = new DataGridViewTextBoxColumn();
-            Plots = new DataGridViewTextBoxColumn();
-            Comment = new DataGridViewTextBoxColumn();
+            tabPage4 = new TabPage();
+            panel6 = new Panel();
+            DocumentsOfOwnership = new DataGridView();
+            tabPage5 = new TabPage();
+            Number = new DataGridViewTextBoxColumn();
+            Type = new DataGridViewTextBoxColumn();
+            Issuer = new DataGridViewTextBoxColumn();
+            Owner = new DataGridViewTextBoxColumn();
+            PlotLst = new DataGridViewTextBoxColumn();
+            label1 = new Label();
+            dataGridView1 = new DataGridView();
+            OwnerId = new DataGridViewTextBoxColumn();
+            DocumentId = new DataGridViewTextBoxColumn();
+            Names = new DataGridViewTextBoxColumn();
+            EKG = new DataGridViewTextBoxColumn();
+            OwnerAddress = new DataGridViewTextBoxColumn();
+            OwnerPhone = new DataGridViewTextBoxColumn();
+            OwnerEmail = new DataGridViewTextBoxColumn();
+            label2 = new Label();
+            AddOwnersButton = new Button();
             ((System.ComponentModel.ISupportInitialize)RequestDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).BeginInit();
             panel1.SuspendLayout();
@@ -105,10 +126,15 @@ namespace WolfClient.UserControls
             tabPage1.SuspendLayout();
             panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)clientsDataGridView).BeginInit();
-            tabControl1.SuspendLayout();
+            DocumentsOfOwnershipTab.SuspendLayout();
             tabPage3.SuspendLayout();
             panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)PlotsDataGridView).BeginInit();
+            tabPage4.SuspendLayout();
+            panel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)DocumentsOfOwnership).BeginInit();
+            tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // RequestDataGridView
@@ -346,14 +372,14 @@ namespace WolfClient.UserControls
             ActivityDataGridView.ColumnHeadersHeight = 28;
             ActivityDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             ActivityDataGridView.Columns.AddRange(new DataGridViewColumn[] { ParentActivity, Activity, Task, Executant, StartDate, Duration, Control, Plots, Comment });
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            ActivityDataGridView.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = SystemColors.Window;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            ActivityDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
             ActivityDataGridView.Location = new Point(0, 50);
             ActivityDataGridView.Margin = new Padding(3, 4, 3, 4);
             ActivityDataGridView.MinimumSize = new Size(933, 188);
@@ -364,6 +390,69 @@ namespace WolfClient.UserControls
             ActivityDataGridView.RowTemplate.Resizable = DataGridViewTriState.False;
             ActivityDataGridView.Size = new Size(1277, 247);
             ActivityDataGridView.TabIndex = 22;
+            // 
+            // ParentActivity
+            // 
+            ParentActivity.DataPropertyName = "ParentActivity";
+            ParentActivity.HeaderText = "Произлиза от";
+            ParentActivity.MinimumWidth = 6;
+            ParentActivity.Name = "ParentActivity";
+            // 
+            // Activity
+            // 
+            Activity.DataPropertyName = "ActivityTypeName";
+            Activity.HeaderText = "Дейност";
+            Activity.MinimumWidth = 6;
+            Activity.Name = "Activity";
+            // 
+            // Task
+            // 
+            Task.DataPropertyName = "TaskTypeName";
+            Task.HeaderText = "Задача";
+            Task.MinimumWidth = 6;
+            Task.Name = "Task";
+            // 
+            // Executant
+            // 
+            Executant.DataPropertyName = "ExecutantFullName";
+            Executant.HeaderText = "Изпълнител";
+            Executant.MinimumWidth = 6;
+            Executant.Name = "Executant";
+            // 
+            // StartDate
+            // 
+            StartDate.DataPropertyName = "StartDate";
+            StartDate.HeaderText = "Дата";
+            StartDate.MinimumWidth = 6;
+            StartDate.Name = "StartDate";
+            // 
+            // Duration
+            // 
+            Duration.DataPropertyName = "Duration";
+            Duration.HeaderText = "Времетраене";
+            Duration.MinimumWidth = 6;
+            Duration.Name = "Duration";
+            // 
+            // Control
+            // 
+            Control.DataPropertyName = "ControlFullName";
+            Control.HeaderText = "Контрол";
+            Control.MinimumWidth = 6;
+            Control.Name = "Control";
+            // 
+            // Plots
+            // 
+            Plots.DataPropertyName = "Identities";
+            Plots.HeaderText = "Идентификатори";
+            Plots.MinimumWidth = 6;
+            Plots.Name = "Plots";
+            // 
+            // Comment
+            // 
+            Comment.DataPropertyName = "Comments";
+            Comment.HeaderText = "Коментар";
+            Comment.MinimumWidth = 6;
+            Comment.Name = "Comment";
             // 
             // ActivityAddButton
             // 
@@ -430,14 +519,14 @@ namespace WolfClient.UserControls
             clientsDataGridView.BackgroundColor = Color.Moccasin;
             clientsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             clientsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ClientNumber, FirstName, MiddleName, LastName, Phone, Email, Address, ClientLegalType });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            clientsDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            clientsDataGridView.DefaultCellStyle = dataGridViewCellStyle6;
             clientsDataGridView.GridColor = SystemColors.ControlText;
             clientsDataGridView.Location = new Point(1, 37);
             clientsDataGridView.Margin = new Padding(3, 4, 3, 4);
@@ -503,17 +592,19 @@ namespace WolfClient.UserControls
             ClientLegalType.MinimumWidth = 6;
             ClientLegalType.Name = "ClientLegalType";
             // 
-            // tabControl1
+            // DocumentsOfOwnershipTab
             // 
-            tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tabControl1.Controls.Add(tabPage1);
-            tabControl1.Controls.Add(tabPage2);
-            tabControl1.Controls.Add(tabPage3);
-            tabControl1.Location = new Point(30, 624);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1291, 337);
-            tabControl1.TabIndex = 12;
+            DocumentsOfOwnershipTab.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            DocumentsOfOwnershipTab.Controls.Add(tabPage1);
+            DocumentsOfOwnershipTab.Controls.Add(tabPage2);
+            DocumentsOfOwnershipTab.Controls.Add(tabPage3);
+            DocumentsOfOwnershipTab.Controls.Add(tabPage4);
+            DocumentsOfOwnershipTab.Controls.Add(tabPage5);
+            DocumentsOfOwnershipTab.Location = new Point(30, 624);
+            DocumentsOfOwnershipTab.Name = "DocumentsOfOwnershipTab";
+            DocumentsOfOwnershipTab.SelectedIndex = 0;
+            DocumentsOfOwnershipTab.Size = new Size(1291, 337);
+            DocumentsOfOwnershipTab.TabIndex = 12;
             // 
             // tabPage3
             // 
@@ -553,8 +644,8 @@ namespace WolfClient.UserControls
             // 
             PlotsDataGridView.AllowUserToResizeColumns = false;
             PlotsDataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             PlotsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             PlotsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             PlotsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
@@ -654,75 +745,185 @@ namespace WolfClient.UserControls
             DestinationOfPlotLabel.TabIndex = 30;
             DestinationOfPlotLabel.Text = "Местоположение на имота: ";
             // 
-            // ParentActivity
+            // tabPage4
             // 
-            ParentActivity.DataPropertyName = "ParentActivity";
-            ParentActivity.HeaderText = "Произлиза от";
-            ParentActivity.MinimumWidth = 6;
-            ParentActivity.Name = "ParentActivity";
+            tabPage4.Controls.Add(panel6);
+            tabPage4.Location = new Point(4, 29);
+            tabPage4.Name = "tabPage4";
+            tabPage4.Padding = new Padding(3);
+            tabPage4.Size = new Size(1283, 304);
+            tabPage4.TabIndex = 3;
+            tabPage4.Text = "Документи";
+            tabPage4.UseVisualStyleBackColor = true;
             // 
-            // Activity
+            // panel6
             // 
-            Activity.DataPropertyName = "ActivityTypeName";
-            Activity.HeaderText = "Дейност";
-            Activity.MinimumWidth = 6;
-            Activity.Name = "Activity";
+            panel6.BackColor = Color.Transparent;
+            panel6.Controls.Add(label1);
+            panel6.Controls.Add(DocumentsOfOwnership);
+            panel6.Dock = DockStyle.Fill;
+            panel6.Location = new Point(3, 3);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(1277, 298);
+            panel6.TabIndex = 0;
+            panel6.Paint += panel6_Paint;
             // 
-            // Task
+            // DocumentsOfOwnership
             // 
-            Task.DataPropertyName = "TaskTypeName";
-            Task.HeaderText = "Задача";
-            Task.MinimumWidth = 6;
-            Task.Name = "Task";
+            DocumentsOfOwnership.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DocumentsOfOwnership.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            DocumentsOfOwnership.BackgroundColor = Color.Moccasin;
+            DocumentsOfOwnership.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            DocumentsOfOwnership.Columns.AddRange(new DataGridViewColumn[] { Number, Type, Issuer, Owner, PlotLst });
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = SystemColors.Window;
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle8.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+            DocumentsOfOwnership.DefaultCellStyle = dataGridViewCellStyle8;
+            DocumentsOfOwnership.Location = new Point(0, 44);
+            DocumentsOfOwnership.Name = "DocumentsOfOwnership";
+            DocumentsOfOwnership.RowHeadersWidth = 51;
+            DocumentsOfOwnership.RowTemplate.Height = 29;
+            DocumentsOfOwnership.Size = new Size(1277, 257);
+            DocumentsOfOwnership.TabIndex = 0;
             // 
-            // Executant
+            // tabPage5
             // 
-            Executant.DataPropertyName = "ExecutantFullName";
-            Executant.HeaderText = "Изпълнител";
-            Executant.MinimumWidth = 6;
-            Executant.Name = "Executant";
+            tabPage5.Controls.Add(AddOwnersButton);
+            tabPage5.Controls.Add(label2);
+            tabPage5.Controls.Add(dataGridView1);
+            tabPage5.Location = new Point(4, 29);
+            tabPage5.Name = "tabPage5";
+            tabPage5.Padding = new Padding(3);
+            tabPage5.Size = new Size(1283, 304);
+            tabPage5.TabIndex = 4;
+            tabPage5.Text = "Собственици";
+            tabPage5.UseVisualStyleBackColor = true;
             // 
-            // StartDate
+            // Number
             // 
-            StartDate.DataPropertyName = "StartDate";
-            StartDate.HeaderText = "Дата";
-            StartDate.MinimumWidth = 6;
-            StartDate.Name = "StartDate";
+            Number.HeaderText = "Номер на Документа";
+            Number.MinimumWidth = 6;
+            Number.Name = "Number";
             // 
-            // Duration
+            // Type
             // 
-            Duration.DataPropertyName = "Duration";
-            Duration.HeaderText = "Времетраене";
-            Duration.MinimumWidth = 6;
-            Duration.Name = "Duration";
+            Type.HeaderText = "Вид";
+            Type.MinimumWidth = 6;
+            Type.Name = "Type";
             // 
-            // Control
+            // Issuer
             // 
-            Control.DataPropertyName = "ControlFullName";
-            Control.HeaderText = "Контрол";
-            Control.MinimumWidth = 6;
-            Control.Name = "Control";
+            Issuer.HeaderText = "Издател";
+            Issuer.MinimumWidth = 6;
+            Issuer.Name = "Issuer";
             // 
-            // Plots
+            // Owner
             // 
-            Plots.DataPropertyName = "Identities";
-            Plots.HeaderText = "Идентификатори";
-            Plots.MinimumWidth = 6;
-            Plots.Name = "Plots";
+            Owner.HeaderText = "Собственици";
+            Owner.MinimumWidth = 6;
+            Owner.Name = "Owner";
             // 
-            // Comment
+            // PlotLst
             // 
-            Comment.DataPropertyName = "Comments";
-            Comment.HeaderText = "Коментар";
-            Comment.MinimumWidth = 6;
-            Comment.Name = "Comment";
+            PlotLst.HeaderText = "Имоти";
+            PlotLst.MinimumWidth = 6;
+            PlotLst.Name = "PlotLst";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(3, 12);
+            label1.Name = "label1";
+            label1.Size = new Size(85, 20);
+            label1.TabIndex = 1;
+            label1.Text = "Документи";
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView1.BackgroundColor = Color.Moccasin;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { OwnerId, DocumentId, Names, EKG, OwnerAddress, OwnerPhone, OwnerEmail });
+            dataGridView1.Location = new Point(-1, 49);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowHeadersWidth = 51;
+            dataGridView1.RowTemplate.Height = 29;
+            dataGridView1.Size = new Size(1284, 255);
+            dataGridView1.TabIndex = 0;
+            // 
+            // OwnerId
+            // 
+            OwnerId.HeaderText = "Номер Собственик";
+            OwnerId.MinimumWidth = 6;
+            OwnerId.Name = "OwnerId";
+            // 
+            // DocumentId
+            // 
+            DocumentId.HeaderText = "Номер Документ";
+            DocumentId.MinimumWidth = 6;
+            DocumentId.Name = "DocumentId";
+            // 
+            // Names
+            // 
+            Names.HeaderText = "Имена";
+            Names.MinimumWidth = 6;
+            Names.Name = "Names";
+            // 
+            // EKG
+            // 
+            EKG.HeaderText = "ЕГН/ЕКГ";
+            EKG.MinimumWidth = 6;
+            EKG.Name = "EKG";
+            // 
+            // OwnerAddress
+            // 
+            OwnerAddress.HeaderText = "Адрес";
+            OwnerAddress.MinimumWidth = 6;
+            OwnerAddress.Name = "OwnerAddress";
+            // 
+            // OwnerPhone
+            // 
+            OwnerPhone.HeaderText = "Телефон";
+            OwnerPhone.MinimumWidth = 6;
+            OwnerPhone.Name = "OwnerPhone";
+            // 
+            // OwnerEmail
+            // 
+            OwnerEmail.HeaderText = "Email";
+            OwnerEmail.MinimumWidth = 6;
+            OwnerEmail.Name = "OwnerEmail";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(3, 16);
+            label2.Name = "label2";
+            label2.Size = new Size(101, 20);
+            label2.TabIndex = 1;
+            label2.Text = "Собственици";
+            // 
+            // AddOwnersButton
+            // 
+            AddOwnersButton.Location = new Point(110, 12);
+            AddOwnersButton.Name = "AddOwnersButton";
+            AddOwnersButton.Size = new Size(30, 29);
+            AddOwnersButton.TabIndex = 2;
+            AddOwnersButton.Text = "+";
+            AddOwnersButton.UseVisualStyleBackColor = true;
+            AddOwnersButton.Click += AddOwnersButton_Click;
             // 
             // MenuRequestsUserControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
-            Controls.Add(tabControl1);
+            Controls.Add(DocumentsOfOwnershipTab);
             Controls.Add(panel3);
             Controls.Add(panel1);
             Controls.Add(RequestTitleLabel);
@@ -744,11 +945,18 @@ namespace WolfClient.UserControls
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)clientsDataGridView).EndInit();
-            tabControl1.ResumeLayout(false);
+            DocumentsOfOwnershipTab.ResumeLayout(false);
             tabPage3.ResumeLayout(false);
             panel5.ResumeLayout(false);
             panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)PlotsDataGridView).EndInit();
+            tabPage4.ResumeLayout(false);
+            panel6.ResumeLayout(false);
+            panel6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)DocumentsOfOwnership).EndInit();
+            tabPage5.ResumeLayout(false);
+            tabPage5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -792,7 +1000,7 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn Email;
         private DataGridViewTextBoxColumn Address;
         private DataGridViewTextBoxColumn ClientLegalType;
-        private TabControl tabControl1;
+        private TabControl DocumentsOfOwnershipTab;
         private TabPage tabPage3;
         private Panel panel5;
         private Label PlotsTableLabel;
@@ -817,5 +1025,25 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn Control;
         private DataGridViewTextBoxColumn Plots;
         private DataGridViewTextBoxColumn Comment;
+        private TabPage tabPage4;
+        private Panel panel6;
+        private DataGridView DocumentsOfOwnership;
+        private TabPage tabPage5;
+        private Label label1;
+        private DataGridViewTextBoxColumn Number;
+        private DataGridViewTextBoxColumn Type;
+        private DataGridViewTextBoxColumn Issuer;
+        private DataGridViewTextBoxColumn Owner;
+        private DataGridViewTextBoxColumn PlotLst;
+        private DataGridView dataGridView1;
+        private DataGridViewTextBoxColumn OwnerId;
+        private DataGridViewTextBoxColumn DocumentId;
+        private DataGridViewTextBoxColumn Names;
+        private DataGridViewTextBoxColumn EKG;
+        private DataGridViewTextBoxColumn OwnerAddress;
+        private DataGridViewTextBoxColumn OwnerPhone;
+        private DataGridViewTextBoxColumn OwnerEmail;
+        private Button AddOwnersButton;
+        private Label label2;
     }
 }

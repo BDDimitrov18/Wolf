@@ -30,6 +30,9 @@ namespace DataAccessLayer.Models
 
         public string? locality { get; set; }
 
+        public ICollection<Plot_DocumentOfOwnershipRelashionship> PlotDocuments { get; set; }
+
+
         // Foreign key to Activity
         public ICollection<Activity_PlotRelashionship> ActivityPlots { get; set; }
     }

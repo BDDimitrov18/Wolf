@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccessLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class AddingDocumentsData : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -81,6 +81,26 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DocumentsOfOwnership",
+                columns: table => new
+                {
+                    DocumentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TypeOfDocument = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumberOfDocument = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Issuer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TOM = table.Column<int>(type: "int", nullable: false),
+                    register = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DocCase = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfIssuing = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateOfRegistering = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DocumentsOfOwnership", x => x.DocumentId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Employees",
                 columns: table => new
                 {
@@ -95,6 +115,44 @@ namespace DataAccessLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.EmployeeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Owners",
+                columns: table => new
+                {
+                    OwnerID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EGN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Owners", x => x.OwnerID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Plots",
+                columns: table => new
+                {
+                    PlotId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlotNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RegulatedPlotNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    neighborhood = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Municipality = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StreetNumber = table.Column<int>(type: "int", nullable: true),
+                    designation = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    locality = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Plots", x => x.PlotId);
                 });
 
             migrationBuilder.CreateTable(
@@ -241,6 +299,58 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DocumentOfOwnership_OwnerRelashionships",
+                columns: table => new
+                {
+                    DocumentOwnerID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DocumentID = table.Column<int>(type: "int", nullable: false),
+                    OwnerID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DocumentOfOwnership_OwnerRelashionships", x => x.DocumentOwnerID);
+                    table.ForeignKey(
+                        name: "FK_DocumentOfOwnership_OwnerRelashionships_DocumentsOfOwnership_DocumentID",
+                        column: x => x.DocumentID,
+                        principalTable: "DocumentsOfOwnership",
+                        principalColumn: "DocumentId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DocumentOfOwnership_OwnerRelashionships_Owners_OwnerID",
+                        column: x => x.OwnerID,
+                        principalTable: "Owners",
+                        principalColumn: "OwnerID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Plot_DocumentOfOwnerships",
+                columns: table => new
+                {
+                    DocumentPlotId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlotId = table.Column<int>(type: "int", nullable: false),
+                    DocumentOfOwnershipId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Plot_DocumentOfOwnerships", x => x.DocumentPlotId);
+                    table.ForeignKey(
+                        name: "FK_Plot_DocumentOfOwnerships_DocumentsOfOwnership_DocumentOfOwnershipId",
+                        column: x => x.DocumentOfOwnershipId,
+                        principalTable: "DocumentsOfOwnership",
+                        principalColumn: "DocumentId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Plot_DocumentOfOwnerships_Plots_PlotId",
+                        column: x => x.PlotId,
+                        principalTable: "Plots",
+                        principalColumn: "PlotId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Activities",
                 columns: table => new
                 {
@@ -248,11 +358,17 @@ namespace DataAccessLayer.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RequestId = table.Column<int>(type: "int", nullable: false),
                     ActivityTypeID = table.Column<int>(type: "int", nullable: false),
-                    ExpectedDuration = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ExpectedDuration = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ParentActivityId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Activities", x => x.ActivityId);
+                    table.ForeignKey(
+                        name: "FK_Activities_Activities_ParentActivityId",
+                        column: x => x.ParentActivityId,
+                        principalTable: "Activities",
+                        principalColumn: "ActivityId");
                     table.ForeignKey(
                         name: "FK_Activities_activityTypes_ActivityTypeID",
                         column: x => x.ActivityTypeID,
@@ -311,30 +427,64 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Plots",
+                name: "documentPlot_DocumentOwenerRelashionships",
                 columns: table => new
                 {
-                    PlotId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PlotNumber = table.Column<int>(type: "int", nullable: false),
-                    RegulatedPlotNumber = table.Column<int>(type: "int", nullable: true),
-                    neighborhood = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Municipality = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StreetNumber = table.Column<int>(type: "int", nullable: true),
-                    designation = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    locality = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ActivityId = table.Column<int>(type: "int", nullable: false)
+                    DocumentPlotId = table.Column<int>(type: "int", nullable: false),
+                    DocumentOwnerId = table.Column<int>(type: "int", nullable: false),
+                    IdealParts = table.Column<float>(type: "real", nullable: false),
+                    WayOfAcquiring = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID = table.Column<int>(type: "int", nullable: true),
+                    Plot_DocumentOfOwnershipRelashionshipDocumentPlotId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Plots", x => x.PlotId);
+                    table.PrimaryKey("PK_documentPlot_DocumentOwenerRelashionships", x => new { x.DocumentPlotId, x.DocumentOwnerId });
                     table.ForeignKey(
-                        name: "FK_Plots_Activities_ActivityId",
+                        name: "FK_documentPlot_DocumentOwenerRelashionships_DocumentOfOwnership_OwnerRelashionships_DocumentOfOwnership_OwnerRelashionshipDocu~",
+                        column: x => x.DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID,
+                        principalTable: "DocumentOfOwnership_OwnerRelashionships",
+                        principalColumn: "DocumentOwnerID");
+                    table.ForeignKey(
+                        name: "FK_documentPlot_DocumentOwenerRelashionships_DocumentOfOwnership_OwnerRelashionships_DocumentOwnerId",
+                        column: x => x.DocumentOwnerId,
+                        principalTable: "DocumentOfOwnership_OwnerRelashionships",
+                        principalColumn: "DocumentOwnerID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_documentPlot_DocumentOwenerRelashionships_Plot_DocumentOfOwnerships_DocumentPlotId",
+                        column: x => x.DocumentPlotId,
+                        principalTable: "Plot_DocumentOfOwnerships",
+                        principalColumn: "DocumentPlotId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_documentPlot_DocumentOwenerRelashionships_Plot_DocumentOfOwnerships_Plot_DocumentOfOwnershipRelashionshipDocumentPlotId",
+                        column: x => x.Plot_DocumentOfOwnershipRelashionshipDocumentPlotId,
+                        principalTable: "Plot_DocumentOfOwnerships",
+                        principalColumn: "DocumentPlotId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Activity_PlotRelashionships",
+                columns: table => new
+                {
+                    ActivityId = table.Column<int>(type: "int", nullable: false),
+                    PlotId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Activity_PlotRelashionships", x => new { x.ActivityId, x.PlotId });
+                    table.ForeignKey(
+                        name: "FK_Activity_PlotRelashionships_Activities_ActivityId",
                         column: x => x.ActivityId,
                         principalTable: "Activities",
                         principalColumn: "ActivityId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Activity_PlotRelashionships_Plots_PlotId",
+                        column: x => x.PlotId,
+                        principalTable: "Plots",
+                        principalColumn: "PlotId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -622,9 +772,19 @@ namespace DataAccessLayer.Migrations
                 column: "ActivityTypeID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Activities_ParentActivityId",
+                table: "Activities",
+                column: "ParentActivityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Activities_RequestId",
                 table: "Activities",
                 column: "RequestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Activity_PlotRelashionships_PlotId",
+                table: "Activity_PlotRelashionships",
+                column: "PlotId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -671,14 +831,44 @@ namespace DataAccessLayer.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DocumentOfOwnership_OwnerRelashionships_DocumentID",
+                table: "DocumentOfOwnership_OwnerRelashionships",
+                column: "DocumentID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocumentOfOwnership_OwnerRelashionships_OwnerID",
+                table: "DocumentOfOwnership_OwnerRelashionships",
+                column: "OwnerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_documentPlot_DocumentOwenerRelashionships_DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID",
+                table: "documentPlot_DocumentOwenerRelashionships",
+                column: "DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_documentPlot_DocumentOwenerRelashionships_DocumentOwnerId",
+                table: "documentPlot_DocumentOwenerRelashionships",
+                column: "DocumentOwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_documentPlot_DocumentOwenerRelashionships_Plot_DocumentOfOwnershipRelashionshipDocumentPlotId",
+                table: "documentPlot_DocumentOwenerRelashionships",
+                column: "Plot_DocumentOfOwnershipRelashionshipDocumentPlotId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Invoices_RequestId",
                 table: "Invoices",
                 column: "RequestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Plots_ActivityId",
-                table: "Plots",
-                column: "ActivityId");
+                name: "IX_Plot_DocumentOfOwnerships_DocumentOfOwnershipId",
+                table: "Plot_DocumentOfOwnerships",
+                column: "DocumentOfOwnershipId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Plot_DocumentOfOwnerships_PlotId",
+                table: "Plot_DocumentOfOwnerships",
+                column: "PlotId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_ActivityId",
@@ -709,6 +899,9 @@ namespace DataAccessLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Activity_PlotRelashionships");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -727,10 +920,10 @@ namespace DataAccessLayer.Migrations
                 name: "Client_RequestRelashionships");
 
             migrationBuilder.DropTable(
-                name: "Invoices");
+                name: "documentPlot_DocumentOwenerRelashionships");
 
             migrationBuilder.DropTable(
-                name: "Plots");
+                name: "Invoices");
 
             migrationBuilder.DropTable(
                 name: "Tasks");
@@ -745,6 +938,12 @@ namespace DataAccessLayer.Migrations
                 name: "Clients");
 
             migrationBuilder.DropTable(
+                name: "DocumentOfOwnership_OwnerRelashionships");
+
+            migrationBuilder.DropTable(
+                name: "Plot_DocumentOfOwnerships");
+
+            migrationBuilder.DropTable(
                 name: "Activities");
 
             migrationBuilder.DropTable(
@@ -752,6 +951,15 @@ namespace DataAccessLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "taskTypes");
+
+            migrationBuilder.DropTable(
+                name: "Owners");
+
+            migrationBuilder.DropTable(
+                name: "DocumentsOfOwnership");
+
+            migrationBuilder.DropTable(
+                name: "Plots");
 
             migrationBuilder.DropTable(
                 name: "Requests");

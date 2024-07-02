@@ -163,7 +163,7 @@ namespace WolfClient.UserControls
                     BindClientsDataGridView(matchingRequestWithClients);
                 }
 
-                
+
             }
             catch (Exception ex)
             {
@@ -172,11 +172,13 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void BindPlotDataGridView(RequestWithClientsDTO matchingRequestWithClients) {
+        private void BindPlotDataGridView(RequestWithClientsDTO matchingRequestWithClients)
+        {
             PlotsDataGridView.AutoGenerateColumns = false;
             PlotsDataGridView.DataSource = null;
             List<GetPlotDTO> plotList = new List<GetPlotDTO>();
-            foreach (var activityDTO  in matchingRequestWithClients.activityDTOs) {
+            foreach (var activityDTO in matchingRequestWithClients.activityDTOs)
+            {
                 plotList.AddRange(activityDTO.Plots);
             }
 
@@ -222,7 +224,7 @@ namespace WolfClient.UserControls
                     foreach (var activity in matchingRequestWithClients.activityDTOs)
                     {
                         string Identities = "";
-                        foreach(var plot in activity.Plots)
+                        foreach (var plot in activity.Plots)
                         {
                             string plotInfo = $"Поземлен имот:{plot.PlotNumber}, {plot.City};";
                             Identities += plotInfo;
@@ -345,7 +347,7 @@ namespace WolfClient.UserControls
                     BindPlotDataGridView(matchingRequestWithClients);
                 }
 
-                
+
             }
             catch (Exception ex)
             {
@@ -468,6 +470,17 @@ namespace WolfClient.UserControls
             AddPlotToObject plotForm = new AddPlotToObject(_apiClient, _userClient, _adminClient, _dataService);
             plotForm.Show();
             UpdatePlotsDataGridView();
+        }
+
+        private void panel6_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void AddOwnersButton_Click(object sender, EventArgs e)
+        {
+            AddOwnerForm ownerForm = new AddOwnerForm();
+            ownerForm.Show();
         }
     }
 }

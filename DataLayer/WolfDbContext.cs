@@ -24,27 +24,30 @@ namespace DataAccessLayer
 
         public DbSet<Client> Clients { get; set; }
 
-        public DbSet<WorkTask> Tasks  { get; set; }
+        public DbSet<WorkTask> Tasks { get; set; }
 
-        public DbSet<Request> Requests  { get; set; }
+        public DbSet<Request> Requests { get; set; }
 
         public DbSet<Plot> Plots { get; set; }
 
-        public DbSet<Invoice> Invoices  { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
 
         public DbSet<Client_RequestRelashionship> Client_RequestRelashionships { get; set; }
 
         public DbSet<ActivityType> activityTypes { get; set; }
 
-        public DbSet<TaskType> taskTypes   { get; set; }
+        public DbSet<TaskType> taskTypes { get; set; }
 
         public DbSet<Activity_PlotRelashionship> Activity_PlotRelashionships { get; set; }
 
+        public DbSet<DocumentOfOwnership> DocumentsOfOwnership { get; set; }
+        public DbSet<Owner> Owners { get; set; }
+        public DbSet<DocumentOfOwnership_OwnerRelashionship> DocumentOfOwnership_OwnerRelashionships { get; set; }
+        public DbSet<Plot_DocumentOfOwnershipRelashionship> Plot_DocumentOfOwnerships { get; set; }
+        public DbSet<DocumentPlot_DocumentOwnerRelashionship> documentPlot_DocumentOwenerRelashionships { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
-
-            
 
             #region InvoiceConfig
             modelBuilder.Entity<Invoice>()
@@ -132,7 +135,113 @@ namespace DataAccessLayer
                 .WithMany(p => p.ActivityPlots)
                 .HasForeignKey(ap => ap.PlotId);
 
+
+
             #endregion
+
+            #region documentsConfig
+            modelBuilder.Entity<Plot>()
+                .HasKey(p => p.PlotId);
+
+            modelBuilder.Entity<Plot>()
+                .HasMany(p => p.ActivityPlots)
+                .WithOne(ap => ap.Plot)
+                .HasForeignKey(ap => ap.PlotId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Plot>()
+                .HasMany(p => p.PlotDocuments)
+                .WithOne(pd => pd.Plot)
+                .HasForeignKey(pd => pd.PlotId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // DocumentOfOwnership configuration
+            modelBuilder.Entity<DocumentOfOwnership>()
+                .HasKey(d => d.DocumentId);
+
+            modelBuilder.Entity<DocumentOfOwnership>()
+                .HasMany(d => d.DocumentOwners)
+                .WithOne(docRel => docRel.Document)
+                .HasForeignKey(docRel => docRel.DocumentID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<DocumentOfOwnership>()
+                .HasMany(d => d.PlotsDocuments)
+                .WithOne(pd => pd.documentOfOwnership)
+                .HasForeignKey(pd => pd.DocumentOfOwnershipId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Owner configuration
+            modelBuilder.Entity<Owner>()
+                .HasKey(o => o.OwnerID);
+
+            modelBuilder.Entity<Owner>()
+                .HasMany(o => o.documentOfOwnership_OwnerRelashionships)
+                .WithOne(docRel => docRel.Owner)
+                .HasForeignKey(docRel => docRel.OwnerID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Plot_DocumentOfOwnershipRelashionship configuration
+            modelBuilder.Entity<Plot_DocumentOfOwnershipRelashionship>()
+                .HasKey(pd => pd.DocumentPlotId);
+
+            modelBuilder.Entity<Plot_DocumentOfOwnershipRelashionship>()
+                .HasOne(pd => pd.Plot)
+                .WithMany(p => p.PlotDocuments)
+                .HasForeignKey(pd => pd.PlotId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Plot_DocumentOfOwnershipRelashionship>()
+                .HasOne(pd => pd.documentOfOwnership)
+                .WithMany(d => d.PlotsDocuments)
+                .HasForeignKey(pd => pd.DocumentOfOwnershipId)
+                .OnDelete(DeleteBehavior.Restrict); // Avoid multiple cascade paths
+
+            modelBuilder.Entity<Plot_DocumentOfOwnershipRelashionship>()
+                .HasMany(pd => pd.documentPlot_DocumentOwnerRelashionships)
+                .WithOne(dpo => dpo.DocumentPlot)
+                .HasForeignKey(dpo => dpo.DocumentPlotId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // DocumentOfOwnership_OwnerRelashionship configuration
+            modelBuilder.Entity<DocumentOfOwnership_OwnerRelashionship>()
+                .HasKey(docRel => docRel.DocumentOwnerID);
+
+            modelBuilder.Entity<DocumentOfOwnership_OwnerRelashionship>()
+                .HasOne(docRel => docRel.Document)
+                .WithMany(d => d.DocumentOwners)
+                .HasForeignKey(docRel => docRel.DocumentID)
+                .OnDelete(DeleteBehavior.Restrict); // Avoid multiple cascade paths
+
+            modelBuilder.Entity<DocumentOfOwnership_OwnerRelashionship>()
+                .HasOne(docRel => docRel.Owner)
+                .WithMany(o => o.documentOfOwnership_OwnerRelashionships)
+                .HasForeignKey(docRel => docRel.OwnerID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<DocumentOfOwnership_OwnerRelashionship>()
+                .HasMany(docRel => docRel.documentPlot_DocumentOwnerRelashionships)
+                .WithOne(dpo => dpo.DocumentOwner)
+                .HasForeignKey(dpo => dpo.DocumentOwnerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // DocumentPlot_DocumentOwnerRelashionship configuration
+            modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
+                .HasKey(dpo => new { dpo.DocumentPlotId, dpo.DocumentOwnerId });
+
+            modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
+                .HasOne(dpo => dpo.DocumentPlot)
+                .WithMany()
+                .HasForeignKey(dpo => dpo.DocumentPlotId)
+                .OnDelete(DeleteBehavior.Cascade); // Cascade delete to DocumentPlot
+
+            modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
+                .HasOne(dpo => dpo.DocumentOwner)
+                .WithMany()
+                .HasForeignKey(dpo => dpo.DocumentOwnerId)
+                .OnDelete(DeleteBehavior.Cascade); // Cascade delete to DocumentOwner
+            #endregion
+
 
             #region SeedRoles
             modelBuilder.Entity<IdentityRole>().HasData(
