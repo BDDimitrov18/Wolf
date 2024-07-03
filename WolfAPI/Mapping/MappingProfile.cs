@@ -133,6 +133,36 @@ namespace WolfAPI.Mapping
                 .ForMember(dest => dest.Activity, opt => opt.Ignore())
                 .ForMember(dest => dest.Plot, opt => opt.Ignore());
 
+            CreateMap<CreateOwnerDTO, Owner>();
+
+            // Map Owner to GetOwnerDTO
+            CreateMap<Owner, GetOwnerDTO>();
+
+            CreateMap<CreateDocumentOfOwnershipDTO, DocumentOfOwnership>();
+
+            // Map Owner to GetOwnerDTO
+            CreateMap<DocumentOfOwnership, GetDocumentOfOwnershipDTO>();
+
+            CreateMap<CreatePlot_DocumentOfOwnershipRelashionshipDTO, Plot_DocumentOfOwnershipRelashionship>();
+
+            // Map Plot_DocumentOfOwnershipRelashionship to GetPlot_DocumentOfOwnershipRelashionshipDTO
+            CreateMap<Plot_DocumentOfOwnershipRelashionship, GetPlot_DocumentOfOwnershipRelashionshipDTO>()
+                .ForMember(dest => dest.Plot, opt => opt.MapFrom(src => src.Plot))
+                .ForMember(dest => dest.documentOfOwnership, opt => opt.MapFrom(src => src.documentOfOwnership));
+
+            CreateMap<CreateDocumentOfOwnership_OwnerRelashionshipDTO, DocumentOfOwnership_OwnerRelashionship>();
+
+            // Map DocumentOfOwnership_OwnerRelashionship to GetDocumentOfOwnership_OwnerRelashionshipDTO
+            CreateMap<DocumentOfOwnership_OwnerRelashionship, GetDocumentOfOwnership_OwnerRelashionshipDTO>()
+                .ForMember(dest => dest.Document, opt => opt.MapFrom(src => src.Document))
+                .ForMember(dest => dest.Owner, opt => opt.MapFrom(src => src.Owner));
+
+            CreateMap<CreateDocumentPlot_DocumentOwnerRelashionshipDTO, DocumentPlot_DocumentOwnerRelashionship>();
+
+            // Map DocumentPlot_DocumentOwnerRelashionship to GetDocumentPlot_DocumentOwnerRelashionshipDTO
+            CreateMap<DocumentPlot_DocumentOwnerRelashionship, GetDocumentPlot_DocumentOwnerRelashionshipDTO>()
+                .ForMember(dest => dest.DocumentPlot, opt => opt.MapFrom(src => src.DocumentPlot))
+                .ForMember(dest => dest.DocumentOwner, opt => opt.MapFrom(src => src.DocumentOwner));
         }
     }
 }

@@ -34,8 +34,8 @@ namespace WolfClient.UserControls
             _apiClient = apiClient;
             _userClient = userClient;
             _adminClient = adminClient;
-            _selectedRequest = null;
-            _fetchedRequests = null;
+            _selectedRequest = new GetRequestDTO();
+            _fetchedRequests = new List<GetRequestDTO>();
             _isSelectedRequest = false;
             _dataService = dataService;
         }
@@ -479,7 +479,7 @@ namespace WolfClient.UserControls
 
         private void AddOwnersButton_Click(object sender, EventArgs e)
         {
-            AddOwnerForm ownerForm = new AddOwnerForm();
+            AddOwnerForm ownerForm = new AddOwnerForm(_apiClient, _userClient, _adminClient, _dataService);
             ownerForm.Show();
         }
     }

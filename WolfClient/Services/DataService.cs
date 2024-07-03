@@ -1,4 +1,5 @@
-﻿using DTOS.DTO;
+﻿using DocumentFormat.OpenXml.Drawing.Diagrams;
+using DTOS.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,7 @@ namespace WolfClient.Services
     public class DataService : IDataService
     {
 
-        
-        private List<RequestWithClientsDTO> _fetchedLinkedClients { get; set; }
+        private CompositeDataDTO compositeData { get; set; }
         private GetRequestDTO _selectedRequest { get; set; }
         private List<GetClientDTO> _clientDTOs { get; set; }
 
@@ -26,11 +26,16 @@ namespace WolfClient.Services
 
         public DataService()
         {
-            _fetchedLinkedClients = new List<RequestWithClientsDTO>();
+            compositeData = new CompositeDataDTO();
+            compositeData._fetchedLinkedClients = new List<RequestWithClientsDTO>();
+            compositeData.linkedDocuments = new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
             _clientDTOs = new List<GetClientDTO>();
             _employeeDTOs = new List<GetEmployeeDTO>();
         }
 
+        public void addPlotOwnerRelashionship(GetDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO) {
+            compositeData.linkedDocuments.Add(relashionshipDTO);
+        }
         public List<EKTVIewModel> GetEKTViewModels() {
             return _ektViewModels;
         }
@@ -40,19 +45,19 @@ namespace WolfClient.Services
         }
 
         public void SetFetchedLinkedRequests(List<RequestWithClientsDTO> linkedRequests) {
-            _fetchedLinkedClients = linkedRequests;
+            compositeData._fetchedLinkedClients = linkedRequests;
         }
 
         public List<RequestWithClientsDTO> GetFetchedLinkedRequests() { 
-            return _fetchedLinkedClients;
+            return compositeData._fetchedLinkedClients;
         }
 
         public void AddSingleRequest(RequestWithClientsDTO linkedRequest) {
-            _fetchedLinkedClients.Add(linkedRequest);
+            compositeData._fetchedLinkedClients.Add(linkedRequest);
         }
 
         public void AddMultipleRequests(List<RequestWithClientsDTO> linkedRequests) {
-            _fetchedLinkedClients.AddRange(linkedRequests);
+            compositeData._fetchedLinkedClients.AddRange(linkedRequests);
         }
 
         public void SetActivityTypes(List<GetActivityTypeDTO> activityTypeDTOs)
@@ -90,12 +95,12 @@ namespace WolfClient.Services
         }
 
         public void AddActivityToTheList(GetActivityDTO activityDTO) {
-            var ChosenLink = _fetchedLinkedClients.Where(opt => opt.requestDTO.RequestId == _selectedRequest.RequestId).FirstOrDefault();
+            var ChosenLink = compositeData._fetchedLinkedClients.Where(opt => opt.requestDTO.RequestId == _selectedRequest.RequestId).FirstOrDefault();
             ChosenLink.activityDTOs.Add(activityDTO);
         }
 
         public void ReplaceActivity(GetActivityDTO activityDTO) {
-            var ChosenLink = _fetchedLinkedClients.Where(opt => opt.requestDTO.RequestId == _selectedRequest.RequestId).FirstOrDefault();
+            var ChosenLink = compositeData._fetchedLinkedClients.Where(opt => opt.requestDTO.RequestId == _selectedRequest.RequestId).FirstOrDefault();
             int br = 0;
             foreach (GetActivityDTO link in ChosenLink.activityDTOs)
             {
@@ -106,7 +111,30 @@ namespace WolfClient.Services
                 br++;
             }
         }
+        public RequestWithClientsDTO GetSelectedLinkedRequest()
+        {
+            foreach (var link in compositeData._fetchedLinkedClients) {
+                if (link.requestDTO.RequestId == _selectedRequest.RequestId) {
+                    return link;
+                }
+            }
+            return null;
+        }
+    
+        public List<GetPlotDTO> GetAllPlots()
+        {
+            List<GetPlotDTO> plotDTOs = new List<GetPlotDTO>();
+            var selected = GetSelectedLinkedRequest();
+            foreach(var activity in selected.activityDTOs) {
+                foreach (var plot in activity.Plots) {
+                    if (!plotDTOs.Any(p => p.PlotId == plot.PlotId))
+                    {
+                        plotDTOs.Add(plot);
+                    }
+                }
+            }
+            return plotDTOs;
+        }
 
-        
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(WolfDbContext))]
-    [Migration("20240702140735_Adding Documents Data")]
-    partial class AddingDocumentsData
+    [Migration("20240703130839_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -362,29 +362,19 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("DocumentPlotId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DocumentOwnerId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID")
+                    b.Property<int>("DocumentOwnerID")
                         .HasColumnType("int");
 
                     b.Property<float>("IdealParts")
                         .HasColumnType("real");
 
-                    b.Property<int?>("Plot_DocumentOfOwnershipRelashionshipDocumentPlotId")
-                        .HasColumnType("int");
-
                     b.Property<string>("WayOfAcquiring")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("DocumentPlotId", "DocumentOwnerId");
+                    b.HasKey("DocumentPlotId", "DocumentOwnerID");
 
-                    b.HasIndex("DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID");
-
-                    b.HasIndex("DocumentOwnerId");
-
-                    b.HasIndex("Plot_DocumentOfOwnershipRelashionshipDocumentPlotId");
+                    b.HasIndex("DocumentOwnerID");
 
                     b.ToTable("documentPlot_DocumentOwenerRelashionships");
                 });
@@ -1923,25 +1913,17 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.DocumentPlot_DocumentOwnerRelashionship", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.DocumentOfOwnership_OwnerRelashionship", null)
-                        .WithMany("documentPlot_DocumentOwnerRelashionships")
-                        .HasForeignKey("DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID");
-
                     b.HasOne("DataAccessLayer.Models.DocumentOfOwnership_OwnerRelashionship", "DocumentOwner")
-                        .WithMany()
-                        .HasForeignKey("DocumentOwnerId")
+                        .WithMany("documentPlot_DocumentOwnerRelashionships")
+                        .HasForeignKey("DocumentOwnerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DataAccessLayer.Models.Plot_DocumentOfOwnershipRelashionship", "DocumentPlot")
-                        .WithMany()
+                        .WithMany("documentPlot_DocumentOwnerRelashionships")
                         .HasForeignKey("DocumentPlotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("DataAccessLayer.Models.Plot_DocumentOfOwnershipRelashionship", null)
-                        .WithMany("documentPlot_DocumentOwnerRelashionships")
-                        .HasForeignKey("Plot_DocumentOfOwnershipRelashionshipDocumentPlotId");
 
                     b.Navigation("DocumentOwner");
 

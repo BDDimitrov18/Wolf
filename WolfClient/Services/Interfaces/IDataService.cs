@@ -40,5 +40,11 @@ namespace WolfClient.Services.Interfaces
         public List<EKTVIewModel> GetEKTViewModels();
         public void SetEKTViewModels(List<EKTVIewModel> listEKT);
 
+        public RequestWithClientsDTO GetSelectedLinkedRequest();
+
+        public List<GetPlotDTO> GetAllPlots();
+
+        public void addPlotOwnerRelashionship(GetDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO);
+
     }
 }

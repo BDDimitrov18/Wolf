@@ -28,22 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
+            numberTextBox = new TextBox();
             SuspendLayout();
             // 
-            // textBox1
+            // numberTextBox
             // 
-            textBox1.Location = new Point(0, 1);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(125, 27);
-            textBox1.TabIndex = 0;
+            numberTextBox.Location = new Point(0, 1);
+            numberTextBox.Name = "numberTextBox";
+            numberTextBox.Size = new Size(183, 27);
+            numberTextBox.TabIndex = 0;
             // 
             // IdealPartNumber
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
-            Controls.Add(textBox1);
+            Controls.Add(numberTextBox);
             Name = "IdealPartNumber";
             Size = new Size(183, 28);
             ResumeLayout(false);
@@ -52,6 +52,6 @@
 
         #endregion
 
-        private TextBox textBox1;
+        private TextBox numberTextBox;
     }
 }

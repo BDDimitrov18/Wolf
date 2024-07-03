@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccessLayer.Migrations
 {
-    public partial class AddingDocumentsData : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -431,23 +431,16 @@ namespace DataAccessLayer.Migrations
                 columns: table => new
                 {
                     DocumentPlotId = table.Column<int>(type: "int", nullable: false),
-                    DocumentOwnerId = table.Column<int>(type: "int", nullable: false),
+                    DocumentOwnerID = table.Column<int>(type: "int", nullable: false),
                     IdealParts = table.Column<float>(type: "real", nullable: false),
-                    WayOfAcquiring = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID = table.Column<int>(type: "int", nullable: true),
-                    Plot_DocumentOfOwnershipRelashionshipDocumentPlotId = table.Column<int>(type: "int", nullable: true)
+                    WayOfAcquiring = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_documentPlot_DocumentOwenerRelashionships", x => new { x.DocumentPlotId, x.DocumentOwnerId });
+                    table.PrimaryKey("PK_documentPlot_DocumentOwenerRelashionships", x => new { x.DocumentPlotId, x.DocumentOwnerID });
                     table.ForeignKey(
-                        name: "FK_documentPlot_DocumentOwenerRelashionships_DocumentOfOwnership_OwnerRelashionships_DocumentOfOwnership_OwnerRelashionshipDocu~",
-                        column: x => x.DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID,
-                        principalTable: "DocumentOfOwnership_OwnerRelashionships",
-                        principalColumn: "DocumentOwnerID");
-                    table.ForeignKey(
-                        name: "FK_documentPlot_DocumentOwenerRelashionships_DocumentOfOwnership_OwnerRelashionships_DocumentOwnerId",
-                        column: x => x.DocumentOwnerId,
+                        name: "FK_documentPlot_DocumentOwenerRelashionships_DocumentOfOwnership_OwnerRelashionships_DocumentOwnerID",
+                        column: x => x.DocumentOwnerID,
                         principalTable: "DocumentOfOwnership_OwnerRelashionships",
                         principalColumn: "DocumentOwnerID",
                         onDelete: ReferentialAction.Cascade);
@@ -457,11 +450,6 @@ namespace DataAccessLayer.Migrations
                         principalTable: "Plot_DocumentOfOwnerships",
                         principalColumn: "DocumentPlotId",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_documentPlot_DocumentOwenerRelashionships_Plot_DocumentOfOwnerships_Plot_DocumentOfOwnershipRelashionshipDocumentPlotId",
-                        column: x => x.Plot_DocumentOfOwnershipRelashionshipDocumentPlotId,
-                        principalTable: "Plot_DocumentOfOwnerships",
-                        principalColumn: "DocumentPlotId");
                 });
 
             migrationBuilder.CreateTable(
@@ -841,19 +829,9 @@ namespace DataAccessLayer.Migrations
                 column: "OwnerID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_documentPlot_DocumentOwenerRelashionships_DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID",
+                name: "IX_documentPlot_DocumentOwenerRelashionships_DocumentOwnerID",
                 table: "documentPlot_DocumentOwenerRelashionships",
-                column: "DocumentOfOwnership_OwnerRelashionshipDocumentOwnerID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_documentPlot_DocumentOwenerRelashionships_DocumentOwnerId",
-                table: "documentPlot_DocumentOwenerRelashionships",
-                column: "DocumentOwnerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_documentPlot_DocumentOwenerRelashionships_Plot_DocumentOfOwnershipRelashionshipDocumentPlotId",
-                table: "documentPlot_DocumentOwenerRelashionships",
-                column: "Plot_DocumentOfOwnershipRelashionshipDocumentPlotId");
+                column: "DocumentOwnerID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Invoices_RequestId",

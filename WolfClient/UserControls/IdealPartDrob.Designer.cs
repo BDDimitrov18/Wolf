@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
+            FirstNumberTextBox = new TextBox();
+            SecondNumberTextBox = new TextBox();
             label1 = new Label();
             SuspendLayout();
             // 
-            // textBox1
+            // FirstNumberTextBox
             // 
-            textBox1.Location = new Point(0, 0);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(78, 27);
-            textBox1.TabIndex = 0;
+            FirstNumberTextBox.Location = new Point(0, 0);
+            FirstNumberTextBox.Name = "FirstNumberTextBox";
+            FirstNumberTextBox.Size = new Size(78, 27);
+            FirstNumberTextBox.TabIndex = 0;
             // 
-            // textBox2
+            // SecondNumberTextBox
             // 
-            textBox2.Location = new Point(105, 0);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(78, 27);
-            textBox2.TabIndex = 1;
+            SecondNumberTextBox.Location = new Point(105, 0);
+            SecondNumberTextBox.Name = "SecondNumberTextBox";
+            SecondNumberTextBox.Size = new Size(78, 27);
+            SecondNumberTextBox.TabIndex = 1;
             // 
             // label1
             // 
@@ -63,8 +63,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             Controls.Add(label1);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(SecondNumberTextBox);
+            Controls.Add(FirstNumberTextBox);
             Name = "IdealPartDrob";
             Size = new Size(183, 27);
             ResumeLayout(false);
@@ -73,8 +73,8 @@
 
         #endregion
 
-        private TextBox textBox1;
-        private TextBox textBox2;
+        private TextBox FirstNumberTextBox;
+        private TextBox SecondNumberTextBox;
         private Label label1;
     }
 }

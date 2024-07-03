@@ -757,5 +757,241 @@ namespace WolfClient.Services
                 return new ClientResponse<List<GetActivity_PlotRelashionshipDTO>> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
             }
         }
+
+        public async Task<ClientResponse<GetDocumentOfOwnershipDTO>> AddDocumentOfOwnership(CreateDocumentOfOwnershipDTO documentOfOwnershipDTO) {
+            var jsonContent = JsonSerializer.Serialize(documentOfOwnershipDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateDocumentOfOwnership", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Document added successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseTasks = JsonSerializer.Deserialize<GetDocumentOfOwnershipDTO>(jsonResponse, options);
+                    return new ClientResponse<GetDocumentOfOwnershipDTO> { IsSuccess = true, Message = "Document Created Successfully", ResponseObj = responseTasks };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<GetDocumentOfOwnershipDTO> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to add Document: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<GetDocumentOfOwnershipDTO> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<GetDocumentOfOwnershipDTO> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<GetDocumentOfOwnershipDTO> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<GetOwnerDTO>> AddOwner(CreateOwnerDTO ownerDTO)
+        {
+            var jsonContent = JsonSerializer.Serialize(ownerDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateOwner", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Owner added successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseTasks = JsonSerializer.Deserialize<GetOwnerDTO>(jsonResponse, options);
+                    return new ClientResponse<GetOwnerDTO> { IsSuccess = true, Message = "Owner Created Successfully", ResponseObj = responseTasks };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<GetOwnerDTO> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to add Owner: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<GetOwnerDTO> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<GetOwnerDTO> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<GetOwnerDTO> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<GetDocumentOfOwnership_OwnerRelashionshipDTO>> AddDocumentOwnerRelashionship(CreateDocumentOfOwnership_OwnerRelashionshipDTO DocumentOwnerRelashionship) {
+            var jsonContent = JsonSerializer.Serialize(DocumentOwnerRelashionship);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateDocumentOwnerRelashionship", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("DocumentOwner added successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseTasks = JsonSerializer.Deserialize<GetDocumentOfOwnership_OwnerRelashionshipDTO>(jsonResponse, options);
+                    return new ClientResponse<GetDocumentOfOwnership_OwnerRelashionshipDTO> { IsSuccess = true, Message = "DocumentOwner Created Successfully", ResponseObj = responseTasks };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<GetDocumentOfOwnership_OwnerRelashionshipDTO> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to add DocumentOwner: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<GetDocumentOfOwnership_OwnerRelashionshipDTO> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<GetDocumentOfOwnership_OwnerRelashionshipDTO> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<GetDocumentOfOwnership_OwnerRelashionshipDTO> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<GetPlot_DocumentOfOwnershipRelashionshipDTO>> AddPlotDocumentRelashionship(CreatePlot_DocumentOfOwnershipRelashionshipDTO PlotDocumentRelashionship) {
+            var jsonContent = JsonSerializer.Serialize(PlotDocumentRelashionship);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateDocumentPlotRelashionship", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("PlotDocument added successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseTasks = JsonSerializer.Deserialize<GetPlot_DocumentOfOwnershipRelashionshipDTO>(jsonResponse, options);
+                    return new ClientResponse<GetPlot_DocumentOfOwnershipRelashionshipDTO> { IsSuccess = true, Message = "PlotDocument Created Successfully", ResponseObj = responseTasks };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<GetPlot_DocumentOfOwnershipRelashionshipDTO> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to add PlotDocument: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<GetPlot_DocumentOfOwnershipRelashionshipDTO> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<GetPlot_DocumentOfOwnershipRelashionshipDTO> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<GetPlot_DocumentOfOwnershipRelashionshipDTO> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+    
+        public async Task<ClientResponse<GetDocumentPlot_DocumentOwnerRelashionshipDTO>> AddPlotOwnerRelashionship(CreateDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO) {
+            var jsonContent = JsonSerializer.Serialize(relashionshipDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/CreatePlotOwnerRelashionship", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("PlotOwner added successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseTasks = JsonSerializer.Deserialize<GetDocumentPlot_DocumentOwnerRelashionshipDTO>(jsonResponse, options);
+                    return new ClientResponse<GetDocumentPlot_DocumentOwnerRelashionshipDTO> { IsSuccess = true, Message = "PlotOwner Created Successfully", ResponseObj = responseTasks };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<GetDocumentPlot_DocumentOwnerRelashionshipDTO> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to add PlotOwner: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<GetDocumentPlot_DocumentOwnerRelashionshipDTO> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<GetDocumentPlot_DocumentOwnerRelashionshipDTO> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<GetDocumentPlot_DocumentOwnerRelashionshipDTO> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
     }
 }

@@ -28,6 +28,14 @@ namespace DTOS.DTO
 
             public string? locality { get; set; }
 
-            // Foreign key to Activity
+            public string DisplayMemberPlot
+            {
+                 get
+                 {
+                    return $"{PlotNumber} {City}";
+                 }
+            }
+
+        // Foreign key to Activity
     }
 }

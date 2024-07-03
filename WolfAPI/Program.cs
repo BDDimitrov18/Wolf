@@ -127,7 +127,20 @@ builder.Services.AddScoped<IPlotService, PlotService>();
 builder.Services.AddScoped<IActivity_PlotRelashionshipModelRepository, Activity_PlotRelashionshipModelRepository>();
 builder.Services.AddScoped<IActivity_PlotReleashionshipService, Activity_PlotRelashionshipService>();
 
+builder.Services.AddScoped<IDocumentOfOwnershipModelRepository, DocumentOfOwnershipModelRepository>();
+builder.Services.AddScoped<IDocumentOfOwnershipService, DocumentOfOwnershipService>();
 
+builder.Services.AddScoped<IPlot_DocumentOfOwnershipRelashionshipModelRepository, Plot_DocumentOfOwnershipRelashionshipModelRepository>();
+builder.Services.AddScoped<IPlot_DocumentOfOwnershipRelashionshipService, Plot_DocumentOfOwnershipRelashionshipService>();
+
+builder.Services.AddScoped<IOwnerService, OwnerService>();
+builder.Services.AddScoped<IOwnerModelRepository, OwnerModelRepository>();
+
+builder.Services.AddScoped<IDocumentOfOwnership_OwnerRelashionshipModelRepository, DocumentOfOwnership_OwnerRelashionshipModelRepository>();
+builder.Services.AddScoped<IDocumentOfOwnership_OwnerRelashionshipService, DocumentOfOwnership_OwnerRelashionshipService>();
+
+builder.Services.AddScoped<IDocumentPlot_DocumentOwnerRelashionshipModelRepository, DocumentPlot_DocumentOwnerRelashionshipModelRepository>();
+builder.Services.AddScoped<IDocumentPlot_DocumentOwnerRelashionshipService, DocumentPlot_DocumentOwnerRelashionshipService>();
 
 var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);

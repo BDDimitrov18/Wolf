@@ -22,9 +22,16 @@ namespace WolfAPI.Controllers
         private readonly ItaskServices _taskService;
         private readonly IPlotService _plotService;
         private readonly IActivity_PlotReleashionshipService _activityPlotReleashionshipService;
+        private readonly IDocumentOfOwnershipService _documentOfOwnershipService;
+        private readonly IOwnerService _ownerService;
+        private readonly IDocumentOfOwnership_OwnerRelashionshipService _ownerDocumentOfOwnershipService;
+        private readonly IPlot_DocumentOfOwnershipRelashionshipService _plot_DocumentOfOwnershipRelashionshipService;
+        private readonly IDocumentPlot_DocumentOwnerRelashionshipService _documentPlot_DocumentOwnerRelashionshipService;
         public UserController(IClientService clientService, IRequestService requestService, IClient_RequestRelashionshipService requestRelashionshipService,
             IActivityTypesService activityTypesService, IEmployeeService employeeService, ItaskTypesService taskTypesService, IAcitvityService acitvityService,
-            ItaskServices taskService, IPlotService plotService, IActivity_PlotReleashionshipService activityPlotReleashionshipService)
+            ItaskServices taskService, IPlotService plotService, IActivity_PlotReleashionshipService activityPlotReleashionshipService, IDocumentOfOwnershipService documentOfOwnershipService,
+            IOwnerService ownerService, IDocumentOfOwnership_OwnerRelashionshipService ownerDocumentOfOwnershipService, IPlot_DocumentOfOwnershipRelashionshipService plot_DocumentOfOwnershipRelashionshipService,
+            IDocumentPlot_DocumentOwnerRelashionshipService documentPlot_DocumentOwnerRelashionshipService)
         {
             _clientService = clientService;
             _requestService = requestService;
@@ -36,6 +43,11 @@ namespace WolfAPI.Controllers
             _taskService = taskService;
             _plotService = plotService;
             _activityPlotReleashionshipService = activityPlotReleashionshipService;
+            _documentOfOwnershipService = documentOfOwnershipService;
+            _ownerService = ownerService;
+            _ownerDocumentOfOwnershipService = ownerDocumentOfOwnershipService;
+            _plot_DocumentOfOwnershipRelashionshipService = plot_DocumentOfOwnershipRelashionshipService;
+            _documentPlot_DocumentOwnerRelashionshipService = documentPlot_DocumentOwnerRelashionshipService;
         }
 
         [HttpPost("CreateClient")]
@@ -106,7 +118,7 @@ namespace WolfAPI.Controllers
 
         [HttpPost("CreateTask")]
 
-        public async Task<GetActivityDTO> createTask([FromBody] CreateTaskDTO taskDto) 
+        public async Task<GetActivityDTO> createTask([FromBody] CreateTaskDTO taskDto)
         {
             return await _taskService.CreateTask(taskDto);
         }
@@ -121,6 +133,37 @@ namespace WolfAPI.Controllers
         [HttpPost("CreateActivity_PlotRelashionship")]
         public async Task<List<GetActivity_PlotRelashionshipDTO>> CreateActivity_PlotReleashionship(List<CreateActivity_PlotRelashionshipDTO> activity_PlotRelashionshipsDTO) {
             return await _activityPlotReleashionshipService.CreateActivity_PlotRelashionship(activity_PlotRelashionshipsDTO);
+        }
+
+        [HttpPost("CreateDocumentOfOwnership")]
+
+        public async Task<GetDocumentOfOwnershipDTO> CreateDocumentOfOwnership([FromBody] CreateDocumentOfOwnershipDTO documentOfOwnershipDTO) {
+            return await _documentOfOwnershipService.CreateDocument(documentOfOwnershipDTO);
+        }
+
+        [HttpPost("CreateOwner")]
+
+        public async Task<GetOwnerDTO> CreateOwner([FromBody] CreateOwnerDTO ownerDTO) {
+            return await _ownerService.CreateOwner(ownerDTO);
+        }
+
+        [HttpPost("CreateDocumentOwnerRelashionship")]
+
+        public async Task<GetDocumentOfOwnership_OwnerRelashionshipDTO> CreateDocumentOwnerRelashionship(CreateDocumentOfOwnership_OwnerRelashionshipDTO relashionshipDTO) {
+            return await _ownerDocumentOfOwnershipService.CreateDocumentOwner(relashionshipDTO);
+        }
+
+        [HttpPost("CreateDocumentPlotRelashionship")]
+
+        public async Task<GetPlot_DocumentOfOwnershipRelashionshipDTO> CreateDocumentPlotRelashionship(CreatePlot_DocumentOfOwnershipRelashionshipDTO relashionshipDTO)
+        {
+            return await _plot_DocumentOfOwnershipRelashionshipService.createPlotDocument(relashionshipDTO);
+        }
+
+        [HttpPost("CreatePlotOwnerRelashionship")]
+
+        public async Task<GetDocumentPlot_DocumentOwnerRelashionshipDTO> CreatePlotOwnerRelashionship(CreateDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO) {
+            return await _documentPlot_DocumentOwnerRelashionshipService.CreatePlotOwner(relashionshipDTO);
         }
         //public void LinkClientsAdnRequest([FromBody] IEnumerable<GetClientDTO>)
     }

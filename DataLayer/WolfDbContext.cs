@@ -222,24 +222,26 @@ namespace DataAccessLayer
             modelBuilder.Entity<DocumentOfOwnership_OwnerRelashionship>()
                 .HasMany(docRel => docRel.documentPlot_DocumentOwnerRelashionships)
                 .WithOne(dpo => dpo.DocumentOwner)
-                .HasForeignKey(dpo => dpo.DocumentOwnerId)
+                .HasForeignKey(dpo => dpo.DocumentOwnerID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // DocumentPlot_DocumentOwnerRelashionship configuration
             modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
-                .HasKey(dpo => new { dpo.DocumentPlotId, dpo.DocumentOwnerId });
+         .HasKey(dpo => new { dpo.DocumentPlotId, dpo.DocumentOwnerID });
 
+            // Relationship configuration for DocumentPlot
             modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
                 .HasOne(dpo => dpo.DocumentPlot)
-                .WithMany()
+                .WithMany(dp => dp.documentPlot_DocumentOwnerRelashionships) // Ensure the navigation property is configured in Plot_DocumentOfOwnershipRelashionship
                 .HasForeignKey(dpo => dpo.DocumentPlotId)
                 .OnDelete(DeleteBehavior.Cascade); // Cascade delete to DocumentPlot
 
+            // Relationship configuration for DocumentOwner
             modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
                 .HasOne(dpo => dpo.DocumentOwner)
-                .WithMany()
-                .HasForeignKey(dpo => dpo.DocumentOwnerId)
-                .OnDelete(DeleteBehavior.Cascade); // Cascade delete to DocumentOwner
+                .WithMany(owner => owner.documentPlot_DocumentOwnerRelashionships) // Ensure the navigation property is configured in DocumentOfOwnership_OwnerRelashionship
+                .HasForeignKey(dpo => dpo.DocumentOwnerID)
+                .OnDelete(DeleteBehavior.Cascade);
             #endregion
 
 
