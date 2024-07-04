@@ -18,5 +18,7 @@ namespace DTOS.DTO
         public float IdealParts { get; set; }
 
         public string WayOfAcquiring { get; set; }
+
+        public bool isDrob { get; set; }
     }
 }

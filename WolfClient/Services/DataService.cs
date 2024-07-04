@@ -36,6 +36,10 @@ namespace WolfClient.Services
         public void addPlotOwnerRelashionship(GetDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO) {
             compositeData.linkedDocuments.Add(relashionshipDTO);
         }
+
+        public void setPlotOwnersRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipsDTO) {
+            compositeData.linkedDocuments = relashionshipsDTO;
+        }
         public List<EKTVIewModel> GetEKTViewModels() {
             return _ektViewModels;
         }
@@ -48,7 +52,7 @@ namespace WolfClient.Services
             compositeData._fetchedLinkedClients = linkedRequests;
         }
 
-        public List<RequestWithClientsDTO> GetFetchedLinkedRequests() { 
+        public List<RequestWithClientsDTO> GetFetchedLinkedRequests() {
             return compositeData._fetchedLinkedClients;
         }
 
@@ -73,8 +77,8 @@ namespace WolfClient.Services
             return _employeeDTOs;
         }
 
-        public void SetEmployees(List<GetEmployeeDTO> employees) { 
-            _employeeDTOs = employees;    
+        public void SetEmployees(List<GetEmployeeDTO> employees) {
+            _employeeDTOs = employees;
         }
 
         public void AddSingleEmployee(GetEmployeeDTO employeeDTO) {
@@ -85,7 +89,7 @@ namespace WolfClient.Services
             _employeeDTOs.AddRange(employeeDTOs);
         }
 
-        public void SetSelectedRequest(GetRequestDTO getRequestDTO) { 
+        public void SetSelectedRequest(GetRequestDTO getRequestDTO) {
             _selectedRequest = getRequestDTO;
         }
 
@@ -120,12 +124,12 @@ namespace WolfClient.Services
             }
             return null;
         }
-    
-        public List<GetPlotDTO> GetAllPlots()
+
+        public List<GetPlotDTO> GetSelectedPlots()
         {
             List<GetPlotDTO> plotDTOs = new List<GetPlotDTO>();
             var selected = GetSelectedLinkedRequest();
-            foreach(var activity in selected.activityDTOs) {
+            foreach (var activity in selected.activityDTOs) {
                 foreach (var plot in activity.Plots) {
                     if (!plotDTOs.Any(p => p.PlotId == plot.PlotId))
                     {
@@ -135,6 +139,32 @@ namespace WolfClient.Services
             }
             return plotDTOs;
         }
+        public List<GetPlotDTO> GetAllPlots(){
+            List<GetPlotDTO> plotDTOs = new List<GetPlotDTO>();
+            foreach (var link in compositeData._fetchedLinkedClients) { 
+                foreach(var activity in link.activityDTOs)
+                {
+                    foreach (var plot in activity.Plots) {
+                        plotDTOs.Add(plot);
+                    }
+                }
+            }
+            return plotDTOs;
+        }
 
+        public List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> GetLinkedPlotOwnerRelashionships()
+        {
+            List<GetPlotDTO> selectedPlots = GetSelectedPlots();
+            List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs = new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
+            var selectedPlotIds = selectedPlots.Select(p => p.PlotId).ToHashSet();
+            foreach (var relashionship in compositeData.linkedDocuments)
+            {
+                if (selectedPlotIds.Contains(relashionship.DocumentPlot.Plot.PlotId))
+                {
+                    relashionshipDTOs.Add(relashionship);
+                }
+            }
+            return relashionshipDTOs;
+        }
     }
 }

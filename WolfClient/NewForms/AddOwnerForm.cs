@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,7 +69,7 @@ namespace WolfClient.NewForms
 
         private void AddOwnerForm_Load(object sender, EventArgs e)
         {
-            List<GetPlotDTO> plotDTOs = _dataService.GetAllPlots();
+            List<GetPlotDTO> plotDTOs = _dataService.GetSelectedPlots();
 
             plotComboBox.DataSource = plotDTOs;
             plotComboBox.DisplayMember = "DisplayMemberPlot";
@@ -84,6 +85,17 @@ namespace WolfClient.NewForms
             plotLocalityLabel.Text = $"област : {plot.locality}";
         }
 
+
+        private bool getIdealPartType() {
+            if (IdealPartsTypeComboBox.Text == "дроб")
+            { 
+                return true;
+            }
+            else if (IdealPartsTypeComboBox.Text == "плаваща запетая") {
+                return false;
+            }
+            return false;
+        }
         private float getIdealPart() {
             float first =1,second =-1;
             if (IdealPartsTypeComboBox.Text == "дроб")
@@ -94,7 +106,7 @@ namespace WolfClient.NewForms
                     {
                         if (control is TextBox)
                         {
-                            if (control.AccessibleName == "FirstNumberTextBox")
+                            if (control.Name == "FirstNumberTextBox")
                             {
                                 TextBox textBox = control as TextBox;
                                 if (textBox.Text != "")
@@ -102,7 +114,7 @@ namespace WolfClient.NewForms
                                     first = float.Parse(textBox.Text);
                                 }
                             }
-                            if (control.AccessibleName == "SecondNumberTextBox")
+                            if (control.Name == "SecondNumberTextBox")
                             {
                                 TextBox textBox = control as TextBox;
                                 if (textBox.Text != "")
@@ -128,11 +140,11 @@ namespace WolfClient.NewForms
                     {
                         if (control is TextBox)
                         {
-                            if (control.AccessibleName == "numberTextBox") {
+                            if (control.Name == "numberTextBox") {
                                 TextBox textBox = control as TextBox;
                                 if (textBox.Text != "")
                                 {
-                                    return float.Parse(textBox.Text);
+                                    return float.Parse(textBox.Text, CultureInfo.InvariantCulture);
                                 }
                                 else {
                                     return -1;
@@ -193,6 +205,7 @@ namespace WolfClient.NewForms
                 DocumentOwnerID = DocumentOwnerResponse.ResponseObj.DocumentOwnerID,
                 IdealParts = getIdealPart(),
                 WayOfAcquiring = wayOfAcquiringComboBox.Text,
+                isDrob = getIdealPartType()
             };
 
             var DocumentPlotDocumentOwnerResponse = await _userClient.AddPlotOwnerRelashionship(createDocumentPlot_DocumentOwner);

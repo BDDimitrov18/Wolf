@@ -163,6 +163,21 @@ namespace WolfAPI.Mapping
             CreateMap<DocumentPlot_DocumentOwnerRelashionship, GetDocumentPlot_DocumentOwnerRelashionshipDTO>()
                 .ForMember(dest => dest.DocumentPlot, opt => opt.MapFrom(src => src.DocumentPlot))
                 .ForMember(dest => dest.DocumentOwner, opt => opt.MapFrom(src => src.DocumentOwner));
+
+            CreateMap<GetPlotDTO, Plot>()
+            .ForMember(dest => dest.PlotId, opt => opt.MapFrom(src => src.PlotId))
+            .ForMember(dest => dest.PlotNumber, opt => opt.MapFrom(src => src.PlotNumber))
+            .ForMember(dest => dest.RegulatedPlotNumber, opt => opt.MapFrom(src => src.RegulatedPlotNumber))
+            .ForMember(dest => dest.neighborhood, opt => opt.MapFrom(src => src.neighborhood))
+            .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
+            .ForMember(dest => dest.Municipality, opt => opt.MapFrom(src => src.Municipality))
+            .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Street))
+            .ForMember(dest => dest.StreetNumber, opt => opt.MapFrom(src => src.StreetNumber))
+            .ForMember(dest => dest.designation, opt => opt.MapFrom(src => src.designation))
+            .ForMember(dest => dest.locality, opt => opt.MapFrom(src => src.locality))
+            // Ignoring collections that are not present in the DTO
+            .ForMember(dest => dest.PlotDocuments, opt => opt.Ignore())
+            .ForMember(dest => dest.ActivityPlots, opt => opt.Ignore());
         }
     }
 }

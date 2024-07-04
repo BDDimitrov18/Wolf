@@ -165,6 +165,14 @@ namespace WolfAPI.Controllers
         public async Task<GetDocumentPlot_DocumentOwnerRelashionshipDTO> CreatePlotOwnerRelashionship(CreateDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO) {
             return await _documentPlot_DocumentOwnerRelashionshipService.CreatePlotOwner(relashionshipDTO);
         }
+
+        [HttpPost("GetLinkedPlotOwnerRelashionships")]
+
+        public List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> GetLinkedPlotOwnerRelashionships(List<GetPlotDTO> plots) { 
+            return _documentPlot_DocumentOwnerRelashionshipService.GetLinkedByPlots(plots);
+        }
+
+
         //public void LinkClientsAdnRequest([FromBody] IEnumerable<GetClientDTO>)
     }
 }

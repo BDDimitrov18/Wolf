@@ -11,5 +11,7 @@ namespace DataAccessLayer.Repositories.Interfaces
     {
         public Task AddRelashionship(DocumentPlot_DocumentOwnerRelashionship relashionship);
         public Task<DocumentPlot_DocumentOwnerRelashionship> FindById(int id);
+
+        public List<DocumentPlot_DocumentOwnerRelashionship> GetLinked(List<Plot> plots);
     }
 }

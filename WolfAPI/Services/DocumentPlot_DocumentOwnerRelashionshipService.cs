@@ -28,5 +28,20 @@ namespace WolfAPI.Services
             DocumentPlot_DocumentOwnerRelashionship relashionship = await _DocumentOwnerRelashionshipModelRepository.FindById(id);
             return _mapper.Map<GetDocumentPlot_DocumentOwnerRelashionshipDTO>(relashionship);
         }
+
+        public List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> GetLinkedByPlots(List<GetPlotDTO> getPlots) {
+            List<Plot> plots = new List<Plot>();
+            foreach (GetPlotDTO plot in getPlots)
+            {
+                plots.Add(_mapper.Map<Plot>(plot));
+            }
+            var result = _DocumentOwnerRelashionshipModelRepository.GetLinked(plots);
+
+            List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> returnList = new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
+            foreach (var rel in result) {
+                returnList.Add(_mapper.Map<GetDocumentPlot_DocumentOwnerRelashionshipDTO>(rel));
+            }
+            return returnList; 
+        }
     }
 }

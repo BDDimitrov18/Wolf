@@ -48,24 +48,28 @@ namespace WolfClient.UserControls
                 loaded = true;
             }
             LogInEvent.logIn += OnUserLoggedIn;
+            OwnershipDataGridView.CellPainting += OwnershipDataGridView_CellPainting;
         }
 
         private async void setRequestsDataGridView()
         {
             var response = await _userClient.GetAllRequests();
 
-            var employees = response.ResponseObj;
+            var requestList = response.ResponseObj;
             if (response.ResponseObj.Count() > 0)
             {
                 _fetchedRequests = response.ResponseObj;
                 _selectedRequest = _fetchedRequests[0];
+                _dataService.SetSelectedRequest(_selectedRequest);
                 var linkedClientsResponse = await _userClient.GetLinked(_fetchedRequests);
                 if (linkedClientsResponse.IsSuccess)
                 {
                     _dataService.SetFetchedLinkedRequests(linkedClientsResponse.ResponseObj);
                 }
+                var linkedDocs = await _userClient.GetLinkedPlotOwnerRelashionships(_dataService.GetAllPlots());
+                _dataService.setPlotOwnersRelashionships(linkedDocs.ResponseObj);
                 RequestDataGridView.AutoGenerateColumns = false;
-                RequestDataGridView.DataSource = employees;
+                RequestDataGridView.DataSource = requestList;
                 RequestDataGridView.Refresh();
             }
         }
@@ -134,7 +138,258 @@ namespace WolfClient.UserControls
                 UpdateClientsDataGridView();
                 UpdateActivityDataGridView();
                 UpdatePlotsDataGridView();
+                UpdateOwnershipDataGridView();
             }
+        }
+
+        private void UpdateOwnershipDataGridView()
+        {
+            try
+            {
+                if (_selectedRequest == null || _dataService.GetFetchedLinkedRequests() == null)
+                {
+                    OwnershipDataGridView.DataSource = null;
+                    OwnershipDataGridView.Refresh();
+                    return;
+                }
+
+                var linkedDocs = _dataService.GetLinkedPlotOwnerRelashionships();
+
+                if (OwnershipDataGridView.InvokeRequired)
+                {
+                    OwnershipDataGridView.Invoke(new MethodInvoker(delegate
+                    {
+                        BindOwnershipDataGridView(linkedDocs);
+                    }));
+                }
+                else
+                {
+                    BindOwnershipDataGridView(linkedDocs);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception in UpdateOwnershipDataGridView: " + ex.Message);
+                MessageBox.Show("Exception in UpdateOwnershipDataGridView: " + ex.Message);
+            }
+        }
+
+        private void OwnershipDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex != OwnershipDataGridView.Columns["PlotNumberDocTable"].Index)
+                return;
+
+            var cellValue = e.Value as string;
+
+            e.Handled = true;  // Always handle the painting
+
+            // Fill the background
+            using (Brush backColorBrush = new SolidBrush(e.CellStyle.BackColor))
+            {
+                e.Graphics.FillRectangle(backColorBrush, e.CellBounds);
+            }
+
+            // Check if the cell has data and paint accordingly
+            if (!string.IsNullOrEmpty(cellValue))
+            {
+                // Paint the text
+                TextRenderer.DrawText(e.Graphics, cellValue, e.CellStyle.Font, e.CellBounds, e.CellStyle.ForeColor, TextFormatFlags.VerticalCenter | TextFormatFlags.Left);
+
+                // Always paint the right border
+                using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
+                {
+                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom-1);
+                }
+
+                // Check if the next cell is empty, and if so, clear the bottom border
+                if (e.RowIndex < OwnershipDataGridView.RowCount - 1)
+                {
+                    var nextCellValue = OwnershipDataGridView.Rows[e.RowIndex + 1].Cells[e.ColumnIndex].Value as string;
+                    if (string.IsNullOrEmpty(nextCellValue))
+                    {
+                        // Clear the bottom border with a thicker line
+                        using (Pen backColorPen = new Pen(e.CellStyle.BackColor)) // Thicker pen
+                        {
+                            e.Graphics.DrawLine(backColorPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 3, e.CellBounds.Bottom - 1);
+                        }
+                    }
+                }
+                else {
+                    e.Paint(e.CellBounds, DataGridViewPaintParts.All);
+                }
+            }
+            else
+            {
+                    // Check if the next cell is not empty
+                    if (e.RowIndex < OwnershipDataGridView.RowCount - 1 &&
+                        !string.IsNullOrEmpty(OwnershipDataGridView.Rows[e.RowIndex + 1].Cells[e.ColumnIndex].Value as string))
+                    {
+                        // Paint bottom border
+                        using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
+                        {
+                            e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
+                        }
+                    }
+
+                    // Always paint the right border
+                    using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
+                    {
+                        e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom-1);
+                    }
+            }
+            if (!(e.RowIndex < OwnershipDataGridView.RowCount - 1)) {
+                // Paint bottom border
+                using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
+                {
+                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
+                }
+            }
+
+
+        }
+
+        private  string ConvertFloatToFraction(float value)
+        {
+            // Tolerance for floating point comparison
+            const double TOLERANCE = 1.0E-6;
+
+            if (value == 0.0)
+                return "0/1";
+
+            int sign = Math.Sign(value);
+            value = Math.Abs(value);
+
+            int n = (int)Math.Floor(value);
+            value -= n;
+
+            if (value < TOLERANCE)
+                return $"{sign * n}/1";
+
+            if (1 - value < TOLERANCE)
+                return $"{sign * (n + 1)}/1";
+
+            int lower_numerator = 0;
+            int lower_denominator = 1;
+            int upper_numerator = 1;
+            int upper_denominator = 1;
+
+            while (true)
+            {
+                int middle_numerator = lower_numerator + upper_numerator;
+                int middle_denominator = lower_denominator + upper_denominator;
+
+                if (middle_denominator * (value + TOLERANCE) < middle_numerator)
+                {
+                    upper_numerator = middle_numerator;
+                    upper_denominator = middle_denominator;
+                }
+                else if (middle_numerator < (value - TOLERANCE) * middle_denominator)
+                {
+                    lower_numerator = middle_numerator;
+                    lower_denominator = middle_denominator;
+                }
+                else
+                {
+                    return $"{sign * (n * middle_denominator + middle_numerator)}/{middle_denominator}";
+                }
+            }
+        }
+        private List<OwnershipViewModel> GetOwnershipViewModels(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs)
+        {
+            // Initialize the dictionary
+            Dictionary<int, Dictionary<int, List<Dictionary<GetOwnerDTO, string>>>> RelashionshipDictionary =
+                new Dictionary<int, Dictionary<int, List<Dictionary<GetOwnerDTO, string>>>>();
+
+            Dictionary<int, GetPlotDTO> plotDictionary = relashionshipDTOs
+                .Select(r => r.DocumentPlot.Plot)
+                .GroupBy(p => p.PlotId)
+                .Select(g => g.First())
+                .ToDictionary(p => p.PlotId);
+
+            Dictionary<int, GetDocumentOfOwnershipDTO> documentDictionary = relashionshipDTOs
+                .Select(r => r.DocumentPlot.documentOfOwnership)
+                .GroupBy(d => d.DocumentId)
+                .Select(g => g.First())
+                .ToDictionary(d => d.DocumentId);
+
+            foreach (var relashionship in relashionshipDTOs)
+            {
+                var plotId = relashionship.DocumentPlot.Plot.PlotId;
+                var documentId = relashionship.DocumentPlot.documentOfOwnership.DocumentId;
+                var owner = relashionship.DocumentOwner.Owner;
+                var idealParts = relashionship.IdealParts;
+
+                // Check if the plot is already in the dictionary
+                if (!RelashionshipDictionary.ContainsKey(plotId))
+                {
+                    RelashionshipDictionary[plotId] = new Dictionary<int, List<Dictionary<GetOwnerDTO, string>>>();
+                }
+
+                // Check if the document is already in the dictionary for this plot
+                if (!RelashionshipDictionary[plotId].ContainsKey(documentId))
+                {
+                    RelashionshipDictionary[plotId][documentId] = new List<Dictionary<GetOwnerDTO, string>>();
+                }
+
+                // Determine the string value for idealParts based on isDrob
+                string idealPartsString = relashionship.isDrob ? ConvertFloatToFraction(idealParts) : idealParts.ToString();
+
+                // Create a dictionary for the owner and ideal parts string
+                var ownerWithIdealParts = new Dictionary<GetOwnerDTO, string> { { owner, idealPartsString } };
+
+                // Add the owner and ideal parts string to the list for this document
+                RelashionshipDictionary[plotId][documentId].Add(ownerWithIdealParts);
+            }
+
+            var ownershipViewModels = new List<OwnershipViewModel>();
+            foreach (var plotEntry in RelashionshipDictionary)
+            {
+                bool isFirstEntryForPlot = true;
+                foreach (var documentEntry in plotEntry.Value)
+                {
+                    foreach (var ownerWithIdealParts in documentEntry.Value)
+                    {
+                        foreach (var ownerEntry in ownerWithIdealParts)
+                        {
+                            var owner = ownerEntry.Key;
+                            var idealPartsString = ownerEntry.Value;
+
+                            OwnershipViewModel ownershipViewModel = new OwnershipViewModel()
+                            {
+                                PlotNumber = isFirstEntryForPlot ? plotDictionary[plotEntry.Key].PlotNumber : string.Empty,
+                                NumberTypeDocument = $"{documentDictionary[documentEntry.Key].NumberOfDocument} {documentDictionary[documentEntry.Key].TypeOfDocument}",
+                                NumberTypeOwner = $"{owner.OwnerID} {owner.FirstName} {owner.MiddleName} {owner.LastName}",
+                                EGN = owner.EGN,
+                                Address = owner.Address,
+                                IdealParts = idealPartsString
+                            };
+
+                            ownershipViewModels.Add(ownershipViewModel);
+                            isFirstEntryForPlot = false;
+                        }
+                    }
+                }
+            }
+
+            return ownershipViewModels;
+        }
+        private void BindOwnershipDataGridView(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs)
+        {
+            OwnershipDataGridView.AutoGenerateColumns = false;
+            OwnershipDataGridView.DataSource = null; // Force reset DataSource
+
+            if (relashionshipDTOs != null)
+            {
+                var viewModelList = GetOwnershipViewModels(relashionshipDTOs);
+                OwnershipDataGridView.DataSource = viewModelList;
+                OwnershipDataGridView.Refresh();
+            }
+            else
+            {
+                OwnershipDataGridView.DataSource = null;
+            }
+
+            OwnershipDataGridView.Refresh();
         }
 
         private void UpdateClientsDataGridView()
@@ -290,6 +545,7 @@ namespace WolfClient.UserControls
         {
             AddActivityTaskForm addActivityTaskForm = new AddActivityTaskForm(_apiClient, _userClient, _adminClient, _dataService);
             addActivityTaskForm.Show();
+            UpdateActivityDataGridView();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -399,6 +655,8 @@ namespace WolfClient.UserControls
         {
             var response = await _userClient.GetAllRequests();
             var linkedResponse = await _userClient.GetLinked(response.ResponseObj);
+            var DocumentPlotOwnerReplashionships = await _userClient.GetLinkedPlotOwnerRelashionships(_dataService.GetAllPlots());
+            _dataService.setPlotOwnersRelashionships(DocumentPlotOwnerReplashionships.ResponseObj);
             _dataService.SetFetchedLinkedRequests(linkedResponse.ResponseObj);
             if (response.IsSuccess)
             {
@@ -481,6 +739,7 @@ namespace WolfClient.UserControls
         {
             AddOwnerForm ownerForm = new AddOwnerForm(_apiClient, _userClient, _adminClient, _dataService);
             ownerForm.Show();
+            UpdateOwnershipDataGridView();
         }
     }
 }

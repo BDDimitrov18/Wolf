@@ -48,5 +48,7 @@ namespace WolfClient.Services.Interfaces
         public Task<ClientResponse<GetPlot_DocumentOfOwnershipRelashionshipDTO>> AddPlotDocumentRelashionship(CreatePlot_DocumentOfOwnershipRelashionshipDTO PlotDocumentRelashionship);
 
         public Task<ClientResponse<GetDocumentPlot_DocumentOwnerRelashionshipDTO>> AddPlotOwnerRelashionship(CreateDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO);
+
+        public Task<ClientResponse<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>>> GetLinkedPlotOwnerRelashionships(List<GetPlotDTO> plots);
     }
 }
