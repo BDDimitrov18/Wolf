@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Drawing.Diagrams;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 using DTOS.DTO;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,10 @@ namespace WolfClient.Services
 
         private List<EKTVIewModel> _ektViewModels { get; set; }
 
+        public List<GetClientDTO> _selectedClients { get; set; }
+
+        public List<ActivityViewModel> _selectedActivity { get; set; }
+
 
         public DataService()
         {
@@ -31,6 +36,72 @@ namespace WolfClient.Services
             compositeData.linkedDocuments = new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
             _clientDTOs = new List<GetClientDTO>();
             _employeeDTOs = new List<GetEmployeeDTO>();
+            _selectedClients = new List<GetClientDTO>();
+            _selectedActivity = new List<ActivityViewModel>();
+        }
+
+        public void SetSelectedClients(List<GetClientDTO> getClients)
+        {
+            _selectedClients = getClients;
+        }
+
+        public List<GetTaskDTO> getTasksFromViewModel() {
+            List<GetTaskDTO> tasks = new List<GetTaskDTO>();
+            foreach (var link in compositeData._fetchedLinkedClients) { 
+                if(link.requestDTO.RequestId == _selectedRequest.RequestId) {
+                    foreach (var activity in link.activityDTOs) {
+                        foreach (var selectedActivity in _selectedActivity) {
+                            if (activity.ActivityId == selectedActivity.ActivityId) {
+                                foreach (var task in activity.Tasks) {
+                                    tasks.Add(task);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return tasks;
+        }
+
+        public List<GetActivityDTO> OnTasksDelete(List<GetTaskDTO> taskDTOs)
+        {
+            List<GetActivityDTO> activityDTOs = new List<GetActivityDTO>();
+            foreach (var link in compositeData._fetchedLinkedClients) {
+                if (link.requestDTO.RequestId == _selectedRequest.RequestId) {
+                    foreach (var activity in link.activityDTOs) {
+                        foreach (var task in activity.Tasks) {
+                            foreach (var taskDTO in taskDTOs) {
+                                if (task.TaskId == taskDTO.TaskId) { 
+                                    activity.Tasks.Remove(task);
+                                }
+                            }
+                        }
+                        if(activity.Tasks.Count == 0) {
+                            activityDTOs.Add(activity);
+                        }
+                    }
+                }
+            }
+            return activityDTOs;
+        }
+
+        public void DeleteActivities(List<GetActivityDTO> activityDTOs)
+        {
+            foreach (var link in compositeData._fetchedLinkedClients) { 
+                if(link.requestDTO.RequestId == _selectedRequest.RequestId) {
+                    foreach (var activity in link.activityDTOs) { 
+                        foreach(var activityDto in activityDTOs) {
+                            if (activity.ActivityId == activityDto.ActivityId) { 
+                                link.activityDTOs.Remove(activity);
+                            }
+                        }
+                    }    
+                }
+            }
+        }
+
+        public List<GetClientDTO> getSelectedCLients() {
+            return _selectedClients;
         }
 
         public void addPlotOwnerRelashionship(GetDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO) {
@@ -100,9 +171,26 @@ namespace WolfClient.Services
 
         public void AddActivityToTheList(GetActivityDTO activityDTO) {
             var ChosenLink = compositeData._fetchedLinkedClients.Where(opt => opt.requestDTO.RequestId == _selectedRequest.RequestId).FirstOrDefault();
-            ChosenLink.activityDTOs.Add(activityDTO);
+            if (ChosenLink.activityDTOs?.Count() > 0)
+            {
+                ChosenLink.activityDTOs.Add(activityDTO);
+            }
+            else { 
+                ChosenLink.activityDTOs = new List<GetActivityDTO> { activityDTO };
+            }
         }
 
+        public void OnClientsRequestDelete() {
+            foreach(var link in compositeData._fetchedLinkedClients) {
+                if (link.requestDTO.RequestId == _selectedRequest.RequestId)
+                {
+                    foreach (var client in _selectedClients)
+                    {
+                        link.clientDTOs.Remove(client);
+                    }
+                }
+            }
+        }
         public void ReplaceActivity(GetActivityDTO activityDTO) {
             var ChosenLink = compositeData._fetchedLinkedClients.Where(opt => opt.requestDTO.RequestId == _selectedRequest.RequestId).FirstOrDefault();
             int br = 0;
@@ -129,11 +217,16 @@ namespace WolfClient.Services
         {
             List<GetPlotDTO> plotDTOs = new List<GetPlotDTO>();
             var selected = GetSelectedLinkedRequest();
-            foreach (var activity in selected.activityDTOs) {
-                foreach (var plot in activity.Plots) {
-                    if (!plotDTOs.Any(p => p.PlotId == plot.PlotId))
+            if (selected.activityDTOs?.Count() > 0)
+            {
+                foreach (var activity in selected.activityDTOs)
+                {
+                    foreach (var plot in activity.Plots)
                     {
-                        plotDTOs.Add(plot);
+                        if (!plotDTOs.Any(p => p.PlotId == plot.PlotId))
+                        {
+                            plotDTOs.Add(plot);
+                        }
                     }
                 }
             }
@@ -142,6 +235,7 @@ namespace WolfClient.Services
         public List<GetPlotDTO> GetAllPlots(){
             List<GetPlotDTO> plotDTOs = new List<GetPlotDTO>();
             foreach (var link in compositeData._fetchedLinkedClients) { 
+                if(link.activityDTOs?.Count() > 0)
                 foreach(var activity in link.activityDTOs)
                 {
                     foreach (var plot in activity.Plots) {
@@ -151,6 +245,17 @@ namespace WolfClient.Services
             }
             return plotDTOs;
         }
+
+        public List<GetDocumentOfOwnershipDTO> getAllDocuments()
+        {
+            List<GetDocumentOfOwnershipDTO> documents = new List<GetDocumentOfOwnershipDTO>();
+            foreach (var relashionship in compositeData.linkedDocuments) {
+                if (!documents.Contains(relashionship.DocumentPlot.documentOfOwnership)) {
+                    documents.Add(relashionship.DocumentPlot.documentOfOwnership);
+                }
+            }
+            return documents;
+        }   
 
         public List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> GetLinkedPlotOwnerRelashionships()
         {
@@ -165,6 +270,34 @@ namespace WolfClient.Services
                 }
             }
             return relashionshipDTOs;
+        }
+
+        public List<GetDocumentOfOwnershipDTO> GetDocumentsFromPlots(GetPlotDTO plot) {
+            List<GetDocumentOfOwnershipDTO> documentOfOwnershipDTOs = new List<GetDocumentOfOwnershipDTO>();
+            foreach (var relashionship in compositeData.linkedDocuments) {
+                if (relashionship.DocumentPlot.PlotId == plot.PlotId) {
+                    documentOfOwnershipDTOs.Add(relashionship.DocumentPlot.documentOfOwnership); 
+                }
+            }
+            return documentOfOwnershipDTOs;
+        }
+
+        public void OnRequestDelete() { 
+           foreach(var link in compositeData._fetchedLinkedClients) {
+                if (link.requestDTO.RequestId == _selectedRequest.RequestId) {
+                    compositeData._fetchedLinkedClients.Remove(link);
+                    break;
+                }     
+           }
+        }
+
+        public List<GetRequestDTO> getRequests()
+        {
+            List<GetRequestDTO> requestDTOs = new List<GetRequestDTO>();
+            foreach (var link in compositeData._fetchedLinkedClients) {
+                requestDTOs.Add(link.requestDTO);
+            }
+            return requestDTOs;
         }
     }
 }

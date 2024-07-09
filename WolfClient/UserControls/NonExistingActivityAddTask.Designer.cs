@@ -70,6 +70,7 @@
             // 
             // DurationNumericUpDown
             // 
+            DurationNumericUpDown.DecimalPlaces = 2;
             DurationNumericUpDown.Location = new Point(15, 574);
             DurationNumericUpDown.Name = "DurationNumericUpDown";
             DurationNumericUpDown.Size = new Size(302, 27);
@@ -128,13 +129,13 @@
             // 
             // ControlComboBox
             // 
+            ControlComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             ControlComboBox.FormattingEnabled = true;
             ControlComboBox.Location = new Point(15, 699);
             ControlComboBox.Margin = new Padding(3, 4, 3, 4);
             ControlComboBox.Name = "ControlComboBox";
             ControlComboBox.Size = new Size(302, 28);
             ControlComboBox.TabIndex = 45;
-            ControlComboBox.SelectedIndexChanged += ControlComboBox_SelectedIndexChanged;
             // 
             // ControlLabel
             // 
@@ -176,6 +177,7 @@
             // 
             // ExecitantComboBox
             // 
+            ExecitantComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             ExecitantComboBox.FormattingEnabled = true;
             ExecitantComboBox.Location = new Point(15, 308);
             ExecitantComboBox.Margin = new Padding(3, 4, 3, 4);
@@ -216,6 +218,7 @@
             // ParentActivityComboBox
             // 
             ParentActivityComboBox.DropDownHeight = 230;
+            ParentActivityComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             ParentActivityComboBox.FormattingEnabled = true;
             ParentActivityComboBox.IntegralHeight = false;
             ParentActivityComboBox.ItemHeight = 20;

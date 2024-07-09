@@ -15,6 +15,7 @@ namespace DTOS.DTO
         public int TOM { get; set; }
         public string register { get; set; }
         public string DocCase { get; set; }
+        public string TypeOfOwnership { get; set; }
 
         public DateTime DateOfIssuing { get; set; }
         public DateTime DateOfRegistering { get; set; }

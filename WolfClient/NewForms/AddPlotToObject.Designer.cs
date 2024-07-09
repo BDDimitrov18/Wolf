@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             AddPlotToObjectSubmitButton = new Button();
             StreetTextBox = new TextBox();
             StreetNumberTextBox = new TextBox();
@@ -39,17 +40,20 @@
             StreetLabel = new Label();
             neighborhoodLabel = new Label();
             RegulatedNumberLabel = new Label();
-            LocalityComboBox = new ComboBox();
             localityLabel = new Label();
-            MunicipalityComboBox = new ComboBox();
             Municipality = new Label();
-            CityComboBox = new ComboBox();
             CityLabel = new Label();
             PlotNumberComboBox = new ComboBox();
             PlotNumberLabel = new Label();
             AddPlotInObjectTitleLabel = new Label();
             ActivityComboBox = new ComboBox();
             label1 = new Label();
+            CityTextBox = new TextBox();
+            MunicipalityTextBox = new TextBox();
+            LocalityTextBox = new TextBox();
+            plotNumberValidationLabel = new Label();
+            errorProvider = new ErrorProvider(components);
+            ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
             // AddPlotToObjectSubmitButton
@@ -97,8 +101,9 @@
             // 
             // DesignationComboBox
             // 
+            DesignationComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             DesignationComboBox.FormattingEnabled = true;
-            DesignationComboBox.Location = new Point(45, 664);
+            DesignationComboBox.Location = new Point(40, 664);
             DesignationComboBox.Margin = new Padding(3, 4, 3, 4);
             DesignationComboBox.Name = "DesignationComboBox";
             DesignationComboBox.Size = new Size(208, 28);
@@ -154,15 +159,6 @@
             RegulatedNumberLabel.TabIndex = 38;
             RegulatedNumberLabel.Text = "Номер на урегулиран поземлен имот";
             // 
-            // LocalityComboBox
-            // 
-            LocalityComboBox.FormattingEnabled = true;
-            LocalityComboBox.Location = new Point(40, 528);
-            LocalityComboBox.Margin = new Padding(3, 4, 3, 4);
-            LocalityComboBox.Name = "LocalityComboBox";
-            LocalityComboBox.Size = new Size(208, 28);
-            LocalityComboBox.TabIndex = 37;
-            // 
             // localityLabel
             // 
             localityLabel.AutoSize = true;
@@ -173,15 +169,6 @@
             localityLabel.TabIndex = 36;
             localityLabel.Text = "Област";
             // 
-            // MunicipalityComboBox
-            // 
-            MunicipalityComboBox.FormattingEnabled = true;
-            MunicipalityComboBox.Location = new Point(40, 404);
-            MunicipalityComboBox.Margin = new Padding(3, 4, 3, 4);
-            MunicipalityComboBox.Name = "MunicipalityComboBox";
-            MunicipalityComboBox.Size = new Size(208, 28);
-            MunicipalityComboBox.TabIndex = 35;
-            // 
             // Municipality
             // 
             Municipality.AutoSize = true;
@@ -191,15 +178,6 @@
             Municipality.Size = new Size(87, 25);
             Municipality.TabIndex = 34;
             Municipality.Text = "Община";
-            // 
-            // CityComboBox
-            // 
-            CityComboBox.FormattingEnabled = true;
-            CityComboBox.Location = new Point(40, 280);
-            CityComboBox.Margin = new Padding(3, 4, 3, 4);
-            CityComboBox.Name = "CityComboBox";
-            CityComboBox.Size = new Size(208, 28);
-            CityComboBox.TabIndex = 33;
             // 
             // CityLabel
             // 
@@ -237,12 +215,13 @@
             AddPlotInObjectTitleLabel.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
             AddPlotInObjectTitleLabel.Location = new Point(151, 26);
             AddPlotInObjectTitleLabel.Name = "AddPlotInObjectTitleLabel";
-            AddPlotInObjectTitleLabel.Size = new Size(475, 42);
+            AddPlotInObjectTitleLabel.Size = new Size(517, 42);
             AddPlotInObjectTitleLabel.TabIndex = 29;
-            AddPlotInObjectTitleLabel.Text = "Залагане на имот в Обект";
+            AddPlotInObjectTitleLabel.Text = "Залагане на имот в Дейност";
             // 
             // ActivityComboBox
             // 
+            ActivityComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             ActivityComboBox.FormattingEnabled = true;
             ActivityComboBox.Location = new Point(414, 664);
             ActivityComboBox.Margin = new Padding(3, 4, 3, 4);
@@ -260,12 +239,51 @@
             label1.TabIndex = 49;
             label1.Text = "Обвържи с дейност ";
             // 
+            // CityTextBox
+            // 
+            CityTextBox.Location = new Point(40, 280);
+            CityTextBox.Name = "CityTextBox";
+            CityTextBox.Size = new Size(208, 27);
+            CityTextBox.TabIndex = 51;
+            // 
+            // MunicipalityTextBox
+            // 
+            MunicipalityTextBox.Location = new Point(40, 391);
+            MunicipalityTextBox.Name = "MunicipalityTextBox";
+            MunicipalityTextBox.Size = new Size(208, 27);
+            MunicipalityTextBox.TabIndex = 52;
+            // 
+            // LocalityTextBox
+            // 
+            LocalityTextBox.Location = new Point(40, 519);
+            LocalityTextBox.Name = "LocalityTextBox";
+            LocalityTextBox.Size = new Size(208, 27);
+            LocalityTextBox.TabIndex = 53;
+            // 
+            // plotNumberValidationLabel
+            // 
+            plotNumberValidationLabel.AutoSize = true;
+            plotNumberValidationLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            plotNumberValidationLabel.Location = new Point(40, 143);
+            plotNumberValidationLabel.Name = "plotNumberValidationLabel";
+            plotNumberValidationLabel.Size = new Size(267, 15);
+            plotNumberValidationLabel.TabIndex = 54;
+            plotNumberValidationLabel.Text = "Невалиден формат. (######.####.####.??.????)";
+            // 
+            // errorProvider
+            // 
+            errorProvider.ContainerControl = this;
+            // 
             // AddPlotToObject
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(817, 852);
+            Controls.Add(plotNumberValidationLabel);
+            Controls.Add(LocalityTextBox);
+            Controls.Add(MunicipalityTextBox);
+            Controls.Add(CityTextBox);
             Controls.Add(ActivityComboBox);
             Controls.Add(label1);
             Controls.Add(AddPlotToObjectSubmitButton);
@@ -279,11 +297,8 @@
             Controls.Add(StreetLabel);
             Controls.Add(neighborhoodLabel);
             Controls.Add(RegulatedNumberLabel);
-            Controls.Add(LocalityComboBox);
             Controls.Add(localityLabel);
-            Controls.Add(MunicipalityComboBox);
             Controls.Add(Municipality);
-            Controls.Add(CityComboBox);
             Controls.Add(CityLabel);
             Controls.Add(PlotNumberComboBox);
             Controls.Add(PlotNumberLabel);
@@ -291,6 +306,7 @@
             Name = "AddPlotToObject";
             Text = "AddPlotToObject";
             Load += AddPlotToObject_Load;
+            ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -308,16 +324,18 @@
         private Label StreetLabel;
         private Label neighborhoodLabel;
         private Label RegulatedNumberLabel;
-        private ComboBox LocalityComboBox;
         private Label localityLabel;
-        private ComboBox MunicipalityComboBox;
         private Label Municipality;
-        private ComboBox CityComboBox;
         private Label CityLabel;
         private ComboBox PlotNumberComboBox;
         private Label PlotNumberLabel;
         private Label AddPlotInObjectTitleLabel;
         private ComboBox ActivityComboBox;
         private Label label1;
+        private TextBox CityTextBox;
+        private TextBox MunicipalityTextBox;
+        private TextBox LocalityTextBox;
+        private Label plotNumberValidationLabel;
+        private ErrorProvider errorProvider;
     }
 }

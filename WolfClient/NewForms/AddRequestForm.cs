@@ -27,6 +27,8 @@ namespace WolfClient.NewForms
         private List<GetClientDTO> _returnClients;
 
         private CreateRequestDTO _requestValidator;
+
+
         public AddRequestForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient)
         {
             InitializeComponent();

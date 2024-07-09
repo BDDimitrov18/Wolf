@@ -18,6 +18,8 @@ namespace DataAccessLayer.Models
         public string register { get; set; }
         public string DocCase { get; set; }
 
+        public string TypeOfOwnership { get; set; }
+
         public DateTime DateOfIssuing { get; set; }
         public DateTime DateOfRegistering { get; set; }
         public ICollection<DocumentOfOwnership_OwnerRelashionship> DocumentOwners { get; set; }

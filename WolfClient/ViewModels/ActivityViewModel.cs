@@ -9,7 +9,9 @@ namespace WolfClient.ViewModels
     public class ActivityViewModel
     {
         public string ActivityTypeName { get; set; }
+        public int ActivityId { get; set; }
         public string TaskTypeName { get; set; }
+        public int TaskId { get; set; }
         public string ExecutantFullName { get; set; }
         public DateTime StartDate { get; set; }
         public TimeSpan Duration { get; set; }

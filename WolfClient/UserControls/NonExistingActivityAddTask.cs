@@ -32,25 +32,37 @@ namespace WolfClient.UserControls
 
         private async void AddActivityTaskForm_Load(object sender, EventArgs e)
         {
+            // Get activity types and set the data source for the ActivityComboBox
             var response = await _userClient.GetActivityTypes();
             _dataService.SetActivityTypes(response.ResponseObj);
             ActivityComboBox.DataSource = _dataService.GetActivityTypeDTOs();
             ActivityComboBox.DisplayMember = "ActivityTypeName";
             ActivityComboBox.ValueMember = "ActivityTypeID";
 
+            // Get employees
             var employeesResponse = await _userClient.GetAllEmployees();
-            _dataService.SetEmployees(employeesResponse.ResponseObj as List<GetEmployeeDTO>);
-            ExecitantComboBox.DataSource = _dataService.GetEmployees();
+            var employeesList = employeesResponse.ResponseObj as List<GetEmployeeDTO>;
+
+
+            // Create separate copies of the employee list for each ComboBox
+            var employeesListForExecitant = new List<GetEmployeeDTO>(employeesList);
+            var employeesListForControl = new List<GetEmployeeDTO>(employeesList);
+
+            // Set the data source for the ExecitantComboBox
+            ExecitantComboBox.DataSource = employeesListForExecitant;
             ExecitantComboBox.DisplayMember = "FullName";
             ExecitantComboBox.ValueMember = "EmployeeId";
 
-            ControlComboBox.DataSource = _dataService.GetEmployees();
+            // Set the data source for the ControlComboBox
+            ControlComboBox.DataSource = employeesListForControl;
             ControlComboBox.DisplayMember = "FullName";
             ControlComboBox.ValueMember = "EmployeeId";
 
-
+            // Get the selected request and linked requests
             var selected = _dataService.GetSelectedRequest();
             var linkedRequests = _dataService.GetFetchedLinkedRequests();
+
+            // Find the activity DTOs for the selected request
             List<GetActivityDTO> activityDTOs = new List<GetActivityDTO>();
             foreach (var linkedRequest in linkedRequests)
             {
@@ -60,6 +72,7 @@ namespace WolfClient.UserControls
                 }
             }
 
+            // Set the data source for the ParentActivityComboBox
             ParentActivityComboBox.DataSource = activityDTOs;
             ParentActivityComboBox.DisplayMember = "ActivityTypeName";
             ParentActivityComboBox.ValueMember = "ActivityId";
@@ -99,24 +112,6 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void ControlComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ValidateActivityComboBox())
-            {
-                if (ValidateTaskComboBox())
-                {
-                    //Take the 2 Valid cases
-                }
-                else
-                {
-                    //Create new task to the corresponding activityType
-                }
-            }
-            else
-            {
-                //create new ActivityType with corresponding Task
-            }
-        }
 
         private async void AddActivitySubmit_Click(object sender, EventArgs e)
         {
@@ -135,7 +130,7 @@ namespace WolfClient.UserControls
                         ParentActivityId = ParentActivityComboBox.SelectedValue != null ? (int)ParentActivityComboBox.SelectedValue : null
                     };
 
-                    //DOESNT MAP THE TASKS PROPERLY
+                    
                     var responseActivityDTO = await _userClient.AddActivity(createActivityDTO);
 
                     CreateTaskDTO createTaskDTO = new CreateTaskDTO()

@@ -22,10 +22,31 @@ namespace DataAccessLayer.Repositories
 
         public async Task CreateActivity(Models.Activity activity)
         {
+            // Load the ActivityType entity based on ActivityTypeID
             var activityType = await _WolfDbContext.activityTypes.FindAsync(activity.ActivityTypeID);
             if (activityType == null)
             {
                 throw new ArgumentException("Invalid ActivityTypeID");
+            }
+            activity.ActivityType = activityType;
+
+            // Load the Request entity based on RequestId
+            var request = await _WolfDbContext.Requests.FindAsync(activity.RequestId);
+            if (request == null)
+            {
+                throw new ArgumentException("Invalid RequestId");
+            }
+            activity.Request = request;
+
+            // Load the ParentActivity entity based on ParentActivityId, if it exists
+            if (activity.ParentActivityId.HasValue)
+            {
+                var parentActivity = await _WolfDbContext.Activities.FindAsync(activity.ParentActivityId.Value);
+                if (parentActivity == null)
+                {
+                    throw new ArgumentException("Invalid ParentActivityId");
+                }
+                activity.ParentActivity = parentActivity;
             }
 
             // Set the ActivityType property on the activity entity
@@ -72,6 +93,64 @@ namespace DataAccessLayer.Repositories
         .Include(a => a.Tasks)
             .ThenInclude(t => t.taskType)
         .FirstOrDefaultAsync(a => a.ActivityId == id);
+        }
+
+        public async Task<bool> DeleteOnRequestAsync(Request request)
+        {
+            try
+            {
+                // Find the activities that have the same RequestId as the provided request
+                var activitiesToDelete = await _WolfDbContext.Activities
+                    .Where(a => a.RequestId == request.RequestId)
+                    .ToListAsync();
+
+                if (activitiesToDelete.Any())
+                {
+                    _WolfDbContext.Activities.RemoveRange(activitiesToDelete);
+                    var affectedRows = await _WolfDbContext.SaveChangesAsync();
+
+                    // Check if any rows were affected
+                    return affectedRows > 0;
+                }
+
+                // If no activities were found to delete, return true (indicating no work to do)
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (implementation depends on your logging framework)
+                // Example: _logger.LogError(ex, "An error occurred while deleting activities");
+
+                // Return false to indicate failure
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteActivities(List<Activity> activities)
+        {
+            // Check if the list of activities is null or empty
+            if (activities == null || activities.Count == 0)
+            {
+                return false;
+            }
+
+            try
+            {
+                // Remove the activities from the DbContext
+                _WolfDbContext.Activities.RemoveRange(activities);
+
+                // Save changes to the database asynchronously
+                await _WolfDbContext.SaveChangesAsync();
+
+                return true; // Indicate that the operation was successful
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (logging not shown here)
+                // Handle the exception as needed
+
+                return false; // Indicate that the operation failed
+            }
         }
     }
 }

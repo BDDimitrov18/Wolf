@@ -10,5 +10,6 @@ namespace DataAccessLayer.Repositories.Interfaces
     public interface IActivity_PlotRelashionshipModelRepository
     {
         public Task Add(Activity_PlotRelashionship relashionship);
+        public Task<bool> OnActivityDeleteAsync(Activity activity);
     }
 }

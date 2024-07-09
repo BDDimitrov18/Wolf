@@ -10,5 +10,10 @@ namespace DataAccessLayer.Repositories.Interfaces
     public interface IClient_RequestRelashionshipModelRepository
     {
         public List<Client_RequestRelashionship> Add(Request request, List<Client> clients);
+
+        public Task<bool> OnRequestDeleteAsync(Request request);
+
+        public Task<bool> OnDeleteClients(List<Client> clients);
+
     }
 }

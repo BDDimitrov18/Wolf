@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace WolfClient.NewForms
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
 
-
+        private CreatePlotDTO plotValidator;
         public AddPlotToObject(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
@@ -28,6 +29,69 @@ namespace WolfClient.NewForms
             _userClient = userClient;
             _adminClient = adminClient;
             _dataService = dataService;
+
+            plotValidator = new CreatePlotDTO();
+        }
+
+        private void ValidateModel()
+        {
+            // Temporarily disable redrawing to reduce flickering
+            SuspendLayout();
+
+            try
+            {
+                // Clear previous error messages
+                errorProvider.Clear();
+
+                // Bind the form controls to the model properties
+                plotValidator.PlotNumber = PlotNumberComboBox.Text;
+
+              
+                // Validate the model
+                IList<ValidationResult> memberNameResults = WolfClient.Validators.Validator.Validate(plotValidator);
+
+                if (memberNameResults.Any())
+                {
+                    foreach (var result in memberNameResults)
+                    {
+                        foreach (var memberName in result.MemberNames)
+                        {
+                            // Map property names to control names
+                            string controlName = GetControlNameForMember(memberName);
+                            if (controlName != null)
+                            {
+                                Control control = Controls.Find(controlName, true).FirstOrDefault();
+                                if (control != null)
+                                {
+                                    errorProvider.SetError(control, result.ErrorMessage);
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // Clear all error messages if validation passes
+                    foreach (Control control in Controls)
+                    {
+                        errorProvider.SetError(control, string.Empty);
+                    }
+                }
+            }
+            finally
+            {
+                // Re-enable redrawing
+                ResumeLayout();
+            }
+        }
+
+        private string GetControlNameForMember(string memberName)
+        {
+            return memberName switch
+            {
+                nameof(plotValidator.PlotNumber) => "PlotNumberComboBox",
+                _ => null
+            };
         }
 
         private void AddPlotToObject_Load(object sender, EventArgs e)
@@ -60,29 +124,54 @@ namespace WolfClient.NewForms
 
             if (!string.IsNullOrEmpty(selectedPlotNumber))
             {
-                var selectedEKT = _dataService.GetEKTViewModels().FirstOrDefault(x => x.EKTNumber == selectedPlotNumber);
-
-                if (selectedEKT != null)
+                var selectedPlot = _dataService.GetAllPlots().FirstOrDefault(x => x.PlotNumber == selectedPlotNumber);
+                if (selectedPlot != null)
                 {
-                    CityComboBox.Text = $"{selectedEKT.TypeOfPlace} {selectedEKT.TownName}";
-                    LocalityComboBox.Text = selectedEKT.Localitiy;
-                    MunicipalityComboBox.Text = selectedEKT.Municipality;
+                    CityTextBox.Text = selectedPlot.City;
+                    MunicipalityTextBox.Text = selectedPlot.Municipality;
+                    LocalityTextBox.Text = selectedPlot.locality;
+                    DesignationComboBox.Text = selectedPlot.designation != null ? selectedPlot.designation : "";
+                    RegulatedNumberTextBox.Text = selectedPlot.RegulatedPlotNumber != null ? selectedPlot.RegulatedPlotNumber : "";
+                    NeighborhoodTextBox.Text = selectedPlot.neighborhood != null ? selectedPlot.neighborhood : "";
+                    StreetTextBox.Text = selectedPlot.Street != null ? selectedPlot.Street : "";
+                    StreetNumberTextBox.Text = selectedPlot.StreetNumber != null ? selectedPlot.StreetNumber.ToString() : "";
+                }
+                else
+                {
+                    var selectedEKT = _dataService.GetEKTViewModels().FirstOrDefault(x => x.EKTNumber == selectedPlotNumber);
+
+                    if (selectedEKT != null)
+                    {
+                        CityTextBox.Text = $"{selectedEKT.TypeOfPlace} {selectedEKT.TownName}";
+                        LocalityTextBox.Text = selectedEKT.Localitiy;
+                        MunicipalityTextBox.Text = selectedEKT.Municipality;
+                    }
                 }
             }
         }
 
         private async void AddPlotToObjectSubmitButton_Click(object sender, EventArgs e)
         {
+            ValidateModel();
+
+            plotNumberValidationLabel.ForeColor = SystemColors.GradientActiveCaption;
+            bool flag = false;
+            if (!string.IsNullOrEmpty(errorProvider.GetError(PlotNumberComboBox)))
+            {
+                plotNumberValidationLabel.ForeColor = Color.Red;
+                flag = true;
+            }
+            if (flag) return;
             CreatePlotDTO newPlot = new CreatePlotDTO() { 
                 PlotNumber = PlotNumberComboBox.Text,
                 RegulatedPlotNumber = RegulatedNumberTextBox.Text,
                 neighborhood = NeighborhoodTextBox.Text,
-                City = CityComboBox.Text,
-                Municipality = MunicipalityComboBox.Text,
+                City = CityTextBox.Text,
+                Municipality = MunicipalityTextBox.Text,
                 Street = StreetTextBox.Text,
                 StreetNumber  = int.Parse(StreetNumberTextBox.Text),
                 designation = DesignationComboBox.Text,
-                locality = LocalityComboBox.Text,
+                locality = LocalityTextBox.Text,
             };
 
             var plotResponse = await _userClient.AddPlot(newPlot);

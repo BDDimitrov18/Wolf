@@ -14,16 +14,21 @@ namespace WolfAPI.Services
         private readonly IClientModelRepository _clientRepository;
         private readonly IActivityModelRespository _activityModelRespository;
         private readonly IPlotModelRepository _plotModelRepository;
+        private readonly IAcitvityService _acitvityService;
+        private readonly IClient_RequestRelashionshipService _client_requestRelashionshipService;
         private readonly IMapper _mapper;
 
         public RequestService(IRequestModelRepository requestRepository, IMapper mapper, IClientModelRepository clientRepository,
-        IActivityModelRespository activityModelRespository, IPlotModelRepository plotModelRepository)
+        IActivityModelRespository activityModelRespository, IPlotModelRepository plotModelRepository, IClient_RequestRelashionshipService client_requestRelashionshipService,
+        IAcitvityService acitvityService)
         {
             _requestRepository = requestRepository;
             _mapper = mapper;
             _clientRepository = clientRepository;
             _activityModelRespository = activityModelRespository;
             _plotModelRepository = plotModelRepository;
+            _client_requestRelashionshipService = client_requestRelashionshipService;
+            _acitvityService = acitvityService;
         }
 
         public async Task<List<RequestWithClientsDTO>> GetLinked(List<GetRequestDTO> requestsDTO)
@@ -92,6 +97,44 @@ namespace WolfAPI.Services
                 createRequestsDTOs.Add(requestDTO);
             }
             return createRequestsDTOs;
+        }
+
+        public async Task<bool> Delete(List<GetRequestDTO> requestDTOs)
+        {
+            List<Request> requests = new List<Request>();
+            bool allDeletionsSuccessful = true;
+
+            foreach (var requestDTO in requestDTOs)
+            {
+                var request = _mapper.Map<Request>(requestDTO);
+                requests.Add(request);
+
+                bool activityDeletionSuccess = await _acitvityService.DeleteOnRequest(request);
+                if (!activityDeletionSuccess)
+                {
+                    // Log the failure for deleting activities
+                    // Example: _logger.LogError($"Failed to delete activities for request ID {request.RequestId}");
+                    allDeletionsSuccessful = false;
+                }
+
+                bool clientRequestDeletionSuccess = await _client_requestRelashionshipService.OnRequestDelete(request);
+                if (!clientRequestDeletionSuccess)
+                {
+                    // Log the failure for deleting client request relationships
+                    // Example: _logger.LogError($"Failed to delete client request relationships for request ID {request.RequestId}");
+                    allDeletionsSuccessful = false;
+                }
+            }
+
+            bool requestDeletionSuccess = await _requestRepository.Delete(requests);
+            if (!requestDeletionSuccess)
+            {
+                // Log the failure for deleting requests
+                // Example: _logger.LogError("Failed to delete requests");
+                allDeletionsSuccessful = false;
+            }
+
+            return allDeletionsSuccessful;
         }
     }
 }

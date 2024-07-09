@@ -23,8 +23,6 @@ namespace WolfClient.UserControls
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
         private readonly IDataService _dataService;
-        private GetRequestDTO _selectedRequest;
-        private List<GetRequestDTO> _fetchedRequests;
         private bool _isSelectedRequest;
 
         private bool loaded;
@@ -34,14 +32,13 @@ namespace WolfClient.UserControls
             _apiClient = apiClient;
             _userClient = userClient;
             _adminClient = adminClient;
-            _selectedRequest = new GetRequestDTO();
-            _fetchedRequests = new List<GetRequestDTO>();
             _isSelectedRequest = false;
             _dataService = dataService;
         }
         private void MenuRequestsUserControl_Load(object sender, EventArgs e)
         {
             RequestDataGridView.SelectionChanged += RequestDataGridView_SelectionChanged;
+            clientsDataGridView.SelectionChanged += clientsDataGridView_SelectionChanged;
             if (_apiClient.getLoginStatus())
             {
                 setRequestsDataGridView();
@@ -58,6 +55,8 @@ namespace WolfClient.UserControls
             var requestList = response.ResponseObj;
             if (response.ResponseObj.Count() > 0)
             {
+                List<GetRequestDTO> _fetchedRequests = new List<GetRequestDTO>();
+                GetRequestDTO _selectedRequest = new GetRequestDTO();
                 _fetchedRequests = response.ResponseObj;
                 _selectedRequest = _fetchedRequests[0];
                 _dataService.SetSelectedRequest(_selectedRequest);
@@ -119,9 +118,8 @@ namespace WolfClient.UserControls
                 var selectedRow = RequestDataGridView.SelectedRows[0];
                 if (selectedRow.DataBoundItem is GetRequestDTO selectedRequest)
                 {
-                    _selectedRequest = selectedRequest;
                     _isSelectedRequest = true;
-                    _dataService.SetSelectedRequest(_selectedRequest);
+                    _dataService.SetSelectedRequest(selectedRequest);
                 }
             }
             else
@@ -129,11 +127,11 @@ namespace WolfClient.UserControls
                 if (_isSelectedRequest)
                 {
                     _isSelectedRequest = false;
-                    _selectedRequest = null;
+                    _dataService.SetSelectedRequest(null);
                 }
             }
 
-            if (_selectedRequest != null)
+            if (_dataService.GetSelectedRequest() != null)
             {
                 UpdateClientsDataGridView();
                 UpdateActivityDataGridView();
@@ -142,11 +140,37 @@ namespace WolfClient.UserControls
             }
         }
 
+        private void clientsDataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            // Check if any rows are selected
+            if (clientsDataGridView.SelectedRows.Count > 0)
+            {
+                var selectedClients = new List<GetClientDTO>();
+
+                // Iterate through all selected rows
+                foreach (DataGridViewRow selectedRow in clientsDataGridView.SelectedRows)
+                {
+                    // Check if the DataBoundItem is of type GetClientDTO
+                    if (selectedRow.DataBoundItem is GetClientDTO clientDto)
+                    {
+                        // Add the client DTO to the list
+                        selectedClients.Add(clientDto);
+                    }
+                }
+
+                // Check if there are any selected clients
+                if (selectedClients.Count > 0)
+                {
+                    _dataService.SetSelectedClients(selectedClients);
+                }
+            }
+        }
+
         private void UpdateOwnershipDataGridView()
         {
             try
             {
-                if (_selectedRequest == null || _dataService.GetFetchedLinkedRequests() == null)
+                if (_dataService.GetSelectedRequest() == null || _dataService.GetFetchedLinkedRequests() == null)
                 {
                     OwnershipDataGridView.DataSource = null;
                     OwnershipDataGridView.Refresh();
@@ -198,7 +222,7 @@ namespace WolfClient.UserControls
                 // Always paint the right border
                 using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
                 {
-                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom-1);
+                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
                 }
 
                 // Check if the next cell is empty, and if so, clear the bottom border
@@ -214,30 +238,32 @@ namespace WolfClient.UserControls
                         }
                     }
                 }
-                else {
+                else
+                {
                     e.Paint(e.CellBounds, DataGridViewPaintParts.All);
                 }
             }
             else
             {
-                    // Check if the next cell is not empty
-                    if (e.RowIndex < OwnershipDataGridView.RowCount - 1 &&
-                        !string.IsNullOrEmpty(OwnershipDataGridView.Rows[e.RowIndex + 1].Cells[e.ColumnIndex].Value as string))
-                    {
-                        // Paint bottom border
-                        using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
-                        {
-                            e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
-                        }
-                    }
-
-                    // Always paint the right border
+                // Check if the next cell is not empty
+                if (e.RowIndex < OwnershipDataGridView.RowCount - 1 &&
+                    !string.IsNullOrEmpty(OwnershipDataGridView.Rows[e.RowIndex + 1].Cells[e.ColumnIndex].Value as string))
+                {
+                    // Paint bottom border
                     using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
                     {
-                        e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom-1);
+                        e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
                     }
+                }
+
+                // Always paint the right border
+                using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
+                {
+                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                }
             }
-            if (!(e.RowIndex < OwnershipDataGridView.RowCount - 1)) {
+            if (!(e.RowIndex < OwnershipDataGridView.RowCount - 1))
+            {
                 // Paint bottom border
                 using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
                 {
@@ -248,7 +274,7 @@ namespace WolfClient.UserControls
 
         }
 
-        private  string ConvertFloatToFraction(float value)
+        private string ConvertFloatToFraction(float value)
         {
             // Tolerance for floating point comparison
             const double TOLERANCE = 1.0E-6;
@@ -396,7 +422,7 @@ namespace WolfClient.UserControls
         {
             try
             {
-                if (_selectedRequest == null || _dataService.GetFetchedLinkedRequests() == null)
+                if (_dataService.GetSelectedRequest() == null || _dataService.GetFetchedLinkedRequests() == null)
                 {
                     clientsDataGridView.DataSource = null;
                     clientsDataGridView.Refresh();
@@ -404,7 +430,7 @@ namespace WolfClient.UserControls
                 }
 
                 var matchingRequestWithClients = _dataService.GetFetchedLinkedRequests()
-                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _selectedRequest.RequestId);
+                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _dataService.GetSelectedRequest().RequestId);
 
                 if (clientsDataGridView.InvokeRequired)
                 {
@@ -432,9 +458,12 @@ namespace WolfClient.UserControls
             PlotsDataGridView.AutoGenerateColumns = false;
             PlotsDataGridView.DataSource = null;
             List<GetPlotDTO> plotList = new List<GetPlotDTO>();
-            foreach (var activityDTO in matchingRequestWithClients.activityDTOs)
+            if (matchingRequestWithClients.activityDTOs?.Count() > 0)
             {
-                plotList.AddRange(activityDTO.Plots);
+                foreach (var activityDTO in matchingRequestWithClients.activityDTOs)
+                {
+                    plotList.AddRange(activityDTO.Plots);
+                }
             }
 
             if (matchingRequestWithClients != null)
@@ -489,7 +518,9 @@ namespace WolfClient.UserControls
                             var viewModel = new ActivityViewModel
                             {
                                 ActivityTypeName = activity.ActivityType.ActivityTypeName + activity.ActivityId.ToString(),
+                                ActivityId = activity.ActivityId,
                                 TaskTypeName = task.taskType.TaskTypeName,
+                                TaskId = task.TaskId,
                                 ExecutantFullName = task.Executant.FullName,
                                 StartDate = task.StartDate,
                                 Duration = task.Duration,
@@ -535,10 +566,9 @@ namespace WolfClient.UserControls
                     };
 
                     _dataService.AddSingleRequest(requestWithClients);
-                    _fetchedRequests.Add(requestDTO);
                 }
             }
-            UpdateRequestDataGridView(_fetchedRequests);
+            UpdateRequestDataGridView(_dataService.getRequests());
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -558,7 +588,7 @@ namespace WolfClient.UserControls
         {
             if (_dataService.GetSelectedRequest() != null)
             {
-                using (AddClientToRequest form = new AddClientToRequest(_apiClient, _userClient, _adminClient, _selectedRequest))
+                using (AddClientToRequest form = new AddClientToRequest(_apiClient, _userClient, _adminClient, _dataService.GetSelectedRequest()))
                 {
                     if (form.ShowDialog() == DialogResult.OK)
                     {
@@ -566,7 +596,7 @@ namespace WolfClient.UserControls
 
                         foreach (RequestWithClientsDTO requestWithClientsDTO in _dataService.GetFetchedLinkedRequests())
                         {
-                            if (requestWithClientsDTO.requestDTO.RequestId == _selectedRequest.RequestId)
+                            if (requestWithClientsDTO.requestDTO.RequestId == _dataService.GetSelectedRequest().RequestId)
                             {
                                 requestWithClientsDTO.clientDTOs.AddRange(getClientDTOs);
                             }
@@ -581,7 +611,7 @@ namespace WolfClient.UserControls
         {
             try
             {
-                if (_selectedRequest == null || _dataService.GetFetchedLinkedRequests() == null)
+                if (_dataService.GetSelectedRequest() == null || _dataService.GetFetchedLinkedRequests() == null)
                 {
                     PlotsDataGridView.DataSource = null;
                     PlotsDataGridView.Refresh();
@@ -589,7 +619,7 @@ namespace WolfClient.UserControls
                 }
 
                 var matchingRequestWithClients = _dataService.GetFetchedLinkedRequests()
-                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _selectedRequest.RequestId);
+                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _dataService.GetSelectedRequest().RequestId);
 
                 if (PlotsDataGridView.InvokeRequired)
                 {
@@ -617,7 +647,7 @@ namespace WolfClient.UserControls
         {
             try
             {
-                if (_selectedRequest == null || _dataService.GetFetchedLinkedRequests() == null)
+                if (_dataService.GetSelectedRequest() == null || _dataService.GetFetchedLinkedRequests() == null)
                 {
                     ActivityDataGridView.DataSource = null;
                     ActivityDataGridView.Refresh();
@@ -625,7 +655,7 @@ namespace WolfClient.UserControls
                 }
 
                 var matchingRequestWithClients = _dataService.GetFetchedLinkedRequests()
-                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _selectedRequest.RequestId);
+                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _dataService.GetSelectedRequest().RequestId);
 
                 if (ActivityDataGridView.InvokeRequired)
                 {
@@ -662,7 +692,6 @@ namespace WolfClient.UserControls
             {
                 var requestDTOs = response.ResponseObj;
                 UpdateRequestDataGridView(requestDTOs);
-                _fetchedRequests = response.ResponseObj;
             }
         }
 
@@ -708,9 +737,18 @@ namespace WolfClient.UserControls
             if (_dataService.GetSelectedRequest() != null)
             {
                 AddActivityTaskForm addActivityTaskForm = new AddActivityTaskForm(_apiClient, _userClient, _adminClient, _dataService);
+
+                // Subscribe to the FormClosed event
+                addActivityTaskForm.Disposed += AddActivityTaskForm_Disposed;
+
                 addActivityTaskForm.Show();
-                UpdateActivityDataGridView();
             }
+        }
+
+        private void AddActivityTaskForm_Disposed(object sender, EventArgs e)
+        {
+            // Invoke the method to update the DataGridView
+            UpdateActivityDataGridView();
         }
 
         private void PlotsDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -740,6 +778,55 @@ namespace WolfClient.UserControls
             AddOwnerForm ownerForm = new AddOwnerForm(_apiClient, _userClient, _adminClient, _dataService);
             ownerForm.Show();
             UpdateOwnershipDataGridView();
+        }
+
+        private async void DeleteRequestButton_Click(object sender, EventArgs e)
+        {
+            List<GetRequestDTO> requestDTOs = new List<GetRequestDTO>();
+            requestDTOs.Add(_dataService.GetSelectedRequest());
+            var response = await _userClient.DeleteRequest(requestDTOs);
+
+            if (response.IsSuccess)
+            {
+                _dataService.OnRequestDelete();
+                UpdateRequestDataGridView(_dataService.getRequests());
+                UpdateClientsDataGridView();
+                UpdateActivityDataGridView();
+                UpdatePlotsDataGridView();
+                UpdateOwnershipDataGridView();
+            }
+            else
+            {
+                // do not delete.
+            }
+        }
+
+        private async void deleteClientsButton_Click(object sender, EventArgs e)
+        {
+            var response = await _userClient.DeleteClientRequest(_dataService.getSelectedCLients());
+
+            if (response.IsSuccess)
+            {
+                _dataService.OnClientsRequestDelete();
+                UpdateClientsDataGridView();
+            }
+        }
+
+        private async void DeleteActivityButton_Click(object sender, EventArgs e)
+        {
+            List<GetTaskDTO> taskDTOs= _dataService.getTasksFromViewModel();
+            var response = await _userClient.DeleteTasks(taskDTOs);
+            if (response.IsSuccess) {
+                List<GetActivityDTO> activities = _dataService.OnTasksDelete(taskDTOs);
+                var activityResponse = await _userClient.DeleteActivities(activities);
+                if (activityResponse.IsSuccess) {
+                    _dataService.DeleteActivities(activities);
+                    UpdateActivityDataGridView();
+                }
+            }
+            else { 
+                
+            }
         }
     }
 }

@@ -13,5 +13,8 @@ namespace DataAccessLayer.Repositories.Interfaces
         public List<DataAccessLayer.Models.Activity> FindLinkedActivity(Request request);
 
         public Task<Activity> GetActivity(int id);
+
+        public Task<bool> DeleteOnRequestAsync(Request request);
+        public Task<bool> DeleteActivities(List<Activity> activities);
     }
 }

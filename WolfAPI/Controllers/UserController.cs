@@ -1,4 +1,5 @@
-﻿using DTOS.DTO;
+﻿using DataAccessLayer.Models;
+using DTOS.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -172,7 +173,113 @@ namespace WolfAPI.Controllers
             return _documentPlot_DocumentOwnerRelashionshipService.GetLinkedByPlots(plots);
         }
 
+        [HttpPost("DeleteRequest")]
 
-        //public void LinkClientsAdnRequest([FromBody] IEnumerable<GetClientDTO>)
+        public async Task<IActionResult> DeleteRequestsAsync([FromBody] List<GetRequestDTO> requestDTOs)
+        {
+            if (requestDTOs == null || !requestDTOs.Any())
+            {
+                return BadRequest(new { message = "Request data is null or empty" });
+            }
+
+            bool success = await _requestService.Delete(requestDTOs);
+
+            if (success)
+            {
+                return Ok(new { message = "Requests and related entities successfully deleted" });
+            }
+            else
+            {
+                return StatusCode(500, new { message = "An error occurred while deleting the requests and related entities" });
+            }
+        }
+
+        [HttpPost("DeleteClientRequestRelashionships")]
+        public async Task<IActionResult> DeleteRequestClientsAsync([FromBody] List<GetClientDTO> getClientDTOs)
+        {
+            if (getClientDTOs == null || getClientDTOs.Count == 0)
+            {
+                return BadRequest("No clients provided for deletion.");
+            }
+
+            try
+            {
+                bool result = await _client_RequestRelashionshipService.OnClientsDelete(getClientDTOs);
+
+                if (result)
+                {
+                    return Ok("Clients deleted successfully.");
+                }
+                else
+                {
+                    return StatusCode(500, "Failed to delete clients. Please try again later.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (logging not shown here)
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost("DeleteTasks")]
+        public async Task<IActionResult> DeleteTasks([FromBody] List<GetTaskDTO> getTasks)
+        {
+            if (getTasks == null || getTasks.Count == 0)
+            {
+                return BadRequest("No tasks provided for deletion.");
+            }
+
+            try 
+            { 
+
+                // Call the service method to delete the tasks
+                bool result = await _taskService.DeleteTasks(getTasks);
+
+                if (result)
+                {
+                    return Ok("Tasks deleted successfully.");
+                }
+                else
+                {
+                    return StatusCode(500, "Failed to delete tasks. Please try again later.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (logging not shown here)
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost("DeleteActivities")]
+        public async Task<IActionResult> DeleteActivities([FromBody] List<GetActivityDTO> activityDTOs)
+        {
+            if (activityDTOs == null || activityDTOs.Count == 0)
+            {
+                return BadRequest("No activities provided for deletion.");
+            }
+
+            try
+            {
+
+                // Call the service method to delete the activities
+                bool result = await _acitvityService.DeleteActivities(activityDTOs);
+
+                if (result)
+                {
+                    return Ok("Activities deleted successfully.");
+                }
+                else
+                {
+                    return StatusCode(500, "Failed to delete activities. Please try again later.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (logging not shown here)
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
     }
 }

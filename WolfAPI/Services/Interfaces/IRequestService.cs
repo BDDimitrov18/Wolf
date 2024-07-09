@@ -9,5 +9,7 @@ namespace WolfAPI.Services.Interfaces
         public List<GetRequestDTO> GetAllRequest();
 
         public Task<List<RequestWithClientsDTO>> GetLinked(List<GetRequestDTO> requestsDTO);
+
+        public Task<bool> Delete(List<GetRequestDTO> requestDTOs);
     }
 }

@@ -1040,5 +1040,172 @@ namespace WolfClient.Services
                 return new ClientResponse<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
             }
         }
+
+        public async Task<ClientResponse<HttpResponseMessage>> DeleteRequest(List<GetRequestDTO> requestDTO) {
+            var jsonContent = JsonSerializer.Serialize(requestDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/DeleteRequest", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Request Deleted successfully!");
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Request Deleted successfully!", ResponseObj = response };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to delete Request: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+    
+        public async Task<ClientResponse<HttpResponseMessage>> DeleteClientRequest(List<GetClientDTO> clientDTOs)
+        {
+            var jsonContent = JsonSerializer.Serialize(clientDTOs);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/DeleteClientRequestRelashionships", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("ClientRequestRelashionship Deleted successfully!");
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "ClientRequestRelashionship Deleted successfully!", ResponseObj = response };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to delete ClientRequestRelashionship: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+
+        }
+    
+        public async Task<ClientResponse<HttpResponseMessage>> DeleteTasks(List<GetTaskDTO> tasks) {
+            var jsonContent = JsonSerializer.Serialize(tasks);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/DeleteTasks", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Tasks Deleted successfully!");
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Tasks Deleted successfully!", ResponseObj = response };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to delete Tasks: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<HttpResponseMessage>> DeleteActivities(List<GetActivityDTO> activities)
+        {
+            var jsonContent = JsonSerializer.Serialize(activities);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/DeleteTasks", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Activities Deleted successfully!");
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Activities Deleted successfully!", ResponseObj = response };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to delete Activities: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
     }
 }

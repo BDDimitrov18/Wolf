@@ -10,5 +10,9 @@ namespace DataAccessLayer.Repositories.Interfaces
     public interface ItaskModelRepository
     {
         public Task createTask(WorkTask task);
+
+        public Task<bool> DeleteOnActivityAsync(Activity activity);
+
+        public Task<bool> DeleteTasks(List<WorkTask> tasks);
     }
 }

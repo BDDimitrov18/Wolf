@@ -4,6 +4,7 @@ using WolfClient.Services;
 using WolfClient.NewForms;
 using WolfClient.UserControls;
 using System.IO;
+using WolfClient.NewForms.DocumentsForms;
 
 namespace WolfClient
 {
@@ -33,9 +34,7 @@ namespace WolfClient
             MenuRequestsUserControl menuRequestsUserControl = new MenuRequestsUserControl(apiClient, userClient, adminClient, dataService);
             MenuClientsUserControl menuClientsUserControl = new MenuClientsUserControl(apiClient, userClient, adminClient);
             MenuEmployeesUserControl menuEmployeesUserControl = new MenuEmployeesUserControl(apiClient, userClient, adminClient,dataService);
-            Application.Run(new MainForm(apiClient, userClient, adminClient, dataService, menuRequestsUserControl, menuClientsUserControl, menuEmployeesUserControl));
-
-
+            Application.Run(new RequestForAccesingDataForInclusion());
         }
     }
 }

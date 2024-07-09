@@ -51,10 +51,13 @@ namespace WolfClient.UserControls
             InvoicesTableLabel = new Label();
             button3 = new Button();
             panel1 = new Panel();
+            button8 = new Button();
             panel3 = new Panel();
+            DeleteRequestButton = new Button();
             RefreshButton = new Button();
             tabPage2 = new TabPage();
             panel2 = new Panel();
+            DeleteActivityButton = new Button();
             ActivityTableLabel = new Label();
             ActivityDataGridView = new DataGridView();
             ParentActivity = new DataGridViewTextBoxColumn();
@@ -69,6 +72,7 @@ namespace WolfClient.UserControls
             ActivityAddButton = new Button();
             tabPage1 = new TabPage();
             panel4 = new Panel();
+            deleteClientsButton = new Button();
             button1 = new Button();
             ClientsTableLabel = new Label();
             clientsDataGridView = new DataGridView();
@@ -83,6 +87,7 @@ namespace WolfClient.UserControls
             DocumentsOfOwnershipTab = new TabControl();
             tabPage3 = new TabPage();
             panel5 = new Panel();
+            button5 = new Button();
             PlotsTableLabel = new Label();
             PlotsDataGridView = new DataGridView();
             PlotNumber = new DataGridViewTextBoxColumn();
@@ -97,6 +102,7 @@ namespace WolfClient.UserControls
             PlotsAddButton = new Button();
             DestinationOfPlotLabel = new Label();
             tabPage5 = new TabPage();
+            button6 = new Button();
             AddOwnersButton = new Button();
             label2 = new Label();
             OwnershipDataGridView = new DataGridView();
@@ -282,6 +288,7 @@ namespace WolfClient.UserControls
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panel1.BackColor = SystemColors.GradientActiveCaption;
+            panel1.Controls.Add(button8);
             panel1.Controls.Add(InvoicesDataGridView);
             panel1.Controls.Add(InvoicesTableLabel);
             panel1.Controls.Add(button3);
@@ -292,8 +299,18 @@ namespace WolfClient.UserControls
             panel1.TabIndex = 16;
             panel1.Paint += panel1_Paint;
             // 
+            // button8
+            // 
+            button8.Location = new Point(102, 50);
+            button8.Name = "button8";
+            button8.Size = new Size(94, 29);
+            button8.TabIndex = 14;
+            button8.Text = "изтриване";
+            button8.UseVisualStyleBackColor = true;
+            // 
             // panel3
             // 
+            panel3.Controls.Add(DeleteRequestButton);
             panel3.Controls.Add(RefreshButton);
             panel3.Controls.Add(RequestDataGridView);
             panel3.Controls.Add(label5);
@@ -305,6 +322,16 @@ namespace WolfClient.UserControls
             panel3.Size = new Size(882, 467);
             panel3.TabIndex = 17;
             panel3.Paint += panel3_Paint;
+            // 
+            // DeleteRequestButton
+            // 
+            DeleteRequestButton.Location = new Point(202, 48);
+            DeleteRequestButton.Name = "DeleteRequestButton";
+            DeleteRequestButton.Size = new Size(94, 29);
+            DeleteRequestButton.TabIndex = 12;
+            DeleteRequestButton.Text = "изтриване";
+            DeleteRequestButton.UseVisualStyleBackColor = true;
+            DeleteRequestButton.Click += DeleteRequestButton_Click;
             // 
             // RefreshButton
             // 
@@ -329,6 +356,7 @@ namespace WolfClient.UserControls
             // 
             // panel2
             // 
+            panel2.Controls.Add(DeleteActivityButton);
             panel2.Controls.Add(ActivityTableLabel);
             panel2.Controls.Add(ActivityDataGridView);
             panel2.Controls.Add(ActivityAddButton);
@@ -338,6 +366,16 @@ namespace WolfClient.UserControls
             panel2.Name = "panel2";
             panel2.Size = new Size(1277, 298);
             panel2.TabIndex = 36;
+            // 
+            // DeleteActivityButton
+            // 
+            DeleteActivityButton.Location = new Point(119, 12);
+            DeleteActivityButton.Name = "DeleteActivityButton";
+            DeleteActivityButton.Size = new Size(94, 29);
+            DeleteActivityButton.TabIndex = 29;
+            DeleteActivityButton.Text = "изтриване";
+            DeleteActivityButton.UseVisualStyleBackColor = true;
+            DeleteActivityButton.Click += DeleteActivityButton_Click;
             // 
             // ActivityTableLabel
             // 
@@ -466,6 +504,7 @@ namespace WolfClient.UserControls
             // panel4
             // 
             panel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel4.Controls.Add(deleteClientsButton);
             panel4.Controls.Add(button1);
             panel4.Controls.Add(ClientsTableLabel);
             panel4.Controls.Add(clientsDataGridView);
@@ -475,6 +514,16 @@ namespace WolfClient.UserControls
             panel4.Name = "panel4";
             panel4.Size = new Size(1277, 298);
             panel4.TabIndex = 18;
+            // 
+            // deleteClientsButton
+            // 
+            deleteClientsButton.Location = new Point(198, 9);
+            deleteClientsButton.Name = "deleteClientsButton";
+            deleteClientsButton.Size = new Size(94, 29);
+            deleteClientsButton.TabIndex = 12;
+            deleteClientsButton.Text = "изтриване";
+            deleteClientsButton.UseVisualStyleBackColor = true;
+            deleteClientsButton.Click += deleteClientsButton_Click;
             // 
             // button1
             // 
@@ -605,6 +654,7 @@ namespace WolfClient.UserControls
             // 
             // panel5
             // 
+            panel5.Controls.Add(button5);
             panel5.Controls.Add(PlotsTableLabel);
             panel5.Controls.Add(PlotsDataGridView);
             panel5.Controls.Add(PlotsAddButton);
@@ -615,6 +665,15 @@ namespace WolfClient.UserControls
             panel5.Name = "panel5";
             panel5.Size = new Size(1277, 298);
             panel5.TabIndex = 35;
+            // 
+            // button5
+            // 
+            button5.Location = new Point(243, 5);
+            button5.Name = "button5";
+            button5.Size = new Size(94, 29);
+            button5.TabIndex = 32;
+            button5.Text = "изтриване";
+            button5.UseVisualStyleBackColor = true;
             // 
             // PlotsTableLabel
             // 
@@ -733,6 +792,7 @@ namespace WolfClient.UserControls
             // 
             // tabPage5
             // 
+            tabPage5.Controls.Add(button6);
             tabPage5.Controls.Add(AddOwnersButton);
             tabPage5.Controls.Add(label2);
             tabPage5.Controls.Add(OwnershipDataGridView);
@@ -743,6 +803,15 @@ namespace WolfClient.UserControls
             tabPage5.TabIndex = 4;
             tabPage5.Text = "Собственост";
             tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            button6.Location = new Point(146, 12);
+            button6.Name = "button6";
+            button6.Size = new Size(94, 29);
+            button6.TabIndex = 3;
+            button6.Text = "изтриване";
+            button6.UseVisualStyleBackColor = true;
             // 
             // AddOwnersButton
             // 
@@ -941,5 +1010,11 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn EKG;
         private DataGridViewTextBoxColumn OwnerAddress;
         private DataGridViewTextBoxColumn IdealParts;
+        private Button button8;
+        private Button DeleteRequestButton;
+        private Button DeleteActivityButton;
+        private Button deleteClientsButton;
+        private Button button5;
+        private Button button6;
     }
 }

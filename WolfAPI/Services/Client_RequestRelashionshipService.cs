@@ -35,5 +35,45 @@ namespace WolfAPI.Services
             }
             return client_RequestRelashionshipsDTOs;
         }
+
+        public async Task<bool> OnRequestDelete(Request request)
+        {
+            try
+            {
+                // Attempt to delete client request relationships for the request
+                bool clientRequestDeletionSuccess = await _client_RequestRelashionshipModelRepository.OnRequestDeleteAsync(request);
+                if (!clientRequestDeletionSuccess)
+                {
+                    // Log the failure
+                    // Example: _logger.LogError($"Failed to delete client request relationships for request ID {request.RequestId}");
+                    return false;
+                }
+
+                // If the deletion was successful, return true
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // Example: _logger.LogError(ex, $"An error occurred while deleting client request relationships for request ID {request.RequestId}");
+
+                // Return false to indicate failure
+                return false;
+            }
+        }
+
+        public async Task<bool> OnClientsDelete(List<GetClientDTO> clientsDTOs)
+        {
+            List<Client> clients = new List<Client>();
+
+            // Map each DTO to a Client object
+            foreach (var clientDTO in clientsDTOs)
+            {
+                clients.Add(_mapper.Map<Client>(clientDTO));
+            }
+
+            // Call the repository method to delete the clients
+            return await _client_RequestRelashionshipModelRepository.OnDeleteClients(clients);
+        }
     }
 }

@@ -30,5 +30,32 @@ namespace WolfAPI.Services
 
             return activity_PlotRelashionshipDTOs;
         }
+
+        public async Task<bool> OnActivityDelete(Activity activity)
+        {
+            try
+            {
+                // Attempt to delete activity plot relationships for the activity
+                bool activityPlotDeletionSuccess = await _activityPlotModelRepository.OnActivityDeleteAsync(activity);
+
+                if (!activityPlotDeletionSuccess)
+                {
+                    // Log the failure
+                    // Example: _logger.LogError($"Failed to delete activity plot relationships for activity ID {activity.ActivityId}");
+                    return false;
+                }
+
+                // If the deletion was successful, return true
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // Example: _logger.LogError(ex, $"An error occurred while deleting activity plot relationships for activity ID {activity.ActivityId}");
+
+                // Return false to indicate failure
+                return false;
+            }
+        }
     }
 }

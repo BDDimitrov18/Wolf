@@ -7,5 +7,7 @@ namespace WolfAPI.Services.Interfaces
     {
         public Task<List<GetActivity_PlotRelashionshipDTO>> CreateActivity_PlotRelashionship(List<CreateActivity_PlotRelashionshipDTO> relashionshipsDTO);
 
+        public Task<bool> OnActivityDelete(Activity activity);
+
     }
 }

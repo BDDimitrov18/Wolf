@@ -39,8 +39,10 @@ namespace WolfClient.UserControls
             var selected = _dataService.GetSelectedRequest();
             var linkedRequests = _dataService.GetFetchedLinkedRequests();
             List<GetActivityDTO> activityDTOs = new List<GetActivityDTO>();
-            foreach (var linkedRequest in linkedRequests) {
-                if (selected.RequestId == linkedRequest.requestDTO.RequestId) {
+            foreach (var linkedRequest in linkedRequests)
+            {
+                if (selected.RequestId == linkedRequest.requestDTO.RequestId)
+                {
                     activityDTOs = linkedRequest.activityDTOs;
                 }
             }
@@ -49,20 +51,29 @@ namespace WolfClient.UserControls
             ActivityComboBox.DisplayMember = "ActivityTypeName";
             ActivityComboBox.ValueMember = "ActivityId";
 
+            // Get employees
             var employeesResponse = await _userClient.GetAllEmployees();
-            _dataService.SetEmployees(employeesResponse.ResponseObj as List<GetEmployeeDTO>);
-            ExecitantComboBox.DataSource = _dataService.GetEmployees();
+            var employeesList = employeesResponse.ResponseObj as List<GetEmployeeDTO>;
+
+
+            // Create separate copies of the employee list for each ComboBox
+            var employeesListForExecitant = new List<GetEmployeeDTO>(employeesList);
+            var employeesListForControl = new List<GetEmployeeDTO>(employeesList);
+
+            // Set the data source for the ExecitantComboBox
+            ExecitantComboBox.DataSource = employeesListForExecitant;
             ExecitantComboBox.DisplayMember = "FullName";
             ExecitantComboBox.ValueMember = "EmployeeId";
 
-            ControlComboBox.DataSource = _dataService.GetEmployees();
+            // Set the data source for the ControlComboBox
+            ControlComboBox.DataSource = employeesListForControl;
             ControlComboBox.DisplayMember = "FullName";
             ControlComboBox.ValueMember = "EmployeeId";
         }
 
         private void ActivityComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedActivity = ActivityComboBox.SelectedItem as GetActivityDTO;
+            GetActivityDTO? selectedActivity = ActivityComboBox.SelectedItem as GetActivityDTO;
             var activityTypesList  = _dataService.GetActivityTypeDTOs();
             List<GetTaskTypeDTO> taskTypes = new List<GetTaskTypeDTO>();
             foreach ( var activityType in activityTypesList) {

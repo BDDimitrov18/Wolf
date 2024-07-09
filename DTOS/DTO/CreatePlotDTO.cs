@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTOS.CustomValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace DTOS.DTO
 {
     public  class CreatePlotDTO
     {
+        [PlotNumberValidation(ErrorMessage = "Invalid Number format")]
         public string PlotNumber { get; set; }
 
         public string? RegulatedPlotNumber { get; set; }
