@@ -36,6 +36,7 @@ namespace WolfClient.NewForms
             EmployeesStripLabel = new ToolStripLabel();
             panelContent = new Panel();
             LoginButton = new Button();
+            button1 = new Button();
             toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -92,11 +93,22 @@ namespace WolfClient.NewForms
             LoginButton.UseVisualStyleBackColor = true;
             LoginButton.Click += LoginButton_Click;
             // 
+            // button1
+            // 
+            button1.Location = new Point(994, 665);
+            button1.Name = "button1";
+            button1.Size = new Size(94, 29);
+            button1.TabIndex = 23;
+            button1.Text = "pdfViewer";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // MainForm
             // 
             AutoScaleMode = AutoScaleMode.None;
             BackColor = SystemColors.AppWorkspace;
             ClientSize = new Size(1358, 706);
+            Controls.Add(button1);
             Controls.Add(LoginButton);
             Controls.Add(panelContent);
             Controls.Add(toolStrip1);
@@ -116,6 +128,7 @@ namespace WolfClient.NewForms
         private System.Windows.Forms.ToolStripLabel ClientsStripButton;
         private System.Windows.Forms.ToolStripLabel EmployeesStripLabel;
         private Button LoginButton;
+        private Button button1;
     }
 }
 

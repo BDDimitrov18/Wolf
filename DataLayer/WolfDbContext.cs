@@ -46,6 +46,8 @@ namespace DataAccessLayer
         public DbSet<Plot_DocumentOfOwnershipRelashionship> Plot_DocumentOfOwnerships { get; set; }
         public DbSet<DocumentPlot_DocumentOwnerRelashionship> documentPlot_DocumentOwenerRelashionships { get; set; }
 
+        public DbSet<Files> files { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 

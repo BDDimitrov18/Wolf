@@ -4,7 +4,7 @@ using WolfClient.Services;
 using WolfClient.NewForms;
 using WolfClient.UserControls;
 using System.IO;
-using WolfClient.NewForms.DocumentsForms;
+using Patagames.Pdf.Net;
 
 namespace WolfClient
 {
@@ -16,6 +16,7 @@ namespace WolfClient
         [STAThread]
         static void Main()
         {
+            PdfCommon.Initialize(null, @"..\..\..\x64\pdfium.dll");
             string currentDirectory = Directory.GetCurrentDirectory();
             string relativePath = @"..\..\..\EKT\ek_atte.xlsx";
             string filePath = Path.GetFullPath(Path.Combine(currentDirectory, relativePath));
@@ -25,16 +26,16 @@ namespace WolfClient
             IAdminClient adminClient = new AdminClient(); 
             IDataService dataService = new DataService();
             IReadExcel readExcel = new ReadExcel();
-
+            IFileUploader fileUploader = new FileUploader();
             dataService.SetEKTViewModels(readExcel.ReadExcelFile(filePath));
 
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            MenuRequestsUserControl menuRequestsUserControl = new MenuRequestsUserControl(apiClient, userClient, adminClient, dataService);
+            MenuRequestsUserControl menuRequestsUserControl = new MenuRequestsUserControl(apiClient, userClient, adminClient, dataService,fileUploader);
             MenuClientsUserControl menuClientsUserControl = new MenuClientsUserControl(apiClient, userClient, adminClient);
             MenuEmployeesUserControl menuEmployeesUserControl = new MenuEmployeesUserControl(apiClient, userClient, adminClient,dataService);
-            Application.Run(new RequestForAccesingDataForInclusion());
+            Application.Run(new MainForm(apiClient, userClient, adminClient, dataService, menuRequestsUserControl, menuClientsUserControl, menuEmployeesUserControl, fileUploader));
         }
     }
 }

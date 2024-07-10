@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Wolf;
+using WolfClient.NewForms.DocumentsForms;
 using WolfClient.Services;
 using WolfClient.Services.Interfaces;
 using WolfClient.UserControls;
@@ -21,13 +22,15 @@ namespace WolfClient.NewForms
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
         private readonly IDataService _dataService;
+        private readonly IFileUploader _fileUploader;
 
         private MenuRequestsUserControl _requestsUserControl;
         private MenuClientsUserControl _clientsUserControl;
         private MenuEmployeesUserControl _employeesUserControl;
 
-        public MainForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService, 
-            MenuRequestsUserControl requestsUserControl, MenuClientsUserControl clientsUserControl, MenuEmployeesUserControl employeesUserControl)
+        public MainForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService,
+            MenuRequestsUserControl requestsUserControl, MenuClientsUserControl clientsUserControl, MenuEmployeesUserControl employeesUserControl,
+            IFileUploader fileUploader)
         {
             InitializeComponent();
             _apiClient = apiClient;
@@ -38,6 +41,7 @@ namespace WolfClient.NewForms
             _requestsUserControl = requestsUserControl;
             _clientsUserControl = clientsUserControl;
             _employeesUserControl = employeesUserControl;
+            _fileUploader = fileUploader;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -65,7 +69,7 @@ namespace WolfClient.NewForms
             LoadUserControl(_requestsUserControl);
         }
 
-        
+
 
         private void ClientsStripButton_Click(object sender, EventArgs e)
         {
@@ -79,13 +83,19 @@ namespace WolfClient.NewForms
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            LoginForm loginForm = new LoginForm(_apiClient, _userClient, _adminClient);
+            LoginForm loginForm = new LoginForm(_apiClient, _userClient, _adminClient, _fileUploader);
             loginForm.Show();
         }
 
         private void panelContent_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            LoadPdfDocument forma = new LoadPdfDocument();
+            forma.Show();
         }
     }
 }

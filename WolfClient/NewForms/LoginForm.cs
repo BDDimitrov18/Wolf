@@ -21,12 +21,14 @@ namespace WolfClient.NewForms
         private readonly IApiClient _apiClient;
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
-        public LoginForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient)
+        private readonly IFileUploader _fileUploader;
+        public LoginForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IFileUploader fileUploader)
         {
             InitializeComponent();
             _apiClient = apiClient;
             _userClient = userClient;
             _adminClient = adminClient;
+            _fileUploader = fileUploader;
         }
 
 
@@ -66,6 +68,7 @@ namespace WolfClient.NewForms
                 _adminClient.SetToken(tokenResponse.token);
                 _apiClient.SetToken(tokenResponse.token);
                 _userClient.SetToken(tokenResponse.token);
+                _fileUploader.SetToken(tokenResponse.token);
                 LogInEvent.OnLogIn(username, tokenResponse.role[0]);
                 return true;
             }

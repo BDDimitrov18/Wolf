@@ -23,10 +23,12 @@ namespace WolfClient.UserControls
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
         private readonly IDataService _dataService;
+        private readonly IFileUploader _fileUploader;
+
         private bool _isSelectedRequest;
 
         private bool loaded;
-        public MenuRequestsUserControl(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
+        public MenuRequestsUserControl(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService, IFileUploader fileUploader)
         {
             InitializeComponent();
             _apiClient = apiClient;
@@ -34,6 +36,7 @@ namespace WolfClient.UserControls
             _adminClient = adminClient;
             _isSelectedRequest = false;
             _dataService = dataService;
+            _fileUploader = fileUploader;
         }
         private void MenuRequestsUserControl_Load(object sender, EventArgs e)
         {
@@ -814,19 +817,28 @@ namespace WolfClient.UserControls
 
         private async void DeleteActivityButton_Click(object sender, EventArgs e)
         {
-            List<GetTaskDTO> taskDTOs= _dataService.getTasksFromViewModel();
+            List<GetTaskDTO> taskDTOs = _dataService.getTasksFromViewModel();
             var response = await _userClient.DeleteTasks(taskDTOs);
-            if (response.IsSuccess) {
+            if (response.IsSuccess)
+            {
                 List<GetActivityDTO> activities = _dataService.OnTasksDelete(taskDTOs);
                 var activityResponse = await _userClient.DeleteActivities(activities);
-                if (activityResponse.IsSuccess) {
+                if (activityResponse.IsSuccess)
+                {
                     _dataService.DeleteActivities(activities);
                     UpdateActivityDataGridView();
                 }
             }
-            else { 
-                
+            else
+            {
+
             }
+        }
+
+        private void CreateDocumentButton_Click(object sender, EventArgs e)
+        {
+            CreateDocument createDocumentForm = new CreateDocument(_dataService,_fileUploader);
+            createDocumentForm.Show();
         }
     }
 }

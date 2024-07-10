@@ -142,6 +142,9 @@ builder.Services.AddScoped<IDocumentOfOwnership_OwnerRelashionshipService, Docum
 builder.Services.AddScoped<IDocumentPlot_DocumentOwnerRelashionshipModelRepository, DocumentPlot_DocumentOwnerRelashionshipModelRepository>();
 builder.Services.AddScoped<IDocumentPlot_DocumentOwnerRelashionshipService, DocumentPlot_DocumentOwnerRelashionshipService>();
 
+builder.Services.AddScoped<IFileModelRepository, FileModelRepository>();
+builder.Services.AddScoped<IFileService, FileService>();
+
 var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
 

@@ -178,6 +178,8 @@ namespace WolfAPI.Mapping
             // Ignoring collections that are not present in the DTO
             .ForMember(dest => dest.PlotDocuments, opt => opt.Ignore())
             .ForMember(dest => dest.ActivityPlots, opt => opt.Ignore());
+
+            CreateMap<CreateFileDTO, Files>();
         }
     }
 }

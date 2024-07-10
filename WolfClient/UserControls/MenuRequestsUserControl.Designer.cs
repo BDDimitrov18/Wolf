@@ -112,6 +112,7 @@ namespace WolfClient.UserControls
             EKG = new DataGridViewTextBoxColumn();
             OwnerAddress = new DataGridViewTextBoxColumn();
             IdealParts = new DataGridViewTextBoxColumn();
+            CreateDocumentButton = new Button();
             ((System.ComponentModel.ISupportInitialize)RequestDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).BeginInit();
             panel1.SuspendLayout();
@@ -356,6 +357,7 @@ namespace WolfClient.UserControls
             // 
             // panel2
             // 
+            panel2.Controls.Add(CreateDocumentButton);
             panel2.Controls.Add(DeleteActivityButton);
             panel2.Controls.Add(ActivityTableLabel);
             panel2.Controls.Add(ActivityDataGridView);
@@ -897,6 +899,16 @@ namespace WolfClient.UserControls
             IdealParts.MinimumWidth = 6;
             IdealParts.Name = "IdealParts";
             // 
+            // CreateDocumentButton
+            // 
+            CreateDocumentButton.Location = new Point(1105, 12);
+            CreateDocumentButton.Name = "CreateDocumentButton";
+            CreateDocumentButton.Size = new Size(155, 29);
+            CreateDocumentButton.TabIndex = 30;
+            CreateDocumentButton.Text = "Създай Заявление";
+            CreateDocumentButton.UseVisualStyleBackColor = true;
+            CreateDocumentButton.Click += CreateDocumentButton_Click;
+            // 
             // MenuRequestsUserControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -1016,5 +1028,6 @@ namespace WolfClient.UserControls
         private Button deleteClientsButton;
         private Button button5;
         private Button button6;
+        private Button CreateDocumentButton;
     }
 }
