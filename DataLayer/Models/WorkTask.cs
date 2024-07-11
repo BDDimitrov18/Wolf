@@ -30,5 +30,10 @@ namespace DataAccessLayer.Models
         public int TaskTypeId { get; set; }
         public TaskType taskType { get; set; }
 
+        public float executantPayment { get; set; }
+
+        public float tax { get; set; }
+
+        public string CommentTax { get; set; }
     }
 }

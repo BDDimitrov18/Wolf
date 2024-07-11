@@ -383,6 +383,11 @@ namespace WolfClient.UserControls
                             var owner = ownerEntry.Key;
                             var idealPartsString = ownerEntry.Value;
 
+                            // Extract PowerOfAttorneyNumber from the relationship DTO
+                            var powerOfAttorneyNumber = relashionshipDTOs
+                                .FirstOrDefault(r => r.DocumentPlot.Plot.PlotId == plotEntry.Key
+                                                     && r.DocumentPlot.documentOfOwnership.DocumentId == documentEntry.Key && r.DocumentOwner.OwnerID == owner.OwnerID)?.powerOfAttorneyDocumentDTO?.number;
+
                             OwnershipViewModel ownershipViewModel = new OwnershipViewModel()
                             {
                                 PlotNumber = isFirstEntryForPlot ? plotDictionary[plotEntry.Key].PlotNumber : string.Empty,
@@ -390,7 +395,8 @@ namespace WolfClient.UserControls
                                 NumberTypeOwner = $"{owner.OwnerID} {owner.FirstName} {owner.MiddleName} {owner.LastName}",
                                 EGN = owner.EGN,
                                 Address = owner.Address,
-                                IdealParts = idealPartsString
+                                IdealParts = idealPartsString,
+                                PowerOfAttorneyNumber = powerOfAttorneyNumber
                             };
 
                             ownershipViewModels.Add(ownershipViewModel);
@@ -402,6 +408,7 @@ namespace WolfClient.UserControls
 
             return ownershipViewModels;
         }
+
         private void BindOwnershipDataGridView(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs)
         {
             OwnershipDataGridView.AutoGenerateColumns = false;

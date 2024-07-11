@@ -23,5 +23,6 @@ namespace DataAccessLayer.Models
         public string? Address { get; set; }
 
         public ICollection<DocumentOfOwnership_OwnerRelashionship> documentOfOwnership_OwnerRelashionships{ get; set; }
+
     }
 }

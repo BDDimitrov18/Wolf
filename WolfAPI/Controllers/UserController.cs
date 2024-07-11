@@ -28,11 +28,12 @@ namespace WolfAPI.Controllers
         private readonly IDocumentOfOwnership_OwnerRelashionshipService _ownerDocumentOfOwnershipService;
         private readonly IPlot_DocumentOfOwnershipRelashionshipService _plot_DocumentOfOwnershipRelashionshipService;
         private readonly IDocumentPlot_DocumentOwnerRelashionshipService _documentPlot_DocumentOwnerRelashionshipService;
+        private readonly IPowerOfAttorneyDocumentService _powerOfAttorneyDocumentService;
         public UserController(IClientService clientService, IRequestService requestService, IClient_RequestRelashionshipService requestRelashionshipService,
             IActivityTypesService activityTypesService, IEmployeeService employeeService, ItaskTypesService taskTypesService, IAcitvityService acitvityService,
             ItaskServices taskService, IPlotService plotService, IActivity_PlotReleashionshipService activityPlotReleashionshipService, IDocumentOfOwnershipService documentOfOwnershipService,
             IOwnerService ownerService, IDocumentOfOwnership_OwnerRelashionshipService ownerDocumentOfOwnershipService, IPlot_DocumentOfOwnershipRelashionshipService plot_DocumentOfOwnershipRelashionshipService,
-            IDocumentPlot_DocumentOwnerRelashionshipService documentPlot_DocumentOwnerRelashionshipService)
+            IDocumentPlot_DocumentOwnerRelashionshipService documentPlot_DocumentOwnerRelashionshipService, IPowerOfAttorneyDocumentService powerOfAttorneyDocumentService)
         {
             _clientService = clientService;
             _requestService = requestService;
@@ -49,6 +50,7 @@ namespace WolfAPI.Controllers
             _ownerDocumentOfOwnershipService = ownerDocumentOfOwnershipService;
             _plot_DocumentOfOwnershipRelashionshipService = plot_DocumentOfOwnershipRelashionshipService;
             _documentPlot_DocumentOwnerRelashionshipService = documentPlot_DocumentOwnerRelashionshipService;
+            _powerOfAttorneyDocumentService = powerOfAttorneyDocumentService;
         }
 
         [HttpPost("CreateClient")]
@@ -169,7 +171,7 @@ namespace WolfAPI.Controllers
 
         [HttpPost("GetLinkedPlotOwnerRelashionships")]
 
-        public List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> GetLinkedPlotOwnerRelashionships(List<GetPlotDTO> plots) { 
+        public List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> GetLinkedPlotOwnerRelashionships(List<GetPlotDTO> plots) {
             return _documentPlot_DocumentOwnerRelashionshipService.GetLinkedByPlots(plots);
         }
 
@@ -230,8 +232,8 @@ namespace WolfAPI.Controllers
                 return BadRequest("No tasks provided for deletion.");
             }
 
-            try 
-            { 
+            try
+            {
 
                 // Call the service method to delete the tasks
                 bool result = await _taskService.DeleteTasks(getTasks);
@@ -280,6 +282,12 @@ namespace WolfAPI.Controllers
                 // Log the exception (logging not shown here)
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
+        }
+
+        [HttpPost("CreatePowerOfAttorney")]
+
+        public async Task<GetPowerOfAttorneyDocumentDTO> CreatePowerOfAttorney([FromBody]CreatePowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO) {
+            return await _powerOfAttorneyDocumentService.createPowerOfAttorneyDocument(powerOfAttorneyDocumentDTO);
         }
     }
 }

@@ -65,5 +65,7 @@ namespace WolfClient.Services.Interfaces
         public List<GetActivityDTO> OnTasksDelete(List<GetTaskDTO> taskDTOs);
 
         public void DeleteActivities(List<GetActivityDTO> activityDTOs);
+
+        public List<GetPowerOfAttorneyDocumentDTO> GetPowerOfAttorneyFromPlots(GetPlotDTO plot);
     }
 }

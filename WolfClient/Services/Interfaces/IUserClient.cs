@@ -58,5 +58,7 @@ namespace WolfClient.Services.Interfaces
         public Task<ClientResponse<HttpResponseMessage>> DeleteTasks(List<GetTaskDTO> tasks);
 
         public Task<ClientResponse<HttpResponseMessage>> DeleteActivities(List<GetActivityDTO> tasks);
+
+        public Task<ClientResponse<GetPowerOfAttorneyDocumentDTO>> AddPowerOfAttorney(CreatePowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO);
     }
 }

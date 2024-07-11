@@ -142,6 +142,9 @@ builder.Services.AddScoped<IDocumentOfOwnership_OwnerRelashionshipService, Docum
 builder.Services.AddScoped<IDocumentPlot_DocumentOwnerRelashionshipModelRepository, DocumentPlot_DocumentOwnerRelashionshipModelRepository>();
 builder.Services.AddScoped<IDocumentPlot_DocumentOwnerRelashionshipService, DocumentPlot_DocumentOwnerRelashionshipService>();
 
+builder.Services.AddScoped<IPowerOfAttorneyDocumentService, PowerOfAttorneyDocumentService>();
+builder.Services.AddScoped<IPowerOfAttorneyModelRepository, PowerOfAttorneyModelRepository>();
+
 builder.Services.AddScoped<IFileModelRepository, FileModelRepository>();
 builder.Services.AddScoped<IFileService, FileService>();
 

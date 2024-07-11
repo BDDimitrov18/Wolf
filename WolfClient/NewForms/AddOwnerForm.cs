@@ -300,6 +300,10 @@ namespace WolfClient.NewForms
             DocumentNumberComboBox.DisplayMember = "NumberOfDocument";
             DocumentNumberComboBox.ValueMember = "DocumentId";
 
+            PowerOfAttorneyNumber.DataSource = _dataService.GetPowerOfAttorneyFromPlots(plotComboBox.SelectedItem as GetPlotDTO);
+            PowerOfAttorneyNumber.DisplayMember = "number";
+            PowerOfAttorneyNumber.ValueMember = "PowerOfAttorneyId";
+
             DocumentNumberComboBox.TextChanged += DocumentNumberComboBox_TextChanged;
         }
 
@@ -314,6 +318,12 @@ namespace WolfClient.NewForms
             DocumentNumberComboBox.DataSource = _dataService.GetDocumentsFromPlots(plotComboBox.SelectedItem as GetPlotDTO);
             DocumentNumberComboBox.DisplayMember = "NumberOfDocument";
             DocumentNumberComboBox.ValueMember = "DocumentId";
+
+            PowerOfAttorneyNumber.DataSource = _dataService.GetPowerOfAttorneyFromPlots(plotComboBox.SelectedItem as GetPlotDTO);
+            PowerOfAttorneyNumber.DisplayMember = "number";
+            PowerOfAttorneyNumber.ValueMember = "PowerOfAttorneyId";
+
+
 
             DocumentTypeComboBox.DropDownStyle = ComboBoxStyle.DropDown;
             TOMComboBox.Enabled = true;
@@ -537,13 +547,23 @@ namespace WolfClient.NewForms
 
             var DocumentOwnerResponse = await _userClient.AddDocumentOwnerRelashionship(CreateDocument_Owner);
 
+            CreatePowerOfAttorneyDocumentDTO createPowerOfAttorneyDTO = new CreatePowerOfAttorneyDocumentDTO()
+            {
+                number = PowerOfAttorneyNumber.Text,
+                Issuer = PowerOfAttorneyIssuerComboBox.Text,
+                dateOfIssuing = PowerOfAttorneyDatetimePicker.Value
+            };
+
+            var powerOfAttorneyDocument = await _userClient.AddPowerOfAttorney(createPowerOfAttorneyDTO);
+
             CreateDocumentPlot_DocumentOwnerRelashionshipDTO createDocumentPlot_DocumentOwner = new CreateDocumentPlot_DocumentOwnerRelashionshipDTO()
             {
                 DocumentPlotId = PlotDocumentResponse.ResponseObj.DocumentPlotId,
                 DocumentOwnerID = DocumentOwnerResponse.ResponseObj.DocumentOwnerID,
                 IdealParts = getIdealPart(),
                 WayOfAcquiring = wayOfAcquiringComboBox.Text,
-                isDrob = getIdealPartType()
+                isDrob = getIdealPartType(),
+                PowerOfAttorneyId = powerOfAttorneyDocument.ResponseObj.PowerOfAttorneyId
             };
 
             var DocumentPlotDocumentOwnerResponse = await _userClient.AddPlotOwnerRelashionship(createDocumentPlot_DocumentOwner);

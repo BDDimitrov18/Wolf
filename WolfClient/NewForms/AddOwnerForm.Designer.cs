@@ -83,10 +83,20 @@
             label14 = new Label();
             SubmitButton = new Button();
             errorProvider = new ErrorProvider(components);
+            panel1 = new Panel();
+            label24 = new Label();
+            PowerOfAttorneyDatetimePicker = new DateTimePicker();
+            PowerOfAttorneyIssuerComboBox = new ComboBox();
+            label17 = new Label();
+            label16 = new Label();
+            label23 = new Label();
+            PowerOfAttorneyNumber = new ComboBox();
+            label18 = new Label();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
             panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -120,7 +130,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(18, 85);
+            label3.Location = new Point(18, 86);
             label3.Name = "label3";
             label3.Size = new Size(51, 28);
             label3.TabIndex = 3;
@@ -191,7 +201,7 @@
             // 
             // IssingDateTimePicker
             // 
-            IssingDateTimePicker.Location = new Point(17, 359);
+            IssingDateTimePicker.Location = new Point(18, 360);
             IssingDateTimePicker.Name = "IssingDateTimePicker";
             IssingDateTimePicker.Size = new Size(164, 27);
             IssingDateTimePicker.TabIndex = 14;
@@ -200,7 +210,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label8.Location = new Point(17, 314);
+            label8.Location = new Point(18, 315);
             label8.Name = "label8";
             label8.Size = new Size(171, 28);
             label8.TabIndex = 15;
@@ -268,7 +278,7 @@
             // 
             label12.AutoSize = true;
             label12.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label12.Location = new Point(18, 247);
+            label12.Location = new Point(18, 232);
             label12.Name = "label12";
             label12.Size = new Size(148, 28);
             label12.TabIndex = 22;
@@ -277,7 +287,7 @@
             // IdealPartsPanel
             // 
             IdealPartsPanel.BorderStyle = BorderStyle.Fixed3D;
-            IdealPartsPanel.Location = new Point(201, 278);
+            IdealPartsPanel.Location = new Point(201, 275);
             IdealPartsPanel.Name = "IdealPartsPanel";
             IdealPartsPanel.Size = new Size(182, 28);
             IdealPartsPanel.TabIndex = 23;
@@ -292,6 +302,8 @@
             panel2.Controls.Add(DocNumberValidatorLabel);
             panel2.Controls.Add(DocumentValidatorLabel);
             panel2.Controls.Add(DocumentNumberComboBox);
+            panel2.Controls.Add(label8);
+            panel2.Controls.Add(IssingDateTimePicker);
             panel2.Controls.Add(registeringDateTimePicker);
             panel2.Controls.Add(label22);
             panel2.Controls.Add(label20);
@@ -308,8 +320,6 @@
             panel2.Controls.Add(label7);
             panel2.Controls.Add(CaseComboBox);
             panel2.Controls.Add(label9);
-            panel2.Controls.Add(IssingDateTimePicker);
-            panel2.Controls.Add(label8);
             panel2.Location = new Point(458, 62);
             panel2.Name = "panel2";
             panel2.Size = new Size(424, 609);
@@ -413,7 +423,7 @@
             IdealPartsTypeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             IdealPartsTypeComboBox.FormattingEnabled = true;
             IdealPartsTypeComboBox.Items.AddRange(new object[] { "дроб", "плаваща запетая" });
-            IdealPartsTypeComboBox.Location = new Point(18, 278);
+            IdealPartsTypeComboBox.Location = new Point(18, 275);
             IdealPartsTypeComboBox.Name = "IdealPartsTypeComboBox";
             IdealPartsTypeComboBox.Size = new Size(163, 28);
             IdealPartsTypeComboBox.TabIndex = 24;
@@ -450,7 +460,7 @@
             // 
             WayOfAcquiringLabel.AutoSize = true;
             WayOfAcquiringLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
-            WayOfAcquiringLabel.Location = new Point(18, 340);
+            WayOfAcquiringLabel.Location = new Point(18, 447);
             WayOfAcquiringLabel.Name = "WayOfAcquiringLabel";
             WayOfAcquiringLabel.Size = new Size(0, 15);
             WayOfAcquiringLabel.TabIndex = 41;
@@ -460,7 +470,7 @@
             IdealPartsValidatorLabel.AutoSize = true;
             IdealPartsValidatorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
             IdealPartsValidatorLabel.ForeColor = SystemColors.GradientActiveCaption;
-            IdealPartsValidatorLabel.Location = new Point(201, 260);
+            IdealPartsValidatorLabel.Location = new Point(201, 245);
             IdealPartsValidatorLabel.Name = "IdealPartsValidatorLabel";
             IdealPartsValidatorLabel.Size = new Size(149, 15);
             IdealPartsValidatorLabel.TabIndex = 32;
@@ -471,7 +481,7 @@
             AddressValidatorLabel.AutoSize = true;
             AddressValidatorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
             AddressValidatorLabel.ForeColor = SystemColors.GradientActiveCaption;
-            AddressValidatorLabel.Location = new Point(18, 186);
+            AddressValidatorLabel.Location = new Point(18, 184);
             AddressValidatorLabel.Name = "AddressValidatorLabel";
             AddressValidatorLabel.Size = new Size(126, 15);
             AddressValidatorLabel.TabIndex = 31;
@@ -482,7 +492,7 @@
             NameValidatorLabel.AutoSize = true;
             NameValidatorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
             NameValidatorLabel.ForeColor = SystemColors.GradientActiveCaption;
-            NameValidatorLabel.Location = new Point(18, 108);
+            NameValidatorLabel.Location = new Point(18, 109);
             NameValidatorLabel.Name = "NameValidatorLabel";
             NameValidatorLabel.Size = new Size(113, 15);
             NameValidatorLabel.TabIndex = 30;
@@ -506,7 +516,7 @@
             wayOfAcquiringComboBox.DropDownWidth = 366;
             wayOfAcquiringComboBox.FormattingEnabled = true;
             wayOfAcquiringComboBox.Items.AddRange(new object[] { "Дарение", "Покупко делба", "наследство", "давност" });
-            wayOfAcquiringComboBox.Location = new Point(18, 358);
+            wayOfAcquiringComboBox.Location = new Point(18, 348);
             wayOfAcquiringComboBox.Name = "wayOfAcquiringComboBox";
             wayOfAcquiringComboBox.Size = new Size(364, 28);
             wayOfAcquiringComboBox.TabIndex = 28;
@@ -515,7 +525,7 @@
             // 
             label15.AutoSize = true;
             label15.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label15.Location = new Point(18, 316);
+            label15.Location = new Point(18, 306);
             label15.Name = "label15";
             label15.Size = new Size(233, 28);
             label15.TabIndex = 27;
@@ -523,7 +533,7 @@
             // 
             // NameTextBox
             // 
-            NameTextBox.Location = new Point(18, 126);
+            NameTextBox.Location = new Point(18, 127);
             NameTextBox.Name = "NameTextBox";
             NameTextBox.Size = new Size(292, 27);
             NameTextBox.TabIndex = 26;
@@ -542,7 +552,7 @@
             // 
             // AddressTextBox
             // 
-            AddressTextBox.Location = new Point(18, 204);
+            AddressTextBox.Location = new Point(18, 202);
             AddressTextBox.Name = "AddressTextBox";
             AddressTextBox.Size = new Size(292, 27);
             AddressTextBox.TabIndex = 6;
@@ -551,7 +561,7 @@
             // 
             label13.AutoSize = true;
             label13.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label13.Location = new Point(18, 159);
+            label13.Location = new Point(18, 157);
             label13.Name = "label13";
             label13.Size = new Size(67, 28);
             label13.TabIndex = 5;
@@ -643,7 +653,7 @@
             // 
             // SubmitButton
             // 
-            SubmitButton.Location = new Point(393, 677);
+            SubmitButton.Location = new Point(383, 817);
             SubmitButton.Name = "SubmitButton";
             SubmitButton.Size = new Size(108, 29);
             SubmitButton.TabIndex = 27;
@@ -656,12 +666,108 @@
             errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
             errorProvider.ContainerControl = this;
             // 
+            // panel1
+            // 
+            panel1.BackColor = SystemColors.GradientActiveCaption;
+            panel1.BorderStyle = BorderStyle.Fixed3D;
+            panel1.Controls.Add(label24);
+            panel1.Controls.Add(PowerOfAttorneyDatetimePicker);
+            panel1.Controls.Add(PowerOfAttorneyIssuerComboBox);
+            panel1.Controls.Add(label17);
+            panel1.Controls.Add(label16);
+            panel1.Controls.Add(label23);
+            panel1.Controls.Add(PowerOfAttorneyNumber);
+            panel1.Controls.Add(label18);
+            panel1.Location = new Point(12, 693);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(870, 107);
+            panel1.TabIndex = 28;
+            // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label24.Location = new Point(665, 22);
+            label24.Name = "label24";
+            label24.Size = new Size(171, 28);
+            label24.TabIndex = 38;
+            label24.Text = "Дата на издаване";
+            // 
+            // PowerOfAttorneyDatetimePicker
+            // 
+            PowerOfAttorneyDatetimePicker.Location = new Point(665, 67);
+            PowerOfAttorneyDatetimePicker.Name = "PowerOfAttorneyDatetimePicker";
+            PowerOfAttorneyDatetimePicker.Size = new Size(164, 27);
+            PowerOfAttorneyDatetimePicker.TabIndex = 37;
+            // 
+            // PowerOfAttorneyIssuerComboBox
+            // 
+            PowerOfAttorneyIssuerComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            PowerOfAttorneyIssuerComboBox.FormattingEnabled = true;
+            PowerOfAttorneyIssuerComboBox.Items.AddRange(new object[] { "Агенция по Вписвания при РС ", "Община ", "Областен управител", "Общинска служба замеделие", "Окръжен народен съвет", "", "", "", "" });
+            PowerOfAttorneyIssuerComboBox.Location = new Point(253, 66);
+            PowerOfAttorneyIssuerComboBox.Name = "PowerOfAttorneyIssuerComboBox";
+            PowerOfAttorneyIssuerComboBox.Size = new Size(365, 28);
+            PowerOfAttorneyIssuerComboBox.TabIndex = 44;
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            label17.ForeColor = SystemColors.GradientActiveCaption;
+            label17.Location = new Point(8, 48);
+            label17.Name = "label17";
+            label17.Size = new Size(128, 15);
+            label17.TabIndex = 39;
+            label17.Text = "Моля въведете номер";
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.BackColor = Color.Transparent;
+            label16.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            label16.ForeColor = SystemColors.Desktop;
+            label16.Location = new Point(-2, 0);
+            label16.Name = "label16";
+            label16.Size = new Size(83, 15);
+            label16.TabIndex = 42;
+            label16.Text = "пълномощно";
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label23.Location = new Point(253, 22);
+            label23.Name = "label23";
+            label23.Size = new Size(86, 28);
+            label23.TabIndex = 43;
+            label23.Text = "Издател";
+            // 
+            // PowerOfAttorneyNumber
+            // 
+            PowerOfAttorneyNumber.FormattingEnabled = true;
+            PowerOfAttorneyNumber.Location = new Point(7, 66);
+            PowerOfAttorneyNumber.Name = "PowerOfAttorneyNumber";
+            PowerOfAttorneyNumber.Size = new Size(163, 28);
+            PowerOfAttorneyNumber.TabIndex = 38;
+            // 
+            // label18
+            // 
+            label18.AutoSize = true;
+            label18.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label18.Location = new Point(7, 22);
+            label18.Name = "label18";
+            label18.Size = new Size(74, 28);
+            label18.TabIndex = 37;
+            label18.Text = "Номер";
+            // 
             // AddOwnerForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
-            ClientSize = new Size(894, 718);
+            ClientSize = new Size(897, 852);
+            Controls.Add(panel1);
             Controls.Add(SubmitButton);
             Controls.Add(panel4);
             Controls.Add(panel3);
@@ -677,6 +783,8 @@
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -737,5 +845,14 @@
         private Label DocNumberValidatorLabel;
         private Label DocumentValidatorLabel;
         private Label WayOfAcquiringLabel;
+        private Panel panel1;
+        private Label label16;
+        private ComboBox PowerOfAttorneyIssuerComboBox;
+        private Label label17;
+        private Label label23;
+        private ComboBox PowerOfAttorneyNumber;
+        private Label label18;
+        private Label label24;
+        private DateTimePicker PowerOfAttorneyDatetimePicker;
     }
 }

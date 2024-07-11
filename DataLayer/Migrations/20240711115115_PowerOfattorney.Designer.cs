@@ -4,6 +4,7 @@ using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(WolfDbContext))]
-    partial class WolfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240711115115_PowerOfattorney")]
+    partial class PowerOfattorney
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,13 +35,6 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("ActivityTypeID")
                         .HasColumnType("int");
 
-                    b.Property<string>("CompletionStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ExecutantId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("ExpectedDuration")
                         .HasColumnType("datetime2");
 
@@ -49,14 +44,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("RequestId")
                         .HasColumnType("int");
 
-                    b.Property<float>("employeePayment")
-                        .HasColumnType("real");
-
                     b.HasKey("ActivityId");
 
                     b.HasIndex("ActivityTypeID");
-
-                    b.HasIndex("ExecutantId");
 
                     b.HasIndex("ParentActivityId");
 
@@ -1654,10 +1644,6 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("ActivityId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CommentTax")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
 
@@ -1675,12 +1661,6 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<int>("TaskTypeId")
                         .HasColumnType("int");
-
-                    b.Property<float>("executantPayment")
-                        .HasColumnType("real");
-
-                    b.Property<float>("tax")
-                        .HasColumnType("real");
 
                     b.HasKey("TaskId");
 
@@ -1917,16 +1897,9 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("DataAccessLayer.Models.Employee", "mainExecutant")
-                        .WithMany()
-                        .HasForeignKey("ExecutantId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("DataAccessLayer.Models.Activity", "ParentActivity")
                         .WithMany()
-                        .HasForeignKey("ParentActivityId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("ParentActivityId");
 
                     b.HasOne("DataAccessLayer.Models.Request", "Request")
                         .WithMany("Activities")
@@ -1939,8 +1912,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("ParentActivity");
 
                     b.Navigation("Request");
-
-                    b.Navigation("mainExecutant");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Activity_PlotRelashionship", b =>

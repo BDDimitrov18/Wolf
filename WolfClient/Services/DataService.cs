@@ -282,6 +282,16 @@ namespace WolfClient.Services
             return documentOfOwnershipDTOs;
         }
 
+        public List<GetPowerOfAttorneyDocumentDTO> GetPowerOfAttorneyFromPlots(GetPlotDTO plot) {
+            List<GetPowerOfAttorneyDocumentDTO> powerOfAttorneyDocumentDTOs = new List<GetPowerOfAttorneyDocumentDTO>();
+            foreach (var plotOwner in compositeData.linkedDocuments) {
+                if (plotOwner.DocumentPlot.Plot.PlotId == plot.PlotId) {
+                    powerOfAttorneyDocumentDTOs.Add(plotOwner.powerOfAttorneyDocumentDTO);
+                }
+            }
+            return powerOfAttorneyDocumentDTOs;
+        }
+
         public void OnRequestDelete() { 
            foreach(var link in compositeData._fetchedLinkedClients) {
                 if (link.requestDTO.RequestId == _selectedRequest.RequestId) {

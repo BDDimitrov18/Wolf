@@ -157,12 +157,17 @@ namespace WolfAPI.Mapping
                 .ForMember(dest => dest.Document, opt => opt.MapFrom(src => src.Document))
                 .ForMember(dest => dest.Owner, opt => opt.MapFrom(src => src.Owner));
 
+            CreateMap<CreatePowerOfAttorneyDocumentDTO, PowerOfAttorneyDocument>();
+            CreateMap<PowerOfAttorneyDocument, GetPowerOfAttorneyDocumentDTO>();
+
             CreateMap<CreateDocumentPlot_DocumentOwnerRelashionshipDTO, DocumentPlot_DocumentOwnerRelashionship>();
 
             // Map DocumentPlot_DocumentOwnerRelashionship to GetDocumentPlot_DocumentOwnerRelashionshipDTO
             CreateMap<DocumentPlot_DocumentOwnerRelashionship, GetDocumentPlot_DocumentOwnerRelashionshipDTO>()
-                .ForMember(dest => dest.DocumentPlot, opt => opt.MapFrom(src => src.DocumentPlot))
-                .ForMember(dest => dest.DocumentOwner, opt => opt.MapFrom(src => src.DocumentOwner));
+            .ForMember(dest => dest.DocumentPlot, opt => opt.MapFrom(src => src.DocumentPlot))
+            .ForMember(dest => dest.DocumentOwner, opt => opt.MapFrom(src => src.DocumentOwner))
+            .ForMember(dest => dest.powerOfAttorneyDocumentDTO, opt => opt.MapFrom(src => src.powerOfAttorneyDocument))
+            .ForMember(dest => dest.PowerOfAttorneyId, opt => opt.MapFrom(src => src.PowerOfAttorneyId));
 
             CreateMap<GetPlotDTO, Plot>()
             .ForMember(dest => dest.PlotId, opt => opt.MapFrom(src => src.PlotId))
@@ -180,6 +185,7 @@ namespace WolfAPI.Mapping
             .ForMember(dest => dest.ActivityPlots, opt => opt.Ignore());
 
             CreateMap<CreateFileDTO, Files>();
+
         }
     }
 }

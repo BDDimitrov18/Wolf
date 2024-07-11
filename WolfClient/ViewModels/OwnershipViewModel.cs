@@ -19,5 +19,6 @@ namespace WolfClient.ViewModels
 
         public string IdealParts { get; set; }
 
+        public string PowerOfAttorneyNumber { get; set; }
     }
 }

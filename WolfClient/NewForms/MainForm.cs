@@ -97,5 +97,10 @@ namespace WolfClient.NewForms
             LoadPdfDocument forma = new LoadPdfDocument();
             forma.Show();
         }
+
+        private void DocumentViewer_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

@@ -20,5 +20,8 @@ namespace DataAccessLayer.Models
         public string WayOfAcquiring { get; set; }
 
         public bool isDrob { get; set; }
+
+        public int PowerOfAttorneyId { get; set; }
+        public PowerOfAttorneyDocument  powerOfAttorneyDocument { get; set; }
     }
 }

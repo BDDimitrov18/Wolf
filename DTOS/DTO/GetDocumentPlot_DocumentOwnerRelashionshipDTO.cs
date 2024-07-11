@@ -20,5 +20,9 @@ namespace DTOS.DTO
         public string WayOfAcquiring { get; set; }
 
         public bool isDrob { get; set; }
+
+        public int PowerOfAttorneyId { get; set; }
+        public GetPowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO { get; set; }
+
     }
 }

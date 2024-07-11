@@ -57,6 +57,7 @@ namespace WolfClient.UserControls
             RefreshButton = new Button();
             tabPage2 = new TabPage();
             panel2 = new Panel();
+            CreateDocumentButton = new Button();
             DeleteActivityButton = new Button();
             ActivityTableLabel = new Label();
             ActivityDataGridView = new DataGridView();
@@ -112,7 +113,7 @@ namespace WolfClient.UserControls
             EKG = new DataGridViewTextBoxColumn();
             OwnerAddress = new DataGridViewTextBoxColumn();
             IdealParts = new DataGridViewTextBoxColumn();
-            CreateDocumentButton = new Button();
+            PowerOfAttorney = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)RequestDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).BeginInit();
             panel1.SuspendLayout();
@@ -368,6 +369,16 @@ namespace WolfClient.UserControls
             panel2.Name = "panel2";
             panel2.Size = new Size(1277, 298);
             panel2.TabIndex = 36;
+            // 
+            // CreateDocumentButton
+            // 
+            CreateDocumentButton.Location = new Point(1105, 12);
+            CreateDocumentButton.Name = "CreateDocumentButton";
+            CreateDocumentButton.Size = new Size(155, 29);
+            CreateDocumentButton.TabIndex = 30;
+            CreateDocumentButton.Text = "Създай Заявление";
+            CreateDocumentButton.UseVisualStyleBackColor = true;
+            CreateDocumentButton.Click += CreateDocumentButton_Click;
             // 
             // DeleteActivityButton
             // 
@@ -841,7 +852,7 @@ namespace WolfClient.UserControls
             OwnershipDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             OwnershipDataGridView.BackgroundColor = Color.Moccasin;
             OwnershipDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            OwnershipDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlotNumberDocTable, DocumentId, OwnerId, EKG, OwnerAddress, IdealParts });
+            OwnershipDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlotNumberDocTable, DocumentId, OwnerId, EKG, OwnerAddress, IdealParts, PowerOfAttorney });
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = SystemColors.Window;
             dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
@@ -899,15 +910,12 @@ namespace WolfClient.UserControls
             IdealParts.MinimumWidth = 6;
             IdealParts.Name = "IdealParts";
             // 
-            // CreateDocumentButton
+            // PowerOfAttorney
             // 
-            CreateDocumentButton.Location = new Point(1105, 12);
-            CreateDocumentButton.Name = "CreateDocumentButton";
-            CreateDocumentButton.Size = new Size(155, 29);
-            CreateDocumentButton.TabIndex = 30;
-            CreateDocumentButton.Text = "Създай Заявление";
-            CreateDocumentButton.UseVisualStyleBackColor = true;
-            CreateDocumentButton.Click += CreateDocumentButton_Click;
+            PowerOfAttorney.DataPropertyName = "PowerOfAttorneyNumber";
+            PowerOfAttorney.HeaderText = "Пълномощно Номер";
+            PowerOfAttorney.MinimumWidth = 6;
+            PowerOfAttorney.Name = "PowerOfAttorney";
             // 
             // MenuRequestsUserControl
             // 
@@ -1016,12 +1024,6 @@ namespace WolfClient.UserControls
         private DataGridView OwnershipDataGridView;
         private Button AddOwnersButton;
         private Label label2;
-        private DataGridViewTextBoxColumn PlotNumberDocTable;
-        private DataGridViewTextBoxColumn DocumentId;
-        private DataGridViewTextBoxColumn OwnerId;
-        private DataGridViewTextBoxColumn EKG;
-        private DataGridViewTextBoxColumn OwnerAddress;
-        private DataGridViewTextBoxColumn IdealParts;
         private Button button8;
         private Button DeleteRequestButton;
         private Button DeleteActivityButton;
@@ -1029,5 +1031,12 @@ namespace WolfClient.UserControls
         private Button button5;
         private Button button6;
         private Button CreateDocumentButton;
+        private DataGridViewTextBoxColumn PlotNumberDocTable;
+        private DataGridViewTextBoxColumn DocumentId;
+        private DataGridViewTextBoxColumn OwnerId;
+        private DataGridViewTextBoxColumn EKG;
+        private DataGridViewTextBoxColumn OwnerAddress;
+        private DataGridViewTextBoxColumn IdealParts;
+        private DataGridViewTextBoxColumn PowerOfAttorney;
     }
 }

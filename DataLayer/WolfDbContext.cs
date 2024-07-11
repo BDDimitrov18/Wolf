@@ -46,6 +46,8 @@ namespace DataAccessLayer
         public DbSet<Plot_DocumentOfOwnershipRelashionship> Plot_DocumentOfOwnerships { get; set; }
         public DbSet<DocumentPlot_DocumentOwnerRelashionship> documentPlot_DocumentOwenerRelashionships { get; set; }
 
+        public DbSet<PowerOfAttorneyDocument> powerOfAttorneyDocuments { get; set; }
+
         public DbSet<Files> files { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
@@ -75,11 +77,20 @@ namespace DataAccessLayer
 
             #region // Configure Activity
             // Configure Activity - Request relationship
+
+            // Configure ActivityType - TaskType relationship
+            modelBuilder.Entity<ActivityType>()
+                .HasMany(at => at.TaskTypes)
+                .WithOne(tt => tt.Activity)
+                .HasForeignKey(tt => tt.ActivityTypeID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
             modelBuilder.Entity<Activity>()
-                .HasOne(a => a.Request)
-                .WithMany(r => r.Activities)
-                .HasForeignKey(a => a.RequestId)
-                .OnDelete(DeleteBehavior.NoAction);
+                   .HasOne(a => a.Request)
+                   .WithMany(r => r.Activities)
+                   .HasForeignKey(a => a.RequestId)
+                   .OnDelete(DeleteBehavior.NoAction);
 
             // Configure Activity - ActivityType relationship
             modelBuilder.Entity<Activity>()
@@ -88,12 +99,19 @@ namespace DataAccessLayer
                 .HasForeignKey(a => a.ActivityTypeID)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // Configure ActivityType - TaskType relationship
-            modelBuilder.Entity<ActivityType>()
-                .HasMany(at => at.TaskTypes)
-                .WithOne(tt => tt.Activity)
-                .HasForeignKey(tt => tt.ActivityTypeID)
-                .OnDelete(DeleteBehavior.Cascade);
+            // Configure Activity - ParentActivity relationship
+            modelBuilder.Entity<Activity>()
+                .HasOne(a => a.ParentActivity)
+                .WithMany()
+                .HasForeignKey(a => a.ParentActivityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Configure Activity - mainExecutant relationship
+            modelBuilder.Entity<Activity>()
+                .HasOne(a => a.mainExecutant)
+                .WithMany()
+                .HasForeignKey(a => a.ExecutantId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             // Configure Activity - WorkTask relationship
             modelBuilder.Entity<Activity>()
@@ -228,8 +246,11 @@ namespace DataAccessLayer
                 .OnDelete(DeleteBehavior.Cascade);
 
             // DocumentPlot_DocumentOwnerRelashionship configuration
+            // Configure composite key
+            // Configure composite key
+            // Configure composite key
             modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
-         .HasKey(dpo => new { dpo.DocumentPlotId, dpo.DocumentOwnerID });
+                .HasKey(dpo => new { dpo.DocumentPlotId, dpo.DocumentOwnerID });
 
             // Relationship configuration for DocumentPlot
             modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
@@ -243,6 +264,13 @@ namespace DataAccessLayer
                 .HasOne(dpo => dpo.DocumentOwner)
                 .WithMany(owner => owner.documentPlot_DocumentOwnerRelashionships) // Ensure the navigation property is configured in DocumentOfOwnership_OwnerRelashionship
                 .HasForeignKey(dpo => dpo.DocumentOwnerID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Relationship configuration for PowerOfAttorneyDocument
+            modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
+                .HasOne(dpo => dpo.powerOfAttorneyDocument)
+                .WithMany() // No navigation property in PowerOfAttorneyDocument
+                .HasForeignKey(dpo => dpo.PowerOfAttorneyId)
                 .OnDelete(DeleteBehavior.Cascade);
             #endregion
 
