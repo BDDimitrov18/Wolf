@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using WolfAPI.Services.Interfaces;
 
 namespace WolfAPI.Controllers
 {
@@ -11,6 +13,13 @@ namespace WolfAPI.Controllers
     [ApiController]
     public class FilesController : ControllerBase
     {
+        private readonly IFileService _fileService;
+
+        public FilesController(IFileService fileService)
+        {
+            _fileService = fileService;
+        }
+
         [HttpPost("upload")]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {
@@ -24,15 +33,51 @@ namespace WolfAPI.Controllers
                 await file.CopyToAsync(stream);
             }
 
-
             CreateFileDTO createFileDTO = new CreateFileDTO() { 
                 FileName = file.FileName,
                 FilePath = filePath,
                 UploadedAt = DateTime.UtcNow,
             };
 
+            await _fileService.CreateFile(createFileDTO);
 
             return Ok("File uploaded successfully.");
+        }
+
+        [HttpPost("download")]
+
+        public async Task<IActionResult> DownloadFile([FromBody] GetFileDTO getFileDTO)
+        {
+            if (getFileDTO == null)
+            {
+                return BadRequest("Invalid request payload");
+            }
+
+            var file = await _fileService.getFilePath(getFileDTO);
+            if (file == null)
+            {
+                return NotFound("File not found");
+            }
+
+            var filePath = file.FilePath;
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound("File not found on server");
+            }
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+
+            return File(memory, "application/octet-stream", file.FileName);
+        }
+
+        [HttpPost("GetAllFiles")]
+        public  List<GetFileDTO> getAllFiles() { 
+            return _fileService.GetAllFiles();
         }
     }
 }

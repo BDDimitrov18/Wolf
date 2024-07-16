@@ -30,14 +30,18 @@
         {
             label1 = new Label();
             label2 = new Label();
-            comboBox1 = new ComboBox();
-            comboBox2 = new ComboBox();
+            FileComboBox = new ComboBox();
+            ActivityComboBox = new ComboBox();
             label3 = new Label();
             openFileDialog1 = new OpenFileDialog();
             UploadButton = new Button();
             folderPathTextBox = new TextBox();
             panel1 = new Panel();
+            OldDocumentRadioButton = new RadioButton();
+            label5 = new Label();
             panel2 = new Panel();
+            newDocumentRadioButton = new RadioButton();
+            label6 = new Label();
             label4 = new Label();
             OpenFileReaderButton = new Button();
             panel1.SuspendLayout();
@@ -64,21 +68,21 @@
             label2.TabIndex = 1;
             label2.Text = "Избери Заявление";
             // 
-            // comboBox1
+            // FileComboBox
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(15, 50);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(265, 28);
-            comboBox1.TabIndex = 2;
+            FileComboBox.FormattingEnabled = true;
+            FileComboBox.Location = new Point(15, 50);
+            FileComboBox.Name = "FileComboBox";
+            FileComboBox.Size = new Size(265, 28);
+            FileComboBox.TabIndex = 2;
             // 
-            // comboBox2
+            // ActivityComboBox
             // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(15, 156);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(265, 28);
-            comboBox2.TabIndex = 4;
+            ActivityComboBox.FormattingEnabled = true;
+            ActivityComboBox.Location = new Point(15, 156);
+            ActivityComboBox.Name = "ActivityComboBox";
+            ActivityComboBox.Size = new Size(265, 28);
+            ActivityComboBox.TabIndex = 4;
             // 
             // label3
             // 
@@ -96,7 +100,7 @@
             // 
             // UploadButton
             // 
-            UploadButton.Location = new Point(50, 76);
+            UploadButton.Location = new Point(50, 80);
             UploadButton.Name = "UploadButton";
             UploadButton.Size = new Size(196, 29);
             UploadButton.TabIndex = 5;
@@ -106,7 +110,7 @@
             // 
             // folderPathTextBox
             // 
-            folderPathTextBox.Location = new Point(3, 31);
+            folderPathTextBox.Location = new Point(3, 47);
             folderPathTextBox.Name = "folderPathTextBox";
             folderPathTextBox.Size = new Size(291, 27);
             folderPathTextBox.TabIndex = 6;
@@ -115,31 +119,81 @@
             // 
             panel1.BackColor = SystemColors.GradientActiveCaption;
             panel1.BorderStyle = BorderStyle.Fixed3D;
+            panel1.Controls.Add(OldDocumentRadioButton);
+            panel1.Controls.Add(label5);
             panel1.Controls.Add(label2);
-            panel1.Controls.Add(comboBox1);
+            panel1.Controls.Add(FileComboBox);
             panel1.Controls.Add(label3);
-            panel1.Controls.Add(comboBox2);
+            panel1.Controls.Add(ActivityComboBox);
             panel1.Location = new Point(12, 87);
             panel1.Name = "panel1";
             panel1.Size = new Size(305, 212);
             panel1.TabIndex = 7;
             // 
+            // OldDocumentRadioButton
+            // 
+            OldDocumentRadioButton.AutoSize = true;
+            OldDocumentRadioButton.CheckAlign = ContentAlignment.MiddleRight;
+            OldDocumentRadioButton.Location = new Point(192, -2);
+            OldDocumentRadioButton.Name = "OldDocumentRadioButton";
+            OldDocumentRadioButton.Size = new Size(106, 24);
+            OldDocumentRadioButton.TabIndex = 10;
+            OldDocumentRadioButton.TabStop = true;
+            OldDocumentRadioButton.Text = "Използвай";
+            OldDocumentRadioButton.UseVisualStyleBackColor = true;
+            OldDocumentRadioButton.CheckedChanged += OldDocumentRadioButton_CheckedChanged;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            label5.Location = new Point(3, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(119, 15);
+            label5.TabIndex = 5;
+            label5.Text = "Налични документи";
+            // 
             // panel2
             // 
             panel2.BackColor = SystemColors.GradientActiveCaption;
             panel2.BorderStyle = BorderStyle.Fixed3D;
+            panel2.Controls.Add(newDocumentRadioButton);
+            panel2.Controls.Add(label6);
             panel2.Controls.Add(label4);
             panel2.Controls.Add(folderPathTextBox);
             panel2.Controls.Add(UploadButton);
             panel2.Location = new Point(323, 87);
             panel2.Name = "panel2";
-            panel2.Size = new Size(301, 115);
+            panel2.Size = new Size(301, 119);
             panel2.TabIndex = 8;
+            // 
+            // newDocumentRadioButton
+            // 
+            newDocumentRadioButton.AutoSize = true;
+            newDocumentRadioButton.CheckAlign = ContentAlignment.MiddleRight;
+            newDocumentRadioButton.Location = new Point(188, -2);
+            newDocumentRadioButton.Name = "newDocumentRadioButton";
+            newDocumentRadioButton.Size = new Size(106, 24);
+            newDocumentRadioButton.TabIndex = 9;
+            newDocumentRadioButton.TabStop = true;
+            newDocumentRadioButton.Text = "Използвай";
+            newDocumentRadioButton.UseVisualStyleBackColor = true;
+            newDocumentRadioButton.CheckedChanged += newDocumentRadioButton_CheckedChanged;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            label6.Location = new Point(3, 0);
+            label6.Name = "label6";
+            label6.Size = new Size(100, 15);
+            label6.TabIndex = 8;
+            label6.Text = "Нови Документи";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(3, 8);
+            label4.Location = new Point(3, 24);
             label4.Name = "label4";
             label4.Size = new Size(161, 20);
             label4.TabIndex = 7;
@@ -153,6 +207,7 @@
             OpenFileReaderButton.TabIndex = 9;
             OpenFileReaderButton.Text = "Преглеждане на заявление";
             OpenFileReaderButton.UseVisualStyleBackColor = true;
+            OpenFileReaderButton.Click += OpenFileReaderButton_Click;
             // 
             // CreateDocument
             // 
@@ -166,6 +221,7 @@
             Controls.Add(label1);
             Name = "CreateDocument";
             Text = "CreateDocument";
+            Load += CreateDocument_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel2.ResumeLayout(false);
@@ -178,8 +234,8 @@
 
         private Label label1;
         private Label label2;
-        private ComboBox comboBox1;
-        private ComboBox comboBox2;
+        private ComboBox FileComboBox;
+        private ComboBox ActivityComboBox;
         private Label label3;
         private OpenFileDialog openFileDialog1;
         private Button UploadButton;
@@ -188,5 +244,9 @@
         private Panel panel2;
         private Label label4;
         private Button OpenFileReaderButton;
+        private RadioButton OldDocumentRadioButton;
+        private Label label5;
+        private RadioButton newDocumentRadioButton;
+        private Label label6;
     }
 }

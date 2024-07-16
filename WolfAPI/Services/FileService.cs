@@ -21,5 +21,22 @@ namespace WolfAPI.Services
             Files file = _mapper.Map<Files>(fileDTO);
             await _fileModelRepository.CreateFile(file);
         }
+
+        public List<GetFileDTO> GetAllFiles() {
+            var files = _fileModelRepository.GetAllFiles();
+            List<GetFileDTO> filesDTO = new List<GetFileDTO>();
+            foreach (var file in files) {
+                file.FilePath = "";
+                filesDTO.Add(_mapper.Map<GetFileDTO>(file));
+            }
+
+            return filesDTO;
+        }
+
+        public async Task<GetFileDTO> getFilePath(GetFileDTO file) {
+            var fullFile = await _fileModelRepository.getFile(file.FileId);
+
+            return _mapper.Map<GetFileDTO>(fullFile);
+        }
     }
 }

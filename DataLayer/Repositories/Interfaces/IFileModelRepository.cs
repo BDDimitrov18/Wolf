@@ -10,5 +10,9 @@ namespace DataAccessLayer.Repositories.Interfaces
     public interface IFileModelRepository
     {
         public Task CreateFile(Files file);
+
+        public List<Files> GetAllFiles();
+
+        public Task<Files> getFile(int id);
     }
 }

@@ -207,7 +207,8 @@ namespace WolfAPI.Mapping
             .ForMember(dest => dest.ActivityPlots, opt => opt.Ignore());
 
             CreateMap<CreateFileDTO, Files>();
-
+            CreateMap<GetFileDTO, Files>();
+            CreateMap<Files, GetFileDTO>();
         }
     }
 }

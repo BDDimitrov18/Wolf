@@ -479,5 +479,15 @@ namespace WolfClient.Services
             }
             return getPowerOfAttorneyDocuments;
         }
+
+        public List<GetActivityDTO> GetSelectedActivities() {
+            foreach (var link in compositeData._fetchedLinkedClients) {
+                if (link.requestDTO.RequestId == _selectedRequest.RequestId) {
+                    var activities = link.activityDTOs;
+                    return activities;
+                }
+            }
+            return null;
+        }
     }
 }

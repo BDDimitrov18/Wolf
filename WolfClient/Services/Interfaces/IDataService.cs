@@ -83,5 +83,7 @@ namespace WolfClient.Services.Interfaces
         public GetDocumentPlot_DocumentOwnerRelashionshipDTO GetPlotOwnerById(int id);
 
         public List<GetPowerOfAttorneyDocumentDTO> GetAllPowerOfAttorneys();
+
+        public List<GetActivityDTO> GetSelectedActivities();
     }
 }

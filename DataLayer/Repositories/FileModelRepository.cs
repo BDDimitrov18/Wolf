@@ -21,5 +21,15 @@ namespace DataAccessLayer.Repositories
             _WolfDbContext.files.Add(file);
             await _WolfDbContext.SaveChangesAsync();
         }
+        public List<Files> GetAllFiles()
+        {
+            var files = _WolfDbContext.files.ToList();
+            return files;
+        }
+
+        public async Task<Files> getFile(int id) {
+            var file = await _WolfDbContext.files.FindAsync(id);
+            return file;
+        }
     }
 }
