@@ -42,5 +42,34 @@ namespace DataAccessLayer.Repositories
         public async Task<Plot_DocumentOfOwnershipRelashionship> FindById(int id) {
             return await _WolfDbContext.Plot_DocumentOfOwnerships.FindAsync(id);
         }
+
+        public async Task<bool> onPlotOwnerDelete(int id)
+        {
+            try
+            {
+                int br = _WolfDbContext.documentPlot_DocumentOwenerRelashionships.Where(opt => opt.DocumentPlotId == id).Count();
+
+                if (br == 0)
+                {
+                    _WolfDbContext.Plot_DocumentOfOwnerships.Remove(await _WolfDbContext.Plot_DocumentOfOwnerships.FindAsync(id));
+                    await _WolfDbContext.SaveChangesAsync();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public async Task<int> getIdOnPlotOwner(DocumentPlot_DocumentOwnerRelashionship relashionship)
+        {
+            var result = await _WolfDbContext.documentPlot_DocumentOwenerRelashionships.FindAsync(relashionship.Id);
+            if (result != null)
+            {
+                return result.DocumentPlotId;
+            }
+            return -1;
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace DataAccessLayer.Models
         public TimeSpan Duration { get; set; }
 
         public DateTime StartDate { get; set; }
+        public DateTime FinishDate { get; set; }
 
         public int ExecutantId { get; set; }
         public Employee Executant { get; set; }
@@ -35,5 +36,6 @@ namespace DataAccessLayer.Models
         public float tax { get; set; }
 
         public string CommentTax { get; set; }
+        public string Status { get; set; }
     }
 }

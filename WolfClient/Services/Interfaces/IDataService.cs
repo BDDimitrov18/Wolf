@@ -10,6 +10,7 @@ namespace WolfClient.Services.Interfaces
 {
     public interface IDataService
     {
+        public void SetSelectedActivityViews(List<ActivityViewModel> activityViewModels);
         public List<GetClientDTO> getSelectedCLients();
         public void SetSelectedClients(List<GetClientDTO> getClients);
         public List<GetDocumentOfOwnershipDTO> GetDocumentsFromPlots(GetPlotDTO plot);
@@ -67,5 +68,20 @@ namespace WolfClient.Services.Interfaces
         public void DeleteActivities(List<GetActivityDTO> activityDTOs);
 
         public List<GetPowerOfAttorneyDocumentDTO> GetPowerOfAttorneyFromPlots(GetPlotDTO plot);
+
+        public void SetSelectedPlotsOnRequestMenu(List<GetPlotDTO> plots);
+
+        public List<GetActivity_PlotRelashionshipDTO> getActivity_PlotRelashionshipDTOs(List<GetPlotDTO> plots);
+
+        public List<GetPlotDTO> getSelectedPlotsOnRequestMenu();
+
+        public void RemovePlots(List<GetPlotDTO> plots);
+        public void SetSelectedOwnershipViewModelsRequestMenu(List<OwnershipViewModel> ownershipViewModels);
+        public List<OwnershipViewModel> GetSelectedOwnershipViewModelsRequestMenu();
+        public void RemovePlotOwnerRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs);
+
+        public GetDocumentPlot_DocumentOwnerRelashionshipDTO GetPlotOwnerById(int id);
+
+        public List<GetPowerOfAttorneyDocumentDTO> GetAllPowerOfAttorneys();
     }
 }

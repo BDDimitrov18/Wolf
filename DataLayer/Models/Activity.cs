@@ -20,6 +20,7 @@ namespace DataAccessLayer.Models
         public ActivityType ActivityType { get; set; }
 
         public DateTime ExpectedDuration { get; set; }
+        public DateTime StartDate { get; set; }
 
         public int? ParentActivityId { get; set; }
         public Activity? ParentActivity { get; set; }
@@ -27,7 +28,6 @@ namespace DataAccessLayer.Models
         public float employeePayment { get; set; }
         public int ExecutantId { get; set; }
         public Employee mainExecutant { get; set; }
-        public string CompletionStatus { get; set; }
 
         public ICollection<WorkTask> Tasks { get; set; }
 

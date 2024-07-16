@@ -53,5 +53,27 @@ namespace DataAccessLayer.Repositories
                 return false;
             }
         }
+
+
+        public async Task<bool> OnPlotRelashionshipRemove(Activity_PlotRelashionship relashionship)
+        {
+            try
+            {
+                
+                if (relashionship != null)
+                {
+                    _WolfDbContext.Activity_PlotRelashionships.Remove(relashionship);
+                    var affectedRows = await _WolfDbContext.SaveChangesAsync();
+
+                    return true;
+                }
+
+                // If no activity plot relationships were found to delete, return true (indicating no work to do)
+                return true;
+            }
+            catch (Exception ex) {
+                return false;
+            }
+        }
     }
 }

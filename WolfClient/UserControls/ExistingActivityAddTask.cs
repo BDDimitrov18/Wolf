@@ -59,11 +59,16 @@ namespace WolfClient.UserControls
             // Create separate copies of the employee list for each ComboBox
             var employeesListForExecitant = new List<GetEmployeeDTO>(employeesList);
             var employeesListForControl = new List<GetEmployeeDTO>(employeesList);
-
+            GetEmployeeDTO employeeDTO = new GetEmployeeDTO();
+            employeeDTO.FullName = "Няма Контрол";
+            
+            employeesListForControl.Insert(0, employeeDTO);
             // Set the data source for the ExecitantComboBox
             ExecitantComboBox.DataSource = employeesListForExecitant;
             ExecitantComboBox.DisplayMember = "FullName";
             ExecitantComboBox.ValueMember = "EmployeeId";
+            ExecitantComboBox.SelectedItem = ActivityComboBox.Text;
+
 
             // Set the data source for the ControlComboBox
             ControlComboBox.DataSource = employeesListForControl;
@@ -74,12 +79,14 @@ namespace WolfClient.UserControls
         private void ActivityComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             GetActivityDTO? selectedActivity = ActivityComboBox.SelectedItem as GetActivityDTO;
-            var activityTypesList  = _dataService.GetActivityTypeDTOs();
+            var activityTypesList = _dataService.GetActivityTypeDTOs();
             List<GetTaskTypeDTO> taskTypes = new List<GetTaskTypeDTO>();
-            foreach ( var activityType in activityTypesList) {
-                if (activityType.ActivityTypeID == selectedActivity.ActivityTypeID) {
+            foreach (var activityType in activityTypesList)
+            {
+                if (activityType.ActivityTypeID == selectedActivity.ActivityTypeID)
+                {
                     taskTypes = activityType.TaskTypes.ToList();
-                }  
+                }
             }
             if (selectedActivity != null)
             {
@@ -87,6 +94,12 @@ namespace WolfClient.UserControls
                 TaskComboBox.DisplayMember = "TaskTypeName";
                 TaskComboBox.ValueMember = "TaskTypeId";
             }
+
+            ActivityTypeLabel.Text = $"Дейност : {selectedActivity.ActivityType.ActivityTypeName}";
+            MainExecutantLabel.Text = $"Главен изпълнител : {selectedActivity.mainExecutant.FullName}";
+            ParentActivityLabel.Text = $"Произлиза от : {selectedActivity.ParentActivity?.ActivityTypeName}";
+            startDateLabel.Text = $"започнато на : {selectedActivity.StartDate}";
+            ExpectedDurationLabel.Text = $"завършва на : {selectedActivity.ExpectedDuration}";
         }
 
         private bool ValidateActivityComboBox()
@@ -112,75 +125,83 @@ namespace WolfClient.UserControls
             }
         }
 
-       
+
 
         private async void AddActivitySubmit_Click(object sender, EventArgs e)
         {
-                if (ValidateTaskComboBox())
+            if (ValidateTaskComboBox())
+            {
+
+                GetTaskTypeDTO taskTypeDTO = TaskComboBox.SelectedItem as GetTaskTypeDTO;
+                GetActivityDTO activityDTO = ActivityComboBox.SelectedItem as GetActivityDTO;
+
+                CreateTaskDTO createTaskDTO = new CreateTaskDTO()
                 {
-                    
-                    GetTaskTypeDTO taskTypeDTO = TaskComboBox.SelectedItem as GetTaskTypeDTO;
-                    GetActivityDTO activityDTO = ActivityComboBox.SelectedItem as GetActivityDTO;
-                 
-                    CreateTaskDTO createTaskDTO = new CreateTaskDTO()
-                    {
-                        ActivityId = (int)ActivityComboBox.SelectedValue,
-                        Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
-                        StartDate = startDateDateTimePicker.Value,
-                        ExecutantId = (int)ExecitantComboBox.SelectedValue,
-                        ControlId = (int)ControlComboBox.SelectedValue,
-                        Comments = CommentsRichTextBox.Text,
-                        TaskTypeId = taskTypeDTO.TaskTypeId,
-                    };
+                    ActivityId = (int)ActivityComboBox.SelectedValue,
+                    Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
+                    StartDate = startDateDateTimePicker.Value,
+                    ExecutantId = (int)ExecitantComboBox.SelectedValue,
+                    ControlId = ControlComboBox.Text == "Няма Контрол" ? null : (int)ControlComboBox.SelectedValue,
+                    Comments = CommentsRichTextBox.Text,
+                    TaskTypeId = taskTypeDTO.TaskTypeId,
+                    Status = StatusComboBox.Text,
+                    executantPayment = float.Parse(ExecutantPaymentTextBox.Text),
+                    CommentTax = taxCommentRichTexBox.Text,
+                    tax = float.Parse(TaxTextBox.Text),
+                };
 
-                    var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
+                var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
 
 
-                    _dataService.ReplaceActivity(responseActivityFromTask.ResponseObj);
+                _dataService.ReplaceActivity(responseActivityFromTask.ResponseObj);
 
-                }
-                else
+            }
+            else
+            {
+                GetActivityDTO activityDTO = ActivityComboBox.SelectedItem as GetActivityDTO;
+                GetActivityTypeDTO activityTypeDTO = activityDTO.ActivityType;
+                CreateTaskTypeDTO createTaskTypeDTO = new CreateTaskTypeDTO()
                 {
-                    GetActivityDTO activityDTO = ActivityComboBox.SelectedItem as GetActivityDTO;
-                    GetActivityTypeDTO activityTypeDTO = activityDTO.ActivityType;
-                    CreateTaskTypeDTO createTaskTypeDTO = new CreateTaskTypeDTO()
-                    {
-                        ActivityTypeID = activityTypeDTO.ActivityTypeID,
-                        TaskTypeName = TaskComboBox.Text,
-                    };
-                    List<CreateTaskTypeDTO> listTaksTypesDTO = new List<CreateTaskTypeDTO>();
-                    listTaksTypesDTO.Add(createTaskTypeDTO);
-                    var createTaskTypeResponse = await _userClient.AddTaskTypes(listTaksTypesDTO);
-                    //Create Activity and task Logik
-
-                    CreateActivityDTO createActivityDTO = new CreateActivityDTO()
-                    {
-                        RequestId = _dataService.GetSelectedRequest().RequestId,
-                        ActivityTypeID = activityTypeDTO.ActivityTypeID,
-                        ExpectedDuration = expectedDurationDateTime.Value,
-                    };
-
-                    //DOESNT MAP THE TASKS PROPERLY
-                    var responseActivityDTO = await _userClient.AddActivity(createActivityDTO);
-
-                    CreateTaskDTO createTaskDTO = new CreateTaskDTO()
-                    {
-                        ActivityId = responseActivityDTO.ResponseObj.ActivityId,
-                        Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
-                        StartDate = startDateDateTimePicker.Value,
-                        ExecutantId = (int)ExecitantComboBox.SelectedValue,
-                        ControlId = (int)ControlComboBox.SelectedValue,
-                        Comments = CommentsRichTextBox.Text,
-                        TaskTypeId = createTaskTypeResponse.ResponseObj.TaskTypes.ElementAt(0).TaskTypeId,
-                    };
-
-                    var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
+                    ActivityTypeID = activityTypeDTO.ActivityTypeID,
+                    TaskTypeName = TaskComboBox.Text,
+                };
+                List<CreateTaskTypeDTO> listTaksTypesDTO = new List<CreateTaskTypeDTO>();
+                listTaksTypesDTO.Add(createTaskTypeDTO);
+                var createTaskTypeResponse = await _userClient.AddTaskTypes(listTaksTypesDTO);
+                //Create Activity and task Logik
 
 
-                    _dataService.AddActivityToTheList(responseActivityFromTask.ResponseObj);
+                CreateTaskDTO createTaskDTO = new CreateTaskDTO()
+                {
+                    ActivityId = activityDTO.ActivityId,
+                    Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
+                    StartDate = startDateDateTimePicker.Value,
+                    ExecutantId = (int)ExecitantComboBox.SelectedValue,
+                    ControlId = ControlComboBox.Text == "Няма Контрол" ? null : (int)ControlComboBox.SelectedValue,
+                    Comments = CommentsRichTextBox.Text,
+                    TaskTypeId = createTaskTypeResponse.ResponseObj.TaskTypes.ElementAt(0).TaskTypeId,
+                    Status = StatusComboBox.Text,
+                    executantPayment = float.Parse(ExecutantPaymentTextBox.Text),
+                    CommentTax = taxCommentRichTexBox.Text,
+                    tax = float.Parse(TaxTextBox.Text)
+                };
 
-                }
+                var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
+
+
+                _dataService.AddActivityToTheList(responseActivityFromTask.ResponseObj);
+
+            }
         }
-        
+
+        private void ExecitantComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+
+        }
     }
 }

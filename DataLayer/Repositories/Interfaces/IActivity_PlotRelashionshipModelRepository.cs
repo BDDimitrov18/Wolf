@@ -11,5 +11,7 @@ namespace DataAccessLayer.Repositories.Interfaces
     {
         public Task Add(Activity_PlotRelashionship relashionship);
         public Task<bool> OnActivityDeleteAsync(Activity activity);
+
+        public  Task<bool> OnPlotRelashionshipRemove(Activity_PlotRelashionship relashionship);
     }
 }

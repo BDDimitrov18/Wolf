@@ -11,5 +11,7 @@ namespace DataAccessLayer.Repositories.Interfaces
     {
         public Task AddRelashionship(Plot_DocumentOfOwnershipRelashionship relashionship);
         public Task<Plot_DocumentOfOwnershipRelashionship> FindById(int id);
+        public Task<bool> onPlotOwnerDelete(int id);
+        public Task<int> getIdOnPlotOwner(DocumentPlot_DocumentOwnerRelashionship relashionship);
     }
 }

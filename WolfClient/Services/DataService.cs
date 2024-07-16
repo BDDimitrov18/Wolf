@@ -4,6 +4,7 @@ using DTOS.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using WolfClient.Services.Interfaces;
@@ -28,6 +29,9 @@ namespace WolfClient.Services
 
         public List<ActivityViewModel> _selectedActivity { get; set; }
 
+        public List<GetPlotDTO> _selectedPlotsRequestMenuService { get; set; }
+
+        public List<OwnershipViewModel> _selectedOwnershipRequestMenu { get; set; }
 
         public DataService()
         {
@@ -53,7 +57,10 @@ namespace WolfClient.Services
                         foreach (var selectedActivity in _selectedActivity) {
                             if (activity.ActivityId == selectedActivity.ActivityId) {
                                 foreach (var task in activity.Tasks) {
-                                    tasks.Add(task);
+                                    if (task.TaskId == selectedActivity.TaskId)
+                                    {
+                                        tasks.Add(task);
+                                    }
                                 }
                             }
                         }
@@ -63,39 +70,76 @@ namespace WolfClient.Services
             return tasks;
         }
 
+        private void removeCertainTask() { 
+            
+        }
         public List<GetActivityDTO> OnTasksDelete(List<GetTaskDTO> taskDTOs)
         {
             List<GetActivityDTO> activityDTOs = new List<GetActivityDTO>();
-            foreach (var link in compositeData._fetchedLinkedClients) {
-                if (link.requestDTO.RequestId == _selectedRequest.RequestId) {
-                    foreach (var activity in link.activityDTOs) {
-                        foreach (var task in activity.Tasks) {
-                            foreach (var taskDTO in taskDTOs) {
-                                if (task.TaskId == taskDTO.TaskId) { 
-                                    activity.Tasks.Remove(task);
+
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                if (link.requestDTO.RequestId == _selectedRequest.RequestId)
+                {
+                    foreach (var activity in link.activityDTOs)
+                    {
+                        List<GetTaskDTO> tasksToRemove = new List<GetTaskDTO>();
+
+                        foreach (var task in activity.Tasks)
+                        {
+                            foreach (var taskDTO in taskDTOs)
+                            {
+                                if (task.TaskId == taskDTO.TaskId)
+                                {
+                                    tasksToRemove.Add(task);
                                 }
                             }
                         }
-                        if(activity.Tasks.Count == 0) {
+
+                        foreach (var task in tasksToRemove)
+                        {
+                            activity.Tasks.Remove(task);
+                        }
+
+                        if (activity.Tasks.Count == 0)
+                        {
+                            activity.Tasks = null;
                             activityDTOs.Add(activity);
                         }
                     }
                 }
             }
+
             return activityDTOs;
         }
 
         public void DeleteActivities(List<GetActivityDTO> activityDTOs)
         {
-            foreach (var link in compositeData._fetchedLinkedClients) { 
-                if(link.requestDTO.RequestId == _selectedRequest.RequestId) {
-                    foreach (var activity in link.activityDTOs) { 
-                        foreach(var activityDto in activityDTOs) {
-                            if (activity.ActivityId == activityDto.ActivityId) { 
-                                link.activityDTOs.Remove(activity);
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                if (link.requestDTO.RequestId == _selectedRequest.RequestId)
+                {
+                    // Create a list to hold the activities to be removed
+                    var activitiesToRemove = new List<GetActivityDTO>();
+
+                    // Iterate over the activities and collect the ones to be removed
+                    foreach (var activity in link.activityDTOs)
+                    {
+                        foreach (var activityDto in activityDTOs)
+                        {
+                            if (activity.ActivityId == activityDto.ActivityId)
+                            {
+                                activitiesToRemove.Add(activity);
+                                break;
                             }
                         }
-                    }    
+                    }
+
+                    // Remove the collected activities from the original list
+                    foreach (var activityToRemove in activitiesToRemove)
+                    {
+                        link.activityDTOs.Remove(activityToRemove);
+                    }
                 }
             }
         }
@@ -221,11 +265,14 @@ namespace WolfClient.Services
             {
                 foreach (var activity in selected.activityDTOs)
                 {
-                    foreach (var plot in activity.Plots)
+                    if (activity.Plots.Count() > 0)
                     {
-                        if (!plotDTOs.Any(p => p.PlotId == plot.PlotId))
+                        foreach (var plot in activity.Plots)
                         {
-                            plotDTOs.Add(plot);
+                            if (!plotDTOs.Any(p => p.PlotId == plot.PlotId))
+                            {
+                                plotDTOs.Add(plot);
+                            }
                         }
                     }
                 }
@@ -238,9 +285,13 @@ namespace WolfClient.Services
                 if(link.activityDTOs?.Count() > 0)
                 foreach(var activity in link.activityDTOs)
                 {
-                    foreach (var plot in activity.Plots) {
-                        plotDTOs.Add(plot);
-                    }
+                        if (activity.Plots.Count() > 0)
+                        {
+                            foreach (var plot in activity.Plots)
+                            {
+                                plotDTOs.Add(plot);
+                            }
+                        }
                 }
             }
             return plotDTOs;
@@ -308,6 +359,125 @@ namespace WolfClient.Services
                 requestDTOs.Add(link.requestDTO);
             }
             return requestDTOs;
+        }
+
+        public void SetSelectedActivityViews(List<ActivityViewModel> activityViewModels) { 
+            _selectedActivity = activityViewModels;
+        }
+
+        public void SetSelectedPlotsOnRequestMenu(List<GetPlotDTO> plots)
+        {
+            _selectedPlotsRequestMenuService = plots;
+        }
+
+        public List<GetActivity_PlotRelashionshipDTO> getActivity_PlotRelashionshipDTOs(List<GetPlotDTO> plots) {
+            List<GetActivity_PlotRelashionshipDTO> relashionshipDTOs = new List<GetActivity_PlotRelashionshipDTO>();
+            foreach (var plot in plots) {
+                foreach (var link in compositeData._fetchedLinkedClients)
+                {
+                    if (link.activityDTOs?.Count() > 0)
+                        foreach (var activity in link.activityDTOs)
+                        {
+                            foreach (var activityPlot in activity.Plots)
+                            {
+                                if (activityPlot.PlotId == plot.PlotId) { 
+                                    GetActivity_PlotRelashionshipDTO getActivity_PlotRelashionshipDTO = new GetActivity_PlotRelashionshipDTO() { 
+                                        ActivityId = activity.ActivityId,
+                                        PlotId = plot.PlotId,
+                                    };
+                                    relashionshipDTOs.Add(getActivity_PlotRelashionshipDTO);
+                                    break;
+                                }
+                            }
+                        }
+                }
+            }
+            return relashionshipDTOs;
+        }
+
+        public List<GetPlotDTO> getSelectedPlotsOnRequestMenu() {
+            return _selectedPlotsRequestMenuService;
+        }
+
+        public void RemovePlots(List<GetPlotDTO> plots)
+        {
+            // Check if the plots list is null before proceeding
+            if (plots == null)
+            {
+                throw new ArgumentNullException(nameof(plots), "The list of plots cannot be null.");
+            }
+
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                if (link.requestDTO.RequestId == _selectedRequest.RequestId)
+                {
+                    if (link.activityDTOs.Count > 0)
+                    {
+                        foreach (var activity in link.activityDTOs)
+                        {
+                            if (activity.Plots.Count > 0)
+                            {
+                                // Create a list to store plots that need to be removed
+                                var plotsToRemove = new List<GetPlotDTO>();
+
+                                foreach (var plotDto in activity.Plots)
+                                {
+                                    // Check if the current plotDto and its PlotId are not null
+                                    if (plotDto != null && plotDto.PlotId != null)
+                                    {
+                                        // Check if the current plotId matches any plotId in the plots list
+                                        if (plots.Any(p => p != null && p.PlotId == plotDto.PlotId))
+                                        {
+                                            plotsToRemove.Add(plotDto);
+                                        }
+                                    }
+                                }
+
+                                // Remove the plots that are in the plotsToRemove list
+                                foreach (var plotToRemove in plotsToRemove)
+                                {
+                                    activity.Plots.Remove(plotToRemove);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void SetSelectedOwnershipViewModelsRequestMenu(List<OwnershipViewModel> ownershipViewModels) {
+            _selectedOwnershipRequestMenu = ownershipViewModels;
+        }
+
+        public List<OwnershipViewModel> GetSelectedOwnershipViewModelsRequestMenu() {
+            return _selectedOwnershipRequestMenu;
+        }
+
+        public void RemovePlotOwnerRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs) {
+            foreach (var relashionship in relashionshipDTOs) {
+                compositeData.linkedDocuments.Remove(relashionship);
+            }
+        }
+
+        public GetDocumentPlot_DocumentOwnerRelashionshipDTO GetPlotOwnerById(int id) {
+            foreach (var relashionship in compositeData.linkedDocuments) {
+                if (relashionship.Id == id) {
+                    return relashionship;
+                }
+            }
+            return null;
+        }
+
+        public List<GetPowerOfAttorneyDocumentDTO> GetAllPowerOfAttorneys() {
+            List<GetPowerOfAttorneyDocumentDTO> getPowerOfAttorneyDocuments = new List<GetPowerOfAttorneyDocumentDTO>();
+            foreach (var relashionship in compositeData.linkedDocuments)
+            {
+                if (!getPowerOfAttorneyDocuments.Contains(relashionship.powerOfAttorneyDocumentDTO))
+                {
+                    getPowerOfAttorneyDocuments.Add(relashionship.powerOfAttorneyDocumentDTO);
+                }
+            }
+            return getPowerOfAttorneyDocuments;
         }
     }
 }

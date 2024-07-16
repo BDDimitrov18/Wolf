@@ -57,5 +57,41 @@ namespace WolfAPI.Services
                 return false;
             }
         }
+
+        public async Task<bool> OnPlotRelashionshipRemove(List<GetActivity_PlotRelashionshipDTO> plotsDTO)
+        {
+            bool flag = true;
+            try
+            {
+                foreach (var relashionship in plotsDTO)
+                {
+                    var plot = _mapper.Map<Activity_PlotRelashionship>(relashionship);
+
+                    // Attempt to delete activity plot relationships for the activity
+                    if (!(await _activityPlotModelRepository.OnPlotRelashionshipRemove(plot))) {
+                        flag = false;
+                    }
+                    
+                }
+
+                if (!flag)
+                {
+                    // Log the failure
+                    // Example: _logger.LogError($"Failed to delete activity plot relationships for activity ID {activity.ActivityId}");
+                    return false;
+                }
+
+                // If the deletion was successful, return true
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // Example: _logger.LogError(ex, $"An error occurred while deleting activity plot relationships for activity ID {activity.ActivityId}");
+
+                // Return false to indicate failure
+                return false;
+            }
+        }
     }
 }

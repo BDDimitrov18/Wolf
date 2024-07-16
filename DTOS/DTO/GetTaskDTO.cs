@@ -9,24 +9,21 @@ namespace DTOS.DTO
 {
     public class GetTaskDTO
     {
-        
         public int TaskId { get; set; }
-
         public int ActivityId { get; set; }
-
         public TimeSpan Duration { get; set; }
-
         public DateTime StartDate { get; set; }
-
+        public DateTime FinishDate { get; set; }
         public int ExecutantId { get; set; }
         public GetEmployeeDTO Executant { get; set; }
-
         public int? ControlId { get; set; }
         public GetEmployeeDTO? Control { get; set; }
-
         public string? Comments { get; set; }
-
         public int TaskTypeId { get; set; }
         public GetTaskTypeDTO taskType { get; set; }
+        public float executantPayment { get; set; }
+        public float tax { get; set; }
+        public string CommentTax { get; set; }
+        public string Status { get; set; }
     }
 }

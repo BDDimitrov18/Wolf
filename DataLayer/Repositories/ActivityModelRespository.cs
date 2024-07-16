@@ -49,13 +49,55 @@ namespace DataAccessLayer.Repositories
                 activity.ParentActivity = parentActivity;
             }
 
-            // Set the ActivityType property on the activity entity
-            activity.ActivityType = activityType;
+            // Load the mainExecutant entity based on ExecutantId
+            var mainExecutant = await _WolfDbContext.Employees.FindAsync(activity.ExecutantId);
+            if (mainExecutant == null)
+            {
+                throw new ArgumentException("Invalid ExecutantId");
+            }
+            activity.mainExecutant = mainExecutant;
+
+            // Check if Tasks collection is null
+            if (activity.Tasks != null)
+            {
+                // Ensure tasks are properly loaded and linked
+                foreach (var task in activity.Tasks)
+                {
+                    // Load the Executant entity for each task
+                    var taskExecutant = await _WolfDbContext.Employees.FindAsync(task.ExecutantId);
+                    if (taskExecutant == null)
+                    {
+                        throw new ArgumentException($"Invalid ExecutantId for TaskId {task.TaskId}");
+                    }
+                    task.Executant = taskExecutant;
+
+                    // Load the Control entity for each task, if it exists
+                    if (task.ControlId.HasValue)
+                    {
+                        var taskControl = await _WolfDbContext.Employees.FindAsync(task.ControlId.Value);
+                        if (taskControl == null)
+                        {
+                            throw new ArgumentException($"Invalid ControlId for TaskId {task.TaskId}");
+                        }
+                        task.Control = taskControl;
+                    }
+
+                    // Load the TaskType entity for each task
+                    var taskType = await _WolfDbContext.taskTypes.FindAsync(task.TaskTypeId);
+                    if (taskType == null)
+                    {
+                        throw new ArgumentException($"Invalid TaskTypeId for TaskId {task.TaskId}");
+                    }
+                    task.taskType = taskType;
+                }
+            }
 
             // Add the activity to the DbContext and save changes
             _WolfDbContext.Activities.Add(activity);
             await _WolfDbContext.SaveChangesAsync();
         }
+
+
 
         public List<DataAccessLayer.Models.Activity> FindLinkedActivity(Request request)
         {
@@ -67,8 +109,8 @@ namespace DataAccessLayer.Repositories
                     .ThenInclude(t => t.Control)
                 .Include(a => a.Tasks)
                     .ThenInclude(t => t.taskType)
-                .Include(a => a.ParentActivity) // Include the ParentActivity
-                    .ThenInclude(pa => pa.ActivityType) // Optionally include related data for ParentActivity
+                .Include(a => a.ParentActivity)
+                    .ThenInclude(pa => pa.ActivityType)
                 .Include(a => a.ParentActivity)
                     .ThenInclude(pa => pa.Tasks)
                         .ThenInclude(t => t.Executant)
@@ -78,21 +120,26 @@ namespace DataAccessLayer.Repositories
                 .Include(a => a.ParentActivity)
                     .ThenInclude(pa => pa.Tasks)
                         .ThenInclude(t => t.taskType)
+                .Include(a => a.mainExecutant)
+                .Include(a => a.ParentActivity)
+                    .ThenInclude(pa => pa.mainExecutant)
                 .Where(a => a.RequestId == request.RequestId)
                 .ToList();
         }
 
+
         public async Task<Activity> GetActivity(int id)
         {
             return await _WolfDbContext.Activities
-        .Include(a => a.ActivityType)
-        .Include(a => a.Tasks)
-            .ThenInclude(t => t.Executant)
-        .Include(a => a.Tasks)
-            .ThenInclude(t => t.Control)
-        .Include(a => a.Tasks)
-            .ThenInclude(t => t.taskType)
-        .FirstOrDefaultAsync(a => a.ActivityId == id);
+                .Include(a => a.ActivityType)
+                .Include(a => a.Tasks)
+                    .ThenInclude(t => t.Executant)
+                .Include(a => a.Tasks)
+                    .ThenInclude(t => t.Control)
+                .Include(a => a.Tasks)
+                    .ThenInclude(t => t.taskType)
+                .Include(a => a.mainExecutant)
+                .FirstOrDefaultAsync(a => a.ActivityId == id);
         }
 
         public async Task<bool> DeleteOnRequestAsync(Request request)
@@ -136,8 +183,21 @@ namespace DataAccessLayer.Repositories
 
             try
             {
+                // Extract ActivityIds from the list of Activity
+                var activityIds = activities.Select(a => a.ActivityId).ToList();
+
+                // Find the activities that need to be deleted
+                var activitiesToDelete = _WolfDbContext.Activities
+                                            .Where(a => activityIds.Contains(a.ActivityId))
+                                            .ToList();
+
+                if (activitiesToDelete == null || activitiesToDelete.Count == 0)
+                {
+                    return false;
+                }
+
                 // Remove the activities from the DbContext
-                _WolfDbContext.Activities.RemoveRange(activities);
+                _WolfDbContext.Activities.RemoveRange(activitiesToDelete);
 
                 // Save changes to the database asynchronously
                 await _WolfDbContext.SaveChangesAsync();

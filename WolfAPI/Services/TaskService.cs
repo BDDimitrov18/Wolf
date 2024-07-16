@@ -66,7 +66,10 @@ namespace WolfAPI.Services
             try
             {
                 // Map the DTOs to WorkTask entities
-                List<WorkTask> tasks = _mapper.Map<List<WorkTask>>(tasksDTO);
+                List<WorkTask> tasks = new List<WorkTask>();
+                foreach (var taskDTO in tasksDTO) {
+                    tasks.Add(_mapper.Map<WorkTask>(taskDTO));
+                }
 
                 // Call the repository method to delete the tasks
                 return await _taskModelRepository.DeleteTasks(tasks);

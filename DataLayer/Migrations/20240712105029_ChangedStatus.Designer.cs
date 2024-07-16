@@ -4,6 +4,7 @@ using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(WolfDbContext))]
-    partial class WolfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240712105029_ChangedStatus")]
+    partial class ChangedStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -372,16 +374,10 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.DocumentPlot_DocumentOwnerRelashionship", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("DocumentPlotId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("DocumentOwnerID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DocumentPlotId")
                         .HasColumnType("int");
 
                     b.Property<float>("IdealParts")
@@ -397,11 +393,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<bool>("isDrob")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id");
+                    b.HasKey("DocumentPlotId", "DocumentOwnerID");
 
                     b.HasIndex("DocumentOwnerID");
-
-                    b.HasIndex("DocumentPlotId");
 
                     b.HasIndex("PowerOfAttorneyId");
 

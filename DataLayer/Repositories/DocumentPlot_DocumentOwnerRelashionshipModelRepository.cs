@@ -113,5 +113,22 @@ namespace DataAccessLayer.Repositories
 
             return result;
         }
+
+        public async Task<bool> deleteRelashionship(DocumentPlot_DocumentOwnerRelashionship relashionship)
+        {
+            try {
+               var result = await _WolfDbContext.documentPlot_DocumentOwenerRelashionships.FindAsync(relashionship.Id);
+                if (result == null) {
+                    return false;
+                }
+
+                _WolfDbContext.documentPlot_DocumentOwenerRelashionships.Remove(result);
+                await _WolfDbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex) {
+                return false;
+            }
+        }
     }
 }

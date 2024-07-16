@@ -1172,7 +1172,7 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/DeleteTasks", content);
+                var response = await _client.PostAsync("https://localhost:44359/api/User/DeleteActivities", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -1252,6 +1252,90 @@ namespace WolfClient.Services
             {
                 MessageBox.Show($"Exception occurred: {ex.Message}");
                 return new ClientResponse<GetPowerOfAttorneyDocumentDTO> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<HttpResponseMessage>> activityPlotRelashionshipRemove(List<GetActivity_PlotRelashionshipDTO> relashionshipDTOs)
+        {
+            var jsonContent = JsonSerializer.Serialize(relashionshipDTOs);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/ActivityPlotOnPlotRemove", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Plots Removed successfully!");
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Plots Removed successfully!", ResponseObj = response };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to remove Plots: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<HttpResponseMessage>> deletePlotOwnerRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs)
+        {
+            var jsonContent = JsonSerializer.Serialize(relashionshipDTOs);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/deletePlotOwnerRelashionships", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Relashionship Removed successfully!");
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Relashionship Removed successfully!", ResponseObj = response };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to remove Plots: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
             }
         }
     }

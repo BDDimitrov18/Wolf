@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTOS.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,5 +21,8 @@ namespace WolfClient.ViewModels
         public string IdealParts { get; set; }
 
         public string PowerOfAttorneyNumber { get; set; }
+
+        public int PlotOwnerID { get; set; }
+
     }
 }

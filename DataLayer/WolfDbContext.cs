@@ -249,29 +249,32 @@ namespace DataAccessLayer
             // Configure composite key
             // Configure composite key
             // Configure composite key
+            // Primary key configuration for Id
             modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
-                .HasKey(dpo => new { dpo.DocumentPlotId, dpo.DocumentOwnerID });
+    .HasKey(dpo => dpo.Id);
 
             // Relationship configuration for DocumentPlot
             modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
                 .HasOne(dpo => dpo.DocumentPlot)
                 .WithMany(dp => dp.documentPlot_DocumentOwnerRelashionships) // Ensure the navigation property is configured in Plot_DocumentOfOwnershipRelashionship
                 .HasForeignKey(dpo => dpo.DocumentPlotId)
-                .OnDelete(DeleteBehavior.Cascade); // Cascade delete to DocumentPlot
+                .OnDelete(DeleteBehavior.Restrict); // Change to Restrict or SetNull
 
             // Relationship configuration for DocumentOwner
             modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
                 .HasOne(dpo => dpo.DocumentOwner)
                 .WithMany(owner => owner.documentPlot_DocumentOwnerRelashionships) // Ensure the navigation property is configured in DocumentOfOwnership_OwnerRelashionship
                 .HasForeignKey(dpo => dpo.DocumentOwnerID)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict); // Change to Restrict or SetNull
 
             // Relationship configuration for PowerOfAttorneyDocument
             modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
                 .HasOne(dpo => dpo.powerOfAttorneyDocument)
                 .WithMany() // No navigation property in PowerOfAttorneyDocument
                 .HasForeignKey(dpo => dpo.PowerOfAttorneyId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict); // Change to Restrict or SetNull
+
+            base.OnModelCreating(modelBuilder);
             #endregion
 
 

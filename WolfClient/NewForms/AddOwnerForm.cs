@@ -299,12 +299,63 @@ namespace WolfClient.NewForms
             DocumentNumberComboBox.DataSource = _dataService.GetDocumentsFromPlots(plotComboBox.SelectedItem as GetPlotDTO);
             DocumentNumberComboBox.DisplayMember = "NumberOfDocument";
             DocumentNumberComboBox.ValueMember = "DocumentId";
+            DocumentTypeComboBox.SelectedIndex = 0;
+
+            var matchingDocument = DocumentNumberComboBox.SelectedItem as GetDocumentOfOwnershipDTO;
+
+            if (matchingDocument != null)
+            {
+                DocumentTypeComboBox.Enabled = true;
+                DocumentTypeComboBox.DropDownStyle = ComboBoxStyle.DropDown;
+                TOMComboBox.Enabled = true;
+                RegisterComboBox.Enabled = true;
+                CaseComboBox.Enabled = true;
+                IssingDateTimePicker.Enabled = true;
+                registeringDateTimePicker.Enabled = true;
+                Issuer.Enabled = true;
+                TypeOfOwnership.Enabled = true;
+
+                DocumentTypeComboBox.Text = matchingDocument.TypeOfDocument;
+                DocumentTypeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+                DocumentTypeComboBox.Enabled = false;
+                TOMComboBox.Text = matchingDocument.TOM.ToString();
+                TOMComboBox.Enabled = false;
+                RegisterComboBox.Text = matchingDocument.register;
+                RegisterComboBox.Enabled = false;
+                CaseComboBox.Text = matchingDocument.DocCase;
+                CaseComboBox.Enabled = false;
+                IssingDateTimePicker.Value = matchingDocument.DateOfIssuing;
+                IssingDateTimePicker.Enabled = false;
+                registeringDateTimePicker.Value = matchingDocument.DateOfRegistering;
+                registeringDateTimePicker.Enabled = false;
+                Issuer.Text = matchingDocument.Issuer;
+                Issuer.Enabled = false;
+                TypeOfOwnership.Text = matchingDocument.TypeOfOwnership;
+                TypeOfOwnership.Enabled = false;
+            }
 
             PowerOfAttorneyNumber.DataSource = _dataService.GetPowerOfAttorneyFromPlots(plotComboBox.SelectedItem as GetPlotDTO);
             PowerOfAttorneyNumber.DisplayMember = "number";
             PowerOfAttorneyNumber.ValueMember = "PowerOfAttorneyId";
+            PowerOfAttorneyNumber.SelectedIndex = 0;
+
+            var matchingDocumentPow = PowerOfAttorneyNumber.SelectedItem as GetPowerOfAttorneyDocumentDTO;
+            if (matchingDocumentPow != null)
+            {
+                PowerOfAttorneyIssuerComboBox.Enabled = true;
+                PowerOfAttorneyIssuerComboBox.DropDownStyle = ComboBoxStyle.DropDown;
+                PowerOfAttorneyIssuerComboBox.Text = matchingDocumentPow.Issuer;
+                PowerOfAttorneyIssuerComboBox.Enabled = false;
+
+                PowerOfAttorneyDatetimePicker.Enabled = true;
+                PowerOfAttorneyDatetimePicker.Value = matchingDocumentPow.dateOfIssuing;
+                PowerOfAttorneyDatetimePicker.Enabled = false;
+            }
+            
 
             DocumentNumberComboBox.TextChanged += DocumentNumberComboBox_TextChanged;
+            PowerOfAttorneyNumber.TextChanged += PowerOfAttorneyNumber_TextChanged;
+
         }
 
         private void plotComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -578,7 +629,7 @@ namespace WolfClient.NewForms
 
         }
 
-        
+
 
         private void DocumentNumberComboBox_TextChanged(object sender, EventArgs e)
         {
@@ -636,6 +687,28 @@ namespace WolfClient.NewForms
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void PowerOfAttorneyNumber_TextChanged(object sender, EventArgs e)
+        {
+            var powerOfAttorneys = _dataService.GetAllPowerOfAttorneys();
+            var matchingDocument = powerOfAttorneys.FirstOrDefault(doc => doc.number == PowerOfAttorneyNumber.Text);
+            if (matchingDocument != null)
+            {
+                PowerOfAttorneyIssuerComboBox.Enabled = true;
+                PowerOfAttorneyIssuerComboBox.DropDownStyle = ComboBoxStyle.DropDown;
+                PowerOfAttorneyIssuerComboBox.Text = matchingDocument.Issuer;
+                PowerOfAttorneyIssuerComboBox.Enabled = false;
+
+                PowerOfAttorneyDatetimePicker.Enabled = true;
+                PowerOfAttorneyDatetimePicker.Value = matchingDocument.dateOfIssuing;
+                PowerOfAttorneyDatetimePicker.Enabled = false;
+            }
+            else {
+                PowerOfAttorneyIssuerComboBox.Enabled = true;
+                PowerOfAttorneyIssuerComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+                PowerOfAttorneyDatetimePicker.Enabled = true;
+            }
         }
     }
 }

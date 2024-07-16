@@ -289,5 +289,66 @@ namespace WolfAPI.Controllers
         public async Task<GetPowerOfAttorneyDocumentDTO> CreatePowerOfAttorney([FromBody]CreatePowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO) {
             return await _powerOfAttorneyDocumentService.createPowerOfAttorneyDocument(powerOfAttorneyDocumentDTO);
         }
+
+        [HttpPost("ActivityPlotOnPlotRemove")]
+
+        public async Task<IActionResult> ActivityPlotOnPlotRemove([FromBody] List<GetActivity_PlotRelashionshipDTO> plotsDTO) {
+            if (plotsDTO == null)
+            {
+                return BadRequest("No plots provided for deletion.");
+            }
+
+            try
+            {
+
+                // Call the service method to delete the activities
+                bool result = await _activityPlotReleashionshipService.OnPlotRelashionshipRemove(plotsDTO);
+
+                if (result)
+                {
+                    return Ok("Plots deleted successfully.");
+                }
+                else
+                {
+                    return StatusCode(500, "Failed to remove Plots. Please try again later.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (logging not shown here)
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+
+        [HttpPost("deletePlotOwnerRelashionships")]
+
+        public async Task<IActionResult> deletePlotOwnerRelashionships([FromBody] List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs) {
+            if (relashionshipDTOs == null)
+            {
+                return BadRequest("No plots provided for deletion.");
+            }
+
+            try
+            {
+
+                // Call the service method to delete the activities
+                bool result = await _documentPlot_DocumentOwnerRelashionshipService.deletePlotOwnerRelashionships(relashionshipDTOs);
+
+                if (result)
+                {
+                    return Ok("Relashionships deleted successfully.");
+                }
+                else
+                {
+                    return StatusCode(500, "Failed to remove Relashionships. Please try again later.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (logging not shown here)
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
     }
 }

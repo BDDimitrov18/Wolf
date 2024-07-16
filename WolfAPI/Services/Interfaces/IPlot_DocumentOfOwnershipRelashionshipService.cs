@@ -6,5 +6,7 @@ namespace WolfAPI.Services.Interfaces
     {
         public Task<GetPlot_DocumentOfOwnershipRelashionshipDTO> createPlotDocument(CreatePlot_DocumentOfOwnershipRelashionshipDTO relashionshipDTO);
 
+        public Task<GetPlot_DocumentOfOwnershipRelashionshipDTO> FindById(int id);
+
     }
 }

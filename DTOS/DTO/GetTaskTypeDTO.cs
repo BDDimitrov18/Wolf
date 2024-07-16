@@ -13,6 +13,5 @@ namespace DTOS.DTO
         public string TaskTypeName { get; set; }
 
         public int ActivityTypeID { get; set; }
-
     }
 }

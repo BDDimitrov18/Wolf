@@ -42,6 +42,8 @@ namespace WolfClient.UserControls
         {
             RequestDataGridView.SelectionChanged += RequestDataGridView_SelectionChanged;
             clientsDataGridView.SelectionChanged += clientsDataGridView_SelectionChanged;
+            PlotsDataGridView.SelectionChanged += PlotsDataGridView_SelectionChanged;
+            OwnershipDataGridView.SelectionChanged += OwnershipDataGridView_SelectionChanged;
             if (_apiClient.getLoginStatus())
             {
                 setRequestsDataGridView();
@@ -49,6 +51,7 @@ namespace WolfClient.UserControls
             }
             LogInEvent.logIn += OnUserLoggedIn;
             OwnershipDataGridView.CellPainting += OwnershipDataGridView_CellPainting;
+            ActivityDataGridView.SelectionChanged += ActivityDataGridView_SelectionChanged;
         }
 
         private async void setRequestsDataGridView()
@@ -323,19 +326,18 @@ namespace WolfClient.UserControls
                 }
             }
         }
-        private List<OwnershipViewModel> GetOwnershipViewModels(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs)
+        public List<OwnershipViewModel> GetOwnershipViewModels(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs)
         {
             // Initialize the dictionary
-            Dictionary<int, Dictionary<int, List<Dictionary<GetOwnerDTO, string>>>> RelashionshipDictionary =
-                new Dictionary<int, Dictionary<int, List<Dictionary<GetOwnerDTO, string>>>>();
+            var RelashionshipDictionary = new Dictionary<int, Dictionary<int, List<Dictionary<GetOwnerDTO, string>>>>();
 
-            Dictionary<int, GetPlotDTO> plotDictionary = relashionshipDTOs
+            var plotDictionary = relashionshipDTOs
                 .Select(r => r.DocumentPlot.Plot)
                 .GroupBy(p => p.PlotId)
                 .Select(g => g.First())
                 .ToDictionary(p => p.PlotId);
 
-            Dictionary<int, GetDocumentOfOwnershipDTO> documentDictionary = relashionshipDTOs
+            var documentDictionary = relashionshipDTOs
                 .Select(r => r.DocumentPlot.documentOfOwnership)
                 .GroupBy(d => d.DocumentId)
                 .Select(g => g.First())
@@ -386,9 +388,16 @@ namespace WolfClient.UserControls
                             // Extract PowerOfAttorneyNumber from the relationship DTO
                             var powerOfAttorneyNumber = relashionshipDTOs
                                 .FirstOrDefault(r => r.DocumentPlot.Plot.PlotId == plotEntry.Key
-                                                     && r.DocumentPlot.documentOfOwnership.DocumentId == documentEntry.Key && r.DocumentOwner.OwnerID == owner.OwnerID)?.powerOfAttorneyDocumentDTO?.number;
+                                                     && r.DocumentPlot.documentOfOwnership.DocumentId == documentEntry.Key
+                                                     && r.DocumentOwner.OwnerID == owner.OwnerID)?.powerOfAttorneyDocumentDTO?.number;
 
-                            OwnershipViewModel ownershipViewModel = new OwnershipViewModel()
+                            // Extract PlotOwnerID from the relationship DTO
+                            var plotOwnerID = relashionshipDTOs
+                                .FirstOrDefault(r => r.DocumentPlot.Plot.PlotId == plotEntry.Key
+                                                     && r.DocumentPlot.documentOfOwnership.DocumentId == documentEntry.Key
+                                                     && r.DocumentOwner.OwnerID == owner.OwnerID)?.Id;
+
+                            var ownershipViewModel = new OwnershipViewModel()
                             {
                                 PlotNumber = isFirstEntryForPlot ? plotDictionary[plotEntry.Key].PlotNumber : string.Empty,
                                 NumberTypeDocument = $"{documentDictionary[documentEntry.Key].NumberOfDocument} {documentDictionary[documentEntry.Key].TypeOfDocument}",
@@ -396,7 +405,8 @@ namespace WolfClient.UserControls
                                 EGN = owner.EGN,
                                 Address = owner.Address,
                                 IdealParts = idealPartsString,
-                                PowerOfAttorneyNumber = powerOfAttorneyNumber
+                                PowerOfAttorneyNumber = powerOfAttorneyNumber,
+                                PlotOwnerID = plotOwnerID ?? 0 // Default to 0 if null
                             };
 
                             ownershipViewModels.Add(ownershipViewModel);
@@ -518,10 +528,13 @@ namespace WolfClient.UserControls
                     foreach (var activity in matchingRequestWithClients.activityDTOs)
                     {
                         string Identities = "";
-                        foreach (var plot in activity.Plots)
+                        if (activity.Plots.Count() > 0)
                         {
-                            string plotInfo = $"Поземлен имот:{plot.PlotNumber}, {plot.City};";
-                            Identities += plotInfo;
+                            foreach (var plot in activity.Plots)
+                            {
+                                string plotInfo = $"Поземлен имот:{plot.PlotNumber}, {plot.City};";
+                                Identities += plotInfo;
+                            }
                         }
                         foreach (var task in activity.Tasks)
                         {
@@ -538,6 +551,8 @@ namespace WolfClient.UserControls
                                 Comments = task.Comments,
                                 Identities = Identities,
                                 ParentActivity = activity.ParentActivity == null ? "" : activity.ParentActivity.ActivityTypeName,
+                                tax = task.tax.ToString(),
+                                taxComment = task.CommentTax,
                             };
 
                             activityViewModels.Add(viewModel);
@@ -829,11 +844,14 @@ namespace WolfClient.UserControls
             if (response.IsSuccess)
             {
                 List<GetActivityDTO> activities = _dataService.OnTasksDelete(taskDTOs);
-                var activityResponse = await _userClient.DeleteActivities(activities);
-                if (activityResponse.IsSuccess)
+                if (activities.Count > 0)
                 {
-                    _dataService.DeleteActivities(activities);
-                    UpdateActivityDataGridView();
+                    var activityResponse = await _userClient.DeleteActivities(activities);
+                    if (activityResponse.IsSuccess)
+                    {
+                        _dataService.DeleteActivities(activities);
+                        UpdateActivityDataGridView();
+                    }
                 }
             }
             else
@@ -844,8 +862,119 @@ namespace WolfClient.UserControls
 
         private void CreateDocumentButton_Click(object sender, EventArgs e)
         {
-            CreateDocument createDocumentForm = new CreateDocument(_dataService,_fileUploader);
+            CreateDocument createDocumentForm = new CreateDocument(_dataService, _fileUploader);
             createDocumentForm.Show();
+        }
+
+        private void ActivityDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void ActivityDataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            // Check if any rows are selected
+            if (ActivityDataGridView.SelectedRows.Count > 0)
+            {
+                var selectedActivities = new List<ActivityViewModel>();
+
+                // Iterate through all selected rows
+                foreach (DataGridViewRow selectedRow in ActivityDataGridView.SelectedRows)
+                {
+                    // Check if the DataBoundItem is of type GetClientDTO
+                    if (selectedRow.DataBoundItem is ActivityViewModel activityViewModel)
+                    {
+                        // Add the client DTO to the list
+                        selectedActivities.Add(activityViewModel);
+                    }
+                }
+
+                // Check if there are any selected clients
+                if (selectedActivities.Count > 0)
+                {
+                    _dataService.SetSelectedActivityViews(selectedActivities);
+                }
+            }
+        }
+
+        private void PlotsDataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            // Check if any rows are selected
+            if (PlotsDataGridView.SelectedRows.Count > 0)
+            {
+                var selectedPlots = new List<GetPlotDTO>();
+
+                // Iterate through all selected rows
+                foreach (DataGridViewRow selectedRow in PlotsDataGridView.SelectedRows)
+                {
+                    // Check if the DataBoundItem is of type GetClientDTO
+                    if (selectedRow.DataBoundItem is GetPlotDTO activityViewModel)
+                    {
+                        // Add the client DTO to the list
+                        selectedPlots.Add(activityViewModel);
+                    }
+                }
+
+                // Check if there are any selected clients
+                if (selectedPlots.Count > 0)
+                {
+                    _dataService.SetSelectedPlotsOnRequestMenu(selectedPlots);
+                }
+            }
+        }
+
+        private void OwnershipDataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            // Check if any rows are selected
+            if (OwnershipDataGridView.SelectedRows.Count > 0)
+            {
+                var selectedOwnershipViewModels = new List<OwnershipViewModel>();
+
+                // Iterate through all selected rows
+                foreach (DataGridViewRow selectedRow in OwnershipDataGridView.SelectedRows)
+                {
+                    // Check if the DataBoundItem is of type GetClientDTO
+                    if (selectedRow.DataBoundItem is OwnershipViewModel activityViewModel)
+                    {
+                        // Add the client DTO to the list
+                        selectedOwnershipViewModels.Add(activityViewModel);
+                    }
+                }
+
+                // Check if there are any selected clients
+                if (selectedOwnershipViewModels.Count > 0)
+                {
+                    _dataService.SetSelectedOwnershipViewModelsRequestMenu(selectedOwnershipViewModels);
+                }
+            }
+        }
+
+        private async void DeletePlotsButton_Click(object sender, EventArgs e)
+        {
+            List<GetActivity_PlotRelashionshipDTO> getActivity_PlotRelashionshipDTOs = _dataService.getActivity_PlotRelashionshipDTOs(_dataService.getSelectedPlotsOnRequestMenu());
+            var response = await _userClient.activityPlotRelashionshipRemove(getActivity_PlotRelashionshipDTOs);
+            if (response.IsSuccess)
+            {
+                _dataService.RemovePlots(_dataService.getSelectedPlotsOnRequestMenu());
+                UpdatePlotsDataGridView();
+            }
+
+        }
+
+        private async void DeleteOwnershipButton_Click(object sender, EventArgs e)
+        {
+            List<OwnershipViewModel> ownershipViewModels = _dataService.GetSelectedOwnershipViewModelsRequestMenu();
+            List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs = new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
+            foreach (var ownershipModel in ownershipViewModels) {
+                GetDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO = _dataService.GetPlotOwnerById(ownershipModel.PlotOwnerID);
+                relashionshipDTOs.Add(relashionshipDTO);
+            }
+            var result = await _userClient.deletePlotOwnerRelashionships(relashionshipDTOs);
+            if (result.IsSuccess)
+            {
+                _dataService.RemovePlotOwnerRelashionships(relashionshipDTOs);
+                UpdateOwnershipDataGridView();
+            }
         }
     }
 }

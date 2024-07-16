@@ -9,5 +9,7 @@ namespace WolfAPI.Services.Interfaces
 
         public Task<bool> OnActivityDelete(Activity activity);
 
+        public Task<bool> OnPlotRelashionshipRemove(List<GetActivity_PlotRelashionshipDTO> plotsDTO);
+
     }
 }

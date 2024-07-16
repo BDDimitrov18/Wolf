@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,11 +21,24 @@ namespace DTOS.DTO
 
         public string Email { get; set; }
 
+        private string _fullName = "";
+
         public string FullName
         {
             get
             {
-                return $"{FirstName} {SecondName ?? ""} {LastName}".Replace(" ", " ").Trim();
+                if (_fullName == "")
+                {
+                    return $"{FirstName} {SecondName ?? ""} {LastName}".Replace(" ", " ").Trim();
+                }
+                else
+                {
+                    return _fullName;
+                }
+            }
+            set
+            {
+                    _fullName = value;
             }
         }
     }

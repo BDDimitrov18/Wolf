@@ -56,9 +56,9 @@
             // 
             // AvailableChoicePanel
             // 
-            AvailableChoicePanel.Location = new Point(12, 160);
+            AvailableChoicePanel.Location = new Point(12, 131);
             AvailableChoicePanel.Name = "AvailableChoicePanel";
-            AvailableChoicePanel.Size = new Size(777, 770);
+            AvailableChoicePanel.Size = new Size(800, 900);
             AvailableChoicePanel.TabIndex = 18;
             // 
             // AddActivityTaskForm
@@ -66,12 +66,15 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
-            ClientSize = new Size(803, 953);
+            ClientSize = new Size(826, 1048);
             Controls.Add(AvailableChoicePanel);
             Controls.Add(ActivityChoiceComboBox);
             Controls.Add(label1);
+            MaximumSize = new Size(844, 1095);
+            MinimumSize = new Size(844, 1028);
             Name = "AddActivityTaskForm";
             Text = "AddActivityTaskForm";
+            WindowState = FormWindowState.Maximized;
             ResumeLayout(false);
             PerformLayout();
         }

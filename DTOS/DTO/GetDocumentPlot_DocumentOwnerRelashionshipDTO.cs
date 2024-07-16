@@ -8,6 +8,8 @@ namespace DTOS.DTO
 {
     public class GetDocumentPlot_DocumentOwnerRelashionshipDTO
     {
+
+        public int Id { get; set; }
         public int DocumentPlotId { get; set; }
         public GetPlot_DocumentOfOwnershipRelashionshipDTO DocumentPlot { get; set; }
 

@@ -43,15 +43,25 @@ namespace WolfClient.UserControls
             var employeesResponse = await _userClient.GetAllEmployees();
             var employeesList = employeesResponse.ResponseObj as List<GetEmployeeDTO>;
 
-
+            
             // Create separate copies of the employee list for each ComboBox
             var employeesListForExecitant = new List<GetEmployeeDTO>(employeesList);
             var employeesListForControl = new List<GetEmployeeDTO>(employeesList);
+            var employeeListForMainExecutant = new List<GetEmployeeDTO>(employeesList);
+
+            MainExecutantComboBox.DataSource = employeeListForMainExecutant;
+            MainExecutantComboBox.DisplayMember = "FullName";
+            MainExecutantComboBox.ValueMember = "EmployeeId";
 
             // Set the data source for the ExecitantComboBox
             ExecitantComboBox.DataSource = employeesListForExecitant;
             ExecitantComboBox.DisplayMember = "FullName";
             ExecitantComboBox.ValueMember = "EmployeeId";
+
+            GetEmployeeDTO employeeDTO = new GetEmployeeDTO();
+            employeeDTO.FullName = "Няма Контрол";
+
+            employeesListForControl.Insert(0, employeeDTO);
 
             // Set the data source for the ControlComboBox
             ControlComboBox.DataSource = employeesListForControl;
@@ -71,7 +81,9 @@ namespace WolfClient.UserControls
                     activityDTOs = linkedRequest.activityDTOs;
                 }
             }
-
+            GetActivityDTO blankActivity = new GetActivityDTO();
+            blankActivity.ActivityTypeName = "Без Произлизаща Дейност";
+            activityDTOs.Insert(0, blankActivity);
             // Set the data source for the ParentActivityComboBox
             ParentActivityComboBox.DataSource = activityDTOs;
             ParentActivityComboBox.DisplayMember = "ActivityTypeName";
@@ -127,21 +139,29 @@ namespace WolfClient.UserControls
                         RequestId = _dataService.GetSelectedRequest().RequestId,
                         ActivityTypeID = activityTypeDTO.ActivityTypeID,
                         ExpectedDuration = expectedDurationDateTime.Value,
-                        ParentActivityId = ParentActivityComboBox.SelectedValue != null ? (int)ParentActivityComboBox.SelectedValue : null
+                        ParentActivityId = ParentActivityComboBox.Text != "Без Произлизаща Дейност" ? (int)ParentActivityComboBox.SelectedValue : null,
+                        StartDate = DateTime.Now,
+                        ExecutantId = (int)MainExecutantComboBox.SelectedValue,
+                        employeePayment = float.Parse(PaymentMainExecutantTextBox.Text),
                     };
 
-                    
+
                     var responseActivityDTO = await _userClient.AddActivity(createActivityDTO);
 
                     CreateTaskDTO createTaskDTO = new CreateTaskDTO()
                     {
                         ActivityId = responseActivityDTO.ResponseObj.ActivityId,
                         Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
-                        StartDate = startDateDateTimePicker.Value,
+                        StartDate = DateTime.Now,
                         ExecutantId = (int)ExecitantComboBox.SelectedValue,
-                        ControlId = (int)ControlComboBox.SelectedValue,
+                        ControlId = ControlComboBox.Text == "Няма Контрол" ? null : (int)ControlComboBox.SelectedValue,
                         Comments = CommentsRichTextBox.Text,
                         TaskTypeId = taskTypeDTO.TaskTypeId,
+                        executantPayment = float.Parse(ExecutantPaymentTextBox.Text),
+                        tax = float.Parse(TaxTextBox.Text),
+                        CommentTax = TaxCommentRichTextBox.Text,
+                        FinishDate = startDateDateTimePicker.Value,
+                        Status = StatusComboBox.Text,
                     };
 
                     var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
@@ -168,7 +188,10 @@ namespace WolfClient.UserControls
                         RequestId = _dataService.GetSelectedRequest().RequestId,
                         ActivityTypeID = activityTypeDTO.ActivityTypeID,
                         ExpectedDuration = expectedDurationDateTime.Value,
-                        ParentActivityId = ParentActivityComboBox.SelectedValue != null ? (int)ParentActivityComboBox.SelectedValue : null
+                        ParentActivityId = ParentActivityComboBox.Text != "Без Произлизаща Дейност" ? (int)ParentActivityComboBox.SelectedValue : null,
+                        ExecutantId = (int)MainExecutantComboBox.SelectedValue,
+                        employeePayment = float.Parse(PaymentMainExecutantTextBox.Text),
+                        StartDate = DateTime.Now
                     };
 
                     //DOESNT MAP THE TASKS PROPERLY
@@ -178,11 +201,16 @@ namespace WolfClient.UserControls
                     {
                         ActivityId = responseActivityDTO.ResponseObj.ActivityId,
                         Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
-                        StartDate = startDateDateTimePicker.Value,
+                        StartDate = DateTime.Now,
                         ExecutantId = (int)ExecitantComboBox.SelectedValue,
-                        ControlId = (int)ControlComboBox.SelectedValue,
+                        ControlId = ControlComboBox.Text == "Няма Контрол" ? null : (int)ControlComboBox.SelectedValue,
                         Comments = CommentsRichTextBox.Text,
                         TaskTypeId = createTaskTypeResponse.ResponseObj.TaskTypes.ElementAt(0).TaskTypeId,
+                        executantPayment = float.Parse(ExecutantPaymentTextBox.Text),
+                        tax = float.Parse(TaxTextBox.Text),
+                        CommentTax = TaxCommentRichTextBox.Text,
+                        FinishDate = startDateDateTimePicker.Value,
+                        Status = StatusComboBox.Text
                     };
 
                     var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
@@ -220,7 +248,10 @@ namespace WolfClient.UserControls
                     RequestId = requestDto.RequestId,
                     ActivityTypeID = createTaskTypeResponse.ResponseObj.ActivityTypeID,
                     ExpectedDuration = expectedDurationDateTime.Value,
-                    ParentActivityId = ParentActivityComboBox.SelectedValue != null ?  (int)ParentActivityComboBox.SelectedValue : null
+                    ParentActivityId = ParentActivityComboBox.Text != "Без Произлизаща Дейност" ? (int)ParentActivityComboBox.SelectedValue : null,
+                    ExecutantId = (int)MainExecutantComboBox.SelectedValue,
+                    employeePayment = float.Parse(PaymentMainExecutantTextBox.Text),
+                    StartDate = DateTime.Now
                 };
 
                 //DOESNT MAP THE TASKS PROPERLY
@@ -230,11 +261,16 @@ namespace WolfClient.UserControls
                 {
                     ActivityId = responseActivityDTO.ResponseObj.ActivityId,
                     Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
-                    StartDate = startDateDateTimePicker.Value,
+                    StartDate = DateTime.Now,
                     ExecutantId = (int)ExecitantComboBox.SelectedValue,
-                    ControlId = (int)ControlComboBox.SelectedValue,
+                    ControlId = ControlComboBox.Text == "Няма Контрол" ? null : (int)ControlComboBox.SelectedValue,
                     Comments = CommentsRichTextBox.Text,
                     TaskTypeId = createTaskTypeResponse.ResponseObj.TaskTypes.ElementAt(0).TaskTypeId,
+                    executantPayment = float.Parse(ExecutantPaymentTextBox.Text),
+                    tax = float.Parse(TaxTextBox.Text),
+                    CommentTax = TaxCommentRichTextBox.Text,
+                    FinishDate = startDateDateTimePicker.Value,
+                    Status = StatusComboBox.Text,
                 };
 
                 var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
@@ -244,6 +280,16 @@ namespace WolfClient.UserControls
 
 
             }
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

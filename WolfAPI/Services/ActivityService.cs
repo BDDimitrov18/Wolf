@@ -89,10 +89,15 @@ namespace WolfAPI.Services
 
             try
             {
-                // Map the DTOs to Activity entities
-                var activities = _mapper.Map<List<Activity>>(activityDTOs);
-
+                List<Activity> activities = new List<Activity>();
+                foreach (var activityDTO in activityDTOs) {
+                    activities.Add(_mapper.Map<Activity>(activityDTO));
+                }
                 // Call the repository method to delete the activities
+
+                foreach (var activity in activities) {
+                    await _activity_plotReleashionshipService.OnActivityDelete(activity);
+                }
                 return await _activityModelRespository.DeleteActivities(activities);
             }
             catch (Exception ex)

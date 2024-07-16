@@ -16,6 +16,9 @@ namespace DTOS.DTO
         public int? ParentActivityId { get; set; }
 
         public DateTime ExpectedDuration { get; set; }
+        public DateTime StartDate { get; set; }
+        public float employeePayment { get; set; }
+        public int ExecutantId { get; set; }
 
     }
 }

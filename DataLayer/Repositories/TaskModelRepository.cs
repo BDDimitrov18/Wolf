@@ -76,8 +76,19 @@ namespace DataAccessLayer.Repositories
 
             try
             {
+                // Extract TaskIds from the list of WorkTask
+                var taskIds = tasks.Select(t => t.TaskId).ToList();
+
+                // Find the tasks that need to be deleted
+                var tasksToDelete = _WolfDbContext.Tasks.Where(t => taskIds.Contains(t.TaskId)).ToList();
+
+                if (tasksToDelete == null || tasksToDelete.Count == 0)
+                {
+                    return false;
+                }
+
                 // Remove the tasks from the DbContext
-                _WolfDbContext.Tasks.RemoveRange(tasks);
+                _WolfDbContext.Tasks.RemoveRange(tasksToDelete);
 
                 // Save changes to the database asynchronously
                 await _WolfDbContext.SaveChangesAsync();

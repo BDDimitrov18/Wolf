@@ -19,5 +19,7 @@ namespace WolfClient.ViewModels
         public string Comments { get; set; }
         public string Identities { get; set; }
         public string ParentActivity { get; set; }
+        public string tax { get; set; }
+        public string taxComment { get; set; }
     }
 }
