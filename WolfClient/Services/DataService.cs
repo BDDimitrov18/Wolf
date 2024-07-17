@@ -148,6 +148,15 @@ namespace WolfClient.Services
             return _selectedClients;
         }
 
+        public List<GetClientDTO> getLinkedClients() { 
+            foreach(var link in compositeData._fetchedLinkedClients) {
+                if (link.requestDTO.RequestId == _selectedRequest.RequestId) {
+                    return link.clientDTOs;
+                }    
+            }
+            return null;
+        }
+
         public void addPlotOwnerRelashionship(GetDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO) {
             compositeData.linkedDocuments.Add(relashionshipDTO);
         }
@@ -279,6 +288,32 @@ namespace WolfClient.Services
             }
             return plotDTOs;
         }
+
+        public List<GetPlotDTO> GetSelectedPlotsFilterActivity(GetActivityDTO activityDTO)
+        {
+            List<GetPlotDTO> plotDTOs = new List<GetPlotDTO>();
+            var selected = GetSelectedLinkedRequest();
+            if (selected.activityDTOs?.Count() > 0)
+            {
+                foreach (var activity in selected.activityDTOs)
+                {
+                    if (activity.ActivityId == activityDTO.ActivityId)
+                    {
+                        if (activity.Plots.Count() > 0)
+                        {
+                            foreach (var plot in activity.Plots)
+                            {
+                                if (!plotDTOs.Any(p => p.PlotId == plot.PlotId))
+                                {
+                                    plotDTOs.Add(plot);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return plotDTOs;
+        }
         public List<GetPlotDTO> GetAllPlots(){
             List<GetPlotDTO> plotDTOs = new List<GetPlotDTO>();
             foreach (var link in compositeData._fetchedLinkedClients) { 
@@ -323,6 +358,20 @@ namespace WolfClient.Services
             return relashionshipDTOs;
         }
 
+        public List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> GetLinkedPlotOwnerRelashionshipsFilterActivity(GetActivityDTO activityDTO)
+        {
+            List<GetPlotDTO> selectedPlots = GetSelectedPlotsFilterActivity(activityDTO);
+            List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs = new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
+            var selectedPlotIds = selectedPlots.Select(p => p.PlotId).ToHashSet();
+            foreach (var relashionship in compositeData.linkedDocuments)
+            {
+                if (selectedPlotIds.Contains(relashionship.DocumentPlot.Plot.PlotId))
+                {
+                    relashionshipDTOs.Add(relashionship);
+                }
+            }
+            return relashionshipDTOs;
+        }
         public List<GetDocumentOfOwnershipDTO> GetDocumentsFromPlots(GetPlotDTO plot) {
             List<GetDocumentOfOwnershipDTO> documentOfOwnershipDTOs = new List<GetDocumentOfOwnershipDTO>();
             foreach (var relashionship in compositeData.linkedDocuments) {

@@ -668,6 +668,7 @@ namespace WolfClient.NewForms
             }
             else
             {
+                DocumentTypeComboBox.Enabled = true;
                 DocumentTypeComboBox.DropDownStyle = ComboBoxStyle.DropDown;
                 TOMComboBox.Enabled = true;
                 RegisterComboBox.Enabled = true;

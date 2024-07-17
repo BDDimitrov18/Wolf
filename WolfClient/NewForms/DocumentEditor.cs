@@ -35,7 +35,7 @@ namespace WolfClient.NewForms
             _selectedPlots = _dataService.GetSelectedPlots();
             _selectedRequest = _dataService.GetSelectedRequest();
             _selectedClients = _dataService.getSelectedCLients();
-            _selectedPlotOwnerRelashionsip = _dataService.GetLinkedPlotOwnerRelashionships();
+            _selectedPlotOwnerRelashionsip = _dataService.GetLinkedPlotOwnerRelashionshipsFilterActivity(_selectedActivity);
 
             // Convert the file to .docx before processing
             _convertedFilePath = ConvertDocToDocx(_fileData);
@@ -107,8 +107,13 @@ namespace WolfClient.NewForms
         {
             // Load the converted .docx file into a MemoryStream
             byte[] docxFileData = File.ReadAllBytes(_convertedFilePath);
-            using (var memoryStream = new MemoryStream(docxFileData))
+
+            // Create a new, expandable MemoryStream
+            using (var memoryStream = new MemoryStream())
             {
+                memoryStream.Write(docxFileData, 0, docxFileData.Length);
+                memoryStream.Position = 0;  // Reset the position to the beginning of the stream
+
                 // Open the document as a WordprocessingDocument from the MemoryStream
                 using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(memoryStream, true))
                 {
@@ -121,9 +126,9 @@ namespace WolfClient.NewForms
 
                         // Replace placeholders and blocks
                         ReplacePlaceholders(body, _selectedActivity);
-                        ReplaceBlocks(body, "(DocumentsOfOwnership_Block)", GetDistinctDocuments(_selectedActivity));
-                        ReplaceBlocks(body, "(PowerOfAttorneyDocument_Block)", GetDistinctPowerOfAttorneyDocuments(_selectedActivity));
-                        ReplaceBlocks(body, "(Owners_Block)", GetDistinctOwners(_selectedActivity));
+                        ReplaceBlocks(body, "DocumentsOfOwnership_Block", PrepareDocumentOfOwnerShipBlock());
+                        ReplaceBlocks(body, "PowerOfAttorneyDocument_Block", PreparePowerOfAttorneyDocumentBlock());
+                        ReplaceBlocks(body, "Owners_Block", prepareOwnersBlocks());
 
                         // Save changes to the document
                         mainPart.Document.Save();
@@ -185,79 +190,179 @@ namespace WolfClient.NewForms
                 {
                     textElement.Text = textElement.Text
                         .Replace("[Plot_City]", plot.City)
-                        .Replace("[Plot_Locality]", plot.locality);
+                        .Replace("[Plot_Locality]", plot.locality)
+                        .Replace("[Plot_Manicipality]", plot.Municipality);
                 }
             }
         }
 
-        private void ReplaceBlocks<T>(Body body, string blockName, List<T> blockItems)
+        private void ReplaceBlocks(Body body, string blockName, List<Dictionary<string, string>> blockItems)
         {
             var paragraphs = body.Elements<Paragraph>().ToList();
-            var blockStartIndex = -1;
-            var blockEndIndex = -1;
+            bool insideBlock = false;
+            string currentBlockName = null;
+            List<OpenXmlElement> blockTemplateElements = new List<OpenXmlElement>();
+            StringBuilder blockBuilder = new StringBuilder();
 
-            // Identify the start and end indices of the block
             for (int i = 0; i < paragraphs.Count; i++)
             {
                 var paragraphText = paragraphs[i].InnerText;
 
-                if (blockStartIndex == -1 && paragraphText.Contains($"({blockName}){{"))
+                if (!insideBlock && paragraphText.Contains("(("))
                 {
-                    blockStartIndex = i;
-                }
-
-                if (blockStartIndex != -1 && paragraphText.Contains("}}"))
-                {
-                    blockEndIndex = i;
-                    break;
-                }
-            }
-
-            if (blockStartIndex != -1 && blockEndIndex != -1)
-            {
-                var blockTemplate = new List<OpenXmlElement>();
-
-                for (int i = blockStartIndex + 1; i < blockEndIndex; i++)
-                {
-                    blockTemplate.Add(paragraphs[i].CloneNode(true));
-                }
-
-                var blockContent = new List<Paragraph>();
-
-                foreach (var item in blockItems)
-                {
-                    foreach (var element in blockTemplate)
+                    blockBuilder.Append(paragraphText);
+                    if (blockBuilder.ToString().Contains("((") && blockBuilder.ToString().Contains("))"))
                     {
-                        var clonedElement = element.CloneNode(true);
-                        ReplacePlaceholdersInElement(clonedElement, item);
-                        blockContent.Add(clonedElement as Paragraph);
+                        int start = blockBuilder.ToString().IndexOf("((");
+                        int end = blockBuilder.ToString().IndexOf("))");
+                        currentBlockName = blockBuilder.ToString().Substring(start + 2, end - start - 2).Trim();
+
+                        if (currentBlockName == blockName)
+                        {
+                            blockBuilder.Clear();
+                        }
+                        else
+                        {
+                            blockBuilder.Clear();
+                            currentBlockName = null;
+                        }
                     }
                 }
 
-                paragraphs.RemoveRange(blockStartIndex + 1, blockEndIndex - blockStartIndex - 1);
-                paragraphs.InsertRange(blockStartIndex + 1, blockContent);
-
-                body.RemoveAllChildren<Paragraph>();
-                foreach (var paragraph in paragraphs)
+                if (currentBlockName == blockName && paragraphText.Contains("{"))
                 {
-                    body.Append(paragraph);
+                    insideBlock = true;
+                }
+
+                if (insideBlock)
+                {
+                    blockTemplateElements.Add(paragraphs[i].CloneNode(true));
+                    if (paragraphText.Contains("}"))
+                    {
+                        insideBlock = false;
+                        currentBlockName = null;
+
+                        var blockContent = new List<Paragraph>();
+
+                        foreach (var item in blockItems)
+                        {
+                            foreach (var element in blockTemplateElements)
+                            {
+                                var clonedElement = element.CloneNode(true);
+                                ReplacePlaceholdersInElement(clonedElement, item);
+                                blockContent.Add(clonedElement as Paragraph);
+                            }
+                        }
+
+                        // Remove the original block and insert the new content
+                        paragraphs.RemoveRange(i - blockTemplateElements.Count + 1, blockTemplateElements.Count);
+                        paragraphs.InsertRange(i - blockTemplateElements.Count + 1, blockContent);
+
+                        // Adjust the loop index to account for the inserted content
+                        i = i - blockTemplateElements.Count + blockContent.Count;
+                        blockTemplateElements.Clear();
+                        currentBlockName = null;
+                        insideBlock = false;
+                    }
+                }
+            }
+
+            // Update the body with the modified paragraphs
+            body.RemoveAllChildren<Paragraph>();
+            foreach (var paragraph in paragraphs)
+            {
+                body.Append(paragraph.CloneNode(true));
+            }
+        }
+
+
+        private void ReplacePlaceholdersInElement(OpenXmlElement element, Dictionary<string, string> replacements)
+        {
+            foreach (var text in element.Descendants<Text>())
+            {
+                foreach (var placeholder in replacements.Keys)
+                {
+                    if (text.Text.Contains($"[{placeholder}]"))
+                    {
+                        text.Text = text.Text.Replace($"[{placeholder}]", replacements[placeholder]);
+                    }
                 }
             }
         }
 
-        private void ReplacePlaceholdersInElement<T>(OpenXmlElement element, T item)
-        {
-            var properties = item.GetType().GetProperties();
-
-            foreach (var text in element.Descendants<Text>())
-            {
-                foreach (var property in properties)
+        public List<Dictionary<string,string>> prepareOwnersBlocks() {
+            List<Dictionary<string,string>> returnDic = new List<Dictionary<string, string>>();
+            List<GetOwnerDTO> distinctOwners = GetDistinctOwners(_selectedActivity);
+            foreach (var owner in distinctOwners) {
+                Dictionary<string,string> temDictionary = new Dictionary<string,string>();
+                List<GetPlotDTO> OwnerAllPLots = GetAllPlotsFromOwner(owner);
+                string allPlotsNumbers = "";
+                foreach (var plot in OwnerAllPLots)
                 {
-                    var placeholder = $"[{property.Name}]";
-                    var value = property.GetValue(item)?.ToString() ?? string.Empty;
-                    text.Text = text.Text.Replace(placeholder, value);
+                    if (plot != OwnerAllPLots.Last())
+                    {
+                        allPlotsNumbers += plot.PlotNumber + ",";
+                    }
+                    else {
+                        allPlotsNumbers += plot.PlotNumber;
+                    }
+                }
+                temDictionary.Add("Owner_FullName", $"{owner.FirstName} {owner.MiddleName} {owner.LastName}");
+                temDictionary.Add("Owner_Address",owner.Address);
+                temDictionary.Add("Plot_City", OwnerAllPLots[0].City);
+                temDictionary.Add("SingleOwner_AllPlots", allPlotsNumbers);
+                temDictionary.Add("Plot_Locality", OwnerAllPLots[0].locality);
+                returnDic.Add(temDictionary);
+            }
+            return returnDic; 
+        }
+        public List<Dictionary<string, string>> PrepareDocumentOfOwnerShipBlock() {
+            List<Dictionary<string, string>> returnDic = new List<Dictionary<string, string>>();
+            List<GetDocumentOfOwnershipDTO> documentOfOwnershipDTOs = GetDistinctDocuments(_selectedActivity);
+            foreach (var document in documentOfOwnershipDTOs) { 
+                Dictionary<string,string> tempDictionary = new Dictionary<string,string>();
+                tempDictionary.Add("Document_Type",document.TypeOfDocument);
+                tempDictionary.Add("Document_Number", document.NumberOfDocument);
+                tempDictionary.Add("Document_TOM", document.TOM.ToString());
+                tempDictionary.Add("Document_Register", document.register);
+                tempDictionary.Add("Document_Case", document.DocCase);
+                tempDictionary.Add("Document_DateOfRegistration", document.DateOfRegistering.ToString());
+                tempDictionary.Add("Document_Issuer", document.Issuer);
+                returnDic.Add(tempDictionary);
+            }
+            return returnDic;
+        }
+
+        public List<Dictionary<string, string>> PreparePowerOfAttorneyDocumentBlock() {
+            List<Dictionary<string, string>> returnDic = new List<Dictionary<string, string>>();
+            List<GetPowerOfAttorneyDocumentDTO> powerOfAttorneyDocumentDTOs = GetDistinctPowerOfAttorneyDocuments(_selectedActivity);
+            foreach (var powerOfAttorneyDocument in powerOfAttorneyDocumentDTOs) {
+                Dictionary<string, string> tempDictionary = new Dictionary<string, string>();
+                tempDictionary.Add("PowerOfAttorneyDocument_Number", powerOfAttorneyDocument.number);
+                tempDictionary.Add("PowerOfAttorneyDocument_DateOfIssuing", powerOfAttorneyDocument.dateOfIssuing.ToString());
+                tempDictionary.Add("PowerOfAttorneyDocument_Issuer", powerOfAttorneyDocument.Issuer);
+                returnDic.Add(tempDictionary);
+            }
+            return returnDic;
+        }
+
+        private List<GetPlotDTO> GetAllPlotsFromOwner(GetOwnerDTO ownerDTO)
+        {
+            List<GetPlotDTO> ownerPlots = new List<GetPlotDTO>();
+
+            foreach (var relationship in _selectedPlotOwnerRelashionsip)
+            {
+                if (relationship.DocumentOwner.OwnerID == ownerDTO.OwnerID)
+                {
+                    var plot = relationship.DocumentPlot.Plot;
+                    if (!ownerPlots.Any(p => p.PlotId == plot.PlotId))
+                    {
+                        ownerPlots.Add(plot);
+                    }
                 }
             }
+
+            return ownerPlots;
         }
 
         private List<GetDocumentOfOwnershipDTO> GetDistinctDocuments(GetActivityDTO activity)

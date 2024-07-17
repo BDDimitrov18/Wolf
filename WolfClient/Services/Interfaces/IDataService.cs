@@ -16,7 +16,7 @@ namespace WolfClient.Services.Interfaces
         public List<GetDocumentOfOwnershipDTO> GetDocumentsFromPlots(GetPlotDTO plot);
         public void setPlotOwnersRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipsDTO);
         public void SetFetchedLinkedRequests(List<RequestWithClientsDTO> linkedRequests);
-
+        public List<GetClientDTO> getLinkedClients();
         public List<RequestWithClientsDTO> GetFetchedLinkedRequests();
 
         public void AddSingleRequest(RequestWithClientsDTO linkedRequest);
@@ -85,5 +85,9 @@ namespace WolfClient.Services.Interfaces
         public List<GetPowerOfAttorneyDocumentDTO> GetAllPowerOfAttorneys();
 
         public List<GetActivityDTO> GetSelectedActivities();
+
+        public List<GetPlotDTO> GetSelectedPlotsFilterActivity(GetActivityDTO activityDTO);
+
+        public List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> GetLinkedPlotOwnerRelashionshipsFilterActivity(GetActivityDTO activityDTO);
     }
 }

@@ -37,7 +37,7 @@ namespace DTOS.DTO
             {
                 if (_activityTypeName == "")
                 {
-                    return $"{ActivityType?.ActivityTypeName ?? "Unknown"} {{ActivityId: {ActivityId}}}";
+                    return $"{ActivityType?.ActivityTypeName ?? "Unknown"}  {ActivityId}";
                 }
                 else {
                     return _activityTypeName;
