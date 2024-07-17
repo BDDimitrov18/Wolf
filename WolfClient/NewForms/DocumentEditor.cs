@@ -12,6 +12,7 @@ using WolfClient.Services.Interfaces;
 using DocumentFormat.OpenXml.Wordprocessing;
 using AngleSharp.Dom;
 using DocumentFormat.OpenXml;
+using SkiaSharp;
 
 namespace WolfClient.NewForms
 {
@@ -34,7 +35,7 @@ namespace WolfClient.NewForms
             _selectedActivity = activity;
             _selectedPlots = _dataService.GetSelectedPlots();
             _selectedRequest = _dataService.GetSelectedRequest();
-            _selectedClients = _dataService.getSelectedCLients();
+            _selectedClients = _dataService.getLinkedClients();
             _selectedPlotOwnerRelashionsip = _dataService.GetLinkedPlotOwnerRelashionshipsFilterActivity(_selectedActivity);
 
             // Convert the file to .docx before processing
@@ -96,7 +97,6 @@ namespace WolfClient.NewForms
             }
 
             Console.WriteLine($"Converted .docx file found at: {outputDocxPath}");
-
             // Clean up the temporary .doc file
             File.Delete(tempDocPath);
 
@@ -113,7 +113,7 @@ namespace WolfClient.NewForms
             {
                 memoryStream.Write(docxFileData, 0, docxFileData.Length);
                 memoryStream.Position = 0;  // Reset the position to the beginning of the stream
-
+                documentViewer1.LoadDocument(memoryStream);
                 // Open the document as a WordprocessingDocument from the MemoryStream
                 using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(memoryStream, true))
                 {
@@ -129,7 +129,8 @@ namespace WolfClient.NewForms
                         ReplaceBlocks(body, "DocumentsOfOwnership_Block", PrepareDocumentOfOwnerShipBlock());
                         ReplaceBlocks(body, "PowerOfAttorneyDocument_Block", PreparePowerOfAttorneyDocumentBlock());
                         ReplaceBlocks(body, "Owners_Block", prepareOwnersBlocks());
-
+                        RemoveBlocksHeadlines(body);
+                        RemoveBlockOpenersAndClosers(body);
                         // Save changes to the document
                         mainPart.Document.Save();
                     }
@@ -171,30 +172,243 @@ namespace WolfClient.NewForms
 
         private void ReplacePlaceholders(Body body, GetActivityDTO activity)
         {
-            foreach (var textElement in body.Descendants<Text>())
+            var paragraphs = body.Elements<Paragraph>().ToList();
+            var placeholders = new Dictionary<string, string>
+    {
+        { "[ActivityId]", activity.ActivityId.ToString() },
+        { "[Activity_Name]", activity.ActivityTypeName },
+        { "[Activity_MainExecutant_FullName]", activity.mainExecutant.FullName },
+        { "[Activity_MainExecutant_Phone]", activity.mainExecutant.phone }
+    };
+
+            foreach (var client in _selectedClients)
             {
-                textElement.Text = textElement.Text
-                    .Replace("[ActivityId]", activity.ActivityId.ToString())
-                    .Replace("[Activity_Name]", activity.ActivityTypeName)
-                    .Replace("[Activity_MainExecutant_FullName]", activity.mainExecutant.FullName)
-                    .Replace("[Activity_MainExecutant_Phone]", activity.mainExecutant.phone);
+                placeholders["[Client_Name]"] = client.FullName;
+                placeholders["[Client_address]"] = client.Address;
+            }
 
-                foreach (var client in _selectedClients)
+            foreach (var plot in _selectedPlots)
+            {
+                placeholders["[Plot_City]"] = plot.City;
+                placeholders["[Plot_Locality]"] = plot.locality;
+                placeholders["[Plot_Manicipality]"] = plot.Municipality;
+            }
+
+            foreach (var paragraph in paragraphs)
+            {
+                var runs = paragraph.Elements<Run>().ToList();
+                for (int i = 0; i < runs.Count; i++)
                 {
-                    textElement.Text = textElement.Text
-                        .Replace("[Client_Name]", client.FullName)
-                        .Replace("[Client_address]", client.Address);
+                    var run = runs[i];
+                    var textElements = run.Elements<Text>().ToList();
+                    for (int j = 0; j < textElements.Count; j++)
+                    {
+                        var textElement = textElements[j];
+                        var text = textElement.Text;
+
+                        foreach (var placeholder in placeholders.Keys)
+                        {
+                            if (text.Contains(placeholder))
+                            {
+                                var replacement = placeholders[placeholder];
+                                text = text.Replace(placeholder, replacement);
+                                textElement.Text = text;
+                            }
+                        }
+                    }
                 }
+            }
 
-                foreach (var plot in _selectedPlots)
+            // Handle placeholders spanning across runs or paragraphs
+            HandleSpanningPlaceholders(paragraphs, placeholders);
+        }
+
+        private void RemoveBlocksHeadlines(Body body)
+        {
+            var paragraphs = body.Elements<Paragraph>().ToList();
+            var placeholders = new Dictionary<string, string>
+            {
+                { "((DocumentsOfOwnership_Block))", "" },
+                { "((PowerOfAttorneyDocument_Block))", "" },
+                { "((Owners_Block))", "" },
+            };
+
+            bool isEmpty = true;
+            bool wasEdited = false;
+            foreach (var paragraph in paragraphs)
+            {
+                isEmpty = true;
+                wasEdited = false;
+                var runs = paragraph.Elements<Run>().ToList();
+                for (int i = 0; i < runs.Count; i++)
                 {
-                    textElement.Text = textElement.Text
-                        .Replace("[Plot_City]", plot.City)
-                        .Replace("[Plot_Locality]", plot.locality)
-                        .Replace("[Plot_Manicipality]", plot.Municipality);
+                    var run = runs[i];
+                    var textElements = run.Elements<Text>().ToList();
+                    for (int j = 0; j < textElements.Count; j++)
+                    {
+                        var textElement = textElements[j];
+                        var text = textElement.Text;
+                        foreach (var placeholder in placeholders.Keys)
+                        {
+                            if (text.Contains(placeholder))
+                            {
+                                var replacement = placeholders[placeholder];
+                                text = text.Replace(placeholder, replacement);
+                                textElement.Text = "";
+                                wasEdited = true;
+
+                            }
+                        }
+                        if (textElement.Text != "")
+                        {
+                            isEmpty = false;
+                        }
+                    }
+                }
+                if (isEmpty && wasEdited) {
+                    paragraph.Remove();
+                }
+            }
+
+            // Handle placeholders spanning across runs or paragraphs
+            HandleSpanningPlaceholdersForBlocks(paragraphs, placeholders);
+        }
+        private void RemoveBlockOpenersAndClosers(Body body)
+        {
+            var paragraphs = body.Elements<Paragraph>().ToList();
+            var placeholders = new Dictionary<string, string>
+            {
+                { "{", "" },
+                { "}", "" },
+            };
+
+
+            foreach (var paragraph in paragraphs)
+            {
+                var runs = paragraph.Elements<Run>().ToList();
+                for (int i = 0; i < runs.Count; i++)
+                {
+                    var run = runs[i];
+                    var textElements = run.Elements<Text>().ToList();
+                    for (int j = 0; j < textElements.Count; j++)
+                    {
+                        var textElement = textElements[j];
+                        var text = textElement.Text;
+
+                        foreach (var placeholder in placeholders.Keys)
+                        {
+                            if (text.Contains(placeholder))
+                            {
+                                var replacement = placeholders[placeholder];
+                                text = text.Replace(placeholder, replacement);
+                                textElement.Text = text;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Handle placeholders spanning across runs or paragraphs
+            HandleSpanningPlaceholders(paragraphs, placeholders);
+        }
+
+        private void HandleSpanningPlaceholders(List<Paragraph> paragraphs, Dictionary<string, string> placeholders)
+        {
+            for (int i = 0; i < paragraphs.Count; i++)
+            {
+                var paragraph = paragraphs[i];
+                var runs = paragraph.Elements<Run>().ToList();
+                StringBuilder combinedText = new StringBuilder();
+                List<Run> involvedRuns = new List<Run>();
+
+                for (int j = 0; j < runs.Count; j++)
+                {
+                    var run = runs[j];
+                    combinedText.Append(run.InnerText);
+                    involvedRuns.Add(run);
+
+                    string combinedString = combinedText.ToString();
+                    foreach (var placeholder in placeholders.Keys)
+                    {
+                        if (combinedString.Contains(placeholder))
+                        {
+                            var replacement = placeholders[placeholder];
+                            combinedString = combinedString.Replace(placeholder, replacement);
+
+                            // Split the combined string back into runs
+                            int currentIndex = 0;
+                            for (int k = 0; k < involvedRuns.Count; k++)
+                            {
+                                var involvedRun = involvedRuns[k];
+                                int lengthToTake = Math.Min(combinedString.Length - currentIndex, involvedRun.InnerText.Length);
+                                string newText = combinedString.Substring(currentIndex, lengthToTake);
+                                involvedRun.RemoveAllChildren<Text>();
+                                involvedRun.Append(new Text(newText));
+                                currentIndex += lengthToTake;
+                            }
+
+                            // Reset for the next placeholder
+                            combinedText.Clear();
+                            involvedRuns.Clear();
+                            break;
+                        }
+                    }
                 }
             }
         }
+        private void HandleSpanningPlaceholdersForBlocks(List<Paragraph> paragraphs, Dictionary<string, string> placeholders)
+        {
+            for (int i = 0; i < paragraphs.Count; i++)
+            {
+                var paragraph = paragraphs[i];
+                var runs = paragraph.Elements<Run>().ToList();
+                StringBuilder combinedText = new StringBuilder();
+                List<Run> involvedRuns = new List<Run>();
+
+                for (int j = 0; j < runs.Count; j++)
+                {
+                    var run = runs[j];
+                    combinedText.Append(run.InnerText);
+                    involvedRuns.Add(run);
+
+                    string combinedString = combinedText.ToString();
+                    foreach (var placeholder in placeholders.Keys)
+                    {
+                        if (combinedString.Contains(placeholder))
+                        {
+                            var replacement = placeholders[placeholder];
+                            combinedString = combinedString.Replace(placeholder, replacement);
+
+                            // Split the combined string back into runs
+                            int currentIndex = 0;
+                            for (int k = 0; k < involvedRuns.Count; k++)
+                            {
+                                var involvedRun = involvedRuns[k];
+                                int lengthToTake = Math.Min(combinedString.Length - currentIndex, involvedRun.InnerText.Length);
+                                string nextText = "";
+                                if (combinedString.Substring(currentIndex, lengthToTake + 1).Last() == '\n')
+                                {
+                                    nextText = combinedString.Substring(currentIndex, lengthToTake + 1);
+                                }
+                                else
+                                {
+                                    nextText = combinedString.Substring(currentIndex, lengthToTake);
+                                }
+                                involvedRun.RemoveAllChildren<Text>();
+                                involvedRun.Append(new Text(nextText));
+                                currentIndex += lengthToTake;
+                            }
+
+                            // Reset for the next placeholder
+                            combinedText.Clear();
+                            involvedRuns.Clear();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
 
         private void ReplaceBlocks(Body body, string blockName, List<Dictionary<string, string>> blockItems)
         {
@@ -255,8 +469,8 @@ namespace WolfClient.NewForms
                         }
 
                         // Remove the original block and insert the new content
-                        paragraphs.RemoveRange(i - blockTemplateElements.Count + 1, blockTemplateElements.Count);
-                        paragraphs.InsertRange(i - blockTemplateElements.Count + 1, blockContent);
+                        paragraphs.RemoveRange(i - blockTemplateElements.Count+1, blockTemplateElements.Count);
+                        paragraphs.InsertRange(i - blockTemplateElements.Count+1, blockContent);
 
                         // Adjust the loop index to account for the inserted content
                         i = i - blockTemplateElements.Count + blockContent.Count;
