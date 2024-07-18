@@ -22,6 +22,7 @@ namespace DataAccessLayer.Models
 
         public string Email { get; set; }
 
-        
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

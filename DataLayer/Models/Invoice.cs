@@ -16,5 +16,8 @@ namespace DataAccessLayer.Models
         public Request Request { get; set; }
 
         public float Sum { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

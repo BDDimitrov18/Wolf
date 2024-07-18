@@ -26,5 +26,7 @@ namespace DataAccessLayer.Models
         public ICollection<Invoice> Invoices { get; set; }
 
         public ICollection<Activity> Activities { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

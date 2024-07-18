@@ -23,7 +23,7 @@ namespace DataAccessLayer.Repositories
             await _WolfDbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> OnActivityDeleteAsync(Activity activity)
+        public async Task<bool> OnActivityDeleteAsync(Activity activity, List<Activity_PlotRelashionship> deletedRelashionships)
         {
             try
             {
@@ -32,8 +32,10 @@ namespace DataAccessLayer.Repositories
                     .Where(ap => ap.ActivityId == activity.ActivityId)
                     .ToListAsync();
 
+                
                 if (activityPlotRelationshipsToDelete.Any())
                 {
+                    deletedRelashionships = new List<Activity_PlotRelashionship>(activityPlotRelationshipsToDelete);
                     _WolfDbContext.Activity_PlotRelashionships.RemoveRange(activityPlotRelationshipsToDelete);
                     var affectedRows = await _WolfDbContext.SaveChangesAsync();
 

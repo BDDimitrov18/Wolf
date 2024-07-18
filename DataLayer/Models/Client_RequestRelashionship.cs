@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,5 +16,7 @@ namespace DataAccessLayer.Models
         public Client Client { get; set; }
 
         public string? OwnershipType { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

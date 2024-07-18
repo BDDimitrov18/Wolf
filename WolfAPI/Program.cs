@@ -18,48 +18,15 @@ using WolfAPI.Services;
 using WolfAPI.Services.Interfaces;
 using AutoMapper;
 using System.Text.Json.Serialization;
-
+using System.Net.WebSockets;
+using Microsoft.AspNetCore.WebSockets;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 var configuration = builder.Configuration;
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
-
-
-
-builder.Services.AddDbContext<WolfDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<WolfDbContext>()
-    .AddDefaultTokenProviders();
-
-builder.Services.Configure<IdentityOptions>(opts => opts.SignIn.RequireConfirmedEmail = true);
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.SaveToken = true;
-    options.RequireHttpsMetadata = false;
-    options.TokenValidationParameters = new TokenValidationParameters()
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidAudience = configuration["JWT:ValidAudience"],
-        ValidIssuer = configuration["JWT:ValidIssuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
-    };
-});
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Auth API", Version = "v1" });
@@ -88,7 +55,33 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
+builder.Services.AddDbContext<WolfDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<WolfDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.Configure<IdentityOptions>(opts => opts.SignIn.RequireConfirmedEmail = true);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = configuration["JWT:ValidAudience"],
+        ValidIssuer = configuration["JWT:ValidIssuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+    };
+});
 
 builder.Services.AddAutoMapper(config =>
 {
@@ -99,61 +92,50 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<IEmployeeModelRepository, EmployeeModelRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-
 builder.Services.AddScoped<IClientModelRepository, ClientModelRepository>();
 builder.Services.AddScoped<IClientService, ClientService>();
-
 builder.Services.AddScoped<IRequestModelRepository, RequestModelRepository>();
 builder.Services.AddScoped<IRequestService, RequestService>();
-
 builder.Services.AddScoped<IClient_RequestRelashionshipModelRepository, Client_RequestRelashionshipModelRepository>();
 builder.Services.AddScoped<IClient_RequestRelashionshipService, Client_RequestRelashionshipService>();
-
 builder.Services.AddScoped<IActivityTypesModelRepository, ActivityTypesModelRepository>();
 builder.Services.AddScoped<IActivityTypesService, ActivityTypesService>();
-
 builder.Services.AddScoped<ITaskTypeModelRepository, TaskTypeModelRepository>();
 builder.Services.AddScoped<ItaskTypesService, TaskTypeService>();
-
 builder.Services.AddScoped<IActivityModelRespository, ActivityModelRespository>();
 builder.Services.AddScoped<IAcitvityService, ActivityService>();
-
 builder.Services.AddScoped<ItaskModelRepository, TaskModelRepository>();
 builder.Services.AddScoped<ItaskServices, TaskService>();
-
 builder.Services.AddScoped<IPlotModelRepository, PlotModelRespository>();
 builder.Services.AddScoped<IPlotService, PlotService>();
-
 builder.Services.AddScoped<IActivity_PlotRelashionshipModelRepository, Activity_PlotRelashionshipModelRepository>();
 builder.Services.AddScoped<IActivity_PlotReleashionshipService, Activity_PlotRelashionshipService>();
-
 builder.Services.AddScoped<IDocumentOfOwnershipModelRepository, DocumentOfOwnershipModelRepository>();
 builder.Services.AddScoped<IDocumentOfOwnershipService, DocumentOfOwnershipService>();
-
 builder.Services.AddScoped<IPlot_DocumentOfOwnershipRelashionshipModelRepository, Plot_DocumentOfOwnershipRelashionshipModelRepository>();
 builder.Services.AddScoped<IPlot_DocumentOfOwnershipRelashionshipService, Plot_DocumentOfOwnershipRelashionshipService>();
-
 builder.Services.AddScoped<IOwnerService, OwnerService>();
 builder.Services.AddScoped<IOwnerModelRepository, OwnerModelRepository>();
-
 builder.Services.AddScoped<IDocumentOfOwnership_OwnerRelashionshipModelRepository, DocumentOfOwnership_OwnerRelashionshipModelRepository>();
 builder.Services.AddScoped<IDocumentOfOwnership_OwnerRelashionshipService, DocumentOfOwnership_OwnerRelashionshipService>();
-
 builder.Services.AddScoped<IDocumentPlot_DocumentOwnerRelashionshipModelRepository, DocumentPlot_DocumentOwnerRelashionshipModelRepository>();
 builder.Services.AddScoped<IDocumentPlot_DocumentOwnerRelashionshipService, DocumentPlot_DocumentOwnerRelashionshipService>();
-
 builder.Services.AddScoped<IPowerOfAttorneyDocumentService, PowerOfAttorneyDocumentService>();
 builder.Services.AddScoped<IPowerOfAttorneyModelRepository, PowerOfAttorneyModelRepository>();
-
 builder.Services.AddScoped<IFileModelRepository, FileModelRepository>();
 builder.Services.AddScoped<IFileService, FileService>();
 
 var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
-
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserManagament, UserManagament>();
 
+// Add WebSocket support
+builder.Services.AddWebSockets(options =>
+{
+    options.KeepAliveInterval = TimeSpan.FromMinutes(2);
+});
+builder.Services.AddSingleton<IWebSocketService, WebSocketService>();
 
 var app = builder.Build();
 
@@ -171,10 +153,18 @@ app.UseRouting(); // Ensures that routing is enabled
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Enable WebSockets
+app.UseWebSockets();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
+
+    endpoints.Map("/ws", async context =>
+    {
+        var webSocketService = context.RequestServices.GetRequiredService<IWebSocketService>();
+        await webSocketService.HandleWebSocketAsync(context);
+    });
 });
 
 app.Run();
-

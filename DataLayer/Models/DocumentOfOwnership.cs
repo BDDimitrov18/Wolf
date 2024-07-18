@@ -24,5 +24,8 @@ namespace DataAccessLayer.Models
         public DateTime DateOfRegistering { get; set; }
         public ICollection<DocumentOfOwnership_OwnerRelashionship> DocumentOwners { get; set; }
         public ICollection<Plot_DocumentOfOwnershipRelashionship> PlotsDocuments { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

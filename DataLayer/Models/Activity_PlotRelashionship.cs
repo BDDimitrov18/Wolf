@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,5 +14,7 @@ namespace DataAccessLayer.Models
 
         public int PlotId { get; set; }
         public Plot Plot { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

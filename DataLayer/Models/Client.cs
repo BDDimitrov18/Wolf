@@ -21,5 +21,7 @@ namespace DataAccessLayer.Models
 
 
         public ICollection<Client_RequestRelashionship> Client_RequestRelationships { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

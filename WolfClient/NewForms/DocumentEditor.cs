@@ -172,13 +172,57 @@ namespace WolfClient.NewForms
 
         private void ReplacePlaceholders(Body body, GetActivityDTO activity)
         {
+            var plots = _dataService.GetSelectedPlotsFilterActivity(activity);
+            string AllPlots = "";
+            string AllPlotsUpis = "";
+            string AllPlotsNeigborhoods = "";
+            bool firstUpi = true;
+            bool firstNeigborhood = true;
+
+            foreach (var plot in plots)
+            {
+                if (plot == plots.Last())
+                {
+                    AllPlots += plot.PlotNumber;
+                    if (plot.RegulatedPlotNumber != "")
+                    {
+                        AllPlotsUpis += plot.RegulatedPlotNumber;
+                        AllPlotsNeigborhoods += plot.neighborhood;
+                    }
+                }
+                else
+                {
+                    AllPlots += plot.PlotNumber + ", ";
+                    if (plot.RegulatedPlotNumber != "")
+                    {
+                        if (firstUpi)
+                        {
+                            AllPlotsUpis += plot.RegulatedPlotNumber; firstUpi = false;
+                        }
+                        else { AllPlotsUpis += ", " + plot.RegulatedPlotNumber; }
+                        if (firstNeigborhood)
+                        {
+                            AllPlotsNeigborhoods += plot.neighborhood; firstNeigborhood = false;
+                        }
+                        else
+                        {
+                            AllPlotsNeigborhoods += ", " + plot.neighborhood;
+                        }
+                    }
+                }
+            }
+
             var paragraphs = body.Elements<Paragraph>().ToList();
             var placeholders = new Dictionary<string, string>
     {
         { "[ActivityId]", activity.ActivityId.ToString() },
         { "[Activity_Name]", activity.ActivityTypeName },
         { "[Activity_MainExecutant_FullName]", activity.mainExecutant.FullName },
-        { "[Activity_MainExecutant_Phone]", activity.mainExecutant.phone }
+        { "[Activity_MainExecutant_Phone]", activity.mainExecutant.phone },
+        { "[Activity_AllPlots]", AllPlots },
+        { "[Activity_AllPlots_UPI]", AllPlotsUpis },
+        { "[Activity_AllPlots_neighborhoods]", AllPlotsNeigborhoods },
+        { "[Date]", DateTime.Now.Day.ToString() + "." + DateTime.Now.Month.ToString() + "." + DateTime.Now.Year.ToString()},
     };
 
             foreach (var client in _selectedClients)
@@ -221,6 +265,44 @@ namespace WolfClient.NewForms
 
             // Handle placeholders spanning across runs or paragraphs
             HandleSpanningPlaceholders(paragraphs, placeholders);
+        }
+
+        private void HandleIndexerPlaceholders(List<Paragraph> paragraphs)
+        {
+            var indexerCounts = new Dictionary<string, int>();
+
+            foreach (var paragraph in paragraphs)
+            {
+                var runs = paragraph.Elements<Run>().ToList();
+                foreach (var run in runs)
+                {
+                    var textElements = run.Elements<Text>().ToList();
+                    foreach (var textElement in textElements)
+                    {
+                        var text = textElement.Text;
+                        var matches = Regex.Matches(text, @"\[Indexer_(\d+)\]");
+
+                        foreach (Match match in matches)
+                        {
+                            var index = match.Groups[1].Value;
+                            var placeholder = $"[Indexer_{index}]";
+
+                            if (!indexerCounts.ContainsKey(placeholder))
+                            {
+                                indexerCounts[placeholder] = 1;
+                            }
+                            else
+                            {
+                                indexerCounts[placeholder]++;
+                            }
+
+                            text = text.Replace(placeholder, indexerCounts[placeholder].ToString());
+                        }
+
+                        textElement.Text = text;
+                    }
+                }
+            }
         }
 
         private void RemoveBlocksHeadlines(Body body)
@@ -272,6 +354,7 @@ namespace WolfClient.NewForms
 
             // Handle placeholders spanning across runs or paragraphs
             HandleSpanningPlaceholdersForBlocks(paragraphs, placeholders);
+            HandleIndexerPlaceholders(paragraphs);
         }
         private void RemoveBlockOpenersAndClosers(Body body)
         {
@@ -540,7 +623,7 @@ namespace WolfClient.NewForms
                 tempDictionary.Add("Document_TOM", document.TOM.ToString());
                 tempDictionary.Add("Document_Register", document.register);
                 tempDictionary.Add("Document_Case", document.DocCase);
-                tempDictionary.Add("Document_DateOfRegistration", document.DateOfRegistering.ToString());
+                tempDictionary.Add("Document_DateOfRegistration", document.DateOfRegistering.Day.ToString() + "." + document.DateOfRegistering.Month.ToString() + "." + document.DateOfRegistering.Year.ToString());
                 tempDictionary.Add("Document_Issuer", document.Issuer);
                 returnDic.Add(tempDictionary);
             }
@@ -553,7 +636,7 @@ namespace WolfClient.NewForms
             foreach (var powerOfAttorneyDocument in powerOfAttorneyDocumentDTOs) {
                 Dictionary<string, string> tempDictionary = new Dictionary<string, string>();
                 tempDictionary.Add("PowerOfAttorneyDocument_Number", powerOfAttorneyDocument.number);
-                tempDictionary.Add("PowerOfAttorneyDocument_DateOfIssuing", powerOfAttorneyDocument.dateOfIssuing.ToString());
+                tempDictionary.Add("PowerOfAttorneyDocument_DateOfIssuing", powerOfAttorneyDocument.dateOfIssuing.Day.ToString() + "." + powerOfAttorneyDocument.dateOfIssuing.Month.ToString() + "." + powerOfAttorneyDocument.dateOfIssuing.Year.ToString());
                 tempDictionary.Add("PowerOfAttorneyDocument_Issuer", powerOfAttorneyDocument.Issuer);
                 returnDic.Add(tempDictionary);
             }

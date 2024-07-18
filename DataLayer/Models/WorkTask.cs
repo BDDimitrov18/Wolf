@@ -37,5 +37,7 @@ namespace DataAccessLayer.Models
 
         public string CommentTax { get; set; }
         public string Status { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

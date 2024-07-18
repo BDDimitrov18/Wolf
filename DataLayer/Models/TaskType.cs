@@ -17,5 +17,7 @@ namespace DataAccessLayer.Models
         public int ActivityTypeID { get; set; }
 
         public ActivityType Activity { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

@@ -24,5 +24,7 @@ namespace DataAccessLayer.Models
 
         public ICollection<DocumentOfOwnership_OwnerRelashionship> documentOfOwnership_OwnerRelashionships{ get; set; }
 
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

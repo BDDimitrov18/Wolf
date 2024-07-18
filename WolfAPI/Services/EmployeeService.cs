@@ -11,15 +11,17 @@ namespace WolfAPI.Services
     {
 
         private readonly IEmployeeModelRepository _employeeRepository;
+        private readonly IWebSocketService _webSocketService;
         private readonly IMapper _mapper;
 
-        public EmployeeService(IEmployeeModelRepository employeeRepository, IMapper mapper)
+        public EmployeeService(IEmployeeModelRepository employeeRepository, IMapper mapper, IWebSocketService webSocketService)
         {
             _employeeRepository = employeeRepository;
             _mapper = mapper;
+            _webSocketService = webSocketService;
         }
 
-        public List<GetEmployeeDTO> Add(List<CreateEmployeeDTO> employeeDto)
+        public async Task<List<GetEmployeeDTO>> Add(List<CreateEmployeeDTO> employeeDto)
         {
             List<GetEmployeeDTO> returnList = new List<GetEmployeeDTO>();
             List<Employee> employees = new List<Employee>();
@@ -36,6 +38,13 @@ namespace WolfAPI.Services
                 var employeeDTO = _mapper.Map<GetEmployeeDTO>(employee);
                 returnList.Add(employeeDTO);
             }
+
+            var updateNotification = new UpdateNotification<List<GetEmployeeDTO>>
+            {
+                OperationType = "Create",
+                UpdatedEntity = returnList
+            };
+            await _webSocketService.SendMessageToAllAsync(updateNotification);
 
             return returnList;
         }

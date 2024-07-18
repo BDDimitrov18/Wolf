@@ -12,13 +12,15 @@ namespace WolfAPI.Services
     {
         private readonly ITaskTypeModelRepository _taskTypeModelRepository;
         private readonly IActivityTypesService _activityTypesService;
+        private readonly IWebSocketService _webSocketService;
         private readonly IMapper _mapper;
 
-        public TaskTypeService(ITaskTypeModelRepository taskTypeModelRepository, IMapper mapper, IActivityTypesService activityTypesService)
+        public TaskTypeService(ITaskTypeModelRepository taskTypeModelRepository, IMapper mapper, IActivityTypesService activityTypesService, IWebSocketService webSocketService)
         {
             _taskTypeModelRepository = taskTypeModelRepository;
             _mapper = mapper;
             _activityTypesService = activityTypesService;
+            _webSocketService = webSocketService;
         }
 
         public async Task<GetActivityTypeDTO> AddTaskTypes(List<CreateTaskTypeDTO> createTaskTypesDTOs)
@@ -34,6 +36,13 @@ namespace WolfAPI.Services
                 taskTypeDTOs.Add(_mapper.Map<GetTaskTypeDTO>(taskType));
             }
             var activityType = await _activityTypesService.GetActivityType(taskTypeDTOs[0].ActivityTypeID);
+
+            var updateNotification = new UpdateNotification<GetActivityTypeDTO>
+            {
+                OperationType = "Create",
+                UpdatedEntity = activityType
+            };
+            await _webSocketService.SendMessageToAllAsync(updateNotification);
 
             return activityType;
         }

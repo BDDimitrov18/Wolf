@@ -1,4 +1,3 @@
-
 using WolfClient.Services.Interfaces;
 using WolfClient.Services;
 using WolfClient.NewForms;
@@ -10,6 +9,8 @@ namespace WolfClient
 {
     internal static class Program
     {
+        private static WebSocketClientService _webSocketClientService;
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -20,22 +21,29 @@ namespace WolfClient
             string currentDirectory = Directory.GetCurrentDirectory();
             string relativePath = @"..\..\..\EKT\ek_atte.xlsx";
             string filePath = Path.GetFullPath(Path.Combine(currentDirectory, relativePath));
-            // Print the current working directory
-            IApiClient apiClient = new ApiClient(); 
-            IUserClient userClient = new UserClient(); 
-            IAdminClient adminClient = new AdminClient(); 
+
+            IApiClient apiClient = new ApiClient();
+            IUserClient userClient = new UserClient();
+            IAdminClient adminClient = new AdminClient();
             IDataService dataService = new DataService();
             IReadExcel readExcel = new ReadExcel();
             IFileUploader fileUploader = new FileUploader();
-            dataService.SetEKTViewModels(readExcel.ReadExcelFile(filePath));
+            _webSocketClientService = new WebSocketClientService("ws://your-websocket-server-url/ws");
 
+            dataService.SetEKTViewModels(readExcel.ReadExcelFile(filePath));
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            MenuRequestsUserControl menuRequestsUserControl = new MenuRequestsUserControl(apiClient, userClient, adminClient, dataService,fileUploader);
+            MenuRequestsUserControl menuRequestsUserControl = new MenuRequestsUserControl(apiClient, userClient, adminClient, dataService, fileUploader);
             MenuClientsUserControl menuClientsUserControl = new MenuClientsUserControl(apiClient, userClient, adminClient);
-            MenuEmployeesUserControl menuEmployeesUserControl = new MenuEmployeesUserControl(apiClient, userClient, adminClient,dataService);
-            Application.Run(new MainForm(apiClient, userClient, adminClient, dataService, menuRequestsUserControl, menuClientsUserControl, menuEmployeesUserControl, fileUploader));
+            MenuEmployeesUserControl menuEmployeesUserControl = new MenuEmployeesUserControl(apiClient, userClient, adminClient, dataService);
+            Application.Run(new MainForm(apiClient, userClient, adminClient, dataService, menuRequestsUserControl, menuClientsUserControl, menuEmployeesUserControl, fileUploader /*,_webSocketClientService*/));
+        }
+
+        public static async Task ConnectWebSocketAsync(string token)
+        {
+            _webSocketClientService.SetToken(token);
+            await _webSocketClientService.ConnectAsync();
         }
     }
 }

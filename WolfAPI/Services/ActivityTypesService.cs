@@ -9,12 +9,14 @@ namespace WolfAPI.Services
     public class ActivityTypesService : IActivityTypesService
     {
         private readonly IActivityTypesModelRepository _activityTypesModelRepository;
+        private readonly IWebSocketService _webSocketService;
         private readonly IMapper _mapper;
 
-        public ActivityTypesService(IActivityTypesModelRepository activityTypesModelRepository, IMapper mapper)
+        public ActivityTypesService(IActivityTypesModelRepository activityTypesModelRepository, IMapper mapper, IWebSocketService webSocketService)
         {
             _activityTypesModelRepository = activityTypesModelRepository;
             _mapper = mapper;
+            _webSocketService = webSocketService;
         }
 
         public List<GetActivityTypeDTO> GetAll() { 
@@ -40,6 +42,15 @@ namespace WolfAPI.Services
                 var activityTypeDto = _mapper.Map<GetActivityTypeDTO>(activityType);    
                 activityTypeDTOs.Add(activityTypeDto);
             }
+
+            var updateNotification = new UpdateNotification<List<GetActivityTypeDTO>>
+            {
+                OperationType = "Create",
+                UpdatedEntity = activityTypeDTOs
+            };
+
+            await _webSocketService.SendMessageToAllAsync(updateNotification);
+
             return activityTypeDTOs;
         }
 

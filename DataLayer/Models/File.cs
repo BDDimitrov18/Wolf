@@ -17,5 +17,8 @@ namespace DataAccessLayer.Models
         public string FilePath { get; set; }
 
         public DateTime UploadedAt { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

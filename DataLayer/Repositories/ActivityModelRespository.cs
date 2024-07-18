@@ -94,6 +94,8 @@ namespace DataAccessLayer.Repositories
 
             // Add the activity to the DbContext and save changes
             _WolfDbContext.Activities.Add(activity);
+
+
             await _WolfDbContext.SaveChangesAsync();
         }
 
@@ -142,7 +144,7 @@ namespace DataAccessLayer.Repositories
                 .FirstOrDefaultAsync(a => a.ActivityId == id);
         }
 
-        public async Task<bool> DeleteOnRequestAsync(Request request)
+        public async Task<bool> DeleteOnRequestAsync(Request request, List<Activity> activitiesToDeleteReturn)
         {
             try
             {
@@ -153,6 +155,7 @@ namespace DataAccessLayer.Repositories
 
                 if (activitiesToDelete.Any())
                 {
+                    activitiesToDeleteReturn = new List<Activity>(activitiesToDelete);
                     _WolfDbContext.Activities.RemoveRange(activitiesToDelete);
                     var affectedRows = await _WolfDbContext.SaveChangesAsync();
 

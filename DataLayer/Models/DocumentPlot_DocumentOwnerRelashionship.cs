@@ -26,5 +26,7 @@ namespace DataAccessLayer.Models
 
         public int PowerOfAttorneyId { get; set; }
         public PowerOfAttorneyDocument  powerOfAttorneyDocument { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

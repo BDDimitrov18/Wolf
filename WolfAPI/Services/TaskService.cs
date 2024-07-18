@@ -10,13 +10,15 @@ namespace WolfAPI.Services
     {
         private readonly ItaskModelRepository _taskModelRepository;
         private readonly IActivityModelRespository _activityModelRespository;
+        private readonly IWebSocketService _webSocketService;
         private readonly IMapper _mapper;
 
-        public TaskService(ItaskModelRepository taskModelRepository, IMapper mapper, IActivityModelRespository activityModelRespository)
+        public TaskService(ItaskModelRepository taskModelRepository, IMapper mapper, IActivityModelRespository activityModelRespository, IWebSocketService webSocketService)
         {
             _taskModelRepository = taskModelRepository;
             _mapper = mapper;
             _activityModelRespository = activityModelRespository;
+            _webSocketService = webSocketService;
         }
         
         public async Task<GetActivityDTO> CreateTask(CreateTaskDTO createTaskDTO)
@@ -26,6 +28,14 @@ namespace WolfAPI.Services
 
             var activity = await _activityModelRespository.GetActivity(task.ActivityId);
             var mappedActivity = _mapper.Map<GetActivityDTO>(activity);
+
+            var updateNotification = new UpdateNotification<GetActivityDTO>
+            {
+                OperationType = "Create",
+                UpdatedEntity = mappedActivity
+            };
+            await _webSocketService.SendMessageToAllAsync(updateNotification);
+
             return mappedActivity;
         }
 
@@ -70,6 +80,13 @@ namespace WolfAPI.Services
                 foreach (var taskDTO in tasksDTO) {
                     tasks.Add(_mapper.Map<WorkTask>(taskDTO));
                 }
+
+                var updateNotification = new UpdateNotification<List<GetTaskDTO>>
+                {
+                    OperationType = "Delete",
+                    UpdatedEntity = tasksDTO
+                };
+                await _webSocketService.SendMessageToAllAsync(updateNotification);
 
                 // Call the repository method to delete the tasks
                 return await _taskModelRepository.DeleteTasks(tasks);

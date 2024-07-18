@@ -53,6 +53,62 @@ namespace DataAccessLayer
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
+            #region ConfigRowVersion
+            modelBuilder.Entity<Activity>()
+                .Property(a => a.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<Activity_PlotRelashionship>()
+                .Property(a => a.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<ActivityType>()
+                .Property(a => a.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<Client>()
+                .Property(c => c.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<Client_RequestRelashionship>()
+                .Property(c => c.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<DocumentOfOwnership>()
+                .Property(d => d.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<DocumentOfOwnership_OwnerRelashionship>()
+                .Property(d => d.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<DocumentPlot_DocumentOwnerRelashionship>()
+                .Property(d => d.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<Employee>()
+                .Property(e => e.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<Files>()
+                .Property(f => f.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<Invoice>()
+                .Property(i => i.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<Owner>()
+                .Property(o => o.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<Plot>()
+                .Property(p => p.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<Plot_DocumentOfOwnershipRelashionship>()
+                .Property(p => p.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<PowerOfAttorneyDocument>()
+                .Property(p => p.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<Request>()
+                .Property(r => r.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<TaskType>()
+                .Property(t => t.RowVersion).IsRowVersion();
+
+            modelBuilder.Entity<WorkTask>()
+                .Property(w => w.RowVersion).IsRowVersion();
+            #endregion
+
             #region InvoiceConfig
             modelBuilder.Entity<Invoice>()
               .HasOne(inv => inv.Request)

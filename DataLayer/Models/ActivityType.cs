@@ -15,5 +15,7 @@ namespace DataAccessLayer.Models
         public string ActivityTypeName { get; set; }
 
         public ICollection<TaskType> TaskTypes { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

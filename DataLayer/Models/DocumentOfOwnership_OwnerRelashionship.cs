@@ -17,5 +17,7 @@ namespace DataAccessLayer.Models
         public Owner Owner { get; set; }
 
         public ICollection<DocumentPlot_DocumentOwnerRelashionship> documentPlot_DocumentOwnerRelashionships { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

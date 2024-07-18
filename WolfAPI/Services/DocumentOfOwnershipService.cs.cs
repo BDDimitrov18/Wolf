@@ -9,18 +9,28 @@ namespace WolfAPI.Services
 {
     public class DocumentOfOwnershipService : IDocumentOfOwnershipService
     {
-        public IDocumentOfOwnershipModelRepository _documentOfOwnershipModelRepository { get; set; }
-        public IMapper _mapper { get; set; }
+        public IDocumentOfOwnershipModelRepository _documentOfOwnershipModelRepository;
+        private readonly IWebSocketService _webSocketService;
+        public IMapper _mapper;
 
-        public DocumentOfOwnershipService(IDocumentOfOwnershipModelRepository documentOfOwnershipModelRepository, IMapper mapper) 
+        public DocumentOfOwnershipService(IDocumentOfOwnershipModelRepository documentOfOwnershipModelRepository, IMapper mapper,IWebSocketService webSocketService) 
         {
             _documentOfOwnershipModelRepository = documentOfOwnershipModelRepository;
             _mapper = mapper;
+            _webSocketService = webSocketService;
         }
 
         public async Task<GetDocumentOfOwnershipDTO> CreateDocument(CreateDocumentOfOwnershipDTO documentDTO) { 
             DocumentOfOwnership document = _mapper.Map<DocumentOfOwnership>(documentDTO);
             await _documentOfOwnershipModelRepository.AddDocument(document);
+
+            var updateNotification = new UpdateNotification<GetDocumentOfOwnershipDTO>
+            {
+                OperationType = "Create",
+                UpdatedEntity = _mapper.Map<GetDocumentOfOwnershipDTO>(document)
+            };
+            await _webSocketService.SendMessageToAllAsync(updateNotification);
+
             return _mapper.Map<GetDocumentOfOwnershipDTO>(document);
         }
 

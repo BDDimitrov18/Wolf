@@ -10,14 +10,16 @@ namespace WolfAPI.Services
     public class ClientService : IClientService
     {
         private readonly IClientModelRepository _clientRepository;
+        private readonly IWebSocketService _webSocketService;
         private readonly IMapper _mapper;
 
-        public ClientService(IClientModelRepository clientRepository, IMapper mapper)
+        public ClientService(IClientModelRepository clientRepository, IMapper mapper, IWebSocketService webSocketService)
         {
             _clientRepository = clientRepository;
             _mapper = mapper;
+            _webSocketService = webSocketService;
         }
-        public List<GetClientDTO> AddClient(List<CreateClientDTO> clientDTOs)
+        public async Task<List<GetClientDTO>> AddClient(List<CreateClientDTO> clientDTOs)
         {
             List<GetClientDTO> returnList = new List<GetClientDTO>();
             List<Client> clients = new List<Client>();
@@ -34,6 +36,14 @@ namespace WolfAPI.Services
                 var clientDTO = _mapper.Map<GetClientDTO>(client);
                 returnList.Add(clientDTO);
             }
+
+            var updateNotification = new UpdateNotification<List<GetClientDTO>>
+            {
+                OperationType = "Create",
+                UpdatedEntity = returnList
+            };
+
+            await _webSocketService.SendMessageToAllAsync(updateNotification);
 
             return returnList;
             

@@ -32,5 +32,8 @@ namespace DataAccessLayer.Models
         public ICollection<WorkTask> Tasks { get; set; }
 
         public ICollection<Activity_PlotRelashionship> ActivityPlots { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

@@ -41,8 +41,10 @@
     <PackageReference Include="EPPlus" Version="6.0.3" />
     <PackageReference Include="FreeSpire.Doc" Version="12.2.0" />
     <PackageReference Include="Gnostice.DocumentStudio.WinForms.Free" Version="24.1.289" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Pdfium.Net.SDK" Version="4.90.2704" />
     <PackageReference Include="PdfiumViewer.Updated" Version="2.14.4" />
+    <PackageReference Include="System.Net.WebSockets.Client" Version="4.3.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -16,11 +16,12 @@ namespace WolfAPI.Services
         private readonly IPlotModelRepository _plotModelRepository;
         private readonly IAcitvityService _acitvityService;
         private readonly IClient_RequestRelashionshipService _client_requestRelashionshipService;
+        private readonly IWebSocketService _webSocketService;
         private readonly IMapper _mapper;
 
         public RequestService(IRequestModelRepository requestRepository, IMapper mapper, IClientModelRepository clientRepository,
         IActivityModelRespository activityModelRespository, IPlotModelRepository plotModelRepository, IClient_RequestRelashionshipService client_requestRelashionshipService,
-        IAcitvityService acitvityService)
+        IAcitvityService acitvityService, IWebSocketService webSocketService)
         {
             _requestRepository = requestRepository;
             _mapper = mapper;
@@ -29,6 +30,7 @@ namespace WolfAPI.Services
             _plotModelRepository = plotModelRepository;
             _client_requestRelashionshipService = client_requestRelashionshipService;
             _acitvityService = acitvityService;
+            _webSocketService = webSocketService;
         }
 
         public async Task<List<RequestWithClientsDTO>> GetLinked(List<GetRequestDTO> requestsDTO)
@@ -69,7 +71,7 @@ namespace WolfAPI.Services
             return requestWithClientsDTOs;
         }
 
-        public List<GetRequestDTO> Add(List<CreateRequestDTO> requestsDto)
+        public async Task<List<GetRequestDTO>> Add(List<CreateRequestDTO> requestsDto)
         {
             List<GetRequestDTO> returnList = new List<GetRequestDTO>();
             List<Request> requests = new List<Request>();
@@ -84,6 +86,13 @@ namespace WolfAPI.Services
                 var requestDTO = _mapper.Map<GetRequestDTO>(request);
                 returnList.Add(requestDTO); 
             }
+
+            var updateNotification = new UpdateNotification<List<GetRequestDTO>>
+            {
+                OperationType = "Create",
+                UpdatedEntity = returnList
+            };
+            await _webSocketService.SendMessageToAllAsync(updateNotification);
             return returnList;
         }
 
@@ -132,6 +141,14 @@ namespace WolfAPI.Services
                 // Log the failure for deleting requests
                 // Example: _logger.LogError("Failed to delete requests");
                 allDeletionsSuccessful = false;
+            }
+            else {
+                var updateNotification = new UpdateNotification<List<GetRequestDTO>>
+                {
+                    OperationType = "Delete",
+                    UpdatedEntity = requestDTOs
+                };
+                await _webSocketService.SendMessageToAllAsync(updateNotification);
             }
 
             return allDeletionsSuccessful;

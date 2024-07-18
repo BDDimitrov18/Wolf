@@ -16,5 +16,7 @@ namespace DataAccessLayer.Models
         public DateTime dateOfIssuing { get; set; }
 
         public string Issuer { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

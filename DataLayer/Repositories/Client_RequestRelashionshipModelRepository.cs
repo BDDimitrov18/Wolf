@@ -33,7 +33,7 @@ namespace DataAccessLayer.Repositories
             return client_RequestRelashionships;
         }
 
-        public async Task<bool> OnRequestDeleteAsync(Request request)
+        public async Task<bool> OnRequestDeleteAsync(Request request, List<Client_RequestRelashionship> client_RequestRelashionships)
         {
             try
             {
@@ -44,6 +44,7 @@ namespace DataAccessLayer.Repositories
 
                 if (clientRequestsToDelete.Any())
                 {
+                    client_RequestRelashionships = new List<Client_RequestRelashionship>(clientRequestsToDelete);
                     _WolfDbContext.Client_RequestRelashionships.RemoveRange(clientRequestsToDelete);
                     var affectedRows = await _WolfDbContext.SaveChangesAsync();
 

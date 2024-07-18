@@ -14,7 +14,7 @@ namespace DataAccessLayer.Repositories.Interfaces
 
         public Task<Activity> GetActivity(int id);
 
-        public Task<bool> DeleteOnRequestAsync(Request request);
+        public Task<bool> DeleteOnRequestAsync(Request request, List<Activity> activitiesToDeleteReturn);
         public Task<bool> DeleteActivities(List<Activity> activities);
     }
 }

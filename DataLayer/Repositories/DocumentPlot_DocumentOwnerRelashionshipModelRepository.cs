@@ -114,14 +114,15 @@ namespace DataAccessLayer.Repositories
             return result;
         }
 
-        public async Task<bool> deleteRelashionship(DocumentPlot_DocumentOwnerRelashionship relashionship)
+        public async Task<bool> deleteRelashionship(DocumentPlot_DocumentOwnerRelashionship relashionship, DocumentPlot_DocumentOwnerRelashionship plotOwner)
         {
             try {
                var result = await _WolfDbContext.documentPlot_DocumentOwenerRelashionships.FindAsync(relashionship.Id);
                 if (result == null) {
                     return false;
                 }
-
+                plotOwner = new DocumentPlot_DocumentOwnerRelashionship();
+                plotOwner = result;
                 _WolfDbContext.documentPlot_DocumentOwenerRelashionships.Remove(result);
                 await _WolfDbContext.SaveChangesAsync();
                 return true;

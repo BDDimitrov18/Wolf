@@ -12,21 +12,31 @@ namespace WolfAPI.Services
 
         public IPlot_DocumentOfOwnershipRelashionshipModelRepository _plot_DocumentOfOwnershipRelashionshipModelRepository { get; set; }
         public IDocumentOfOwnership_OwnerRelashionshipModelRepository _documentOfOwnership_OwnerRelashionshipModelRepository { get; set; }
+        private readonly IWebSocketService _webSocketService;
         public IMapper _mapper { get; set; }
 
         public DocumentPlot_DocumentOwnerRelashionshipService(IDocumentPlot_DocumentOwnerRelashionshipModelRepository DocumentOwnerRelashionshipModelRepository,
         IMapper mapper, IPlot_DocumentOfOwnershipRelashionshipModelRepository plot_DocumentOfOwnershipRelashionshipModelRepository,
-        IDocumentOfOwnership_OwnerRelashionshipModelRepository documentOfOwnership_OwnerRelashionshipModelRepository)
+        IDocumentOfOwnership_OwnerRelashionshipModelRepository documentOfOwnership_OwnerRelashionshipModelRepository, IWebSocketService websocketService)
         {
             _DocumentOwnerRelashionshipModelRepository = DocumentOwnerRelashionshipModelRepository;
             _mapper = mapper;
             _plot_DocumentOfOwnershipRelashionshipModelRepository = plot_DocumentOfOwnershipRelashionshipModelRepository;
             _documentOfOwnership_OwnerRelashionshipModelRepository = documentOfOwnership_OwnerRelashionshipModelRepository;
+            _webSocketService = websocketService;
         }
 
         public async Task<GetDocumentPlot_DocumentOwnerRelashionshipDTO> CreatePlotOwner(CreateDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO) {
             DocumentPlot_DocumentOwnerRelashionship relashionship = _mapper.Map<DocumentPlot_DocumentOwnerRelashionship>(relashionshipDTO);
             await _DocumentOwnerRelashionshipModelRepository.AddRelashionship(relashionship);
+
+            var updateNotification = new UpdateNotification<GetDocumentPlot_DocumentOwnerRelashionshipDTO>
+            {
+                OperationType = "Create",
+                UpdatedEntity = _mapper.Map<GetDocumentPlot_DocumentOwnerRelashionshipDTO>(relashionship)
+            };
+            await _webSocketService.SendMessageToAllAsync(updateNotification);
+
             return _mapper.Map<GetDocumentPlot_DocumentOwnerRelashionshipDTO>(relashionship);
         }
 
@@ -56,10 +66,11 @@ namespace WolfAPI.Services
                 int DocumentPlotID = await _plot_DocumentOfOwnershipRelashionshipModelRepository.getIdOnPlotOwner(_mapper.Map<DocumentPlot_DocumentOwnerRelashionship>(relashionship));
                 int DocumentOwnerID = await _documentOfOwnership_OwnerRelashionshipModelRepository.getIdOnPlotOwner(_mapper.Map<DocumentPlot_DocumentOwnerRelashionship>(relashionship));
 
-                bool resultRelashionship = await _DocumentOwnerRelashionshipModelRepository.deleteRelashionship(_mapper.Map<DocumentPlot_DocumentOwnerRelashionship>(relashionship));
+                DocumentPlot_DocumentOwnerRelashionship plotOwner = new DocumentPlot_DocumentOwnerRelashionship();
+                bool resultRelashionship = await _DocumentOwnerRelashionshipModelRepository.deleteRelashionship(_mapper.Map<DocumentPlot_DocumentOwnerRelashionship>(relashionship), plotOwner);
                 bool documentPlotResult = false, documentOwnerResult = false;
 
-                if(DocumentPlotID != -1)
+                if (DocumentPlotID != -1)
                 {
                     documentPlotResult = await _plot_DocumentOfOwnershipRelashionshipModelRepository.onPlotOwnerDelete(DocumentPlotID);
                 }
@@ -68,17 +79,35 @@ namespace WolfAPI.Services
                     documentOwnerResult = await _documentOfOwnership_OwnerRelashionshipModelRepository.onPlotOwnerDelete(DocumentOwnerID);
                 }
 
-                if (!resultRelashionship) {
+                if (!resultRelashionship)
+                {
                     //Log Relashionship error
                     EndResult = false;
                 }
-                if (!documentOwnerResult) {
+                else {
+                    var updateNotification = new UpdateNotification<DocumentPlot_DocumentOwnerRelashionship>
+                    {
+                        OperationType = "Delete",
+                        UpdatedEntity = plotOwner
+                    };
+                    await _webSocketService.SendMessageToAllAsync(updateNotification);
+                }
+                if (!documentOwnerResult)
+                {
+                   
                     //log documentOwnerError
                     EndResult = false;
                 }
-                if (!documentPlotResult) {
+                else {
+                    
+                }
+                if (!documentPlotResult)
+                {
                     //Log documentPlotError
                     EndResult = false;
+                }
+                else {
+                    
                 }
             }
             return EndResult;

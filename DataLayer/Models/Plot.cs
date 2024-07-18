@@ -36,5 +36,7 @@ namespace DataAccessLayer.Models
         // Foreign key to Activity
         public ICollection<Activity_PlotRelashionship> ActivityPlots { get; set; }
 
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
