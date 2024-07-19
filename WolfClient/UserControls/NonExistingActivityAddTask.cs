@@ -194,7 +194,7 @@ namespace WolfClient.UserControls
                         StartDate = DateTime.Now
                     };
 
-                    //DOESNT MAP THE TASKS PROPERLY
+                    
                     var responseActivityDTO = await _userClient.AddActivity(createActivityDTO);
 
                     CreateTaskDTO createTaskDTO = new CreateTaskDTO()

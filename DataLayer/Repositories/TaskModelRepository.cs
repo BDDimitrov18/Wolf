@@ -35,7 +35,7 @@ namespace DataAccessLayer.Repositories
                 .FirstOrDefaultAsync(t => t.TaskId == task.TaskId); // Find the task by TaskId
         }
 
-        public async Task<bool> DeleteOnActivityAsync(Activity activity,List<WorkTask> tasks)
+        public async Task<bool> DeleteOnActivityAsync(Activity activity)
         {
             try
             {
@@ -46,7 +46,6 @@ namespace DataAccessLayer.Repositories
 
                 if (workTasksToDelete.Any())
                 {
-                    tasks = new List<WorkTask>(workTasksToDelete);
                     _WolfDbContext.Tasks.RemoveRange(workTasksToDelete);
                     var affectedRows = await _WolfDbContext.SaveChangesAsync();
 

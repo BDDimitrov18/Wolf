@@ -590,7 +590,7 @@ namespace WolfClient.UserControls
                         clientDTOs = getClientDTOs,
                     };
 
-                    _dataService.AddSingleRequest(requestWithClients);
+                    //_dataService.AddSingleRequest(requestWithClients);
                 }
             }
             UpdateRequestDataGridView(_dataService.getRequests());

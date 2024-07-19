@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
+﻿using AngleSharp.Dom;
+using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
 using DTOS.DTO;
 using System;
@@ -6,7 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using WolfClient.NewForms;
 using WolfClient.Services.Interfaces;
 using WolfClient.ViewModels;
 
@@ -17,7 +20,6 @@ namespace WolfClient.Services
 
         private CompositeDataDTO compositeData { get; set; }
         private GetRequestDTO _selectedRequest { get; set; }
-        private List<GetClientDTO> _clientDTOs { get; set; }
 
         private List<GetEmployeeDTO> _employeeDTOs { get; set; }
 
@@ -33,14 +35,16 @@ namespace WolfClient.Services
 
         public List<OwnershipViewModel> _selectedOwnershipRequestMenu { get; set; }
 
+        public List<GetClientDTO> _allClients { get; set; }
+
         public DataService()
         {
             compositeData = new CompositeDataDTO();
             compositeData._fetchedLinkedClients = new List<RequestWithClientsDTO>();
             compositeData.linkedDocuments = new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
-            _clientDTOs = new List<GetClientDTO>();
             _employeeDTOs = new List<GetEmployeeDTO>();
             _selectedClients = new List<GetClientDTO>();
+            _allClients = new List<GetClientDTO>();
             _selectedActivity = new List<ActivityViewModel>();
         }
 
@@ -538,5 +542,422 @@ namespace WolfClient.Services
             }
             return null;
         }
+
+        private string ConvertFloatToFraction(float value)
+        {
+            // Tolerance for floating point comparison
+            const double TOLERANCE = 1.0E-6;
+
+            if (value == 0.0)
+                return "0/1";
+
+            int sign = Math.Sign(value);
+            value = Math.Abs(value);
+
+            int n = (int)Math.Floor(value);
+            value -= n;
+
+            if (value < TOLERANCE)
+                return $"{sign * n}/1";
+
+            if (1 - value < TOLERANCE)
+                return $"{sign * (n + 1)}/1";
+
+            int lower_numerator = 0;
+            int lower_denominator = 1;
+            int upper_numerator = 1;
+            int upper_denominator = 1;
+
+            while (true)
+            {
+                int middle_numerator = lower_numerator + upper_numerator;
+                int middle_denominator = lower_denominator + upper_denominator;
+
+                if (middle_denominator * (value + TOLERANCE) < middle_numerator)
+                {
+                    upper_numerator = middle_numerator;
+                    upper_denominator = middle_denominator;
+                }
+                else if (middle_numerator < (value - TOLERANCE) * middle_denominator)
+                {
+                    lower_numerator = middle_numerator;
+                    lower_denominator = middle_denominator;
+                }
+                else
+                {
+                    return $"{sign * (n * middle_denominator + middle_numerator)}/{middle_denominator}";
+                }
+            }
+        }
+
+        public List<OwnershipViewModel> GetOwnershipViewModels(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs)
+        {
+            // Initialize the dictionary
+            var RelashionshipDictionary = new Dictionary<int, Dictionary<int, List<Dictionary<GetOwnerDTO, string>>>>();
+
+            var plotDictionary = relashionshipDTOs
+                .Select(r => r.DocumentPlot.Plot)
+                .GroupBy(p => p.PlotId)
+                .Select(g => g.First())
+                .ToDictionary(p => p.PlotId);
+
+            var documentDictionary = relashionshipDTOs
+                .Select(r => r.DocumentPlot.documentOfOwnership)
+                .GroupBy(d => d.DocumentId)
+                .Select(g => g.First())
+                .ToDictionary(d => d.DocumentId);
+
+            foreach (var relashionship in relashionshipDTOs)
+            {
+                var plotId = relashionship.DocumentPlot.Plot.PlotId;
+                var documentId = relashionship.DocumentPlot.documentOfOwnership.DocumentId;
+                var owner = relashionship.DocumentOwner.Owner;
+                var idealParts = relashionship.IdealParts;
+
+                // Check if the plot is already in the dictionary
+                if (!RelashionshipDictionary.ContainsKey(plotId))
+                {
+                    RelashionshipDictionary[plotId] = new Dictionary<int, List<Dictionary<GetOwnerDTO, string>>>();
+                }
+
+                // Check if the document is already in the dictionary for this plot
+                if (!RelashionshipDictionary[plotId].ContainsKey(documentId))
+                {
+                    RelashionshipDictionary[plotId][documentId] = new List<Dictionary<GetOwnerDTO, string>>();
+                }
+
+                // Determine the string value for idealParts based on isDrob
+                string idealPartsString = relashionship.isDrob ? ConvertFloatToFraction(idealParts) : idealParts.ToString();
+
+                // Create a dictionary for the owner and ideal parts string
+                var ownerWithIdealParts = new Dictionary<GetOwnerDTO, string> { { owner, idealPartsString } };
+
+                // Add the owner and ideal parts string to the list for this document
+                RelashionshipDictionary[plotId][documentId].Add(ownerWithIdealParts);
+            }
+
+            var ownershipViewModels = new List<OwnershipViewModel>();
+            foreach (var plotEntry in RelashionshipDictionary)
+            {
+                bool isFirstEntryForPlot = true;
+                foreach (var documentEntry in plotEntry.Value)
+                {
+                    foreach (var ownerWithIdealParts in documentEntry.Value)
+                    {
+                        foreach (var ownerEntry in ownerWithIdealParts)
+                        {
+                            var owner = ownerEntry.Key;
+                            var idealPartsString = ownerEntry.Value;
+
+                            // Extract PowerOfAttorneyNumber from the relationship DTO
+                            var powerOfAttorneyNumber = relashionshipDTOs
+                                .FirstOrDefault(r => r.DocumentPlot.Plot.PlotId == plotEntry.Key
+                                                     && r.DocumentPlot.documentOfOwnership.DocumentId == documentEntry.Key
+                                                     && r.DocumentOwner.OwnerID == owner.OwnerID)?.powerOfAttorneyDocumentDTO?.number;
+
+                            // Extract PlotOwnerID from the relationship DTO
+                            var plotOwnerID = relashionshipDTOs
+                                .FirstOrDefault(r => r.DocumentPlot.Plot.PlotId == plotEntry.Key
+                                                     && r.DocumentPlot.documentOfOwnership.DocumentId == documentEntry.Key
+                                                     && r.DocumentOwner.OwnerID == owner.OwnerID)?.Id;
+
+                            var ownershipViewModel = new OwnershipViewModel()
+                            {
+                                PlotNumber = isFirstEntryForPlot ? plotDictionary[plotEntry.Key].PlotNumber : string.Empty,
+                                NumberTypeDocument = $"{documentDictionary[documentEntry.Key].NumberOfDocument} {documentDictionary[documentEntry.Key].TypeOfDocument}",
+                                NumberTypeOwner = $"{owner.OwnerID} {owner.FirstName} {owner.MiddleName} {owner.LastName}",
+                                EGN = owner.EGN,
+                                Address = owner.Address,
+                                IdealParts = idealPartsString,
+                                PowerOfAttorneyNumber = powerOfAttorneyNumber,
+                                PlotOwnerID = plotOwnerID ?? 0 // Default to 0 if null
+                            };
+
+                            ownershipViewModels.Add(ownershipViewModel);
+                            isFirstEntryForPlot = false;
+                        }
+                    }
+                }
+            }
+
+            return ownershipViewModels;
+        }
+
+        private void cleanUnconnectedDocumentLinks() {
+            foreach (var link in compositeData._fetchedLinkedClients) {
+                foreach (var activity in link.activityDTOs) {
+                    foreach (var plot in activity.Plots) {
+                        if (compositeData.linkedDocuments.Where(opt => opt.DocumentPlot.PlotId == plot.PlotId).ToList().Count() >0) {
+                            var listToRemove = compositeData.linkedDocuments.Where(opt => opt.DocumentPlot.PlotId == plot.PlotId).ToList();
+                            foreach (var item in listToRemove) {
+                                compositeData.linkedDocuments.Remove(item);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public void HandleWebSocketMessage(string message)
+        {
+            var baseNotification = JsonSerializer.Deserialize<UpdateNotification<JsonElement>>(message);
+            if (baseNotification.OperationType == "Create")
+            {
+                if (baseNotification.EntityType == "List<GetRequestDTO>")
+                {
+                    RequestWithClientsDTO requestWithClientsDTO = new RequestWithClientsDTO();
+                    requestWithClientsDTO.requestDTO = baseNotification.UpdatedEntity.Deserialize<List<GetRequestDTO>>()[0];
+                    requestWithClientsDTO.clientDTOs = new List<GetClientDTO>();
+                    requestWithClientsDTO.activityDTOs = new List<GetActivityDTO>();
+                    compositeData._fetchedLinkedClients.Add(requestWithClientsDTO);
+                }
+                else if (baseNotification.EntityType == "List<GetClient_RequestRelashionshipDTO>")
+                {
+                    List<GetClient_RequestRelashionshipDTO> getClient_RequestRelashionshipDTOs = baseNotification.UpdatedEntity.Deserialize<List<GetClient_RequestRelashionshipDTO>>();
+                    foreach (var link in compositeData._fetchedLinkedClients)
+                    {
+                        if (link.requestDTO.RequestId == getClient_RequestRelashionshipDTOs[0].RequestId)
+                        {
+                            foreach (var relashionship in getClient_RequestRelashionshipDTOs)
+                            {
+                                link.clientDTOs.Add(relashionship.Client);
+                            }
+                        }
+                    }
+                }
+                else if (baseNotification.EntityType == "GetActivityDTO")
+                {
+                    GetActivityDTO activityDTO = baseNotification.UpdatedEntity.Deserialize<GetActivityDTO>();
+                    bool replaced = false;
+                    foreach (var link in compositeData._fetchedLinkedClients)
+                    {
+                        if (link.requestDTO.RequestId == activityDTO.RequestId)
+                        {
+                            for (int i = 0; i < link.activityDTOs.Count; i++)
+                            {
+                                if (link.activityDTOs[i].ActivityId == activityDTO.ActivityId)
+                                {
+                                    link.activityDTOs[i] = activityDTO;
+                                    replaced = true;
+                                }
+                            }
+                            if (!replaced)
+                            {
+                                link.activityDTOs.Add(activityDTO);
+                            }
+                        }
+                    }
+                }
+                else if (baseNotification.EntityType == "GetActivity_Plot_OwnershipDTO")
+                {
+                    GetActivity_Plot_OwnershipDTO getActivity_Plot_OwnershipDTO = baseNotification.UpdatedEntity.Deserialize<GetActivity_Plot_OwnershipDTO>();
+
+                    foreach (var link in compositeData._fetchedLinkedClients)
+                    {
+                        foreach (var activity in getActivity_Plot_OwnershipDTO.activity_PlotRelashionshipDTOs)
+                        {
+                            var existingActivity = link.activityDTOs.FirstOrDefault(opt => opt.ActivityId == activity.ActivityId);
+                            if (existingActivity != null)
+                            {
+                                // Update the properties of the existing activity
+                                existingActivity.RequestId = activity.Activity.RequestId;
+                                existingActivity.Request = activity.Activity.Request;
+                                existingActivity.ActivityTypeID = activity.Activity.ActivityTypeID;
+                                existingActivity.ActivityType = activity.Activity.ActivityType;
+                                existingActivity.ParentActivityId = activity.Activity.ParentActivityId;
+                                existingActivity.ParentActivity = activity.Activity.ParentActivity;
+                                existingActivity.ExpectedDuration = activity.Activity.ExpectedDuration;
+                                existingActivity.StartDate = activity.Activity.StartDate;
+                                existingActivity.employeePayment = activity.Activity.employeePayment;
+                                existingActivity.ExecutantId = activity.Activity.ExecutantId;
+                                existingActivity.mainExecutant = activity.Activity.mainExecutant;
+                                existingActivity.Tasks = activity.Activity.Tasks;
+                                existingActivity.Plots = activity.Activity.Plots;
+                                // Add other properties as needed
+                            }
+                            else
+                            {
+                                link.activityDTOs.Add(activity.Activity);
+                            }
+                        }
+                    }
+                    compositeData.linkedDocuments.AddRange(getActivity_Plot_OwnershipDTO.getDocumentPlot_DocumentOwnerRelashionshipDTOs);
+                }
+                else if (baseNotification.EntityType == "GetDocumentPlot_DocumentOwnerRelashionshipDTO")
+                {
+                    GetDocumentPlot_DocumentOwnerRelashionshipDTO getDocumentPlot_DocumentOwnerRelashionshipDTO = baseNotification.UpdatedEntity.Deserialize<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
+                    compositeData.linkedDocuments.Add(getDocumentPlot_DocumentOwnerRelashionshipDTO);
+                }
+                else if (baseNotification.EntityType == "List<GetEmployeeDTO>")
+                {
+                    List<GetEmployeeDTO> employeesDTO = baseNotification.UpdatedEntity.Deserialize<List<GetEmployeeDTO>>();
+                    _employeeDTOs.AddRange(employeesDTO);
+                }
+                else if (baseNotification.EntityType == "List<GetClientDTO>")
+                {
+                    List<GetClientDTO> clientDTOs = baseNotification.UpdatedEntity.Deserialize<List<GetClientDTO>>();
+                    _allClients.AddRange(clientDTOs);
+                }
+                else if (baseNotification.EntityType == "GetActivityTypeDTO")
+                {
+                    GetActivityTypeDTO activityTypeDTO = baseNotification.UpdatedEntity.Deserialize<GetActivityTypeDTO>();
+
+                    var existingActivityType = _activityTypesDTOs.FirstOrDefault(at => at.ActivityTypeID == activityTypeDTO.ActivityTypeID);
+                    if (existingActivityType != null)
+                    {
+                        // Update the properties of the existing activity type
+                        existingActivityType.ActivityTypeName = activityTypeDTO.ActivityTypeName;
+                        // Add other properties as needed
+                    }
+                    else { 
+                        _activityTypesDTOs.Add(activityTypeDTO);
+                    }
+                }
+            }
+            else if (baseNotification.OperationType == "Delete")
+            {
+                if (baseNotification.EntityType == "List<GetRequestDTO>")
+                {
+                    List<GetRequestDTO> requestDTOs = baseNotification.UpdatedEntity.Deserialize<List<GetRequestDTO>>();
+                    List<RequestWithClientsDTO> itemsToRemove = new List<RequestWithClientsDTO>();
+
+                    foreach (var link in compositeData._fetchedLinkedClients)
+                    {
+                        if (requestDTOs.Any(opt => opt.RequestId == link.requestDTO.RequestId))
+                        {
+                            itemsToRemove.Add(link);
+                        }
+                    }
+
+                    foreach (var item in itemsToRemove)
+                    {
+                        compositeData._fetchedLinkedClients.Remove(item);
+                    }
+                }
+                else if (baseNotification.EntityType == "List<GetClient_RequestRelashionshipDTO>")
+                {
+                    List<GetClient_RequestRelashionshipDTO> getClient_RequestRelashionshipDTOs = baseNotification.UpdatedEntity.Deserialize<List<GetClient_RequestRelashionshipDTO>>();
+
+                    foreach (var link in compositeData._fetchedLinkedClients)
+                    {
+                        if (link.requestDTO.RequestId == getClient_RequestRelashionshipDTOs[0].RequestId)
+                        {
+                            List<GetClientDTO> clientsToRemove = new List<GetClientDTO>();
+
+                            foreach (var relashionship in getClient_RequestRelashionshipDTOs)
+                            {
+                                var clientToRemove = link.clientDTOs.FirstOrDefault(opt => opt.ClientId == relashionship.ClientId);
+                                if (clientToRemove != null)
+                                {
+                                    clientsToRemove.Add(clientToRemove);
+                                }
+                            }
+
+                            foreach (var client in clientsToRemove)
+                            {
+                                link.clientDTOs.Remove(client);
+                            }
+                        }
+                    }
+                }
+                else if (baseNotification.EntityType == "List<GetTaskDTO>")
+                {
+                    List<GetTaskDTO> getTaskDTOs = baseNotification.UpdatedEntity.Deserialize<List<GetTaskDTO>>();
+
+                    foreach (var link in compositeData._fetchedLinkedClients)
+                    {
+                        foreach (var activity in link.activityDTOs)
+                        {
+                            List<GetTaskDTO> tasksToRemove = new List<GetTaskDTO>();
+
+                            foreach (var task in getTaskDTOs)
+                            {
+                                var taskToRemove = activity.Tasks.FirstOrDefault(opt => opt.TaskId == task.TaskId);
+                                if (taskToRemove != null)
+                                {
+                                    tasksToRemove.Add(taskToRemove);
+                                }
+                            }
+
+                            foreach (var task in tasksToRemove)
+                            {
+                                activity.Tasks.Remove(task);
+                            }
+                        }
+                    }
+                }
+                else if (baseNotification.EntityType == "List<GetActivityDTO>")
+                {
+                    List<GetActivityDTO> activityDTOs = baseNotification.UpdatedEntity.Deserialize<List<GetActivityDTO>>();
+
+                    foreach (var link in compositeData._fetchedLinkedClients)
+                    {
+                        List<GetActivityDTO> activitiesToRemove = new List<GetActivityDTO>();
+
+                        foreach (var activity in activityDTOs)
+                        {
+                            var existingActivity = link.activityDTOs.FirstOrDefault(opt => opt.ActivityId == activity.ActivityId);
+                            if (existingActivity != null)
+                            {
+                                activitiesToRemove.Add(existingActivity);
+                            }
+                        }
+
+                        foreach (var activity in activitiesToRemove)
+                        {
+                            link.activityDTOs.Remove(activity);
+                        }
+                    }
+                    cleanUnconnectedDocumentLinks();
+                }
+                else if (baseNotification.EntityType == "List<GetActivity_PlotRelashionshipDTO>")
+                {
+                    List<GetActivity_PlotRelashionshipDTO> getActivity_PlotRelashionshipDTOs = baseNotification.UpdatedEntity.Deserialize<List<GetActivity_PlotRelashionshipDTO>>();
+
+                    foreach (var link in compositeData._fetchedLinkedClients)
+                    {
+                        foreach (var activity in link.activityDTOs)
+                        {
+                            List<GetPlotDTO> plotsToRemove = new List<GetPlotDTO>();
+
+                            foreach (var relashionship in getActivity_PlotRelashionshipDTOs)
+                            {
+                                if (activity.ActivityId == relashionship.ActivityId)
+                                {
+                                    plotsToRemove.AddRange(activity.Plots.Where(opt => opt.PlotId == relashionship.PlotId).ToList());
+                                }
+                            }
+
+                            foreach (var plot in plotsToRemove)
+                            {
+                                activity.Plots.Remove(plot);
+                            }
+                        }
+                    }
+                }
+                else if (baseNotification.EntityType == "List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>")
+                {
+                    List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> getDocumentPlot_DocumentOwnerRelashionshipDTOs = baseNotification.UpdatedEntity.Deserialize<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>>();
+
+                    List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> documentsToRemove = new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
+
+                    foreach (var link in compositeData.linkedDocuments)
+                    {
+                        if (getDocumentPlot_DocumentOwnerRelashionshipDTOs.Any(opt => opt.Id == link.Id))
+                        {
+                            documentsToRemove.Add(link);
+                        }
+                    }
+
+                    foreach (var document in documentsToRemove)
+                    {
+                        compositeData.linkedDocuments.Remove(document);
+                    }
+                }
+            }
+            else if (baseNotification.EntityType == "Edit") { 
+                
+            }
+        }
+
     }
 }

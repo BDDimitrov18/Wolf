@@ -37,13 +37,14 @@ namespace WolfAPI.Services
             }
             var activityType = await _activityTypesService.GetActivityType(taskTypeDTOs[0].ActivityTypeID);
 
+
             var updateNotification = new UpdateNotification<GetActivityTypeDTO>
             {
                 OperationType = "Create",
+                EntityType = "GetActivityTypeDTO",
                 UpdatedEntity = activityType
             };
-            await _webSocketService.SendMessageToAllAsync(updateNotification);
-
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
             return activityType;
         }
 

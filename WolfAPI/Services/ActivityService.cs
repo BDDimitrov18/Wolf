@@ -28,15 +28,6 @@ namespace WolfAPI.Services
             Activity activity = _mapper.Map<Activity>(createActivityDTO);
             await _activityModelRespository.CreateActivity(activity);
             var activityDTO = _mapper.Map<GetActivityDTO>(activity);
-
-            var updateNotification = new UpdateNotification<GetActivityDTO>
-            {
-                OperationType = "Create",
-                UpdatedEntity = activityDTO
-            };
-
-            await _webSocketService.SendMessageToAllAsync(updateNotification);
-
             return activityDTO;
         }
 
@@ -60,26 +51,12 @@ namespace WolfAPI.Services
                     }
 
                     // Delete tasks for the activity
-                    List<WorkTask> tasks = new List<WorkTask>();
-                    bool taskDeletionSuccess = await _taskModelRepository.DeleteOnActivityAsync(activity, tasks);
+                    bool taskDeletionSuccess = await _taskModelRepository.DeleteOnActivityAsync(activity);
                     if (!taskDeletionSuccess)
                     {
                         // Log the failure
                         // Example: _logger.LogError($"Failed to delete tasks for activity ID {activity.ActivityId}");
                         allDeletionsSuccessful = false;
-                    }
-                    else {
-                        List<GetTaskDTO> taskDTOs = new List<GetTaskDTO>(); 
-                        foreach (var task in tasks) {
-                            taskDTOs.Add(_mapper.Map<GetTaskDTO>(task));
-                        }
-                        var updateNotification = new UpdateNotification<List<GetTaskDTO>>
-                        {
-                            OperationType = "Delete",
-                            UpdatedEntity = taskDTOs
-                        };
-
-                        await _webSocketService.SendMessageToAllAsync(updateNotification);
                     }
                 }
 
@@ -93,19 +70,7 @@ namespace WolfAPI.Services
                     // Example: _logger.LogError($"Failed to delete activities for request ID {request.RequestId}");
                     allDeletionsSuccessful = false;
                 }
-                else {
-                    foreach (var activity in activitiesAllToDelete) {
-                        activityDTOs.Add(_mapper.Map<GetActivityDTO>(activity));
-                    }
-
-                    var updateNotification = new UpdateNotification<List<GetActivityDTO>>
-                    {
-                        OperationType = "Delete",
-                        UpdatedEntity = activityDTOs
-                    };
-
-                    await _webSocketService.SendMessageToAllAsync(updateNotification);
-                }
+                
 
                 return allDeletionsSuccessful;
             }
@@ -142,10 +107,11 @@ namespace WolfAPI.Services
                 var updateNotification = new UpdateNotification<List<GetActivityDTO>>
                 {
                     OperationType = "Delete",
+                    EntityType = "List<GetActivityDTO>",
                     UpdatedEntity = activityDTOs
                 };
 
-                await _webSocketService.SendMessageToAllAsync(updateNotification);
+                await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
 
                 return await _activityModelRespository.DeleteActivities(activities);
             }

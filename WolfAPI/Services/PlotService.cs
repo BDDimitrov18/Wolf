@@ -27,9 +27,10 @@ namespace WolfAPI.Services
             var updateNotification = new UpdateNotification<GetPlotDTO>
             {
                 OperationType = "Create",
+                EntityType = "GetPlotDTO",
                 UpdatedEntity = getPlotMapped
             };
-            await _webSocketService.SendMessageToAllAsync(updateNotification);
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
             return getPlotMapped;
         }
     }

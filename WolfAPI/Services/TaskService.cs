@@ -32,9 +32,10 @@ namespace WolfAPI.Services
             var updateNotification = new UpdateNotification<GetActivityDTO>
             {
                 OperationType = "Create",
+                EntityType = "GetActivityDTO",
                 UpdatedEntity = mappedActivity
             };
-            await _webSocketService.SendMessageToAllAsync(updateNotification);
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
 
             return mappedActivity;
         }
@@ -84,9 +85,10 @@ namespace WolfAPI.Services
                 var updateNotification = new UpdateNotification<List<GetTaskDTO>>
                 {
                     OperationType = "Delete",
+                    EntityType = "List<GetTaskDTO>",
                     UpdatedEntity = tasksDTO
                 };
-                await _webSocketService.SendMessageToAllAsync(updateNotification);
+                await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
 
                 // Call the repository method to delete the tasks
                 return await _taskModelRepository.DeleteTasks(tasks);

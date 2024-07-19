@@ -4,25 +4,27 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using WolfClient.Services.Interfaces;
 
-public class WebSocketClientService
+public class WebSocketClientService : IDisposable
 {
     private readonly ClientWebSocket _client;
     private readonly Uri _serverUri;
     private string _token;
     private CancellationTokenSource _cancellationTokenSource;
+    private readonly IDataService _dataService;
 
-    public event Action<string> OnMessageReceived;
-
-    public WebSocketClientService(string serverUrl)
+    public WebSocketClientService(string serverUrl, IDataService dataService)
     {
         _client = new ClientWebSocket();
         _serverUri = new Uri(serverUrl);
+        _dataService = dataService;
     }
 
-    public void SetToken(string token)
+    public async void SetToken(string token)
     {
         _token = token;
+        await ConnectAsync();
     }
 
     public async Task ConnectAsync()
@@ -55,7 +57,7 @@ public class WebSocketClientService
                 if (result.MessageType == WebSocketMessageType.Text)
                 {
                     var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                    OnMessageReceived?.Invoke(message);
+                    _dataService.HandleWebSocketMessage(message);
                 }
                 else if (result.MessageType == WebSocketMessageType.Close)
                 {
@@ -68,10 +70,9 @@ public class WebSocketClientService
             }
         }
     }
-
-    public async Task SendMessageAsync(string message)
+    public void Dispose()
     {
-        var buffer = Encoding.UTF8.GetBytes(message);
-        await _client.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
+        Task.Run(DisconnectAsync).Wait();
+        _client.Dispose();
     }
 }

@@ -27,9 +27,10 @@ namespace WolfAPI.Services
             var updateNotification = new UpdateNotification<GetDocumentOfOwnershipDTO>
             {
                 OperationType = "Create",
+                EntityType = "GetDocumentOfOwnershipDTO",
                 UpdatedEntity = _mapper.Map<GetDocumentOfOwnershipDTO>(document)
             };
-            await _webSocketService.SendMessageToAllAsync(updateNotification);
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
 
             return _mapper.Map<GetDocumentOfOwnershipDTO>(document);
         }

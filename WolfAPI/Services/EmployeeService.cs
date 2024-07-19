@@ -42,9 +42,10 @@ namespace WolfAPI.Services
             var updateNotification = new UpdateNotification<List<GetEmployeeDTO>>
             {
                 OperationType = "Create",
+                EntityType = "List<GetEmployeeDTO>",
                 UpdatedEntity = returnList
             };
-            await _webSocketService.SendMessageToAllAsync(updateNotification);
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
 
             return returnList;
         }

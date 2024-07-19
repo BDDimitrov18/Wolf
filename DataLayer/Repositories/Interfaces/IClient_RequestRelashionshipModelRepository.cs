@@ -11,9 +11,9 @@ namespace DataAccessLayer.Repositories.Interfaces
     {
         public List<Client_RequestRelashionship> Add(Request request, List<Client> clients);
 
-        public Task<bool> OnRequestDeleteAsync(Request request, List<Client_RequestRelashionship> client_RequestRelashionships);
+        public Task<bool> OnRequestDeleteAsync(Request request);
 
-        public Task<bool> OnDeleteClients(List<Client> clients);
+        public Task<bool> OnDeleteClients(List<Client> clients, List<Client_RequestRelashionship> client_RequestRelashionships);
 
     }
 }

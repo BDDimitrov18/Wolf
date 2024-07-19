@@ -14,7 +14,6 @@ namespace DataAccessLayer.Repositories
     public class ActivityModelRespository : IActivityModelRespository
     {
         private WolfDbContext _WolfDbContext { get; set; }
-
         public ActivityModelRespository(WolfDbContext wolfDbContext)
         {
             _WolfDbContext = wolfDbContext;

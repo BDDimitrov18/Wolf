@@ -9,6 +9,7 @@ namespace DTOS.DTO
     public class UpdateNotification<T>
     {
         public string OperationType { get; set; }
+        public string EntityType { get; set; }
         public T UpdatedEntity { get; set; }
     }
 

@@ -54,8 +54,8 @@ namespace WolfAPI.Controllers
         }
 
         [HttpPost("CreateClient")]
-        public List<GetClientDTO> CreateClient([FromBody] List<CreateClientDTO> clientDTOs) {
-            return _clientService.AddClient(clientDTOs);
+        public async Task<List<GetClientDTO>> CreateClient([FromBody] List<CreateClientDTO> clientDTOs) {
+            return await _clientService.AddClient(clientDTOs);
         }
 
         [HttpGet("GetAllClients")]
@@ -67,14 +67,14 @@ namespace WolfAPI.Controllers
 
         [HttpPost("CreateWorkRequest")]
 
-        public List<GetRequestDTO> CreateWorkRequest([FromBody] List<CreateRequestDTO> requestDTO) {
-            return _requestService.Add(requestDTO);
+        public async Task<List<GetRequestDTO>> CreateWorkRequest([FromBody] List<CreateRequestDTO> requestDTO) {
+            return await _requestService.Add(requestDTO);
         }
 
         [HttpPost("LinkClientsAndRequest")]
 
-        public List<GetClient_RequestRelashionshipDTO> LinkClientsWithRequest([FromBody] RequestWithClientsDTO compositeRequestDTO) {
-            return _client_RequestRelashionshipService.CreateClient_RequestRelashionship(compositeRequestDTO.requestDTO, compositeRequestDTO.clientDTOs);
+        public async Task<List<GetClient_RequestRelashionshipDTO>> LinkClientsWithRequest([FromBody] RequestWithClientsDTO compositeRequestDTO) {
+            return await _client_RequestRelashionshipService.CreateClient_RequestRelashionship(compositeRequestDTO.requestDTO, compositeRequestDTO.clientDTOs);
         }
 
         [HttpGet("GetAllRequests")]

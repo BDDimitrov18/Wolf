@@ -89,5 +89,7 @@ namespace WolfClient.Services.Interfaces
         public List<GetPlotDTO> GetSelectedPlotsFilterActivity(GetActivityDTO activityDTO);
 
         public List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> GetLinkedPlotOwnerRelashionshipsFilterActivity(GetActivityDTO activityDTO);
+
+        public void HandleWebSocketMessage(string message);
     }
 }

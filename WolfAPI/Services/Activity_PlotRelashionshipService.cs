@@ -11,13 +11,16 @@ namespace WolfAPI.Services
     {
         private readonly IWebSocketService _webSocketService;
         private readonly IActivity_PlotRelashionshipModelRepository _activityPlotModelRepository;
+        private readonly IDocumentPlot_DocumentOwnerRelashionshipModelRepository _DocumentModelRepository;
         private readonly IMapper _mapper;
 
-        public Activity_PlotRelashionshipService(IActivity_PlotRelashionshipModelRepository activityPlotModelRepository, IMapper mapper, IWebSocketService webSocketService)
+        public Activity_PlotRelashionshipService(IActivity_PlotRelashionshipModelRepository activityPlotModelRepository,
+            IMapper mapper, IWebSocketService webSocketService, IDocumentPlot_DocumentOwnerRelashionshipModelRepository documentModelRepository)
         {
             _activityPlotModelRepository = activityPlotModelRepository;
             _mapper = mapper;
             _webSocketService = webSocketService;
+            _DocumentModelRepository = documentModelRepository;
         }
 
         public async Task<List<GetActivity_PlotRelashionshipDTO>> CreateActivity_PlotRelashionship(List<CreateActivity_PlotRelashionshipDTO> relashionshipsDTO)
@@ -30,13 +33,37 @@ namespace WolfAPI.Services
                 await _activityPlotModelRepository.Add(mappedRelashionship);
                 activity_PlotRelashionshipDTOs.Add(_mapper.Map<GetActivity_PlotRelashionshipDTO>(mappedRelashionship));
             }
-            var updateNotification = new UpdateNotification<List<GetActivity_PlotRelashionshipDTO>>
+            List<Plot> listOfPlots = new List<Plot>();
+            HashSet<int> uniquePlotIds = new HashSet<int>();
+
+            foreach (var relashionship in activity_PlotRelashionshipDTOs)
+            {
+                if (relashionship.Plot != null && uniquePlotIds.Add(relashionship.PlotId))
+                {
+                    listOfPlots.Add(_mapper.Map<Plot>(relashionship.Plot));
+                }
+            }
+
+            List<DocumentPlot_DocumentOwnerRelashionship> listOfRelashionships = new List<DocumentPlot_DocumentOwnerRelashionship>();
+            listOfRelashionships = _DocumentModelRepository.GetLinked(listOfPlots);
+
+            List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> listOfRelashionshipsDTO = new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
+            foreach (var documentPlot in listOfRelashionships) {
+                listOfRelashionshipsDTO.Add(_mapper.Map<GetDocumentPlot_DocumentOwnerRelashionshipDTO>(documentPlot));
+            }
+
+            GetActivity_Plot_OwnershipDTO getActivity_Plot_OwnershipDTO = new GetActivity_Plot_OwnershipDTO();
+            getActivity_Plot_OwnershipDTO.activity_PlotRelashionshipDTOs = activity_PlotRelashionshipDTOs;
+            getActivity_Plot_OwnershipDTO.getDocumentPlot_DocumentOwnerRelashionshipDTOs = listOfRelashionshipsDTO;
+
+            var updateNotification = new UpdateNotification<GetActivity_Plot_OwnershipDTO>
             {
                 OperationType = "Create",
-                UpdatedEntity = activity_PlotRelashionshipDTOs
+                EntityType = "GetActivity_Plot_OwnershipDTO",
+                UpdatedEntity = getActivity_Plot_OwnershipDTO
             };
 
-            await _webSocketService.SendMessageToAllAsync(updateNotification);
+            await _webSocketService.SendMessageToRolesAsync(updateNotification);
 
             return activity_PlotRelashionshipDTOs;
         }
@@ -59,14 +86,6 @@ namespace WolfAPI.Services
                     {
                         relashionshipDTOs.Add(_mapper.Map<GetActivity_PlotRelashionshipDTO>(relashionship));
                     }
-
-                    var updateNotification = new UpdateNotification<List<GetActivity_PlotRelashionshipDTO>>
-                    {
-                        OperationType = "Delete",
-                        UpdatedEntity = relashionshipDTOs
-                    };
-
-                    await _webSocketService.SendMessageToAllAsync(updateNotification);
 
                     return false;
                 }
@@ -114,10 +133,11 @@ namespace WolfAPI.Services
                 var updateNotification = new UpdateNotification<List<GetActivity_PlotRelashionshipDTO>>
                 {
                     OperationType = "Delete",
+                    EntityType = "List<GetActivity_PlotRelashionshipDTO>",
                     UpdatedEntity = plotsDTO
                 };
 
-                await _webSocketService.SendMessageToAllAsync(updateNotification);
+                await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
                 // If the deletion was successful, return true
                 return true;
             }

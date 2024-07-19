@@ -33,7 +33,7 @@ namespace DataAccessLayer.Repositories
             return client_RequestRelashionships;
         }
 
-        public async Task<bool> OnRequestDeleteAsync(Request request, List<Client_RequestRelashionship> client_RequestRelashionships)
+        public async Task<bool> OnRequestDeleteAsync(Request request)
         {
             try
             {
@@ -44,7 +44,6 @@ namespace DataAccessLayer.Repositories
 
                 if (clientRequestsToDelete.Any())
                 {
-                    client_RequestRelashionships = new List<Client_RequestRelashionship>(clientRequestsToDelete);
                     _WolfDbContext.Client_RequestRelashionships.RemoveRange(clientRequestsToDelete);
                     var affectedRows = await _WolfDbContext.SaveChangesAsync();
 
@@ -65,7 +64,7 @@ namespace DataAccessLayer.Repositories
             }
         }
 
-        public async Task<bool> OnDeleteClients(List<Client> clients)
+        public async Task<bool> OnDeleteClients(List<Client> clients, List<Client_RequestRelashionship> client_RequestRelashionships)
         {
             // Check if the list of clients is null or empty
             if (clients == null || clients.Count == 0)
@@ -83,6 +82,7 @@ namespace DataAccessLayer.Repositories
                     .Where(cr => clientIds.Contains(cr.ClientId))
                     .ToList();
 
+                client_RequestRelashionships = new List<Client_RequestRelashionship>(clientRelationships);
                 // Remove the found relationships
                 _WolfDbContext.Client_RequestRelashionships.RemoveRange(clientRelationships);
 

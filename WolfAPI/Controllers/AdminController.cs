@@ -25,8 +25,8 @@ namespace WolfApi.Controllers
 
         
         [HttpPost("CreateEmployee")]
-        public List<GetEmployeeDTO> CreateEmployee([FromBody]List<CreateEmployeeDTO> employeeDTO) {
-            return _employeeService.Add(employeeDTO);
+        public async Task<List<GetEmployeeDTO>> CreateEmployee([FromBody]List<CreateEmployeeDTO> employeeDTO) {
+            return await _employeeService.Add(employeeDTO);
         }
     }
 }

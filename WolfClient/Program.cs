@@ -28,7 +28,7 @@ namespace WolfClient
             IDataService dataService = new DataService();
             IReadExcel readExcel = new ReadExcel();
             IFileUploader fileUploader = new FileUploader();
-            _webSocketClientService = new WebSocketClientService("ws://your-websocket-server-url/ws");
+            _webSocketClientService = new WebSocketClientService("wss://localhost:44359/ws", dataService);
 
             dataService.SetEKTViewModels(readExcel.ReadExcelFile(filePath));
 
@@ -37,7 +37,7 @@ namespace WolfClient
             MenuRequestsUserControl menuRequestsUserControl = new MenuRequestsUserControl(apiClient, userClient, adminClient, dataService, fileUploader);
             MenuClientsUserControl menuClientsUserControl = new MenuClientsUserControl(apiClient, userClient, adminClient);
             MenuEmployeesUserControl menuEmployeesUserControl = new MenuEmployeesUserControl(apiClient, userClient, adminClient, dataService);
-            Application.Run(new MainForm(apiClient, userClient, adminClient, dataService, menuRequestsUserControl, menuClientsUserControl, menuEmployeesUserControl, fileUploader /*,_webSocketClientService*/));
+            Application.Run(new MainForm(apiClient, userClient, adminClient, dataService, menuRequestsUserControl, menuClientsUserControl, menuEmployeesUserControl, fileUploader ,_webSocketClientService));
         }
 
         public static async Task ConnectWebSocketAsync(string token)

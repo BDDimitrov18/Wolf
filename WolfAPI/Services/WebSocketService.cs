@@ -46,7 +46,7 @@ public class WebSocketService : IWebSocketService
         if (user?.Identity?.IsAuthenticated == true)
         {
             return user.Claims
-                .Where(c => c.Type == "role")
+                .Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")
                 .Select(c => c.Value)
                 .ToArray();
         }

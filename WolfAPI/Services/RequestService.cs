@@ -90,9 +90,10 @@ namespace WolfAPI.Services
             var updateNotification = new UpdateNotification<List<GetRequestDTO>>
             {
                 OperationType = "Create",
+                EntityType = "List<GetRequestDTO>",
                 UpdatedEntity = returnList
             };
-            await _webSocketService.SendMessageToAllAsync(updateNotification);
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
             return returnList;
         }
 
@@ -146,9 +147,10 @@ namespace WolfAPI.Services
                 var updateNotification = new UpdateNotification<List<GetRequestDTO>>
                 {
                     OperationType = "Delete",
+                    EntityType = "List<GetRequestDTO>",
                     UpdatedEntity = requestDTOs
                 };
-                await _webSocketService.SendMessageToAllAsync(updateNotification);
+                await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
             }
 
             return allDeletionsSuccessful;

@@ -23,14 +23,14 @@ namespace WolfClient.NewForms
         private readonly IAdminClient _adminClient;
         private readonly IDataService _dataService;
         private readonly IFileUploader _fileUploader;
-
+        private readonly WebSocketClientService _websocketClientService;
         private MenuRequestsUserControl _requestsUserControl;
         private MenuClientsUserControl _clientsUserControl;
         private MenuEmployeesUserControl _employeesUserControl;
 
         public MainForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService,
             MenuRequestsUserControl requestsUserControl, MenuClientsUserControl clientsUserControl, MenuEmployeesUserControl employeesUserControl,
-            IFileUploader fileUploader)
+            IFileUploader fileUploader , WebSocketClientService websocketClientService)
         {
             InitializeComponent();
             _apiClient = apiClient;
@@ -42,6 +42,7 @@ namespace WolfClient.NewForms
             _clientsUserControl = clientsUserControl;
             _employeesUserControl = employeesUserControl;
             _fileUploader = fileUploader;
+            _websocketClientService = websocketClientService;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -83,7 +84,7 @@ namespace WolfClient.NewForms
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            LoginForm loginForm = new LoginForm(_apiClient, _userClient, _adminClient, _fileUploader);
+            LoginForm loginForm = new LoginForm(_apiClient, _userClient, _adminClient, _fileUploader, _websocketClientService);
             loginForm.Show();
         }
 

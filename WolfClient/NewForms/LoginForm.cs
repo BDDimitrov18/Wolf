@@ -22,13 +22,15 @@ namespace WolfClient.NewForms
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
         private readonly IFileUploader _fileUploader;
-        public LoginForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IFileUploader fileUploader)
+        private readonly WebSocketClientService _webSocketClientService;
+        public LoginForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IFileUploader fileUploader, WebSocketClientService webSocketClientService)
         {
             InitializeComponent();
             _apiClient = apiClient;
             _userClient = userClient;
             _adminClient = adminClient;
             _fileUploader = fileUploader;
+            _webSocketClientService = webSocketClientService;
         }
 
 
@@ -69,6 +71,7 @@ namespace WolfClient.NewForms
                 _apiClient.SetToken(tokenResponse.token);
                 _userClient.SetToken(tokenResponse.token);
                 _fileUploader.SetToken(tokenResponse.token);
+                _webSocketClientService.SetToken(tokenResponse.token);
                 LogInEvent.OnLogIn(username, tokenResponse.role[0]);
                 return true;
             }

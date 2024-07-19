@@ -2,6 +2,7 @@
 using DataAccessLayer.Models;
 using DataAccessLayer.Repositories.Interfaces;
 using DTOS.DTO;
+using System.Collections.Generic;
 using WolfAPI.Services.Interfaces;
 
 namespace WolfAPI.Services
@@ -39,10 +40,11 @@ namespace WolfAPI.Services
             var updateNotification = new UpdateNotification<List<GetClient_RequestRelashionshipDTO>>
             {
                 OperationType = "Create",
+                EntityType = "List<GetClient_RequestRelashionshipDTO>",
                 UpdatedEntity = client_RequestRelashionshipsDTOs
             };
 
-            await _webSocketService.SendMessageToAllAsync(updateNotification);
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
 
             return client_RequestRelashionshipsDTOs;
         }
@@ -53,7 +55,7 @@ namespace WolfAPI.Services
             {
                 List<Client_RequestRelashionship> client_RequestRelashionships = new List<Client_RequestRelashionship>();
                 // Attempt to delete client request relationships for the request
-                bool clientRequestDeletionSuccess = await _client_RequestRelashionshipModelRepository.OnRequestDeleteAsync(request, client_RequestRelashionships);
+                bool clientRequestDeletionSuccess = await _client_RequestRelashionshipModelRepository.OnRequestDeleteAsync(request);
                 if (!clientRequestDeletionSuccess)
                 {
                     // Log the failure
@@ -70,10 +72,11 @@ namespace WolfAPI.Services
                     var updateNotification = new UpdateNotification<List<GetClient_RequestRelashionshipDTO>>
                     {
                         OperationType = "Delete",
+                        EntityType = "List<GetClient_RequestRelashionshipDTO>",
                         UpdatedEntity = getClient_RequestRelashionshipDTOs
                     };
 
-                    await _webSocketService.SendMessageToAllAsync(updateNotification);
+                    await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
                 }
 
                 // If the deletion was successful, return true
@@ -99,16 +102,27 @@ namespace WolfAPI.Services
                 clients.Add(_mapper.Map<Client>(clientDTO));
             }
 
-            var updateNotification = new UpdateNotification<List<GetClientDTO>>
-            {
-                OperationType = "Delete",
-                UpdatedEntity = clientsDTOs
-            };
 
-            await _webSocketService.SendMessageToAllAsync(updateNotification);
 
             // Call the repository method to delete the clients
-            return await _client_RequestRelashionshipModelRepository.OnDeleteClients(clients);
+            List<Client_RequestRelashionship> getClient_RequestRelashionshipDTOs = new List<Client_RequestRelashionship>();
+            var returnBool =  await _client_RequestRelashionshipModelRepository.OnDeleteClients(clients, getClient_RequestRelashionshipDTOs);
+
+            List<GetClient_RequestRelashionshipDTO> getClient_RequestRelashionshipDTOsReturn = new List<GetClient_RequestRelashionshipDTO>();
+            foreach (var client in getClient_RequestRelashionshipDTOs) {
+                getClient_RequestRelashionshipDTOsReturn.Add(_mapper.Map<GetClient_RequestRelashionshipDTO>(client));
+            }
+
+            var updateNotification = new UpdateNotification<List<GetClient_RequestRelashionshipDTO>>
+            {
+                OperationType = "Delete",
+                EntityType = "List<GetClient_RequestRelashionshipDTO>",
+                UpdatedEntity = getClient_RequestRelashionshipDTOsReturn
+            };
+
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+
+            return returnBool;
         }
     }
 }
