@@ -21,7 +21,7 @@ namespace WolfAPI.Services
             _webSocketService = webSocketService;
         }
         
-        public async Task<GetActivityDTO> CreateTask(CreateTaskDTO createTaskDTO)
+        public async Task<GetActivityDTO> CreateTask(CreateTaskDTO createTaskDTO,string clientId)
         {
             WorkTask task = _mapper.Map<WorkTask>(createTaskDTO); 
             await _taskModelRepository.createTask(task);
@@ -35,7 +35,7 @@ namespace WolfAPI.Services
                 EntityType = "GetActivityDTO",
                 UpdatedEntity = mappedActivity
             };
-            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
 
             return mappedActivity;
         }
@@ -66,7 +66,7 @@ namespace WolfAPI.Services
             }
         }
 
-        public async Task<bool> DeleteTasks(List<GetTaskDTO> tasksDTO)
+        public async Task<bool> DeleteTasks(List<GetTaskDTO> tasksDTO, string clientId)
         {
             // Validate the input list
             if (tasksDTO == null || tasksDTO.Count == 0)
@@ -88,7 +88,7 @@ namespace WolfAPI.Services
                     EntityType = "List<GetTaskDTO>",
                     UpdatedEntity = tasksDTO
                 };
-                await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+                await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId,"admin", "user");
 
                 // Call the repository method to delete the tasks
                 return await _taskModelRepository.DeleteTasks(tasks);

@@ -71,7 +71,7 @@ namespace WolfAPI.Services
             return requestWithClientsDTOs;
         }
 
-        public async Task<List<GetRequestDTO>> Add(List<CreateRequestDTO> requestsDto)
+        public async Task<List<GetRequestDTO>> Add(List<CreateRequestDTO> requestsDto,string clientId)
         {
             List<GetRequestDTO> returnList = new List<GetRequestDTO>();
             List<Request> requests = new List<Request>();
@@ -93,7 +93,7 @@ namespace WolfAPI.Services
                 EntityType = "List<GetRequestDTO>",
                 UpdatedEntity = returnList
             };
-            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
             return returnList;
         }
 
@@ -109,7 +109,7 @@ namespace WolfAPI.Services
             return createRequestsDTOs;
         }
 
-        public async Task<bool> Delete(List<GetRequestDTO> requestDTOs)
+        public async Task<bool> Delete(List<GetRequestDTO> requestDTOs, string clientId)
         {
             List<Request> requests = new List<Request>();
             bool allDeletionsSuccessful = true;
@@ -127,7 +127,7 @@ namespace WolfAPI.Services
                     allDeletionsSuccessful = false;
                 }
 
-                bool clientRequestDeletionSuccess = await _client_requestRelashionshipService.OnRequestDelete(request);
+                bool clientRequestDeletionSuccess = await _client_requestRelashionshipService.OnRequestDelete(request, clientId);
                 if (!clientRequestDeletionSuccess)
                 {
                     // Log the failure for deleting client request relationships
@@ -150,7 +150,7 @@ namespace WolfAPI.Services
                     EntityType = "List<GetRequestDTO>",
                     UpdatedEntity = requestDTOs
                 };
-                await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+                await _webSocketService.SendMessageToRolesAsync(updateNotification,clientId, "admin", "user");
             }
 
             return allDeletionsSuccessful;

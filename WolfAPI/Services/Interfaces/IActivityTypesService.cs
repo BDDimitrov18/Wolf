@@ -6,7 +6,7 @@ namespace WolfAPI.Services.Interfaces
     {
         public List<GetActivityTypeDTO> GetAll();
 
-        public Task<List<GetActivityTypeDTO>> CreateActivityTypes(List<CreateActivityTypeDTO> createActivityTypeDTOs);
+        public Task<List<GetActivityTypeDTO>> CreateActivityTypes(List<CreateActivityTypeDTO> createActivityTypeDTOs, string clientId);
 
         public Task<GetActivityTypeDTO> GetActivityType(int id);
 

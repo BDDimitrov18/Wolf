@@ -18,9 +18,16 @@ namespace WolfAPI.Mapping
             CreateMap<GetClientDTO, Client>();
             CreateMap<GetEmployeeDTO, Employee>();
 
+            CreateMap<GetClient_RequestRelashionshipDTO, Client_RequestRelashionship>()
+             .ForMember(dest => dest.OwnershipType, opt => opt.MapFrom(src => src.OwnershipType))
+             .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RequestId))
+             .ForMember(dest => dest.ClientId, opt => opt.MapFrom(src => src.ClientId))
+             .ForMember(dest => dest.Request, opt => opt.Ignore())
+             .ForMember(dest => dest.Client, opt => opt.Ignore());
+
             CreateMap<Client_RequestRelashionship, GetClient_RequestRelashionshipDTO>()
-                .ForMember(dest => dest.Request, opt => opt.MapFrom(src => src.Request))
                 .ForMember(dest => dest.Client, opt => opt.MapFrom(src => src.Client))
+                .ForMember(dest => dest.Request, opt => opt.MapFrom(src => src.Request))
                 .ForMember(dest => dest.OwnershipType, opt => opt.MapFrom(src => src.OwnershipType))
                 .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RequestId))
                 .ForMember(dest => dest.ClientId, opt => opt.MapFrom(src => src.ClientId));

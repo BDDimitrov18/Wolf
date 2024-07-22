@@ -1081,7 +1081,7 @@ namespace WolfClient.Services
             }
         }
     
-        public async Task<ClientResponse<HttpResponseMessage>> DeleteClientRequest(List<GetClientDTO> clientDTOs)
+        public async Task<ClientResponse<HttpResponseMessage>> DeleteClientRequest(List<GetClient_RequestRelashionshipDTO> clientDTOs)
         {
             var jsonContent = JsonSerializer.Serialize(clientDTOs);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");

@@ -21,7 +21,7 @@ namespace WolfAPI.Services
             _webSocketService = webSocketService;
         }
 
-        public async Task<List<GetEmployeeDTO>> Add(List<CreateEmployeeDTO> employeeDto)
+        public async Task<List<GetEmployeeDTO>> Add(List<CreateEmployeeDTO> employeeDto,string clientId)
         {
             List<GetEmployeeDTO> returnList = new List<GetEmployeeDTO>();
             List<Employee> employees = new List<Employee>();
@@ -45,7 +45,7 @@ namespace WolfAPI.Services
                 EntityType = "List<GetEmployeeDTO>",
                 UpdatedEntity = returnList
             };
-            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+            await _webSocketService.SendMessageToRolesAsync(updateNotification,clientId, "admin", "user");
 
             return returnList;
         }

@@ -28,6 +28,8 @@ namespace WolfClient.UserControls
         private bool _isSelectedRequest;
 
         private bool loaded;
+
+        private bool _isRefreshing = false;
         public MenuRequestsUserControl(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService, IFileUploader fileUploader)
         {
             InitializeComponent();
@@ -37,6 +39,15 @@ namespace WolfClient.UserControls
             _isSelectedRequest = false;
             _dataService = dataService;
             _fileUploader = fileUploader;
+            WebSocketDataUpdate.RequestsUpdated += OnRequestsUpdated;
+            WebSocketDataUpdate.ClientRelationshipsUpdated += OnClientRelationshipsUpdated;
+            WebSocketDataUpdate.TasksUpdated += OnTasksUpdated;
+            WebSocketDataUpdate.ActivitiesUpdated += OnActivitiesUpdated;
+            WebSocketDataUpdate.ActivityPlotRelationshipsUpdated += OnActivityPlotRelationshipsUpdated;
+            WebSocketDataUpdate.DocumentPlotOwnerRelationshipsUpdated += OnDocumentPlotOwnerRelationshipsUpdated;
+            WebSocketDataUpdate.ActivityTypeUpdated += OnActivityTypeUpdated;
+            WebSocketDataUpdate.EmployeesUpdated += OnEmployeesUpdated;
+            WebSocketDataUpdate.ClientsUpdated += OnClientsUpdated;
         }
         private void MenuRequestsUserControl_Load(object sender, EventArgs e)
         {
@@ -77,6 +88,51 @@ namespace WolfClient.UserControls
                 RequestDataGridView.DataSource = requestList;
                 RequestDataGridView.Refresh();
             }
+        }
+
+        private void OnRequestsUpdated(List<GetRequestDTO> requests)
+        {
+            UpdateRequestDataGridView(_dataService.getRequests());
+        }
+
+        private void OnClientRelationshipsUpdated(List<GetClient_RequestRelashionshipDTO> clientRelationships)
+        {
+            UpdateClientsDataGridView();
+        }
+
+        private void OnTasksUpdated(List<GetTaskDTO> tasks)
+        {
+            UpdateActivityDataGridView();
+        }
+
+        private void OnActivitiesUpdated(List<GetActivityDTO> activities)
+        {
+            UpdateActivityDataGridView();
+        }
+
+        private void OnActivityPlotRelationshipsUpdated(List<GetActivity_PlotRelashionshipDTO> activityPlotRelationships)
+        {
+            UpdatePlotsDataGridView();
+        }
+
+        private void OnDocumentPlotOwnerRelationshipsUpdated(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> documentPlotOwnerRelationships)
+        {
+            UpdateOwnershipDataGridView();
+        }
+
+        private void OnActivityTypeUpdated(GetActivityTypeDTO activityType)
+        {
+            // Add your logic here if needed to handle activity type updates
+        }
+
+        private void OnEmployeesUpdated(List<GetEmployeeDTO> employees)
+        {
+            // Add your logic here if needed to handle employee updates
+        }
+
+        private void OnClientsUpdated(List<GetClientDTO> clients)
+        {
+            // Add your logic here if needed to handle client updates
         }
         private async void OnUserLoggedIn(object sender, LogInEventArgs e)
         {
@@ -119,6 +175,26 @@ namespace WolfClient.UserControls
 
         private void RequestDataGridView_SelectionChanged(object sender, EventArgs e)
         {
+            if (_isRefreshing)
+            {
+                _isRefreshing = false;
+
+                var selectedRequest = _dataService.GetSelectedRequest();
+                if (selectedRequest != null)
+                {
+                    foreach (DataGridViewRow row in RequestDataGridView.Rows)
+                    {
+                        if (row.DataBoundItem is GetRequestDTO request && request.RequestId == selectedRequest.RequestId)
+                        {
+                            row.Selected = true;
+                            break;
+                        }
+                    }
+                }
+
+                return;
+            }
+
             if (RequestDataGridView.SelectedRows.Count > 0)
             {
                 var selectedRow = RequestDataGridView.SelectedRows[0];
@@ -476,9 +552,10 @@ namespace WolfClient.UserControls
         private void BindPlotDataGridView(RequestWithClientsDTO matchingRequestWithClients)
         {
             PlotsDataGridView.AutoGenerateColumns = false;
-            PlotsDataGridView.DataSource = null;
+            PlotsDataGridView.DataSource = null; // Force reset DataSource
             List<GetPlotDTO> plotList = new List<GetPlotDTO>();
-            if (matchingRequestWithClients.activityDTOs?.Count() > 0)
+
+            if (matchingRequestWithClients?.activityDTOs?.Count() > 0)
             {
                 foreach (var activityDTO in matchingRequestWithClients.activityDTOs)
                 {
@@ -590,7 +667,7 @@ namespace WolfClient.UserControls
                         clientDTOs = getClientDTOs,
                     };
 
-                    //_dataService.AddSingleRequest(requestWithClients);
+                    _dataService.AddSingleRequest(requestWithClients);
                 }
             }
             UpdateRequestDataGridView(_dataService.getRequests());
@@ -700,8 +777,8 @@ namespace WolfClient.UserControls
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception in UpdateClientsDataGridView: " + ex.Message);
-                MessageBox.Show("Exception in UpdateClientsDataGridView: " + ex.Message);
+                Console.WriteLine("Exception in UpdateActivityDataGridView: " + ex.Message);
+                MessageBox.Show("Exception in UpdateActivityDataGridView: " + ex.Message);
             }
 
         }
@@ -720,9 +797,25 @@ namespace WolfClient.UserControls
             }
         }
 
+        private void RestorePreviousSelection()
+        {
+            var selectedRequest = _dataService.GetSelectedRequest();
+            if (selectedRequest != null)
+            {
+                foreach (DataGridViewRow row in RequestDataGridView.Rows)
+                {
+                    if (row.DataBoundItem is GetRequestDTO request && request.RequestId == selectedRequest.RequestId)
+                    {
+                        row.Selected = true;
+                        break;
+                    }
+                }
+            }
+        }
 
         private void UpdateRequestDataGridView(List<GetRequestDTO> requestDTOs)
         {
+            _isRefreshing = true;
             try
             {
                 if (requestDTOs == null)
@@ -772,6 +865,7 @@ namespace WolfClient.UserControls
 
         private void AddActivityTaskForm_Disposed(object sender, EventArgs e)
         {
+            var selectedRequest = _dataService.GetSelectedRequest();
             // Invoke the method to update the DataGridView
             UpdateActivityDataGridView();
         }
@@ -807,6 +901,11 @@ namespace WolfClient.UserControls
 
         private async void DeleteRequestButton_Click(object sender, EventArgs e)
         {
+            if (_dataService.GetSelectedRequest() == null) {
+                MessageBox.Show("Please Select A Request");
+                return; 
+            }
+
             List<GetRequestDTO> requestDTOs = new List<GetRequestDTO>();
             requestDTOs.Add(_dataService.GetSelectedRequest());
             var response = await _userClient.DeleteRequest(requestDTOs);
@@ -828,7 +927,19 @@ namespace WolfClient.UserControls
 
         private async void deleteClientsButton_Click(object sender, EventArgs e)
         {
-            var response = await _userClient.DeleteClientRequest(_dataService.getSelectedCLients());
+            List<GetClient_RequestRelashionshipDTO> client_RequestRelashionshipDTOs = new List<GetClient_RequestRelashionshipDTO>();
+            var clients = _dataService.getSelectedCLients();
+            foreach (var item in clients) {
+                GetClient_RequestRelashionshipDTO client = new GetClient_RequestRelashionshipDTO()
+                {
+                    RequestId = _dataService.GetSelectedRequest().RequestId,
+                    Request = _dataService.GetSelectedRequest(),
+                    Client = item,
+                    ClientId = item.ClientId
+                };
+                client_RequestRelashionshipDTOs.Add(client);
+            }
+            var response = await _userClient.DeleteClientRequest(client_RequestRelashionshipDTOs);
 
             if (response.IsSuccess)
             {

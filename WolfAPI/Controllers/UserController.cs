@@ -3,6 +3,7 @@ using DTOS.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using WolfAPI.Services;
 using WolfAPI.Services.Interfaces;
 
@@ -55,7 +56,9 @@ namespace WolfAPI.Controllers
 
         [HttpPost("CreateClient")]
         public async Task<List<GetClientDTO>> CreateClient([FromBody] List<CreateClientDTO> clientDTOs) {
-            return await _clientService.AddClient(clientDTOs);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            return await _clientService.AddClient(clientDTOs, clientId);
         }
 
         [HttpGet("GetAllClients")]
@@ -68,13 +71,17 @@ namespace WolfAPI.Controllers
         [HttpPost("CreateWorkRequest")]
 
         public async Task<List<GetRequestDTO>> CreateWorkRequest([FromBody] List<CreateRequestDTO> requestDTO) {
-            return await _requestService.Add(requestDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            return await _requestService.Add(requestDTO, clientId);
         }
 
         [HttpPost("LinkClientsAndRequest")]
 
         public async Task<List<GetClient_RequestRelashionshipDTO>> LinkClientsWithRequest([FromBody] RequestWithClientsDTO compositeRequestDTO) {
-            return await _client_RequestRelashionshipService.CreateClient_RequestRelashionship(compositeRequestDTO.requestDTO, compositeRequestDTO.clientDTOs);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            return await _client_RequestRelashionshipService.CreateClient_RequestRelashionship(compositeRequestDTO.requestDTO, compositeRequestDTO.clientDTOs,clientId);
         }
 
         [HttpGet("GetAllRequests")]
@@ -105,13 +112,17 @@ namespace WolfAPI.Controllers
         [HttpPost("CreateActivityTypes")]
 
         public async Task<List<GetActivityTypeDTO>> createActivityType([FromBody] List<CreateActivityTypeDTO> activityTypeDTOs) {
-            return await _activityTypesService.CreateActivityTypes(activityTypeDTOs);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            return await _activityTypesService.CreateActivityTypes(activityTypeDTOs,clientId);
         }
 
         [HttpPost("CreateTaskType")]
 
         public async Task<GetActivityTypeDTO> createTaskTypes([FromBody] List<CreateTaskTypeDTO> TaskTypesDTO) {
-            return await _taskTypesService.AddTaskTypes(TaskTypesDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            return await _taskTypesService.AddTaskTypes(TaskTypesDTO,clientId);
         }
 
         [HttpPost("CreateActivity")]
@@ -123,25 +134,33 @@ namespace WolfAPI.Controllers
 
         public async Task<GetActivityDTO> createTask([FromBody] CreateTaskDTO taskDto)
         {
-            return await _taskService.CreateTask(taskDto);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            return await _taskService.CreateTask(taskDto,clientId);
         }
 
         [HttpPost("CreatePlot")]
 
         public async Task<GetPlotDTO> createPlot([FromBody] CreatePlotDTO plotDTO)
         {
-            return await _plotService.CreatePlot(plotDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            return await _plotService.CreatePlot(plotDTO, clientId);
         }
 
         [HttpPost("CreateActivity_PlotRelashionship")]
         public async Task<List<GetActivity_PlotRelashionshipDTO>> CreateActivity_PlotReleashionship(List<CreateActivity_PlotRelashionshipDTO> activity_PlotRelashionshipsDTO) {
-            return await _activityPlotReleashionshipService.CreateActivity_PlotRelashionship(activity_PlotRelashionshipsDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            return await _activityPlotReleashionshipService.CreateActivity_PlotRelashionship(activity_PlotRelashionshipsDTO, clientId);
         }
 
         [HttpPost("CreateDocumentOfOwnership")]
 
         public async Task<GetDocumentOfOwnershipDTO> CreateDocumentOfOwnership([FromBody] CreateDocumentOfOwnershipDTO documentOfOwnershipDTO) {
-            return await _documentOfOwnershipService.CreateDocument(documentOfOwnershipDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            return await _documentOfOwnershipService.CreateDocument(documentOfOwnershipDTO,clientId);
         }
 
         [HttpPost("CreateOwner")]
@@ -166,7 +185,9 @@ namespace WolfAPI.Controllers
         [HttpPost("CreatePlotOwnerRelashionship")]
 
         public async Task<GetDocumentPlot_DocumentOwnerRelashionshipDTO> CreatePlotOwnerRelashionship(CreateDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO) {
-            return await _documentPlot_DocumentOwnerRelashionshipService.CreatePlotOwner(relashionshipDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            return await _documentPlot_DocumentOwnerRelashionshipService.CreatePlotOwner(relashionshipDTO, clientId);
         }
 
         [HttpPost("GetLinkedPlotOwnerRelashionships")]
@@ -183,8 +204,10 @@ namespace WolfAPI.Controllers
             {
                 return BadRequest(new { message = "Request data is null or empty" });
             }
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
 
-            bool success = await _requestService.Delete(requestDTOs);
+            bool success = await _requestService.Delete(requestDTOs,clientId);
 
             if (success)
             {
@@ -197,7 +220,7 @@ namespace WolfAPI.Controllers
         }
 
         [HttpPost("DeleteClientRequestRelashionships")]
-        public async Task<IActionResult> DeleteRequestClientsAsync([FromBody] List<GetClientDTO> getClientDTOs)
+        public async Task<IActionResult> DeleteRequestClientsAsync([FromBody] List<GetClient_RequestRelashionshipDTO> getClientDTOs)
         {
             if (getClientDTOs == null || getClientDTOs.Count == 0)
             {
@@ -206,7 +229,9 @@ namespace WolfAPI.Controllers
 
             try
             {
-                bool result = await _client_RequestRelashionshipService.OnClientsDelete(getClientDTOs);
+                var token = GetJwtTokenFromRequest();
+                var clientId = GetClientIdFromJwt(token);
+                bool result = await _client_RequestRelashionshipService.OnClientsDelete(getClientDTOs,clientId);
 
                 if (result)
                 {
@@ -234,9 +259,10 @@ namespace WolfAPI.Controllers
 
             try
             {
-
+                var token = GetJwtTokenFromRequest();
+                var clientId = GetClientIdFromJwt(token);
                 // Call the service method to delete the tasks
-                bool result = await _taskService.DeleteTasks(getTasks);
+                bool result = await _taskService.DeleteTasks(getTasks,clientId);
 
                 if (result)
                 {
@@ -264,9 +290,10 @@ namespace WolfAPI.Controllers
 
             try
             {
-
+                var token = GetJwtTokenFromRequest();
+                var clientId = GetClientIdFromJwt(token);
                 // Call the service method to delete the activities
-                bool result = await _acitvityService.DeleteActivities(activityDTOs);
+                bool result = await _acitvityService.DeleteActivities(activityDTOs,clientId);
 
                 if (result)
                 {
@@ -300,9 +327,10 @@ namespace WolfAPI.Controllers
 
             try
             {
-
+                var token = GetJwtTokenFromRequest();
+                var clientId = GetClientIdFromJwt(token);
                 // Call the service method to delete the activities
-                bool result = await _activityPlotReleashionshipService.OnPlotRelashionshipRemove(plotsDTO);
+                bool result = await _activityPlotReleashionshipService.OnPlotRelashionshipRemove(plotsDTO, clientId);
 
                 if (result)
                 {
@@ -331,9 +359,10 @@ namespace WolfAPI.Controllers
 
             try
             {
-
+                var token = GetJwtTokenFromRequest();
+                var clientId = GetClientIdFromJwt(token);
                 // Call the service method to delete the activities
-                bool result = await _documentPlot_DocumentOwnerRelashionshipService.deletePlotOwnerRelashionships(relashionshipDTOs);
+                bool result = await _documentPlot_DocumentOwnerRelashionshipService.deletePlotOwnerRelashionships(relashionshipDTOs,clientId);
 
                 if (result)
                 {
@@ -349,6 +378,31 @@ namespace WolfAPI.Controllers
                 // Log the exception (logging not shown here)
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
+        }
+
+        private string GetJwtTokenFromRequest()
+        {
+            var authHeader = HttpContext.Request.Headers["Authorization"].ToString();
+            return authHeader.Replace("Bearer ", string.Empty);
+        }
+
+        private string GetClientIdFromJwt(string jwtToken)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(jwtToken) as JwtSecurityToken;
+
+            if (jsonToken == null)
+            {
+                throw new InvalidOperationException("Invalid JWT token.");
+            }
+
+            var clientIdClaim = jsonToken.Claims.FirstOrDefault(claim => claim.Type == "jti");
+            if (clientIdClaim == null)
+            {
+                throw new InvalidOperationException("Client ID claim not found in JWT token.");
+            }
+
+            return clientIdClaim.Value;
         }
     }
 }

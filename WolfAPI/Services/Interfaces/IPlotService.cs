@@ -4,6 +4,6 @@ namespace WolfAPI.Services.Interfaces
 {
     public interface IPlotService
     {
-        public Task<GetPlotDTO> CreatePlot(CreatePlotDTO plot);
+        public Task<GetPlotDTO> CreatePlot(CreatePlotDTO plot, string clientId);
     }
 }

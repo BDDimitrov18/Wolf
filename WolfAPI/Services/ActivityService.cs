@@ -84,7 +84,7 @@ namespace WolfAPI.Services
             }
         }
 
-        public async Task<bool> DeleteActivities(List<GetActivityDTO> activityDTOs)
+        public async Task<bool> DeleteActivities(List<GetActivityDTO> activityDTOs, string clientId)
         {
             // Validate the input list
             if (activityDTOs == null || activityDTOs.Count == 0)
@@ -111,7 +111,7 @@ namespace WolfAPI.Services
                     UpdatedEntity = activityDTOs
                 };
 
-                await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+                await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
 
                 return await _activityModelRespository.DeleteActivities(activities);
             }

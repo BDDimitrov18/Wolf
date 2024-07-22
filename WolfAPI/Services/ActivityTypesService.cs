@@ -29,7 +29,7 @@ namespace WolfAPI.Services
             return returnList;
         }
 
-        public async Task<List<GetActivityTypeDTO>> CreateActivityTypes(List<CreateActivityTypeDTO> createActivityTypeDTOs) { 
+        public async Task<List<GetActivityTypeDTO>> CreateActivityTypes(List<CreateActivityTypeDTO> createActivityTypeDTOs, string clientId) { 
             List<ActivityType> activityTypes = new List<ActivityType>();
             List<GetActivityTypeDTO> activityTypeDTOs = new List<GetActivityTypeDTO>();
             foreach (var acitvityTypeDto in createActivityTypeDTOs) {
@@ -50,7 +50,7 @@ namespace WolfAPI.Services
                 UpdatedEntity = activityTypeDTOs
             };
 
-            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+            await _webSocketService.SendMessageToRolesAsync(updateNotification,clientId, "admin", "user");
 
             return activityTypeDTOs;
         }

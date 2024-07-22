@@ -13,7 +13,7 @@ namespace DataAccessLayer.Repositories.Interfaces
 
         public Task<bool> OnRequestDeleteAsync(Request request);
 
-        public Task<bool> OnDeleteClients(List<Client> clients, List<Client_RequestRelashionship> client_RequestRelashionships);
+        public Task<bool> OnDeleteClients(List<Client_RequestRelashionship> clients);
 
     }
 }

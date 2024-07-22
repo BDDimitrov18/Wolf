@@ -18,20 +18,44 @@ namespace DataAccessLayer.Repositories
             _WolfDbContext = wolfDbContext;
         }
 
-        public List<Client_RequestRelashionship> Add(Request request, List<Client> clients) {
+        public List<Client_RequestRelashionship> Add(Request request, List<Client> clients)
+        {
             List<Client_RequestRelashionship> client_RequestRelashionships = new List<Client_RequestRelashionship>();
+            var newClientRelationships = new List<Client_RequestRelashionship>();
+
             foreach (var client in clients)
             {
-                Client_RequestRelashionship client_RequestRelashionship = new Client_RequestRelashionship() { 
+                Client_RequestRelashionship client_RequestRelashionship = new Client_RequestRelashionship
+                {
                     RequestId = request.RequestId,
                     ClientId = client.ClientId,
+                    Request = null, // We do not need to set the full Request object here
+                    Client = null // We do not need to set the full Client object here
                 };
+
                 _WolfDbContext.Client_RequestRelashionships.Add(client_RequestRelashionship);
-                client_RequestRelashionships.Add(client_RequestRelashionship);
+                newClientRelationships.Add(client_RequestRelashionship);
             }
+
             _WolfDbContext.SaveChanges();
-            return client_RequestRelashionships;
+
+            // Materialize the new client relationships into a list in memory
+            var newClientRelationshipsList = newClientRelationships.ToList();
+
+            // Load the full client data in the newly created relationships
+            foreach (var relationship in newClientRelationshipsList)
+            {
+                relationship.Client = _WolfDbContext.Clients.Find(relationship.ClientId);
+                relationship.Request = _WolfDbContext.Requests.Find(relationship.RequestId);
+            }
+
+            return newClientRelationshipsList;
         }
+
+
+
+
+
 
         public async Task<bool> OnRequestDeleteAsync(Request request)
         {
@@ -64,7 +88,7 @@ namespace DataAccessLayer.Repositories
             }
         }
 
-        public async Task<bool> OnDeleteClients(List<Client> clients, List<Client_RequestRelashionship> client_RequestRelashionships)
+        public async Task<bool> OnDeleteClients(List<Client_RequestRelashionship> clients)
         {
             // Check if the list of clients is null or empty
             if (clients == null || clients.Count == 0)
@@ -74,17 +98,20 @@ namespace DataAccessLayer.Repositories
 
             try
             {
-                // Extract client IDs from the provided clients list
-                var clientIds = clients.Select(c => c.ClientId).ToList();
+                // Load all relationships into memory and then filter
+                var allClientRelationships = await _WolfDbContext.Client_RequestRelashionships.ToListAsync();
 
-                // Find all Client_RequestRelashionship entries with matching client IDs
-                var clientRelationships = _WolfDbContext.Client_RequestRelashionships
-                    .Where(cr => clientIds.Contains(cr.ClientId))
+                var clientsToDelete = allClientRelationships
+                    .Where(cr => clients.Any(c => c.ClientId == cr.ClientId && c.RequestId == cr.RequestId))
                     .ToList();
 
-                client_RequestRelashionships = new List<Client_RequestRelashionship>(clientRelationships);
+                if (clientsToDelete.Count == 0)
+                {
+                    return false; // No matching relationships found
+                }
+
                 // Remove the found relationships
-                _WolfDbContext.Client_RequestRelashionships.RemoveRange(clientRelationships);
+                _WolfDbContext.Client_RequestRelashionships.RemoveRange(clientsToDelete);
 
                 // Save changes to the database asynchronously
                 await _WolfDbContext.SaveChangesAsync();
@@ -95,7 +122,6 @@ namespace DataAccessLayer.Repositories
             {
                 // Log the exception (logging not shown here)
                 // Handle the exception as needed
-
                 return false; // Indicate that the operation failed
             }
         }

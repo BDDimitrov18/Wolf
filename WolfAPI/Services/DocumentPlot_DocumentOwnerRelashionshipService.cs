@@ -26,7 +26,7 @@ namespace WolfAPI.Services
             _webSocketService = websocketService;
         }
 
-        public async Task<GetDocumentPlot_DocumentOwnerRelashionshipDTO> CreatePlotOwner(CreateDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO) {
+        public async Task<GetDocumentPlot_DocumentOwnerRelashionshipDTO> CreatePlotOwner(CreateDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO, string clientId) {
             DocumentPlot_DocumentOwnerRelashionship relashionship = _mapper.Map<DocumentPlot_DocumentOwnerRelashionship>(relashionshipDTO);
             await _DocumentOwnerRelashionshipModelRepository.AddRelashionship(relashionship);
 
@@ -36,7 +36,7 @@ namespace WolfAPI.Services
                 EntityType = "GetDocumentPlot_DocumentOwnerRelashionshipDTO",
                 UpdatedEntity = _mapper.Map<GetDocumentPlot_DocumentOwnerRelashionshipDTO>(relashionship)
             };
-            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+            await _webSocketService.SendMessageToRolesAsync(updateNotification,clientId, "admin", "user");
 
             return _mapper.Map<GetDocumentPlot_DocumentOwnerRelashionshipDTO>(relashionship);
         }
@@ -61,7 +61,7 @@ namespace WolfAPI.Services
             return returnList; 
         }
 
-        public async Task<bool> deletePlotOwnerRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs) {
+        public async Task<bool> deletePlotOwnerRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs, string clientId) {
             bool EndResult = true;
             List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOsReturAll = new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
             foreach (var relashionship in relashionshipDTOs) {
@@ -93,7 +93,7 @@ namespace WolfAPI.Services
                         EntityType = "DocumentPlot_DocumentOwnerRelashionship",
                         UpdatedEntity = plotOwner
                     };
-                    await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+                    await _webSocketService.SendMessageToRolesAsync(updateNotification,clientId, "admin", "user");
                     relashionshipDTOsReturAll.Add(_mapper.Map<GetDocumentPlot_DocumentOwnerRelashionshipDTO>(plotOwner));
                 }
                 if (!documentOwnerResult)
@@ -124,7 +124,7 @@ namespace WolfAPI.Services
                     EntityType = "List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>",
                     UpdatedEntity = relashionshipDTOs
                 };
-                await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+                await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
             }
             return EndResult;
         }   

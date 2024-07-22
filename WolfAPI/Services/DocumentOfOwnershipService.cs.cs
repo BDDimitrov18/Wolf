@@ -20,7 +20,7 @@ namespace WolfAPI.Services
             _webSocketService = webSocketService;
         }
 
-        public async Task<GetDocumentOfOwnershipDTO> CreateDocument(CreateDocumentOfOwnershipDTO documentDTO) { 
+        public async Task<GetDocumentOfOwnershipDTO> CreateDocument(CreateDocumentOfOwnershipDTO documentDTO, string clientId) { 
             DocumentOfOwnership document = _mapper.Map<DocumentOfOwnership>(documentDTO);
             await _documentOfOwnershipModelRepository.AddDocument(document);
 
@@ -30,7 +30,7 @@ namespace WolfAPI.Services
                 EntityType = "GetDocumentOfOwnershipDTO",
                 UpdatedEntity = _mapper.Map<GetDocumentOfOwnershipDTO>(document)
             };
-            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+            await _webSocketService.SendMessageToRolesAsync(updateNotification,clientId, "admin", "user");
 
             return _mapper.Map<GetDocumentOfOwnershipDTO>(document);
         }

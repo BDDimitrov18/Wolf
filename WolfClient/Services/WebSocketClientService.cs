@@ -6,9 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using WolfClient.Services.Interfaces;
 
-public class WebSocketClientService : IDisposable
+public class WebSocketClientService
 {
-    private readonly ClientWebSocket _client;
+    private ClientWebSocket _client;
     private readonly Uri _serverUri;
     private string _token;
     private CancellationTokenSource _cancellationTokenSource;
@@ -36,8 +36,56 @@ public class WebSocketClientService : IDisposable
 
         _cancellationTokenSource = new CancellationTokenSource();
         _client.Options.SetRequestHeader("Authorization", $"Bearer {_token}");
-        await _client.ConnectAsync(_serverUri, _cancellationTokenSource.Token);
-        await ReceiveMessagesAsync(_cancellationTokenSource.Token);
+        try
+        {
+            await _client.ConnectAsync(_serverUri, _cancellationTokenSource.Token);
+            await ReceiveMessagesAsync(_cancellationTokenSource.Token);
+        }
+        catch (WebSocketException ex)
+        {
+            // Handle the WebSocketException
+            Console.WriteLine($"WebSocketException: {ex.Message}");
+            await ReconnectAsync();
+        }
+        catch (Exception ex)
+        {
+            // Handle other exceptions
+            Console.WriteLine($"Exception: {ex.Message}");
+        }
+    }
+
+    private async Task ReconnectAsync()
+    {
+        // Implement a retry mechanism
+        int retryCount = 0;
+        const int maxRetries = 5;
+        const int delayBetweenRetries = 5000; // 5 seconds
+
+        while (retryCount < maxRetries && _client.State != WebSocketState.Open)
+        {
+            retryCount++;
+            Console.WriteLine($"Attempt {retryCount} to reconnect...");
+            await Task.Delay(delayBetweenRetries);
+
+            _client = new ClientWebSocket();
+            _client.Options.SetRequestHeader("Authorization", $"Bearer {_token}");
+
+            try
+            {
+                await _client.ConnectAsync(_serverUri, _cancellationTokenSource.Token);
+                await ReceiveMessagesAsync(_cancellationTokenSource.Token);
+            }
+            catch (WebSocketException ex)
+            {
+                Console.WriteLine($"WebSocketException on retry {retryCount}: {ex.Message}");
+            }
+        }
+
+        if (_client.State != WebSocketState.Open)
+        {
+            Console.WriteLine("Failed to reconnect after multiple attempts.");
+            // Handle failure to reconnect
+        }
     }
 
     public async Task DisconnectAsync()
@@ -68,11 +116,17 @@ public class WebSocketClientService : IDisposable
             {
                 // Handle cancellation
             }
+            catch (WebSocketException ex)
+            {
+                // Handle WebSocket exception
+                Console.WriteLine($"WebSocketException: {ex.Message}");
+                await ReconnectAsync();
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions
+                Console.WriteLine($"Exception: {ex.Message}");
+            }
         }
-    }
-    public void Dispose()
-    {
-        Task.Run(DisconnectAsync).Wait();
-        _client.Dispose();
     }
 }

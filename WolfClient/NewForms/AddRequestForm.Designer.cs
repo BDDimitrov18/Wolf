@@ -54,7 +54,7 @@
             // 
             // AddRequestButton
             // 
-            AddRequestButton.Location = new Point(833, 755);
+            AddRequestButton.Location = new Point(861, 754);
             AddRequestButton.Margin = new Padding(3, 4, 3, 4);
             AddRequestButton.Name = "AddRequestButton";
             AddRequestButton.Size = new Size(174, 46);

@@ -23,7 +23,7 @@ namespace WolfAPI.Services
             _DocumentModelRepository = documentModelRepository;
         }
 
-        public async Task<List<GetActivity_PlotRelashionshipDTO>> CreateActivity_PlotRelashionship(List<CreateActivity_PlotRelashionshipDTO> relashionshipsDTO)
+        public async Task<List<GetActivity_PlotRelashionshipDTO>> CreateActivity_PlotRelashionship(List<CreateActivity_PlotRelashionshipDTO> relashionshipsDTO, string clientId)
         {
             List<GetActivity_PlotRelashionshipDTO> activity_PlotRelashionshipDTOs = new List<GetActivity_PlotRelashionshipDTO>();
             List<GetPlotDTO> plots = new List<GetPlotDTO>();
@@ -63,7 +63,7 @@ namespace WolfAPI.Services
                 UpdatedEntity = getActivity_Plot_OwnershipDTO
             };
 
-            await _webSocketService.SendMessageToRolesAsync(updateNotification);
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
 
             return activity_PlotRelashionshipDTOs;
         }
@@ -103,7 +103,7 @@ namespace WolfAPI.Services
             }
         }
 
-        public async Task<bool> OnPlotRelashionshipRemove(List<GetActivity_PlotRelashionshipDTO> plotsDTO)
+        public async Task<bool> OnPlotRelashionshipRemove(List<GetActivity_PlotRelashionshipDTO> plotsDTO,string clientId)
         {
             bool flag = true;
             try
@@ -137,7 +137,7 @@ namespace WolfAPI.Services
                     UpdatedEntity = plotsDTO
                 };
 
-                await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+                await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
                 // If the deletion was successful, return true
                 return true;
             }

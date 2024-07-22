@@ -20,7 +20,7 @@ namespace WolfAPI.Services
             _webSocketService = webSocketService;
         }
 
-        public async Task<List<GetClient_RequestRelashionshipDTO>> CreateClient_RequestRelashionship(GetRequestDTO requestDTO, List<GetClientDTO> clientDTOs)
+        public async Task<List<GetClient_RequestRelashionshipDTO>> CreateClient_RequestRelashionship(GetRequestDTO requestDTO, List<GetClientDTO> clientDTOs, string clientId)
         {
             var request = _mapper.Map<Request>(requestDTO);
             List<Client> clients = new List<Client>();
@@ -44,12 +44,12 @@ namespace WolfAPI.Services
                 UpdatedEntity = client_RequestRelashionshipsDTOs
             };
 
-            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
 
             return client_RequestRelashionshipsDTOs;
         }
 
-        public async Task<bool> OnRequestDelete(Request request)
+        public async Task<bool> OnRequestDelete(Request request,string clientId)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace WolfAPI.Services
                         UpdatedEntity = getClient_RequestRelashionshipDTOs
                     };
 
-                    await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+                    await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
                 }
 
                 // If the deletion was successful, return true
@@ -91,36 +91,30 @@ namespace WolfAPI.Services
                 return false;
             }
         }
-
-        public async Task<bool> OnClientsDelete(List<GetClientDTO> clientsDTOs)
+        //!!!!!!!!!!!!!!!!!!!!!! FIX IT HERE THE LOGIC. BEFORE THE FIRST ARGUMENT WAS GETCLIENTDTO FIX THE LOGIC
+        public async Task<bool> OnClientsDelete(List<GetClient_RequestRelashionshipDTO> clientsDTOs, string clientId)
         {
-            List<Client> clients = new List<Client>();
-
-            // Map each DTO to a Client object
-            foreach (var clientDTO in clientsDTOs)
-            {
-                clients.Add(_mapper.Map<Client>(clientDTO));
+            List<Client_RequestRelashionship> client_RequestRelashionships = new List<Client_RequestRelashionship>();
+            foreach (var relashionship in clientsDTOs) {
+                client_RequestRelashionships.Add(_mapper.Map<Client_RequestRelashionship>(relashionship));
             }
 
 
 
             // Call the repository method to delete the clients
             List<Client_RequestRelashionship> getClient_RequestRelashionshipDTOs = new List<Client_RequestRelashionship>();
-            var returnBool =  await _client_RequestRelashionshipModelRepository.OnDeleteClients(clients, getClient_RequestRelashionshipDTOs);
+            var returnBool =  await _client_RequestRelashionshipModelRepository.OnDeleteClients(client_RequestRelashionships);
 
-            List<GetClient_RequestRelashionshipDTO> getClient_RequestRelashionshipDTOsReturn = new List<GetClient_RequestRelashionshipDTO>();
-            foreach (var client in getClient_RequestRelashionshipDTOs) {
-                getClient_RequestRelashionshipDTOsReturn.Add(_mapper.Map<GetClient_RequestRelashionshipDTO>(client));
-            }
-
-            var updateNotification = new UpdateNotification<List<GetClient_RequestRelashionshipDTO>>
+            if (returnBool)
             {
-                OperationType = "Delete",
-                EntityType = "List<GetClient_RequestRelashionshipDTO>",
-                UpdatedEntity = getClient_RequestRelashionshipDTOsReturn
-            };
-
-            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+                var updateNotification = new UpdateNotification<List<GetClient_RequestRelashionshipDTO>>
+                {
+                    OperationType = "Delete",
+                    EntityType = "List<GetClient_RequestRelashionshipDTO>",
+                    UpdatedEntity = clientsDTOs
+                };
+                await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
+            }
 
             return returnBool;
         }

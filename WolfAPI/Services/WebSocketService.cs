@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
@@ -12,12 +13,12 @@ using Microsoft.AspNetCore.Http;
 public interface IWebSocketService
 {
     Task HandleWebSocketAsync(HttpContext context);
-    Task SendMessageToRolesAsync<T>(UpdateNotification<T> updateNotification, params string[] roles);
+    Task SendMessageToRolesAsync<T>(UpdateNotification<T> updateNotification, string initiatingClientId, params string[] roles);
 }
 
 public class WebSocketService : IWebSocketService
 {
-    private static ConcurrentDictionary<string, (WebSocket socket, string[] roles)> _sockets = new ConcurrentDictionary<string, (WebSocket, string[])>();
+    private static ConcurrentDictionary<string, (WebSocket socket, string token, string[] roles)> _sockets = new ConcurrentDictionary<string, (WebSocket, string, string[])>();
 
     public async Task HandleWebSocketAsync(HttpContext context)
     {
@@ -26,12 +27,22 @@ public class WebSocketService : IWebSocketService
             var socket = await context.WebSockets.AcceptWebSocketAsync();
             var socketId = Guid.NewGuid().ToString();
 
+            // Extract JWT token from the request
+            var token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", string.Empty);
+            var clientId = GetClientIdFromJwt(token);
+
             // Authenticate and get user roles
-            var roles = GetUserRoles(context); // Implement this method to get user roles based on your authentication mechanism
+            var roles = GetUserRoles(context);
 
-            _sockets.TryAdd(socketId, (socket, roles));
-
-            await ReceiveMessagesAsync(socket, socketId);
+            if (clientId != null && roles != null)
+            {
+                _sockets.TryAdd(socketId, (socket, token, roles));
+                await ReceiveMessagesAsync(socket, socketId);
+            }
+            else
+            {
+                context.Response.StatusCode = 401; // Unauthorized
+            }
         }
         else
         {
@@ -39,9 +50,27 @@ public class WebSocketService : IWebSocketService
         }
     }
 
+    private string GetClientIdFromJwt(string jwtToken)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadToken(jwtToken) as JwtSecurityToken;
+
+        if (jsonToken == null)
+        {
+            throw new InvalidOperationException("Invalid JWT token.");
+        }
+
+        var clientIdClaim = jsonToken.Claims.FirstOrDefault(claim => claim.Type == "jti");
+        if (clientIdClaim == null)
+        {
+            throw new InvalidOperationException("Client ID claim not found in JWT token.");
+        }
+
+        return clientIdClaim.Value;
+    }
+
     private string[] GetUserRoles(HttpContext context)
     {
-        // Implement role extraction logic based on your authentication mechanism
         var user = context.User;
         if (user?.Identity?.IsAuthenticated == true)
         {
@@ -68,12 +97,12 @@ public class WebSocketService : IWebSocketService
         await socket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
     }
 
-    public async Task SendMessageToRolesAsync<T>(UpdateNotification<T> updateNotification, params string[] roles)
+    public async Task SendMessageToRolesAsync<T>(UpdateNotification<T> updateNotification, string senderClientId, params string[] roles)
     {
         var message = JsonSerializer.Serialize(updateNotification);
         var buffer = Encoding.UTF8.GetBytes(message);
         var tasks = _sockets.Values
-            .Where(s => s.socket.State == WebSocketState.Open && s.roles.Any(role => roles.Contains(role)))
+            .Where(s => s.socket.State == WebSocketState.Open && s.roles.Any(role => roles.Contains(role)) && GetClientIdFromJwt(s.token) != senderClientId)
             .Select(s => s.socket.SendAsync(new ArraySegment<byte>(buffer, 0, buffer.Length), WebSocketMessageType.Text, true, CancellationToken.None))
             .ToArray();
         await Task.WhenAll(tasks);

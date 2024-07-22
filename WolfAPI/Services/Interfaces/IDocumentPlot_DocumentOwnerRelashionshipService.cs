@@ -4,10 +4,10 @@ namespace WolfAPI.Services.Interfaces
 {
     public interface IDocumentPlot_DocumentOwnerRelashionshipService
     {
-        public Task<GetDocumentPlot_DocumentOwnerRelashionshipDTO> CreatePlotOwner(CreateDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO);
+        public Task<GetDocumentPlot_DocumentOwnerRelashionshipDTO> CreatePlotOwner(CreateDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO, string clientId);
         public Task<GetDocumentPlot_DocumentOwnerRelashionshipDTO> FindById(int id);
         public List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> GetLinkedByPlots(List<GetPlotDTO> getPlots);
 
-        public Task<bool> deletePlotOwnerRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs);
+        public Task<bool> deletePlotOwnerRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs, string clientId);
     }
 }

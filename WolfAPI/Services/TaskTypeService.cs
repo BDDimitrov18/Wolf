@@ -23,7 +23,7 @@ namespace WolfAPI.Services
             _webSocketService = webSocketService;
         }
 
-        public async Task<GetActivityTypeDTO> AddTaskTypes(List<CreateTaskTypeDTO> createTaskTypesDTOs)
+        public async Task<GetActivityTypeDTO> AddTaskTypes(List<CreateTaskTypeDTO> createTaskTypesDTOs, string clientId)
         {
             List<GetTaskTypeDTO> taskTypeDTOs = new List<GetTaskTypeDTO>();
             List<TaskType> taskTypes = new List<TaskType>();

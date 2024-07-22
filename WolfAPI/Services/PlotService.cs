@@ -19,7 +19,7 @@ namespace WolfAPI.Services
             _webSocketService = websocketService;
         }
 
-        public async Task<GetPlotDTO> CreatePlot(CreatePlotDTO plot) {
+        public async Task<GetPlotDTO> CreatePlot(CreatePlotDTO plot,string clientId) {
             var mappedPlot = _mapper.Map<Plot>(plot);
             await _plotModelRepository.Add(mappedPlot);
             var getPlotMapped = _mapper.Map<GetPlotDTO>(mappedPlot);
@@ -30,7 +30,7 @@ namespace WolfAPI.Services
                 EntityType = "GetPlotDTO",
                 UpdatedEntity = getPlotMapped
             };
-            await _webSocketService.SendMessageToRolesAsync(updateNotification, "admin", "user");
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
             return getPlotMapped;
         }
     }

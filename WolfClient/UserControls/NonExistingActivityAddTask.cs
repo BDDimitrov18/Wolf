@@ -78,7 +78,7 @@ namespace WolfClient.UserControls
             {
                 if (selected.RequestId == linkedRequest.requestDTO.RequestId)
                 {
-                    activityDTOs = linkedRequest.activityDTOs;
+                    activityDTOs = new List<GetActivityDTO>(linkedRequest.activityDTOs);
                 }
             }
             GetActivityDTO blankActivity = new GetActivityDTO();

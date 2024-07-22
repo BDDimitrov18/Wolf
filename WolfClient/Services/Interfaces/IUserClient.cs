@@ -53,7 +53,7 @@ namespace WolfClient.Services.Interfaces
 
         public Task<ClientResponse<HttpResponseMessage>> DeleteRequest(List<GetRequestDTO> requestDTO);
 
-        public Task<ClientResponse<HttpResponseMessage>> DeleteClientRequest(List<GetClientDTO> clientDTOs);
+        public Task<ClientResponse<HttpResponseMessage>> DeleteClientRequest(List<GetClient_RequestRelashionshipDTO> clientDTOs);
 
         public Task<ClientResponse<HttpResponseMessage>> DeleteTasks(List<GetTaskDTO> tasks);
 
