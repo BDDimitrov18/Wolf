@@ -16,5 +16,6 @@ namespace DataAccessLayer.Repositories.Interfaces
 
         public Task<bool> DeleteOnRequestAsync(Request request, List<Activity> activitiesToDeleteReturn);
         public Task<bool> DeleteActivities(List<Activity> activities);
+        public Task<bool> EditActivity(Models.Activity activity);
     }
 }

@@ -10,6 +10,8 @@ namespace DataAccessLayer.Repositories.Interfaces
     public interface IRequestModelRepository
     {
         public void Add(List<Request> requests);
+
+        public bool Edit(Request request);
         public IEnumerable<Request> GetAll();
 
         public Task<bool> Delete(List<Request> requests);

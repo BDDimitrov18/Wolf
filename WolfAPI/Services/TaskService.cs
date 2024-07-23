@@ -100,5 +100,10 @@ namespace WolfAPI.Services
                 return false;
             }
         }
+
+        public async Task<bool> EditTask(GetTaskDTO taskDTO) {
+            bool result = await _taskModelRepository.EditTask(_mapper.Map<WorkTask>(taskDTO));
+            return result;
+        }
     }
 }

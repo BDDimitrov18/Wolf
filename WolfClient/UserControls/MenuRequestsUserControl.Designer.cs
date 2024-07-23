@@ -30,10 +30,10 @@ namespace WolfClient.UserControls
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             RequestDataGridView = new DataGridView();
             RequestId = new DataGridViewTextBoxColumn();
             RequestName = new DataGridViewTextBoxColumn();
@@ -53,10 +53,12 @@ namespace WolfClient.UserControls
             panel1 = new Panel();
             button8 = new Button();
             panel3 = new Panel();
+            editRequestButton = new Button();
             DeleteRequestButton = new Button();
             RefreshButton = new Button();
             tabPage2 = new TabPage();
             panel2 = new Panel();
+            editActivityButton = new Button();
             CreateDocumentButton = new Button();
             DeleteActivityButton = new Button();
             ActivityTableLabel = new Label();
@@ -75,6 +77,7 @@ namespace WolfClient.UserControls
             ActivityAddButton = new Button();
             tabPage1 = new TabPage();
             panel4 = new Panel();
+            editClientButton = new Button();
             deleteClientsButton = new Button();
             button1 = new Button();
             ClientsTableLabel = new Label();
@@ -90,6 +93,7 @@ namespace WolfClient.UserControls
             DocumentsOfOwnershipTab = new TabControl();
             tabPage3 = new TabPage();
             panel5 = new Panel();
+            editPlotButton = new Button();
             DeletePlotsButton = new Button();
             PlotsTableLabel = new Label();
             PlotsDataGridView = new DataGridView();
@@ -105,6 +109,7 @@ namespace WolfClient.UserControls
             PlotsAddButton = new Button();
             DestinationOfPlotLabel = new Label();
             tabPage5 = new TabPage();
+            editOwnershipButton = new Button();
             DeleteOwnershipButton = new Button();
             AddOwnersButton = new Button();
             label2 = new Label();
@@ -314,6 +319,7 @@ namespace WolfClient.UserControls
             // 
             // panel3
             // 
+            panel3.Controls.Add(editRequestButton);
             panel3.Controls.Add(DeleteRequestButton);
             panel3.Controls.Add(RefreshButton);
             panel3.Controls.Add(RequestDataGridView);
@@ -326,6 +332,16 @@ namespace WolfClient.UserControls
             panel3.Size = new Size(882, 467);
             panel3.TabIndex = 17;
             panel3.Paint += panel3_Paint;
+            // 
+            // editRequestButton
+            // 
+            editRequestButton.Location = new Point(302, 48);
+            editRequestButton.Name = "editRequestButton";
+            editRequestButton.Size = new Size(94, 29);
+            editRequestButton.TabIndex = 13;
+            editRequestButton.Text = "промени";
+            editRequestButton.UseVisualStyleBackColor = true;
+            editRequestButton.Click += editRequestButton_Click;
             // 
             // DeleteRequestButton
             // 
@@ -360,6 +376,7 @@ namespace WolfClient.UserControls
             // 
             // panel2
             // 
+            panel2.Controls.Add(editActivityButton);
             panel2.Controls.Add(CreateDocumentButton);
             panel2.Controls.Add(DeleteActivityButton);
             panel2.Controls.Add(ActivityTableLabel);
@@ -371,6 +388,16 @@ namespace WolfClient.UserControls
             panel2.Name = "panel2";
             panel2.Size = new Size(1277, 298);
             panel2.TabIndex = 36;
+            // 
+            // editActivityButton
+            // 
+            editActivityButton.Location = new Point(219, 12);
+            editActivityButton.Name = "editActivityButton";
+            editActivityButton.Size = new Size(94, 29);
+            editActivityButton.TabIndex = 14;
+            editActivityButton.Text = "промени";
+            editActivityButton.UseVisualStyleBackColor = true;
+            editActivityButton.Click += editActivityButton_Click;
             // 
             // CreateDocumentButton
             // 
@@ -412,14 +439,14 @@ namespace WolfClient.UserControls
             ActivityDataGridView.ColumnHeadersHeight = 28;
             ActivityDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             ActivityDataGridView.Columns.AddRange(new DataGridViewColumn[] { ParentActivity, Activity, Task, Executant, StartDate, Duration, Control, Plots, Comment, tax, taxComment });
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = SystemColors.Window;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            ActivityDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            ActivityDataGridView.DefaultCellStyle = dataGridViewCellStyle1;
             ActivityDataGridView.Location = new Point(0, 50);
             ActivityDataGridView.Margin = new Padding(3, 4, 3, 4);
             ActivityDataGridView.MinimumSize = new Size(933, 188);
@@ -534,6 +561,7 @@ namespace WolfClient.UserControls
             // panel4
             // 
             panel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel4.Controls.Add(editClientButton);
             panel4.Controls.Add(deleteClientsButton);
             panel4.Controls.Add(button1);
             panel4.Controls.Add(ClientsTableLabel);
@@ -544,6 +572,16 @@ namespace WolfClient.UserControls
             panel4.Name = "panel4";
             panel4.Size = new Size(1277, 298);
             panel4.TabIndex = 18;
+            // 
+            // editClientButton
+            // 
+            editClientButton.Location = new Point(298, 9);
+            editClientButton.Name = "editClientButton";
+            editClientButton.Size = new Size(94, 29);
+            editClientButton.TabIndex = 14;
+            editClientButton.Text = "промени";
+            editClientButton.UseVisualStyleBackColor = true;
+            editClientButton.Click += editClientButton_Click;
             // 
             // deleteClientsButton
             // 
@@ -585,14 +623,14 @@ namespace WolfClient.UserControls
             clientsDataGridView.BackgroundColor = Color.Moccasin;
             clientsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             clientsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ClientNumber, FirstName, MiddleName, LastName, Phone, Email, Address, ClientLegalType });
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = SystemColors.Window;
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
-            clientsDataGridView.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            clientsDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
             clientsDataGridView.GridColor = SystemColors.ControlText;
             clientsDataGridView.Location = new Point(1, 46);
             clientsDataGridView.Margin = new Padding(3, 4, 3, 4);
@@ -684,6 +722,7 @@ namespace WolfClient.UserControls
             // 
             // panel5
             // 
+            panel5.Controls.Add(editPlotButton);
             panel5.Controls.Add(DeletePlotsButton);
             panel5.Controls.Add(PlotsTableLabel);
             panel5.Controls.Add(PlotsDataGridView);
@@ -695,6 +734,15 @@ namespace WolfClient.UserControls
             panel5.Name = "panel5";
             panel5.Size = new Size(1277, 298);
             panel5.TabIndex = 35;
+            // 
+            // editPlotButton
+            // 
+            editPlotButton.Location = new Point(343, 6);
+            editPlotButton.Name = "editPlotButton";
+            editPlotButton.Size = new Size(94, 29);
+            editPlotButton.TabIndex = 14;
+            editPlotButton.Text = "промени";
+            editPlotButton.UseVisualStyleBackColor = true;
             // 
             // DeletePlotsButton
             // 
@@ -720,8 +768,8 @@ namespace WolfClient.UserControls
             // 
             PlotsDataGridView.AllowUserToResizeColumns = false;
             PlotsDataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             PlotsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             PlotsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             PlotsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
@@ -823,6 +871,7 @@ namespace WolfClient.UserControls
             // 
             // tabPage5
             // 
+            tabPage5.Controls.Add(editOwnershipButton);
             tabPage5.Controls.Add(DeleteOwnershipButton);
             tabPage5.Controls.Add(AddOwnersButton);
             tabPage5.Controls.Add(label2);
@@ -834,6 +883,15 @@ namespace WolfClient.UserControls
             tabPage5.TabIndex = 4;
             tabPage5.Text = "Собственост";
             tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // editOwnershipButton
+            // 
+            editOwnershipButton.Location = new Point(246, 12);
+            editOwnershipButton.Name = "editOwnershipButton";
+            editOwnershipButton.Size = new Size(94, 29);
+            editOwnershipButton.TabIndex = 14;
+            editOwnershipButton.Text = "промени";
+            editOwnershipButton.UseVisualStyleBackColor = true;
             // 
             // DeleteOwnershipButton
             // 
@@ -872,14 +930,14 @@ namespace WolfClient.UserControls
             OwnershipDataGridView.BackgroundColor = Color.Moccasin;
             OwnershipDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             OwnershipDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlotNumberDocTable, DocumentId, OwnerId, EKG, OwnerAddress, IdealParts, PowerOfAttorney });
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = SystemColors.Window;
-            dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle7.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-            OwnershipDataGridView.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            OwnershipDataGridView.DefaultCellStyle = dataGridViewCellStyle4;
             OwnershipDataGridView.Location = new Point(-1, 49);
             OwnershipDataGridView.Name = "OwnershipDataGridView";
             OwnershipDataGridView.RowHeadersWidth = 51;
@@ -1059,5 +1117,10 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn Email;
         private DataGridViewTextBoxColumn Address;
         private DataGridViewTextBoxColumn ClientLegalType;
+        private Button editRequestButton;
+        private Button editActivityButton;
+        private Button editClientButton;
+        private Button editPlotButton;
+        private Button editOwnershipButton;
     }
 }

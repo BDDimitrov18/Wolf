@@ -380,6 +380,83 @@ namespace WolfAPI.Controllers
             }
         }
 
+        [HttpPost("EditRequest")]
+        public async Task<IActionResult> EditRequest([FromBody] GetRequestDTO requestDTO)
+        {
+            bool result = await _requestService.EditRequestAsync(requestDTO);
+
+            if (result)
+            {
+                return Ok(requestDTO); // Return the updated request DTO with HTTP 200 OK status
+            }
+            else
+            {
+                return NotFound(); // Return HTTP 404 Not Found if the request was not found
+            }
+        }
+
+        [HttpPost("EditClient")]
+        public async Task<IActionResult> EditClient([FromBody] GetClientDTO clientDTO)
+        {
+            if (clientDTO == null)
+            {
+                return BadRequest("Client data is null.");
+            }
+
+            bool result = await _clientService.EditClient(clientDTO);
+
+            if (result)
+            {
+                return Ok(clientDTO);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error editing client.");
+            }
+        }
+
+        [HttpPost("EditActivity")]
+        public async Task<IActionResult> EditActivity([FromBody] GetActivityDTO activityDTO)
+        {
+            if (activityDTO == null)
+            {
+                return BadRequest("Invalid activity data.");
+            }
+
+            bool result = await _acitvityService.EditActivity(activityDTO);
+
+            if (result)
+            {
+                return Ok("Activity updated successfully.");
+            }
+            else
+            {
+                return NotFound("Activity not found.");
+            }
+        }
+
+        [HttpPost("EditTask")]
+        public async Task<IActionResult> EditTask([FromBody] GetTaskDTO taskDTO)
+        {
+            if (taskDTO == null)
+            {
+                return BadRequest("Task data is null.");
+            }
+
+            bool result = await _taskService.EditTask(taskDTO);
+
+            if (result)
+            {
+                return Ok("Task successfully updated.");
+            }
+            else
+            {
+                return NotFound("Task not found.");
+            }
+        }
+
+
+
         private string GetJwtTokenFromRequest()
         {
             var authHeader = HttpContext.Request.Headers["Authorization"].ToString();
@@ -404,5 +481,7 @@ namespace WolfAPI.Controllers
 
             return clientIdClaim.Value;
         }
+
+
     }
 }

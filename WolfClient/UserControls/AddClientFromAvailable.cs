@@ -1,12 +1,7 @@
 ﻿using DTOS.DTO;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WolfClient.Services.Interfaces;
 
@@ -18,6 +13,8 @@ namespace WolfClient.UserControls
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
         private List<GetClientDTO> _clientsList;
+        private GetClientDTO _defaultClient;
+
         public AddClientFromAvailable(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, List<GetClientDTO> clientsList, Panel Parent)
         {
             InitializeComponent();
@@ -27,13 +24,20 @@ namespace WolfClient.UserControls
             _clientsList = clientsList;
         }
 
+        public AddClientFromAvailable(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, List<GetClientDTO> clientsList, Panel Parent, GetClientDTO defaultClient)
+            : this(apiClient, userClient, adminClient, clientsList, Parent)
+        {
+            _defaultClient = defaultClient;
+        }
+
         private void AddClientFromAvailable_Load(object sender, EventArgs e)
         {
-            foreach (var client in _clientsList)
-            {
-                ClientsListComboBox.Items.Add(client);
-            }
+            ClientsListComboBox.Items.AddRange(_clientsList.ToArray());
             ClientsListComboBox.DisplayMember = "FullName";
+            if (_defaultClient != null)
+            {
+                ClientsListComboBox.SelectedItem = _clientsList.FirstOrDefault(c => c.ClientId == _defaultClient.ClientId);
+            }
         }
 
         private void DeleteUserControlButton_Click(object sender, EventArgs e)
@@ -43,7 +47,7 @@ namespace WolfClient.UserControls
 
         private void ClientsListComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            // Handle the selection change if necessary
         }
     }
 }

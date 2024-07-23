@@ -61,6 +61,21 @@ namespace WolfAPI.Services
             return createClientDTOs;
         }
 
-        
+        public async Task<bool> EditClient(GetClientDTO clientDTO)
+        {
+            try
+            {
+                Client client = _mapper.Map<Client>(clientDTO);
+                bool isEdited = await _clientRepository.Edit(client);
+                return isEdited;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (logging not shown here)
+                // Handle the exception as needed
+                Console.WriteLine($"Exception: {ex.Message}");
+                return false; // Indicate that the operation failed
+            }
+        }
     }
 }

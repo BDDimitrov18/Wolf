@@ -9,5 +9,7 @@ namespace WolfAPI.Services.Interfaces
 
         public IEnumerable<GetClientDTO> GetAllClients();
 
+        public Task<bool> EditClient(GetClientDTO clientDTO);
+
     }
 }

@@ -10,6 +10,9 @@ namespace WolfClient.Services.Interfaces
 {
     public interface IDataService
     {
+        public GetActivityDTO GetSelectedActivity();
+        public void editClient(GetClientDTO clientDTO);
+        public void SetEditedRequestClients(List<GetClientDTO> getClientDTOs, GetRequestDTO getRequestDTO);
         public void SetSelectedActivityViews(List<ActivityViewModel> activityViewModels);
         public List<GetClientDTO> getSelectedCLients();
         public void SetSelectedClients(List<GetClientDTO> getClients);
@@ -29,7 +32,7 @@ namespace WolfClient.Services.Interfaces
         public List<GetActivityTypeDTO> GetActivityTypeDTOs();
 
         public List<GetEmployeeDTO> GetEmployees();
-
+        public void EditRequest(GetRequestDTO requestDTO);
         public void SetEmployees(List<GetEmployeeDTO> employees);
 
         public void AddSingleEmployee(GetEmployeeDTO employeeDTO);
@@ -91,5 +94,10 @@ namespace WolfClient.Services.Interfaces
         public List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> GetLinkedPlotOwnerRelashionshipsFilterActivity(GetActivityDTO activityDTO);
 
         public void HandleWebSocketMessage(string message);
+
+        public GetTaskDTO GetSelectedTask();
+
+        public void editActivity(GetActivityDTO activityDTO);
+        public void editTask(GetTaskDTO taskDTO);
     }
 }

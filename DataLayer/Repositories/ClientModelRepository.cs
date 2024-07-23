@@ -41,5 +41,42 @@ namespace DataAccessLayer.Repositories
 
             return linkedClients;
         }
+
+        public async Task<bool> Edit(Client client)
+        {
+            var existingClient = _WolfDbContext.Clients.FirstOrDefault(c => c.ClientId == client.ClientId);
+
+            if (existingClient != null)
+            {
+                // Update only the necessary fields
+                existingClient.FirstName = client.FirstName;
+                existingClient.MiddleName = client.MiddleName;
+                existingClient.LastName = client.LastName;
+                existingClient.Phone = client.Phone;
+                existingClient.Email = client.Email;
+                existingClient.Address = client.Address;
+                existingClient.ClientLegalType = client.ClientLegalType;
+
+                try
+                {
+                    // Save changes to the database
+                    await _WolfDbContext.SaveChangesAsync();
+                    return true; // Indicate that the operation was successful
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (logging not shown here)
+                    // Handle the exception as needed
+                    Console.WriteLine($"Exception: {ex.Message}");
+                    return false; // Indicate that the operation failed
+                }
+            }
+            else
+            {
+                // Log that the client was not found (logging not shown here)
+                return false; // Indicate that the operation failed
+            }
+        }
     }
 }
+

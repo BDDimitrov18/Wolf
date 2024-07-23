@@ -18,9 +18,51 @@ namespace DataAccessLayer.Repositories
             _WolfDbContext = wolfDbContext;
         }
 
-        public async Task Add(Activity_PlotRelashionship relashionship) {
+        public async Task Add(Activity_PlotRelashionship relashionship)
+        {
+            // Add the relationship first
             _WolfDbContext.Activity_PlotRelashionships.Add(relashionship);
             await _WolfDbContext.SaveChangesAsync();
+
+            // Load related entities
+            await _WolfDbContext.Entry(relashionship)
+                .Reference(r => r.Activity)
+                .LoadAsync();
+
+            await _WolfDbContext.Entry(relashionship.Activity)
+                .Collection(a => a.Tasks)
+                .LoadAsync();
+
+            await _WolfDbContext.Entry(relashionship.Activity)
+                .Reference(a => a.ActivityType)
+                .LoadAsync();
+
+            await _WolfDbContext.Entry(relashionship.Activity)
+                .Reference(a => a.mainExecutant)
+                .LoadAsync();
+
+            if (relashionship.Activity.ParentActivityId.HasValue)
+            {
+                await _WolfDbContext.Entry(relashionship.Activity)
+                    .Reference(a => a.ParentActivity)
+                    .LoadAsync();
+
+                await _WolfDbContext.Entry(relashionship.Activity.ParentActivity)
+                    .Collection(pa => pa.Tasks)
+                    .LoadAsync();
+
+                await _WolfDbContext.Entry(relashionship.Activity.ParentActivity)
+                    .Reference(pa => pa.ActivityType)
+                    .LoadAsync();
+
+                await _WolfDbContext.Entry(relashionship.Activity.ParentActivity)
+                    .Reference(pa => pa.mainExecutant)
+                    .LoadAsync();
+            }
+
+            await _WolfDbContext.Entry(relashionship)
+                .Reference(r => r.Plot)
+                .LoadAsync();
         }
 
         public async Task<bool> OnActivityDeleteAsync(Activity activity, List<Activity_PlotRelashionship> deletedRelashionships)
@@ -64,7 +106,9 @@ namespace DataAccessLayer.Repositories
                 
                 if (relashionship != null)
                 {
-                    _WolfDbContext.Activity_PlotRelashionships.Remove(relashionship);
+                    var relashionshipToDelete = _WolfDbContext.Activity_PlotRelashionships .Where(ap => ap.PlotId == relashionship.PlotId && ap.ActivityId == relashionship.ActivityId).FirstOrDefault();
+
+                    _WolfDbContext.Activity_PlotRelashionships.Remove(relashionshipToDelete);
                     var affectedRows = await _WolfDbContext.SaveChangesAsync();
 
                     return true;

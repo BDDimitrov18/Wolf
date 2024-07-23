@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using DataAccessLayer;
 using DataAccessLayer.Models;
+using DataAccessLayer.Repositories;
 using DataAccessLayer.Repositories.Interfaces;
 using DTOS.DTO;
 using WolfAPI.Services.Interfaces;
@@ -122,5 +124,18 @@ namespace WolfAPI.Services
                 return false;
             }
         }
+
+        public async Task<bool> EditActivity(GetActivityDTO activityDTO)
+        {
+            // Map the DTO to the Activity model
+            Activity activity = _mapper.Map<Activity>(activityDTO);
+
+            // Call the repository method to edit the activity
+            bool result = await _activityModelRespository.EditActivity(activity);
+
+            // Return the result
+            return result;
+        }
+
     }
 }

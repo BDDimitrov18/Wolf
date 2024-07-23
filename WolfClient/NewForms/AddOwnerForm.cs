@@ -333,24 +333,30 @@ namespace WolfClient.NewForms
                 TypeOfOwnership.Text = matchingDocument.TypeOfOwnership;
                 TypeOfOwnership.Enabled = false;
             }
-
-            PowerOfAttorneyNumber.DataSource = _dataService.GetPowerOfAttorneyFromPlots(plotComboBox.SelectedItem as GetPlotDTO);
-            PowerOfAttorneyNumber.DisplayMember = "number";
-            PowerOfAttorneyNumber.ValueMember = "PowerOfAttorneyId";
-            PowerOfAttorneyNumber.SelectedIndex = 0;
-
-            var matchingDocumentPow = PowerOfAttorneyNumber.SelectedItem as GetPowerOfAttorneyDocumentDTO;
-            if (matchingDocumentPow != null)
+            var powerOfattorneys = _dataService.GetPowerOfAttorneyFromPlots(plotComboBox.SelectedItem as GetPlotDTO);
+            if (powerOfattorneys != null && powerOfattorneys.Count()>0)
             {
-                PowerOfAttorneyIssuerComboBox.Enabled = true;
-                PowerOfAttorneyIssuerComboBox.DropDownStyle = ComboBoxStyle.DropDown;
-                PowerOfAttorneyIssuerComboBox.Text = matchingDocumentPow.Issuer;
-                PowerOfAttorneyIssuerComboBox.Enabled = false;
+                PowerOfAttorneyNumber.DataSource = _dataService.GetPowerOfAttorneyFromPlots(plotComboBox.SelectedItem as GetPlotDTO);
+                PowerOfAttorneyNumber.DisplayMember = "number";
+                PowerOfAttorneyNumber.ValueMember = "PowerOfAttorneyId";
+                PowerOfAttorneyNumber.SelectedIndex = 0;
 
-                PowerOfAttorneyDatetimePicker.Enabled = true;
-                PowerOfAttorneyDatetimePicker.Value = matchingDocumentPow.dateOfIssuing;
-                PowerOfAttorneyDatetimePicker.Enabled = false;
+                var matchingDocumentPow = PowerOfAttorneyNumber.SelectedItem as GetPowerOfAttorneyDocumentDTO;
+                if (matchingDocumentPow != null)
+                {
+                    PowerOfAttorneyIssuerComboBox.Enabled = true;
+                    PowerOfAttorneyIssuerComboBox.DropDownStyle = ComboBoxStyle.DropDown;
+                    PowerOfAttorneyIssuerComboBox.Text = matchingDocumentPow.Issuer;
+                    PowerOfAttorneyIssuerComboBox.Enabled = false;
+
+                    PowerOfAttorneyDatetimePicker.Enabled = true;
+                    PowerOfAttorneyDatetimePicker.Value = matchingDocumentPow.dateOfIssuing;
+                    PowerOfAttorneyDatetimePicker.Enabled = false;
+                }
+
             }
+
+            
             
 
             DocumentNumberComboBox.TextChanged += DocumentNumberComboBox_TextChanged;

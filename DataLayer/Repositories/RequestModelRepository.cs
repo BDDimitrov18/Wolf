@@ -27,6 +27,27 @@ namespace DataAccessLayer.Repositories
             }
         }
 
+        public bool Edit(Request request)
+        {
+            var existingRequest = _WolfDbContext.Requests.FirstOrDefault(r => r.RequestId == request.RequestId);
+
+            if (existingRequest != null)
+            {
+                // Update only the necessary fields
+                existingRequest.RequestName = request.RequestName;
+                existingRequest.Price = request.Price;
+                existingRequest.PaymentStatus = request.PaymentStatus;
+                existingRequest.Advance = request.Advance;
+                existingRequest.Comments = request.Comments;
+
+                // Save changes to the database
+                _WolfDbContext.SaveChanges();
+                return true; // Indicate the operation was successful
+            }
+
+            return false; // Indicate the operation failed
+        }
+
         public IEnumerable<Request> GetAll()
         {
             return _WolfDbContext.Requests.ToList();

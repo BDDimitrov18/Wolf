@@ -1,6 +1,7 @@
 ﻿using AngleSharp.Dom;
 using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
+using DocumentFormat.OpenXml.Wordprocessing;
 using DTOS.DTO;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,15 @@ namespace WolfClient.Services
             _selectedClients = getClients;
         }
 
+        public void SetEditedRequestClients(List<GetClientDTO> getClientDTOs, GetRequestDTO getRequestDTO) { 
+            foreach(var link in compositeData._fetchedLinkedClients) {
+                if (link.requestDTO.RequestId == getRequestDTO.RequestId) {
+                    link.clientDTOs = getClientDTOs;
+                    break;
+                }    
+            }
+        }
+
         public List<GetTaskDTO> getTasksFromViewModel() {
             List<GetTaskDTO> tasks = new List<GetTaskDTO>();
             foreach (var link in compositeData._fetchedLinkedClients) { 
@@ -74,6 +84,137 @@ namespace WolfClient.Services
             return tasks;
         }
 
+        public GetActivityDTO GetSelectedActivity() {
+            foreach (var link in compositeData._fetchedLinkedClients) { 
+                foreach(var activity in link.activityDTOs) {
+                    if (activity.ActivityId == _selectedActivity[0].ActivityId) { 
+                        return activity;
+                    }    
+                }
+            }
+            return null;
+        }
+
+        public GetTaskDTO GetSelectedTask()
+        {
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                foreach (var activity in link.activityDTOs)
+                {
+                    if (activity.ActivityId == _selectedActivity[0].ActivityId)
+                    {
+                        if (activity.Tasks != null && activity.Tasks.Count() > 0)
+                        {
+                            foreach (var task in activity.Tasks)
+                            {
+                                if(task.TaskId == _selectedActivity[0].TaskId) {
+                                    return task;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void editClient(GetClientDTO clientDTO)
+        {
+            // Update client in compositeData._fetchedLinkedClients
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                var client = link.clientDTOs.FirstOrDefault(c => c.ClientId == clientDTO.ClientId);
+                if (client != null)
+                {
+                    client.FirstName = clientDTO.FirstName;
+                    client.MiddleName = clientDTO.MiddleName;
+                    client.LastName = clientDTO.LastName;
+                    client.Phone = clientDTO.Phone;
+                    client.Email = clientDTO.Email;
+                    client.Address = clientDTO.Address;
+                    client.ClientLegalType = clientDTO.ClientLegalType;
+                }
+            }
+
+            // Update client in _allClients
+            var allClient = _allClients.FirstOrDefault(c => c.ClientId == clientDTO.ClientId);
+            if (allClient != null)
+            {
+                allClient.FirstName = clientDTO.FirstName;
+                allClient.MiddleName = clientDTO.MiddleName;
+                allClient.LastName = clientDTO.LastName;
+                allClient.Phone = clientDTO.Phone;
+                allClient.Email = clientDTO.Email;
+                allClient.Address = clientDTO.Address;
+                allClient.ClientLegalType = clientDTO.ClientLegalType;
+            }
+        }
+
+        public void editActivity(GetActivityDTO activityDTO)
+        {
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                foreach (var activity in link.activityDTOs)
+                {
+                    if (activity.ActivityId == activityDTO.ActivityId)
+                    {
+                        // Update the properties of the existing activity
+                        activity.RequestId = activityDTO.RequestId;
+                        activity.Request = activityDTO.Request;
+                        activity.ActivityTypeID = activityDTO.ActivityTypeID;
+                        activity.ActivityType = activityDTO.ActivityType;
+                        activity.ParentActivityId = activityDTO.ParentActivityId;
+                        activity.ParentActivity = activityDTO.ParentActivity;
+                        activity.ExpectedDuration = activityDTO.ExpectedDuration;
+                        activity.StartDate = activityDTO.StartDate;
+                        activity.employeePayment = activityDTO.employeePayment;
+                        activity.ExecutantId = activityDTO.ExecutantId;
+                        activity.mainExecutant = activityDTO.mainExecutant;
+                        activity.Tasks = activityDTO.Tasks;
+                        activity.Plots = activityDTO.Plots;
+                        activity.ActivityTypeName = activityDTO.ActivityTypeName;
+                    }
+                }
+            }
+        }
+
+        public void editTask(GetTaskDTO taskDTO)
+        {
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                if (link.activityDTOs != null && link.activityDTOs.Count() > 0)
+                {
+                    foreach (var activity in link.activityDTOs)
+                    {
+                        if (activity.Tasks != null && activity.Tasks.Count() > 0)
+                        {
+                            foreach (var task in activity.Tasks)
+                            {
+                                if (taskDTO.TaskId == task.TaskId)
+                                {
+                                    // Update the properties of the existing task
+                                    task.ActivityId = taskDTO.ActivityId;
+                                    task.Duration = taskDTO.Duration;
+                                    task.StartDate = taskDTO.StartDate;
+                                    task.FinishDate = taskDTO.FinishDate;
+                                    task.ExecutantId = taskDTO.ExecutantId;
+                                    task.Executant = taskDTO.Executant;
+                                    task.ControlId = taskDTO.ControlId;
+                                    task.Control = taskDTO.Control;
+                                    task.Comments = taskDTO.Comments;
+                                    task.TaskTypeId = taskDTO.TaskTypeId;
+                                    task.taskType = taskDTO.taskType;
+                                    task.executantPayment = taskDTO.executantPayment;
+                                    task.tax = taskDTO.tax;
+                                    task.CommentTax = taskDTO.CommentTax;
+                                    task.Status = taskDTO.Status;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         private void removeCertainTask() { 
             
         }
@@ -186,6 +327,15 @@ namespace WolfClient.Services
 
         public void AddSingleRequest(RequestWithClientsDTO linkedRequest) {
             compositeData._fetchedLinkedClients.Add(linkedRequest);
+        }
+
+        public void EditRequest(GetRequestDTO requestDTO) { 
+            foreach(var link in compositeData._fetchedLinkedClients)
+            {
+                if (link.requestDTO.RequestId == requestDTO.RequestId) {
+                    link.requestDTO = requestDTO;
+                }       
+            }
         }
 
         public void AddMultipleRequests(List<RequestWithClientsDTO> linkedRequests) {
@@ -825,7 +975,9 @@ namespace WolfClient.Services
                         .ToList();
                 }
             }
+            cleanUnconnectedDocumentLinks();
             WebSocketDataUpdate.OnActivityPlotRelationshipsUpdated(getActivity_PlotRelashionshipDTOs);
+            WebSocketDataUpdate.OnDocumentPlotOwnerRelationshipsUpdated(compositeData.linkedDocuments);
         }
 
         private void HandleDeleteDocumentPlotOwnerRelationship(UpdateNotification<JsonElement> baseNotification)
@@ -922,11 +1074,7 @@ namespace WolfClient.Services
                     var existingActivity = link.activityDTOs.FirstOrDefault(opt => opt.ActivityId == activity.ActivityId);
                     if (existingActivity != null)
                     {
-                        existingActivity = activity.Activity;
-                    }
-                    else
-                    {
-                        link.activityDTOs.Add(activity.Activity);
+                        existingActivity.Plots.Add(activity.Plot);
                     }
                 }
             }

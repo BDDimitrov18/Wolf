@@ -214,5 +214,32 @@ namespace DataAccessLayer.Repositories
                 return false; // Indicate that the operation failed
             }
         }
+
+        public async Task<bool> EditActivity(Models.Activity activity)
+        {
+            // Retrieve the existing activity from the database
+            var existingActivity = await _WolfDbContext.Activities
+                .FirstOrDefaultAsync(a => a.ActivityId == activity.ActivityId);
+
+            // Check if the activity exists
+            if (existingActivity == null)
+            {
+                return false; // Indicate that the activity was not found
+            }
+
+            // Update the necessary fields
+            existingActivity.ActivityTypeID = activity.ActivityTypeID;
+            existingActivity.ExpectedDuration = activity.ExpectedDuration;
+            existingActivity.StartDate = activity.StartDate;
+            existingActivity.employeePayment = activity.employeePayment;
+            existingActivity.ExecutantId = activity.ExecutantId;
+            existingActivity.ParentActivityId = activity.ParentActivityId;
+            // Update any other fields as necessary
+
+            // Save changes to the database
+            await _WolfDbContext.SaveChangesAsync();
+
+            return true; // Indicate that the update was successful
+        }
     }
 }

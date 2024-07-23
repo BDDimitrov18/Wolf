@@ -155,5 +155,12 @@ namespace WolfAPI.Services
 
             return allDeletionsSuccessful;
         }
+
+        public async Task<bool> EditRequestAsync(GetRequestDTO requestDTO)
+        {
+            Request request = _mapper.Map<Request>(requestDTO);
+            bool result = _requestRepository.Edit(request);
+            return result;
+        }
     }
 }

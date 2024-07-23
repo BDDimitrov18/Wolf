@@ -23,6 +23,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="NewForms\EditActivityTaskForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="NewForms\EditClientForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="NewForms\EditRequestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="UserControls\MenuClientsUserControl.cs" />
     <Compile Update="UserControls\MenuEmployeesUserControl.cs">
       <SubType>UserControl</SubType>

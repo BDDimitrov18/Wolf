@@ -13,7 +13,7 @@ namespace DataAccessLayer.Repositories.Interfaces
 
         public IEnumerable<Client> GetAll();
         public List<Client> GetLinked(Request request);
+        public Task<bool> Edit(Client client);
 
-        
     }
 }

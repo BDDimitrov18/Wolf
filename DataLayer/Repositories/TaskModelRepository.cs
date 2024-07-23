@@ -103,5 +103,35 @@ namespace DataAccessLayer.Repositories
                 return false; // Indicate that the operation failed
             }
         }
+
+        public async Task<bool> EditTask(WorkTask task)
+        {
+            var existingTask = await _WolfDbContext.Tasks
+                .FirstOrDefaultAsync(t => t.TaskId == task.TaskId);
+
+            if (existingTask == null)
+            {
+                return false;
+            }
+
+            // Update only the necessary fields
+            existingTask.ActivityId = task.ActivityId;
+            existingTask.Duration = task.Duration;
+            existingTask.StartDate = task.StartDate;
+            existingTask.FinishDate = task.FinishDate;
+            existingTask.ExecutantId = task.ExecutantId;
+            existingTask.ControlId = task.ControlId;
+            existingTask.Comments = task.Comments;
+            existingTask.TaskTypeId = task.TaskTypeId;
+            existingTask.executantPayment = task.executantPayment;
+            existingTask.tax = task.tax;
+            existingTask.CommentTax = task.CommentTax;
+            existingTask.Status = task.Status;
+
+            // Save changes to the database
+            await _WolfDbContext.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

@@ -112,6 +112,7 @@ namespace WolfClient.UserControls
 
         private void OnActivityPlotRelationshipsUpdated(List<GetActivity_PlotRelashionshipDTO> activityPlotRelationships)
         {
+            UpdateActivityDataGridView();
             UpdatePlotsDataGridView();
         }
 
@@ -901,9 +902,10 @@ namespace WolfClient.UserControls
 
         private async void DeleteRequestButton_Click(object sender, EventArgs e)
         {
-            if (_dataService.GetSelectedRequest() == null) {
+            if (_dataService.GetSelectedRequest() == null)
+            {
                 MessageBox.Show("Please Select A Request");
-                return; 
+                return;
             }
 
             List<GetRequestDTO> requestDTOs = new List<GetRequestDTO>();
@@ -929,7 +931,8 @@ namespace WolfClient.UserControls
         {
             List<GetClient_RequestRelashionshipDTO> client_RequestRelashionshipDTOs = new List<GetClient_RequestRelashionshipDTO>();
             var clients = _dataService.getSelectedCLients();
-            foreach (var item in clients) {
+            foreach (var item in clients)
+            {
                 GetClient_RequestRelashionshipDTO client = new GetClient_RequestRelashionshipDTO()
                 {
                     RequestId = _dataService.GetSelectedRequest().RequestId,
@@ -1076,7 +1079,8 @@ namespace WolfClient.UserControls
         {
             List<OwnershipViewModel> ownershipViewModels = _dataService.GetSelectedOwnershipViewModelsRequestMenu();
             List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs = new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
-            foreach (var ownershipModel in ownershipViewModels) {
+            foreach (var ownershipModel in ownershipViewModels)
+            {
                 GetDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO = _dataService.GetPlotOwnerById(ownershipModel.PlotOwnerID);
                 relashionshipDTOs.Add(relashionshipDTO);
             }
@@ -1086,6 +1090,55 @@ namespace WolfClient.UserControls
                 _dataService.RemovePlotOwnerRelashionships(relashionshipDTOs);
                 UpdateOwnershipDataGridView();
             }
+        }
+
+        private void editRequestButton_Click(object sender, EventArgs e)
+        {
+            if (_dataService.GetSelectedRequest() != null)
+            {
+                EditRequestForm editRequestForm = new EditRequestForm(_apiClient, _userClient, _adminClient, _dataService);
+                editRequestForm.Show();
+                editRequestForm.Disposed += EditRequestFormDispose;
+            }
+            else
+            {
+                MessageBox.Show("Please Select A request");
+            }
+        }
+
+        private void EditRequestFormDispose(object sender, EventArgs e)
+        {
+            UpdateRequestDataGridView(_dataService.getRequests());
+        }
+
+        private void editClientButton_Click(object sender, EventArgs e)
+        {
+            if (_dataService.getSelectedCLients() != null && _dataService.getSelectedCLients().Count() > 0)
+            {
+                EditCientForm editCientForm = new EditCientForm(_apiClient, _userClient, _adminClient, _dataService);
+                editCientForm.Show();
+                editCientForm.Disposed += EditClientFormDispose;
+            }
+            else
+            {
+                MessageBox.Show("Please Select a client");
+            }
+        }
+
+        private void EditClientFormDispose(object sender, EventArgs e)
+        {
+            UpdateClientsDataGridView();
+        }
+
+        private void editActivityButton_Click(object sender, EventArgs e)
+        {
+            EditActivityTaskForm editActivityTaskForm = new EditActivityTaskForm(_apiClient,_userClient,_adminClient,_dataService);
+            editActivityTaskForm.Show();
+            editActivityTaskForm.Disposed += EditActivityFormDispose;
+        }
+        private void EditActivityFormDispose(object sender, EventArgs e)
+        {
+            UpdateActivityDataGridView();
         }
     }
 }
