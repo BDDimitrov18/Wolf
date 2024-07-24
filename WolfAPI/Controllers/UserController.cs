@@ -427,7 +427,7 @@ namespace WolfAPI.Controllers
 
             if (result)
             {
-                return Ok("Activity updated successfully.");
+                return Ok(activityDTO);
             }
             else
             {
@@ -447,7 +447,7 @@ namespace WolfAPI.Controllers
 
             if (result)
             {
-                return Ok("Task successfully updated.");
+                return Ok(taskDTO);
             }
             else
             {
@@ -455,6 +455,105 @@ namespace WolfAPI.Controllers
             }
         }
 
+        [HttpPost("EditPlot")]
+        public async Task<IActionResult> EditPlot([FromBody] GetPlotDTO plotDTO)
+        {
+            if (plotDTO == null)
+            {
+                return BadRequest("Plot data is null.");
+            }
+
+            bool result = await _plotService.edit(plotDTO);
+
+            if (result)
+            {
+                return Ok(plotDTO);
+            }
+            else
+            {
+                return NotFound("Plot not found.");
+            }
+        }
+
+        [HttpPost("EditDocumentOfOwnership")]
+        public async Task<IActionResult> EditDocumentOfOwnership([FromBody] GetDocumentOfOwnershipDTO documentOfOwnershipDTO)
+        {
+            if (documentOfOwnershipDTO == null)
+            {
+                return BadRequest("Document data is null.");
+            }
+
+            bool result = await _documentOfOwnershipService.editDocumentOfOwnership(documentOfOwnershipDTO);
+
+            if (result)
+            {
+                return Ok(documentOfOwnershipDTO);
+            }
+            else
+            {
+                return NotFound("Document not found.");
+            }
+        }
+
+        [HttpPost("EditOwner")]
+        public async Task<IActionResult> EditOwner([FromBody] GetOwnerDTO ownerDTO)
+        {
+            if (ownerDTO == null)
+            {
+                return BadRequest("Owner data is null.");
+            }
+
+            bool result = await _ownerService.editOwner(ownerDTO);
+
+            if (result)
+            {
+                return Ok(ownerDTO);
+            }
+            else
+            {
+                return NotFound("Owner not found.");
+            }
+        }
+
+        [HttpPost("EditPowerOfAttorneyDocument")]
+        public async Task<IActionResult> EditPowerOfAttorneyDocument([FromBody] GetPowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO)
+        {
+            if (powerOfAttorneyDocumentDTO == null)
+            {
+                return BadRequest("Power of Attorney Document data is null.");
+            }
+
+            bool result = await _powerOfAttorneyDocumentService.EditPowerOfAttorneyDocument(powerOfAttorneyDocumentDTO);
+
+            if (result)
+            {
+                return Ok(powerOfAttorneyDocumentDTO);
+            }
+            else
+            {
+                return NotFound("Power of Attorney Document not found.");
+            }
+        }
+
+        [HttpPost("EditDocumentPlotOwnerRelationship")]
+        public async Task<IActionResult> EditDocumentPlotOwnerRelationship([FromBody] GetDocumentPlot_DocumentOwnerRelashionshipDTO documentDTO)
+        {
+            if (documentDTO == null)
+            {
+                return BadRequest("Document data is null.");
+            }
+
+            bool result = await _documentPlot_DocumentOwnerRelashionshipService.editDocument(documentDTO);
+
+            if (result)
+            {
+                return Ok(documentDTO);
+            }
+            else
+            {
+                return NotFound("Document relationship not found.");
+            }
+        }
 
 
         private string GetJwtTokenFromRequest()

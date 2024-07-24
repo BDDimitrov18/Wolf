@@ -10,5 +10,6 @@ namespace DataAccessLayer.Repositories.Interfaces
     public interface IPowerOfAttorneyModelRepository
     {
         public Task CreatePowerOfAttorney(PowerOfAttorneyDocument powerOfattorney);
+        public Task<bool> EditPowerOfAttorney(PowerOfAttorneyDocument powerOfAttorneyDocument);
     }
 }

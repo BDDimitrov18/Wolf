@@ -1530,5 +1530,245 @@ namespace WolfClient.Services
                 return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
             }
         }
+
+        public async Task<ClientResponse<HttpResponseMessage>> EditPlot(GetPlotDTO plotDTO)
+        {
+            var jsonContent = JsonSerializer.Serialize(plotDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/EditPlot", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Plot edited successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseRequests = JsonSerializer.Deserialize<HttpResponseMessage>(jsonResponse, options);
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Plot Edited Successfully", ResponseObj = responseRequests };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to edit plot: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<HttpResponseMessage>> EditOwner(GetOwnerDTO ownerDto)
+        {
+            var jsonContent = JsonSerializer.Serialize(ownerDto);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/EditOwner", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Owner edited successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseRequests = JsonSerializer.Deserialize<HttpResponseMessage>(jsonResponse, options);
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Owner Edited Successfully", ResponseObj = responseRequests };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to edit owner: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<HttpResponseMessage>> EditDocumentOfOwnership(GetDocumentOfOwnershipDTO documentOfOwnershipDTO)
+        {
+            var jsonContent = JsonSerializer.Serialize(documentOfOwnershipDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/EditDocumentOfOwnership", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("DocumentOfOwnership edited successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseRequests = JsonSerializer.Deserialize<HttpResponseMessage>(jsonResponse, options);
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "DocumentOfOwnership Edited Successfully", ResponseObj = responseRequests };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to edit documentOfOwnership: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<HttpResponseMessage>> EditPowerOfAttorney(GetPowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO)
+        {
+            var jsonContent = JsonSerializer.Serialize(powerOfAttorneyDocumentDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/EditPowerOfAttorneyDocument", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("PowerOfAttorney edited successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseRequests = JsonSerializer.Deserialize<HttpResponseMessage>(jsonResponse, options);
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "powerOfAttorney Edited Successfully", ResponseObj = responseRequests };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to edit powerOfAttorney: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<HttpResponseMessage>> EditPlotOwnerRelashionship(GetDocumentPlot_DocumentOwnerRelashionshipDTO documentPlot_DocumentOwnerRelashionshipDTO)
+        {
+            var jsonContent = JsonSerializer.Serialize(documentPlot_DocumentOwnerRelashionshipDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/EditDocumentPlotOwnerRelationship", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("PlotOwnerRelashionship edited successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseRequests = JsonSerializer.Deserialize<HttpResponseMessage>(jsonResponse, options);
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "PlotOwnerRelashionship Edited Successfully", ResponseObj = responseRequests };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to edit PlotOwnerRelashionship: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
     }
 }

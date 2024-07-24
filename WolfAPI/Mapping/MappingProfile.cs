@@ -71,7 +71,7 @@ namespace WolfAPI.Mapping
     .ForMember(dest => dest.ExecutantId, opt => opt.MapFrom(src => src.ExecutantId))
     .ForMember(dest => dest.mainExecutant, opt => opt.MapFrom(src => src.mainExecutant))
     .ForMember(dest => dest.Tasks, opt => opt.MapFrom(src => src.Tasks))
-    .ForMember(dest => dest.ActivityPlots, opt => opt.MapFrom(src => src.Plots));
+    .ForMember(dest => dest.ActivityPlots, opt => opt.Ignore());
 
             CreateMap<WorkTask, GetTaskDTO>()
                 .ForMember(dest => dest.Executant, opt => opt.MapFrom(src => src.Executant))
@@ -114,6 +114,8 @@ namespace WolfAPI.Mapping
             // Mapping from Plot to GetPlotDTO
             CreateMap<Plot, GetPlotDTO>();
 
+            
+
             // Mapping from Activity to GetActivityDTO
             CreateMap<Activity, GetActivityDTO>()
     .ForMember(dest => dest.Request, opt => opt.MapFrom(src => src.Request))
@@ -125,8 +127,18 @@ namespace WolfAPI.Mapping
 
             // Mapping from GetPlotDTO to Plot
             CreateMap<GetPlotDTO, Plot>()
-                .ForMember(dest => dest.PlotId, opt => opt.Ignore())
-                .ForMember(dest => dest.ActivityPlots, opt => opt.Ignore());
+    .ForMember(dest => dest.PlotId, opt => opt.MapFrom(src => src.PlotId))
+    .ForMember(dest => dest.PlotNumber, opt => opt.MapFrom(src => src.PlotNumber))
+    .ForMember(dest => dest.RegulatedPlotNumber, opt => opt.MapFrom(src => src.RegulatedPlotNumber))
+    .ForMember(dest => dest.neighborhood, opt => opt.MapFrom(src => src.neighborhood))
+    .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
+    .ForMember(dest => dest.Municipality, opt => opt.MapFrom(src => src.Municipality))
+    .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Street))
+    .ForMember(dest => dest.StreetNumber, opt => opt.MapFrom(src => src.StreetNumber))
+    .ForMember(dest => dest.designation, opt => opt.MapFrom(src => src.designation))
+    .ForMember(dest => dest.locality, opt => opt.MapFrom(src => src.locality))
+    .ForMember(dest => dest.PlotDocuments, opt => opt.Ignore())
+    .ForMember(dest => dest.ActivityPlots, opt => opt.Ignore());
 
             // Mapping from Activity_PlotRelashionship to GetActivity_PlotRelashionshipDTO
             CreateMap<Activity_PlotRelashionship, GetActivity_PlotRelashionshipDTO>()

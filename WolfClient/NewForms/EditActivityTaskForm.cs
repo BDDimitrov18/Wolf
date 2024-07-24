@@ -126,13 +126,13 @@ namespace WolfClient.NewForms
             MainExecutantComboBox.SelectedValue = selectedActivity.ExecutantId;
             ParentActivityComboBox.SelectedValue = selectedActivity.ParentActivityId ?? 0;
             ExecitantComboBox.SelectedValue = getTaskDTO.ExecutantId;
-            if (getTaskDTO.ControlId.HasValue)
+            if (getTaskDTO.Control != null)
             {
                 ControlComboBox.SelectedValue = getTaskDTO.ControlId;
             }
             else
             {
-                ControlComboBox.SelectedIndex = -1;
+                ControlComboBox.SelectedIndex = 0;
             }
             ActivityStartDatePicker.Value = selectedActivity.StartDate;
             expectedDurationDateTime.Value = selectedActivity.ExpectedDuration;

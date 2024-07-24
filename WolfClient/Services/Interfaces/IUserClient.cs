@@ -69,6 +69,11 @@ namespace WolfClient.Services.Interfaces
         public Task<ClientResponse<HttpResponseMessage>> EditActivity(GetActivityDTO activityDTO);
 
         public Task<ClientResponse<HttpResponseMessage>> EditTask(GetTaskDTO taskDTO);
+        public Task<ClientResponse<HttpResponseMessage>> EditPlot(GetPlotDTO plotDTO);
+        public Task<ClientResponse<HttpResponseMessage>> EditOwner(GetOwnerDTO ownerDto);
+        public Task<ClientResponse<HttpResponseMessage>> EditDocumentOfOwnership(GetDocumentOfOwnershipDTO documentOfOwnershipDTO);
+        public Task<ClientResponse<HttpResponseMessage>> EditPowerOfAttorney(GetPowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO);
+        public Task<ClientResponse<HttpResponseMessage>> EditPlotOwnerRelashionship(GetDocumentPlot_DocumentOwnerRelashionshipDTO documentPlot_DocumentOwnerRelashionshipDTO);
 
     }
 }

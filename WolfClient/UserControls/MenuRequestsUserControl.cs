@@ -203,6 +203,7 @@ namespace WolfClient.UserControls
                 {
                     _isSelectedRequest = true;
                     _dataService.SetSelectedRequest(selectedRequest);
+                    _dataService.SetSelectedActivityViews(null);
                 }
             }
             else
@@ -1132,13 +1133,43 @@ namespace WolfClient.UserControls
 
         private void editActivityButton_Click(object sender, EventArgs e)
         {
-            EditActivityTaskForm editActivityTaskForm = new EditActivityTaskForm(_apiClient,_userClient,_adminClient,_dataService);
+            EditActivityTaskForm editActivityTaskForm = new EditActivityTaskForm(_apiClient, _userClient, _adminClient, _dataService);
             editActivityTaskForm.Show();
             editActivityTaskForm.Disposed += EditActivityFormDispose;
         }
         private void EditActivityFormDispose(object sender, EventArgs e)
         {
             UpdateActivityDataGridView();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void editPlotButton_Click(object sender, EventArgs e)
+        {
+            EditPlot editPlot = new EditPlot(_apiClient, _userClient, _adminClient, _dataService);
+            editPlot.Show();
+            editPlot.Disposed += EditPlotFormDispose;
+        }
+
+        private void EditPlotFormDispose(object sender, EventArgs e)
+        {
+            UpdateActivityDataGridView();
+            UpdatePlotsDataGridView();
+            UpdateOwnershipDataGridView();
+        }
+
+        private void editOwnershipButton_Click(object sender, EventArgs e)
+        {
+            EditOwnerForm editOwnerForm = new EditOwnerForm(_apiClient, _userClient, _adminClient, _dataService);
+            editOwnerForm.Show();
+            editOwnerForm.Disposed += EditOwnershipFormDispose; 
+        }
+        private void EditOwnershipFormDispose(object sender, EventArgs e)
+        {
+            UpdateOwnershipDataGridView();
         }
     }
 }

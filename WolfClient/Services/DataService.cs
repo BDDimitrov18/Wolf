@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WolfClient.NewForms;
 using WolfClient.Services.Interfaces;
@@ -48,6 +49,103 @@ namespace WolfClient.Services
             _allClients = new List<GetClientDTO>();
             _selectedActivity = new List<ActivityViewModel>();
         }
+        public GetPlotDTO getPlotFromPlotOwnerID(int plotOwnerId) {
+            foreach (var link in compositeData.linkedDocuments) {
+                if (link.Id == plotOwnerId) {
+                    return link.DocumentPlot.Plot;
+                }
+            }
+            return null;
+        }
+
+
+        public void EditOwner(GetOwnerDTO ownerDTO) {
+            foreach (var link in compositeData.linkedDocuments) {
+                if (link.DocumentOwner.OwnerID == ownerDTO.OwnerID) {
+                    link.DocumentOwner.Owner = ownerDTO;
+                }
+            }
+        }
+
+        public void EditDocument(GetDocumentOfOwnershipDTO documentDTO) { 
+            foreach(var link in compositeData.linkedDocuments) {
+                if (link.DocumentOwner.DocumentID == documentDTO.DocumentId) {
+                    link.DocumentOwner.Document = documentDTO;
+                }
+                if (link.DocumentPlot.DocumentOfOwnershipId == documentDTO.DocumentId)
+                {
+                    link.DocumentPlot.documentOfOwnership = documentDTO;
+                }
+            }
+        }
+
+        public void EditPowerOfAttorney(GetPowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO) { 
+            foreach(var link in compositeData.linkedDocuments) { 
+                if(link.PowerOfAttorneyId == powerOfAttorneyDocumentDTO.PowerOfAttorneyId) { 
+                    link.powerOfAttorneyDocumentDTO = powerOfAttorneyDocumentDTO;    
+                }    
+            }
+        }
+
+        public void EditPlotOwnerRelashionship(GetDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO)
+        {
+            foreach (var link in compositeData.linkedDocuments)
+            {
+                if (link.Id == relashionshipDTO.Id)
+                {
+                    link.IdealParts = relashionshipDTO.IdealParts;
+                    link.WayOfAcquiring = relashionshipDTO.WayOfAcquiring;
+                    link.isDrob = relashionshipDTO.isDrob;
+                }
+            }
+        }
+        public void EditPlot(GetPlotDTO plotDTO)
+        {
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                if (link.activityDTOs != null && link.activityDTOs.Count() > 0)
+                {
+                    foreach (var activity in link.activityDTOs)
+                    {
+                        if (activity.Plots != null && activity.Plots.Count() > 0)
+                        {
+                            foreach (var plot in activity.Plots)
+                            {
+                                if (plot.PlotId == plotDTO.PlotId)
+                                {
+                                    plot.PlotNumber = plotDTO.PlotNumber;
+                                    plot.RegulatedPlotNumber = plotDTO.RegulatedPlotNumber;
+                                    plot.neighborhood = plotDTO.neighborhood;
+                                    plot.City = plotDTO.City;
+                                    plot.Municipality = plotDTO.Municipality;
+                                    plot.Street = plotDTO.Street;
+                                    plot.StreetNumber = plotDTO.StreetNumber;
+                                    plot.designation = plotDTO.designation;
+                                    plot.locality = plotDTO.locality;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (var link in compositeData.linkedDocuments)
+            {
+                if (link.DocumentPlot.PlotId == plotDTO.PlotId)
+                {
+                    link.DocumentPlot.Plot.PlotNumber = plotDTO.PlotNumber;
+                    link.DocumentPlot.Plot.RegulatedPlotNumber = plotDTO.RegulatedPlotNumber;
+                    link.DocumentPlot.Plot.neighborhood = plotDTO.neighborhood;
+                    link.DocumentPlot.Plot.City = plotDTO.City;
+                    link.DocumentPlot.Plot.Municipality = plotDTO.Municipality;
+                    link.DocumentPlot.Plot.Street = plotDTO.Street;
+                    link.DocumentPlot.Plot.StreetNumber = plotDTO.StreetNumber;
+                    link.DocumentPlot.Plot.designation = plotDTO.designation;
+                    link.DocumentPlot.Plot.locality = plotDTO.locality;
+                }
+            }
+        }
+
 
         public void SetSelectedClients(List<GetClientDTO> getClients)
         {
@@ -654,6 +752,14 @@ namespace WolfClient.Services
             }
         }
 
+        public GetOwnerDTO GetOwnerByEgn(string egn) {
+            foreach (var link in compositeData.linkedDocuments) {
+                if (link.DocumentOwner.Owner.EGN == egn) {
+                    return link.DocumentOwner.Owner;
+                }
+            }
+            return null;
+        }
         public void SetSelectedOwnershipViewModelsRequestMenu(List<OwnershipViewModel> ownershipViewModels) {
             _selectedOwnershipRequestMenu = ownershipViewModels;
         }

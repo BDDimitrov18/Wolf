@@ -12,5 +12,6 @@ namespace DataAccessLayer.Repositories.Interfaces
         public Task AddOwner(Owner owner);
 
         public Task<Owner> FindById(int id);
+        public Task<bool> EditOwner(Owner owner);
     }
 }

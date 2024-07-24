@@ -6,6 +6,7 @@ namespace WolfAPI.Services.Interfaces
     {
         public Task<GetOwnerDTO> CreateOwner(CreateOwnerDTO ownerDTO);
         public Task<GetOwnerDTO> FindOwnerById(int id);
+        public Task<bool> editOwner(GetOwnerDTO ownerDTO);
     }
 
 }

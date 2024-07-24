@@ -57,5 +57,42 @@ namespace DataAccessLayer.Repositories
             var plots = activity.ActivityPlots.Select(ap => ap.Plot).ToList();
             return plots;
         }
+
+        public async Task<bool> EditPlot(Plot plot)
+        {
+            // Find the existing plot in the database
+            var existingPlot = await _WolfDbContext.Plots.FirstOrDefaultAsync(p => p.PlotId == plot.PlotId);
+
+            // If the plot is found, update its properties
+            if (existingPlot != null)
+            {
+                existingPlot.PlotNumber = plot.PlotNumber;
+                existingPlot.RegulatedPlotNumber = plot.RegulatedPlotNumber;
+                existingPlot.neighborhood = plot.neighborhood;
+                existingPlot.City = plot.City;
+                existingPlot.Municipality = plot.Municipality;
+                existingPlot.Street = plot.Street;
+                existingPlot.StreetNumber = plot.StreetNumber;
+                existingPlot.designation = plot.designation;
+                existingPlot.locality = plot.locality;
+
+                try
+                {
+                    // Save the changes to the database
+                    await _WolfDbContext.SaveChangesAsync();
+                    return true; // Indicate that the operation was successful
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (logging not shown here)
+                    // Handle the exception as needed
+                    return false; // Indicate that the operation failed
+                }
+            }
+            else
+            {
+                return false; // Indicate that the plot was not found
+            }
+        }
     }
 }

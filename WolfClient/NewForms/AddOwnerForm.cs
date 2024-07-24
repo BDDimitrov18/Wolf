@@ -334,7 +334,7 @@ namespace WolfClient.NewForms
                 TypeOfOwnership.Enabled = false;
             }
             var powerOfattorneys = _dataService.GetPowerOfAttorneyFromPlots(plotComboBox.SelectedItem as GetPlotDTO);
-            if (powerOfattorneys != null && powerOfattorneys.Count()>0)
+            if (powerOfattorneys != null && powerOfattorneys.Count() > 0)
             {
                 PowerOfAttorneyNumber.DataSource = _dataService.GetPowerOfAttorneyFromPlots(plotComboBox.SelectedItem as GetPlotDTO);
                 PowerOfAttorneyNumber.DisplayMember = "number";
@@ -356,8 +356,8 @@ namespace WolfClient.NewForms
 
             }
 
-            
-            
+
+
 
             DocumentNumberComboBox.TextChanged += DocumentNumberComboBox_TextChanged;
             PowerOfAttorneyNumber.TextChanged += PowerOfAttorneyNumber_TextChanged;
@@ -711,10 +711,30 @@ namespace WolfClient.NewForms
                 PowerOfAttorneyDatetimePicker.Value = matchingDocument.dateOfIssuing;
                 PowerOfAttorneyDatetimePicker.Enabled = false;
             }
-            else {
+            else
+            {
                 PowerOfAttorneyIssuerComboBox.Enabled = true;
                 PowerOfAttorneyIssuerComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
                 PowerOfAttorneyDatetimePicker.Enabled = true;
+            }
+        }
+
+        private void EGNTextBox_TextChanged(object sender, EventArgs e)
+        {
+            string egn = EGNTextBox.Text;
+            GetOwnerDTO owner = _dataService.GetOwnerByEgn(egn);
+            if (owner != null)
+            {
+                NameTextBox.Enabled = true;
+                NameTextBox.Text = owner.FirstName + " " + owner.MiddleName + " " +owner.LastName;
+                NameTextBox.Enabled = false;
+                AddressTextBox.Enabled= true;
+                AddressTextBox.Text = owner.Address;
+                AddressTextBox.Enabled = false;
+            }
+            else {
+                NameTextBox.Enabled = true;
+                AddressTextBox.Enabled = true;
             }
         }
     }

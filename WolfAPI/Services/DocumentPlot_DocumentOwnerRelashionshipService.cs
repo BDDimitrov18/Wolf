@@ -81,6 +81,8 @@ namespace WolfAPI.Services
                     documentOwnerResult = await _documentOfOwnership_OwnerRelashionshipModelRepository.onPlotOwnerDelete(DocumentOwnerID);
                 }
 
+                if(DocumentPlotID != -1 )
+
                 if (!resultRelashionship)
                 {
                     //Log Relashionship error
@@ -127,6 +129,11 @@ namespace WolfAPI.Services
                 await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
             }
             return EndResult;
-        }   
+        }
+
+        public async Task<bool> editDocument(GetDocumentPlot_DocumentOwnerRelashionshipDTO documentDTO) {
+            DocumentPlot_DocumentOwnerRelashionship document = _mapper.Map<DocumentPlot_DocumentOwnerRelashionship>(documentDTO);
+            return await _DocumentOwnerRelashionshipModelRepository.EditRelashionship(document);
+        }
     }
 }

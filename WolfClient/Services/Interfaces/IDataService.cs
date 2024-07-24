@@ -10,6 +10,8 @@ namespace WolfClient.Services.Interfaces
 {
     public interface IDataService
     {
+        public GetPlotDTO getPlotFromPlotOwnerID(int plotOwnerId);
+        public void EditPlot(GetPlotDTO plotDTO);
         public GetActivityDTO GetSelectedActivity();
         public void editClient(GetClientDTO clientDTO);
         public void SetEditedRequestClients(List<GetClientDTO> getClientDTOs, GetRequestDTO getRequestDTO);
@@ -99,5 +101,13 @@ namespace WolfClient.Services.Interfaces
 
         public void editActivity(GetActivityDTO activityDTO);
         public void editTask(GetTaskDTO taskDTO);
+
+        public GetOwnerDTO GetOwnerByEgn(string egn);
+
+        public void EditOwner(GetOwnerDTO ownerDTO);
+        public void EditDocument(GetDocumentOfOwnershipDTO documentDTO);
+
+        public void EditPowerOfAttorney(GetPowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO);
+        public void EditPlotOwnerRelashionship(GetDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO);
     }
 }

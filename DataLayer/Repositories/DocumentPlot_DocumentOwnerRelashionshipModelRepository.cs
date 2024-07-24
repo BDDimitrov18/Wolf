@@ -131,5 +131,25 @@ namespace DataAccessLayer.Repositories
                 return false;
             }
         }
+
+        public async Task<bool> EditRelashionship(DocumentPlot_DocumentOwnerRelashionship relashionship)
+        {
+            var existingRelashionship = await _WolfDbContext.documentPlot_DocumentOwenerRelashionships
+                .FirstOrDefaultAsync(r => r.Id == relashionship.Id);
+
+            if (existingRelashionship != null)
+            {
+                // Update only the specified fields
+                existingRelashionship.IdealParts = relashionship.IdealParts;
+                existingRelashionship.WayOfAcquiring = relashionship.WayOfAcquiring;
+                existingRelashionship.isDrob = relashionship.isDrob;
+
+                // Save changes to the database
+                await _WolfDbContext.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
     }
 }

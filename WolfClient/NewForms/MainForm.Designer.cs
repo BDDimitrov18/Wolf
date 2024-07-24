@@ -36,8 +36,7 @@ namespace WolfClient.NewForms
             EmployeesStripLabel = new ToolStripLabel();
             panelContent = new Panel();
             LoginButton = new Button();
-            button1 = new Button();
-            DocumentViewer = new Button();
+            SpravkiButton = new Button();
             toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -79,14 +78,14 @@ namespace WolfClient.NewForms
             panelContent.BackColor = Color.White;
             panelContent.Location = new Point(0, 28);
             panelContent.Name = "panelContent";
-            panelContent.Size = new Size(1358, 620);
+            panelContent.Size = new Size(1358, 678);
             panelContent.TabIndex = 21;
             panelContent.Paint += panelContent_Paint;
             // 
             // LoginButton
             // 
-            LoginButton.Anchor = AnchorStyles.Bottom;
-            LoginButton.Location = new Point(1211, 665);
+            LoginButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            LoginButton.Location = new Point(1215, 35);
             LoginButton.Name = "LoginButton";
             LoginButton.Size = new Size(135, 29);
             LoginButton.TabIndex = 22;
@@ -94,33 +93,23 @@ namespace WolfClient.NewForms
             LoginButton.UseVisualStyleBackColor = true;
             LoginButton.Click += LoginButton_Click;
             // 
-            // button1
+            // SpravkiButton
             // 
-            button1.Location = new Point(994, 665);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 23;
-            button1.Text = "pdfViewer";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
-            // DocumentViewer
-            // 
-            DocumentViewer.Location = new Point(866, 665);
-            DocumentViewer.Name = "DocumentViewer";
-            DocumentViewer.Size = new Size(94, 29);
-            DocumentViewer.TabIndex = 24;
-            DocumentViewer.Text = "Documents";
-            DocumentViewer.UseVisualStyleBackColor = true;
-            DocumentViewer.Click += DocumentViewer_Click;
+            SpravkiButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            SpravkiButton.BackgroundImageLayout = ImageLayout.Stretch;
+            SpravkiButton.Location = new Point(1215, 70);
+            SpravkiButton.Name = "SpravkiButton";
+            SpravkiButton.Size = new Size(135, 29);
+            SpravkiButton.TabIndex = 23;
+            SpravkiButton.Text = "Справки";
+            SpravkiButton.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             AutoScaleMode = AutoScaleMode.None;
             BackColor = SystemColors.AppWorkspace;
             ClientSize = new Size(1358, 706);
-            Controls.Add(DocumentViewer);
-            Controls.Add(button1);
+            Controls.Add(SpravkiButton);
             Controls.Add(LoginButton);
             Controls.Add(panelContent);
             Controls.Add(toolStrip1);
@@ -140,8 +129,7 @@ namespace WolfClient.NewForms
         private System.Windows.Forms.ToolStripLabel ClientsStripButton;
         private System.Windows.Forms.ToolStripLabel EmployeesStripLabel;
         private Button LoginButton;
-        private Button button1;
-        private Button DocumentViewer;
+        private Button SpravkiButton;
     }
 }
 

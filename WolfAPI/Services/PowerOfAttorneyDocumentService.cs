@@ -23,5 +23,10 @@ namespace WolfAPI.Services
             await _powerOfattorneyModelRepository.CreatePowerOfAttorney(powerOfattorney);
             return _mapper.Map<GetPowerOfAttorneyDocumentDTO>(powerOfattorney); 
         }
+
+        public async Task<bool> EditPowerOfAttorneyDocument(GetPowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO) {
+            PowerOfAttorneyDocument document = _mapper.Map<PowerOfAttorneyDocument>(powerOfAttorneyDocumentDTO);
+            return await _powerOfattorneyModelRepository.EditPowerOfAttorney(document);
+        }
     }
 }

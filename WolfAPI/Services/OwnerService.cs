@@ -30,5 +30,10 @@ namespace WolfAPI.Services
             GetOwnerDTO getOwner = _mapper.Map<GetOwnerDTO>(owner); 
             return getOwner;
         }
+
+        public async Task<bool> editOwner(GetOwnerDTO ownerDTO) {
+            Owner owner = _mapper.Map<Owner>(ownerDTO); 
+            return await  _ownerModelRepository.EditOwner(owner);
+        }
     }
 }

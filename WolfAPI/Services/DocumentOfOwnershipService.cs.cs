@@ -39,5 +39,10 @@ namespace WolfAPI.Services
             DocumentOfOwnership document = await _documentOfOwnershipModelRepository.FindById(id);
             return _mapper.Map<GetDocumentOfOwnershipDTO>(document);
         }
+
+        public async Task<bool> editDocumentOfOwnership(GetDocumentOfOwnershipDTO documentOfOwnershipDTO) {
+            DocumentOfOwnership document = _mapper.Map<DocumentOfOwnership>(documentOfOwnershipDTO);
+            return await _documentOfOwnershipModelRepository.EditDocument(document);
+        }
     }
 }

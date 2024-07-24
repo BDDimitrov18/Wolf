@@ -103,6 +103,7 @@
             // 
             DesignationComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             DesignationComboBox.FormattingEnabled = true;
+            DesignationComboBox.Items.AddRange(new object[] { "горска територия", "урбанизирана", "територия на транспорта", "замеделска", "територия заета от води и водни обекти", "защитена", "нарушена", "урбанизирана територия - защитена", "замеделска територия - защитена", "горска територия - защитена" });
             DesignationComboBox.Location = new Point(40, 664);
             DesignationComboBox.Margin = new Padding(3, 4, 3, 4);
             DesignationComboBox.Name = "DesignationComboBox";
@@ -264,6 +265,7 @@
             // 
             plotNumberValidationLabel.AutoSize = true;
             plotNumberValidationLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            plotNumberValidationLabel.ForeColor = SystemColors.GradientActiveCaption;
             plotNumberValidationLabel.Location = new Point(40, 143);
             plotNumberValidationLabel.Name = "plotNumberValidationLabel";
             plotNumberValidationLabel.Size = new Size(267, 15);

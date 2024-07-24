@@ -125,6 +125,7 @@
             EGNTextBox.Name = "EGNTextBox";
             EGNTextBox.Size = new Size(292, 27);
             EGNTextBox.TabIndex = 2;
+            EGNTextBox.TextChanged += EGNTextBox_TextChanged;
             // 
             // label3
             // 

@@ -11,5 +11,6 @@ namespace DataAccessLayer.Repositories.Interfaces
     {
         public Task Add(Plot plot);
         public Task<List<Plot>> GetLinkedPlotsToActivty(int activityId);
+        public Task<bool> EditPlot(Plot plot);
     }
 }

@@ -9,5 +9,8 @@ namespace WolfAPI.Services.Interfaces
         public List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> GetLinkedByPlots(List<GetPlotDTO> getPlots);
 
         public Task<bool> deletePlotOwnerRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs, string clientId);
+
+        public Task<bool> editDocument(GetDocumentPlot_DocumentOwnerRelashionshipDTO documentDTO);
+
     }
 }

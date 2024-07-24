@@ -23,6 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="NewForms\EditOwnerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="NewForms\EditPlot.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="NewForms\EditActivityTaskForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -31,6 +37,11 @@
     </Compile>
     <Compile Update="NewForms\EditRequestForm.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Update="UserControls\MenuClientsUserControl.cs" />
     <Compile Update="UserControls\MenuEmployeesUserControl.cs">
@@ -62,6 +73,13 @@
 
   <ItemGroup>
     <Content Remove="C:\Users\dell\.nuget\packages\pdfium.net.sdk\4.90.2704\build\..\content\x86\pdfium.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

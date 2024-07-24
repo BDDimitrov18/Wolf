@@ -11,5 +11,6 @@ namespace DataAccessLayer.Repositories.Interfaces
     {
         public Task AddDocument(DocumentOfOwnership document);
         public Task<DocumentOfOwnership> FindById(int id);
+        public Task<bool> EditDocument(DocumentOfOwnership document);
     }
 }

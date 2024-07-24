@@ -135,9 +135,25 @@ namespace WolfClient.NewForms
                     NeighborhoodTextBox.Text = selectedPlot.neighborhood != null ? selectedPlot.neighborhood : "";
                     StreetTextBox.Text = selectedPlot.Street != null ? selectedPlot.Street : "";
                     StreetNumberTextBox.Text = selectedPlot.StreetNumber != null ? selectedPlot.StreetNumber.ToString() : "";
+                    CityTextBox.Enabled = false;
+                    MunicipalityTextBox.Enabled = false;
+                    LocalityTextBox.Enabled = false;
+                    DesignationComboBox.Enabled = false;
+                    RegulatedNumberTextBox.Enabled = false;
+                    NeighborhoodTextBox.Enabled = false;
+                    StreetTextBox.Enabled = false;
+                    StreetNumberTextBox.Enabled = false;
                 }
                 else
                 {
+                    CityTextBox.Enabled = true;
+                    MunicipalityTextBox.Enabled = true;
+                    LocalityTextBox.Enabled = true;
+                    DesignationComboBox.Enabled = true;
+                    RegulatedNumberTextBox.Enabled = true;
+                    NeighborhoodTextBox.Enabled = true;
+                    StreetTextBox.Enabled = true;
+                    StreetNumberTextBox.Enabled = true;
                     var selectedEKT = _dataService.GetEKTViewModels().FirstOrDefault(x => x.EKTNumber == selectedPlotNumber);
 
                     if (selectedEKT != null)
@@ -145,6 +161,9 @@ namespace WolfClient.NewForms
                         CityTextBox.Text = $"{selectedEKT.TypeOfPlace} {selectedEKT.TownName}";
                         LocalityTextBox.Text = selectedEKT.Localitiy;
                         MunicipalityTextBox.Text = selectedEKT.Municipality;
+                        CityTextBox.Enabled = false;
+                        LocalityTextBox.Enabled = false;
+                        MunicipalityTextBox.Enabled = false;
                     }
                 }
             }
