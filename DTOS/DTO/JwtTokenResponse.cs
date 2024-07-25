@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WolfClient.Models
+namespace DTOS.DTO
 {
-    public class TokenResponse
+    public class JwtTokenResponse
     {
         public string token { get; set; }
-        public string expiration { get; set; }
+        public DateTime expiration { get; set; }
         public string[] role { get; set; }
     }
 }

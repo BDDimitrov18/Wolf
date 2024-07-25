@@ -39,6 +39,8 @@ namespace WolfClient.Services
 
         public List<GetClientDTO> _allClients { get; set; }
 
+        public GetEmployeeDTO LoggedEmployee { get; set; }
+
         public DataService()
         {
             compositeData = new CompositeDataDTO();
@@ -48,6 +50,7 @@ namespace WolfClient.Services
             _selectedClients = new List<GetClientDTO>();
             _allClients = new List<GetClientDTO>();
             _selectedActivity = new List<ActivityViewModel>();
+            LoggedEmployee = new GetEmployeeDTO();
         }
         public GetPlotDTO getPlotFromPlotOwnerID(int plotOwnerId) {
             foreach (var link in compositeData.linkedDocuments) {
@@ -57,8 +60,168 @@ namespace WolfClient.Services
             }
             return null;
         }
+        public List<GetRequestDTO> filterRequestsBySelfActivitiesAndTasks(List<GetRequestDTO> requestDTOs)
+        {
+            List<GetRequestDTO> returnRequest = new List<GetRequestDTO>();
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                bool toAdd = false;
+                foreach (var request in requestDTOs)
+                {
+                    if (link.requestDTO.RequestId == request.RequestId)
+                    {
+                        if (link.activityDTOs != null && link.activityDTOs.Count() > 0)
+                        {
+                            foreach (var activity in link.activityDTOs)
+                            {
+                                if (activity.mainExecutant.EmployeeId == LoggedEmployee.EmployeeId)
+                                {
+                                    toAdd = true;
+                                }
+                                else
+                                {
+                                    foreach (var task in activity.Tasks)
+                                    {
+                                        if (task.ExecutantId == LoggedEmployee.EmployeeId)
+                                        {
+                                            toAdd = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                returnRequest.Add(link.requestDTO);
+            }
+            return returnRequest;
+        }
 
+        public List<GetRequestDTO> filterRequestByDaySelfActivitiesAndTasks(List<GetRequestDTO> requestDTOs) {
+            List<GetRequestDTO> returnRequest = new List<GetRequestDTO>();    
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                bool toadd = false;
+                foreach (var request in requestDTOs) { 
+                    if(link.requestDTO.RequestId == request.RequestId) {
+                        if (link.activityDTOs != null && link.activityDTOs.Count() > 0)
+                        {
+                            foreach (var activity in link.activityDTOs)
+                            {
+                                if (activity.ExpectedDuration.Year == DateTime.Now.Year &&
+                                    activity.ExpectedDuration.Month == DateTime.Now.Month &&
+                                    activity.ExpectedDuration.Day == DateTime.Now.Day)
+                                {
+                                    toadd = true;
+                                }
+                                else
+                                {
+                                    foreach (var task in activity.Tasks)
+                                    {
+                                        if (task.FinishDate.Year == DateTime.Now.Year &&
+                                            task.FinishDate.Month == DateTime.Now.Month &&
+                                            task.FinishDate.Day == DateTime.Now.Day)
+                                        {
+                                            toadd = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (toadd) {
+                    returnRequest.Add(link.requestDTO);
+                }
+            }
+            return returnRequest;
+        }
 
+        public List<GetRequestDTO> filterRequestByStatusSelfActivitiesAndTasks(List<GetRequestDTO> requestDTOs, string status)
+        {
+            List<GetRequestDTO> returnRequest = new List<GetRequestDTO>();
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                bool toadd = false;
+                foreach (var request in requestDTOs)
+                {
+                    if (link.requestDTO.RequestId == request.RequestId)
+                    {
+                        if (link.activityDTOs != null && link.activityDTOs.Count() > 0)
+                        {
+                            foreach (var activity in link.activityDTOs)
+                            {
+                                foreach (var task in activity.Tasks)
+                                {
+                                    if (task.Status == status)
+                                    {
+                                        toadd = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (toadd)
+                {
+                    returnRequest.Add(link.requestDTO);
+                }
+            }
+            return returnRequest;
+        }
+
+        public List<GetRequestDTO> FilterRequestByWeekSelfActivitiesAndTasks(List<GetRequestDTO> requestDTOs)
+        {
+            List<GetRequestDTO> returnRequest = new List<GetRequestDTO>();
+
+            // Get the start and end date of the current week
+            DateTime startOfWeek = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+            DateTime endOfWeek = startOfWeek.AddDays(7);
+
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                bool toadd = false;
+                foreach (var request in requestDTOs)
+                {
+                    if (link.requestDTO.RequestId == request.RequestId)
+                    {
+                        if (link.activityDTOs != null && link.activityDTOs.Count() > 0)
+                        {
+                            foreach (var activity in link.activityDTOs)
+                            {
+                                if (activity.ExpectedDuration >= startOfWeek && activity.ExpectedDuration < endOfWeek)
+                                {
+                                    toadd = true;
+                                }
+                                else
+                                {
+                                    foreach (var task in activity.Tasks)
+                                    {
+                                        if (task.FinishDate >= startOfWeek && task.FinishDate < endOfWeek)
+                                        {
+                                            toadd = true; returnRequest.Add(request);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (toadd)
+                {
+                    returnRequest.Add(link.requestDTO);
+                }
+            }
+
+            return returnRequest;
+        }
+        public void SetLoggedEmployee(GetEmployeeDTO employeeDTO) {
+            LoggedEmployee = employeeDTO;
+        }
+
+        public GetEmployeeDTO getLoggedEmployee() {
+            return LoggedEmployee;
+        }
         public void EditOwner(GetOwnerDTO ownerDTO) {
             foreach (var link in compositeData.linkedDocuments) {
                 if (link.DocumentOwner.OwnerID == ownerDTO.OwnerID) {

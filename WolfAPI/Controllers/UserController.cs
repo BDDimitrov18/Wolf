@@ -224,7 +224,7 @@ namespace WolfAPI.Controllers
         {
             if (getClientDTOs == null || getClientDTOs.Count == 0)
             {
-                return BadRequest("No clients provided for deletion.");
+                return BadRequest("No clients provided for deletionu.");
             }
 
             try

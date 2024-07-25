@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Wolf.DTO;
 using WolfClient.Events;
-using WolfClient.Models;
 using WolfClient.Services;
 using WolfClient.Services.Interfaces;
 
@@ -22,8 +21,10 @@ namespace WolfClient.NewForms
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
         private readonly IFileUploader _fileUploader;
+        private readonly IDataService _dataService;
         private readonly WebSocketClientService _webSocketClientService;
-        public LoginForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IFileUploader fileUploader, WebSocketClientService webSocketClientService)
+        public LoginForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IFileUploader fileUploader, WebSocketClientService webSocketClientService,
+            IDataService dataService)
         {
             InitializeComponent();
             _apiClient = apiClient;
@@ -31,6 +32,7 @@ namespace WolfClient.NewForms
             _adminClient = adminClient;
             _fileUploader = fileUploader;
             _webSocketClientService = webSocketClientService;
+            _dataService = dataService;
         }
 
 
@@ -66,12 +68,23 @@ namespace WolfClient.NewForms
             var response = await _apiClient.GetJwtToken(loginUser);
             if (response.IsSuccess)
             {
-                var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(response.ResponseObj);
+                var tokenResponse = response.ResponseObj.jwtTokenResponse;
                 _adminClient.SetToken(tokenResponse.token);
                 _apiClient.SetToken(tokenResponse.token);
                 _userClient.SetToken(tokenResponse.token);
                 _fileUploader.SetToken(tokenResponse.token);
                 _webSocketClientService.SetToken(tokenResponse.token);
+
+                // Extract and use the employee information if needed
+                var employee = response.ResponseObj.employeeDTO;
+                if (employee != null)
+                {
+                    MessageBox.Show($"Employee: {employee.FullName}, Email: {employee.Email}");
+                    // Handle employee information as needed
+
+                    _dataService.SetLoggedEmployee(employee);
+                }
+
                 LogInEvent.OnLogIn(username, tokenResponse.role[0]);
                 return true;
             }

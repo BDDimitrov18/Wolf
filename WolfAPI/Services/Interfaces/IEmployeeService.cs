@@ -8,5 +8,8 @@ namespace WolfAPI.Services.Interfaces
         public Task<List<GetEmployeeDTO>> Add(List<CreateEmployeeDTO> employeeDto, string clientId);
 
         public IEnumerable<GetEmployeeDTO> GetAllEmployees();
+
+        public  Task<GetEmployeeDTO> GetEmployeeById(int id);
+        
     }
 }

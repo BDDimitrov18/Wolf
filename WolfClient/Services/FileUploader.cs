@@ -14,7 +14,6 @@ using System.Net;
 using System.Reflection.Metadata;
 using System.Text.Json;
 using System.Threading.Tasks;
-using WolfClient.Models;
 
 namespace WolfClient.Services
 {

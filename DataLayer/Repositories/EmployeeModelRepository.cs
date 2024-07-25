@@ -31,5 +31,9 @@ namespace DataAccessLayer.Repositories
         {
             return _WolfDbContext.Employees.ToList();
         }
+
+        public async Task<Employee> Get(int id) {
+            return await _WolfDbContext.Employees.FindAsync(id);
+        }
     }
 }

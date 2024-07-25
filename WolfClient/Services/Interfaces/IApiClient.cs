@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTOS.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace WolfClient.Services.Interfaces
     public interface IApiClient
     {
        void SetToken(string token);
-       Task<ClientResponse<string>> GetJwtToken(LoginUserDto loginUser);
+        public Task<ClientResponse<TokenResponse>> GetJwtToken(LoginUserDto loginUser);
 
         bool getLoginStatus();
     }

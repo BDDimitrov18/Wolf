@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTOS.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace UserManagamentService.Services.Interfaces
     public interface IUserManagament
     {
         Task<ApiResponse<string>> CreateUserWithTokenAsync(RegisterUser registerUser);
-        Task<ApiResponse<object>> LoginUserWithJwtTokenAsync(LoginUser loginUSer);
+        public Task<ApiResponse<JwtTokenResponse>> LoginUserWithJwtTokenAsync(LoginUser loginUser);
+        public Task<ApiResponse<object>> LinkEmployeeToUserAsync(string userId, int employeeId);
     }
 }

@@ -10,6 +10,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Wolf.DTO;
 using System.Text.Json;
 using Wolf.Models;
+using DTOS.DTO;
 
 namespace WolfClient.Services
 {
@@ -33,7 +34,7 @@ namespace WolfClient.Services
                 LoggedIn= true;
         }
 
-        public async Task<ClientResponse<string>> GetJwtToken(LoginUserDto loginUser)
+        public async Task<ClientResponse<TokenResponse>> GetJwtToken(LoginUserDto loginUser)
         {
             var jsonContent = JsonSerializer.Serialize(loginUser);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -42,16 +43,18 @@ namespace WolfClient.Services
 
             if (response.IsSuccessStatusCode)
             {
-                var token = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("Response :" + response);
-                return new ClientResponse<string> { IsSuccess = true, Message = "Token Received!", ResponseObj = token };
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(responseContent, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                return new ClientResponse<TokenResponse> { IsSuccess = true, Message = "Token Received!", ResponseObj = tokenResponse };
             }
             else
             {
                 Console.WriteLine("Error: " + response.ReasonPhrase);
-                return new ClientResponse<string> { IsSuccess = false, Message = "Error: " + response.ReasonPhrase };
+                return new ClientResponse<TokenResponse> { IsSuccess = false, Message = "Error: " + response.ReasonPhrase };
             }
         }
     }
-
 }

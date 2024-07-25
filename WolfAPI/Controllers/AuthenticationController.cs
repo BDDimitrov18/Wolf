@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DataAccessLayer.Models;
+using DTOS.DTO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +13,7 @@ using UserManagamentService.Models.Authentication.Login;
 using UserManagamentService.Models.Authentication.SignUp;
 using UserManagamentService.Services.Interfaces;
 using WolfApi.Models;
+using WolfAPI.Services.Interfaces;
 
 
 namespace WolfApi.Controllers
@@ -19,21 +22,23 @@ namespace WolfApi.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailService _emailService;
         private readonly IUserManagament _userManagament;
         private readonly IConfiguration _config;
+        private readonly IEmployeeService _employeeService;
 
-        public AuthenticationController(UserManager<IdentityUser> userManager,
+        public AuthenticationController(UserManager<ApplicationUser> userManager,
             IConfiguration config,
             IEmailService emailService, 
-            IUserManagament userManagament)
+            IUserManagament userManagament,
+            IEmployeeService employeeService)
         {
             _userManager = userManager;
-            
             _config = config;
             _emailService = emailService;
             _userManagament = userManagament;
+            _employeeService = employeeService;
         }
 
         [HttpPost]
@@ -57,16 +62,34 @@ namespace WolfApi.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginUser loginUser) 
+        public async Task<IActionResult> Login([FromBody] LoginUser loginUser)
         {
-            var tokenResponse =  await _userManagament.LoginUserWithJwtTokenAsync(loginUser);
-            if (tokenResponse.IsSuccess)
+            var user = await _userManager.FindByNameAsync(loginUser.Username);
+            if (user != null)
             {
-                return Ok(tokenResponse.Response);
-            }
+                var tokenResponse = await _userManagament.LoginUserWithJwtTokenAsync(loginUser);
+                if (tokenResponse.IsSuccess)
+                {
+                    GetEmployeeDTO employeeDTO = null;
+                    if (user.EmployeeId.HasValue)
+                    {
+                        employeeDTO = await _employeeService.GetEmployeeById(user.EmployeeId.Value);
+                    }
 
-            return StatusCode(StatusCodes.Status401Unauthorized, new Response { Status = "Error", Message = tokenResponse.Message });
+                    var jwtTokenResponse = tokenResponse.Response;
+                    var response = new TokenResponse
+                    {
+                        jwtTokenResponse = jwtTokenResponse,
+                        employeeDTO = employeeDTO
+                    };
+
+                    return Ok(response);
+                }
+                return StatusCode(StatusCodes.Status401Unauthorized, new Response { Status = "Error", Message = tokenResponse.Message });
+            }
+            return StatusCode(StatusCodes.Status404NotFound, new Response { Status = "Error", Message = "User not found" });
         }
+
 
         [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string token, string email)

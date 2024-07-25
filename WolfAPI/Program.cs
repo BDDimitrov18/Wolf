@@ -58,10 +58,9 @@ builder.Services.AddSwaggerGen(option =>
 builder.Services.AddDbContext<WolfDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<WolfDbContext>()
     .AddDefaultTokenProviders();
-
 builder.Services.Configure<IdentityOptions>(opts => opts.SignIn.RequireConfirmedEmail = true);
 
 builder.Services.AddAuthentication(options =>

@@ -12,5 +12,7 @@ namespace DataAccessLayer.Repositories.Interfaces
         public List<Employee> Add(List<Employee> employees);
 
         public IEnumerable<Employee> GetAll();
+
+        public Task<Employee> Get(int id);
     }
 }

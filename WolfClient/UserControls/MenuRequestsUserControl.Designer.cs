@@ -31,10 +31,10 @@ namespace WolfClient.UserControls
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuRequestsUserControl));
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
             RequestDataGridView = new DataGridView();
             RequestId = new DataGridViewTextBoxColumn();
             RequestName = new DataGridViewTextBoxColumn();
@@ -53,32 +53,38 @@ namespace WolfClient.UserControls
             panel3 = new Panel();
             panel7 = new Panel();
             button7 = new Button();
-            button6 = new Button();
-            button5 = new Button();
-            button4 = new Button();
-            button2 = new Button();
+            btnLastRequestsDataGridView = new Button();
+            btnNextRequestsDataGridView = new Button();
+            btnPreviousRequestsDataGridView = new Button();
+            btnFirstRequestsDataGridView = new Button();
             panel6 = new Panel();
-            button29 = new Button();
-            checkBox3 = new CheckBox();
-            StarredCheckBox = new CheckBox();
-            checkBox2 = new CheckBox();
+            RequestFiltersApplyButton = new Button();
+            chkPersonal = new CheckBox();
+            chkStarred = new CheckBox();
+            chkForDay = new CheckBox();
             label6 = new Label();
-            checkBox1 = new CheckBox();
+            chkForWeek = new CheckBox();
             label1 = new Label();
-            comboBox2 = new ComboBox();
-            textBox1 = new TextBox();
+            statusCheckBox = new ComboBox();
+            txtNumber = new TextBox();
             label4 = new Label();
             label3 = new Label();
-            comboBox1 = new ComboBox();
+            cmbPaymentStatus = new ComboBox();
             editRequestButton = new Button();
             DeleteRequestButton = new Button();
             RefreshButton = new Button();
             tabPage2 = new TabPage();
             panel2 = new Panel();
-            button13 = new Button();
-            button14 = new Button();
-            button15 = new Button();
-            button16 = new Button();
+            panel1 = new Panel();
+            ApplyActivityFiltersButton = new Button();
+            label2 = new Label();
+            taskDayCheck = new CheckBox();
+            taskSelfCheck = new CheckBox();
+            taskWeekCheck = new CheckBox();
+            btnLastActivityDataGridView = new Button();
+            btnNextActivityDataGridView = new Button();
+            btnPreviousActivityDataGridView = new Button();
+            btnFirstActivityDataGridView = new Button();
             editActivityButton = new Button();
             CreateDocumentButton = new Button();
             DeleteActivityButton = new Button();
@@ -97,13 +103,13 @@ namespace WolfClient.UserControls
             ActivityAddButton = new Button();
             tabPage1 = new TabPage();
             panel4 = new Panel();
-            button9 = new Button();
+            btnLastClientsDataGridView = new Button();
             editClientButton = new Button();
-            button10 = new Button();
+            btnNextClientsDataGridView = new Button();
             deleteClientsButton = new Button();
-            button11 = new Button();
+            btnPreviousClientsDataGridView = new Button();
             button1 = new Button();
-            button12 = new Button();
+            btnFirstClientsDataGridView = new Button();
             clientsDataGridView = new DataGridView();
             ClientNumber = new DataGridViewTextBoxColumn();
             FirstName = new DataGridViewTextBoxColumn();
@@ -116,10 +122,10 @@ namespace WolfClient.UserControls
             DocumentsOfOwnershipTab = new TabControl();
             tabPage3 = new TabPage();
             panel5 = new Panel();
-            button17 = new Button();
-            button18 = new Button();
-            button19 = new Button();
-            button20 = new Button();
+            btnLastPlotsDataGridView = new Button();
+            btnNextPlotsDataGridView = new Button();
+            btnPreviousPlotsDataGridView = new Button();
+            btnFirstPlotsDataGridView = new Button();
             editPlotButton = new Button();
             DeletePlotsButton = new Button();
             PlotsDataGridView = new DataGridView();
@@ -135,10 +141,10 @@ namespace WolfClient.UserControls
             PlotsAddButton = new Button();
             DestinationOfPlotLabel = new Label();
             tabPage5 = new TabPage();
-            button21 = new Button();
-            button22 = new Button();
-            button23 = new Button();
-            button24 = new Button();
+            btnLastOwnershipDataGridView = new Button();
+            btnNextOwnershipDataGridView = new Button();
+            btnPreviousOwnershipDataGridView = new Button();
+            btnFirstOwnershipDataGridView = new Button();
             editOwnershipButton = new Button();
             DeleteOwnershipButton = new Button();
             AddOwnersButton = new Button();
@@ -151,10 +157,10 @@ namespace WolfClient.UserControls
             IdealParts = new DataGridViewTextBoxColumn();
             PowerOfAttorney = new DataGridViewTextBoxColumn();
             tabPage4 = new TabPage();
-            button25 = new Button();
-            button26 = new Button();
-            button27 = new Button();
-            button28 = new Button();
+            btnLastInvoicesDataGridView = new Button();
+            btnNextInvoicesDataGridView = new Button();
+            btnPreviousInvoicesDataGridView = new Button();
+            btnFirstInvoicesDataGridView = new Button();
             ((System.ComponentModel.ISupportInitialize)RequestDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).BeginInit();
             panel3.SuspendLayout();
@@ -162,6 +168,7 @@ namespace WolfClient.UserControls
             panel6.SuspendLayout();
             tabPage2.SuspendLayout();
             panel2.SuspendLayout();
+            panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ActivityDataGridView).BeginInit();
             tabPage1.SuspendLayout();
             panel4.SuspendLayout();
@@ -347,10 +354,10 @@ namespace WolfClient.UserControls
             // 
             panel7.BorderStyle = BorderStyle.Fixed3D;
             panel7.Controls.Add(button7);
-            panel7.Controls.Add(button6);
-            panel7.Controls.Add(button5);
-            panel7.Controls.Add(button4);
-            panel7.Controls.Add(button2);
+            panel7.Controls.Add(btnLastRequestsDataGridView);
+            panel7.Controls.Add(btnNextRequestsDataGridView);
+            panel7.Controls.Add(btnPreviousRequestsDataGridView);
+            panel7.Controls.Add(btnFirstRequestsDataGridView);
             panel7.Location = new Point(8, 43);
             panel7.Name = "panel7";
             panel7.Size = new Size(237, 50);
@@ -367,114 +374,115 @@ namespace WolfClient.UserControls
             button7.TabIndex = 4;
             button7.UseVisualStyleBackColor = false;
             // 
-            // button6
+            // btnLastRequestsDataGridView
             // 
-            button6.BackColor = Color.Transparent;
-            button6.BackgroundImage = (Image)resources.GetObject("button6.BackgroundImage");
-            button6.BackgroundImageLayout = ImageLayout.Stretch;
-            button6.Location = new Point(141, 3);
-            button6.Name = "button6";
-            button6.Size = new Size(40, 40);
-            button6.TabIndex = 3;
-            button6.UseVisualStyleBackColor = false;
+            btnLastRequestsDataGridView.BackColor = Color.Transparent;
+            btnLastRequestsDataGridView.BackgroundImage = (Image)resources.GetObject("btnLastRequestsDataGridView.BackgroundImage");
+            btnLastRequestsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnLastRequestsDataGridView.Location = new Point(141, 3);
+            btnLastRequestsDataGridView.Name = "btnLastRequestsDataGridView";
+            btnLastRequestsDataGridView.Size = new Size(40, 40);
+            btnLastRequestsDataGridView.TabIndex = 3;
+            btnLastRequestsDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button5
+            // btnNextRequestsDataGridView
             // 
-            button5.BackColor = Color.Transparent;
-            button5.BackgroundImage = (Image)resources.GetObject("button5.BackgroundImage");
-            button5.BackgroundImageLayout = ImageLayout.Stretch;
-            button5.Location = new Point(95, 3);
-            button5.Name = "button5";
-            button5.Size = new Size(40, 40);
-            button5.TabIndex = 2;
-            button5.UseVisualStyleBackColor = false;
+            btnNextRequestsDataGridView.BackColor = Color.Transparent;
+            btnNextRequestsDataGridView.BackgroundImage = (Image)resources.GetObject("btnNextRequestsDataGridView.BackgroundImage");
+            btnNextRequestsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnNextRequestsDataGridView.Location = new Point(95, 3);
+            btnNextRequestsDataGridView.Name = "btnNextRequestsDataGridView";
+            btnNextRequestsDataGridView.Size = new Size(40, 40);
+            btnNextRequestsDataGridView.TabIndex = 2;
+            btnNextRequestsDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button4
+            // btnPreviousRequestsDataGridView
             // 
-            button4.BackColor = Color.Transparent;
-            button4.BackgroundImage = (Image)resources.GetObject("button4.BackgroundImage");
-            button4.BackgroundImageLayout = ImageLayout.Stretch;
-            button4.Location = new Point(49, 3);
-            button4.Name = "button4";
-            button4.Size = new Size(40, 40);
-            button4.TabIndex = 1;
-            button4.UseVisualStyleBackColor = false;
-            button4.Click += button4_Click;
+            btnPreviousRequestsDataGridView.BackColor = Color.Transparent;
+            btnPreviousRequestsDataGridView.BackgroundImage = (Image)resources.GetObject("btnPreviousRequestsDataGridView.BackgroundImage");
+            btnPreviousRequestsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnPreviousRequestsDataGridView.Location = new Point(49, 3);
+            btnPreviousRequestsDataGridView.Name = "btnPreviousRequestsDataGridView";
+            btnPreviousRequestsDataGridView.Size = new Size(40, 40);
+            btnPreviousRequestsDataGridView.TabIndex = 1;
+            btnPreviousRequestsDataGridView.UseVisualStyleBackColor = false;
+            btnPreviousRequestsDataGridView.Click += button4_Click;
             // 
-            // button2
+            // btnFirstRequestsDataGridView
             // 
-            button2.BackColor = Color.Transparent;
-            button2.BackgroundImage = (Image)resources.GetObject("button2.BackgroundImage");
-            button2.BackgroundImageLayout = ImageLayout.Stretch;
-            button2.Location = new Point(3, 3);
-            button2.Name = "button2";
-            button2.Size = new Size(40, 40);
-            button2.TabIndex = 0;
-            button2.UseVisualStyleBackColor = false;
+            btnFirstRequestsDataGridView.BackColor = Color.Transparent;
+            btnFirstRequestsDataGridView.BackgroundImage = (Image)resources.GetObject("btnFirstRequestsDataGridView.BackgroundImage");
+            btnFirstRequestsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnFirstRequestsDataGridView.Location = new Point(3, 3);
+            btnFirstRequestsDataGridView.Name = "btnFirstRequestsDataGridView";
+            btnFirstRequestsDataGridView.Size = new Size(40, 40);
+            btnFirstRequestsDataGridView.TabIndex = 0;
+            btnFirstRequestsDataGridView.UseVisualStyleBackColor = false;
             // 
             // panel6
             // 
             panel6.BorderStyle = BorderStyle.Fixed3D;
-            panel6.Controls.Add(button29);
-            panel6.Controls.Add(checkBox3);
-            panel6.Controls.Add(StarredCheckBox);
-            panel6.Controls.Add(checkBox2);
+            panel6.Controls.Add(RequestFiltersApplyButton);
+            panel6.Controls.Add(chkPersonal);
+            panel6.Controls.Add(chkStarred);
+            panel6.Controls.Add(chkForDay);
             panel6.Controls.Add(label6);
-            panel6.Controls.Add(checkBox1);
+            panel6.Controls.Add(chkForWeek);
             panel6.Controls.Add(label1);
-            panel6.Controls.Add(comboBox2);
-            panel6.Controls.Add(textBox1);
+            panel6.Controls.Add(statusCheckBox);
+            panel6.Controls.Add(txtNumber);
             panel6.Controls.Add(label4);
             panel6.Controls.Add(label3);
-            panel6.Controls.Add(comboBox1);
+            panel6.Controls.Add(cmbPaymentStatus);
             panel6.Location = new Point(251, 24);
             panel6.Name = "panel6";
             panel6.Size = new Size(756, 69);
             panel6.TabIndex = 20;
             // 
-            // button29
+            // RequestFiltersApplyButton
             // 
-            button29.BackColor = Color.Transparent;
-            button29.BackgroundImage = (Image)resources.GetObject("button29.BackgroundImage");
-            button29.BackgroundImageLayout = ImageLayout.Stretch;
-            button29.Location = new Point(714, 3);
-            button29.Name = "button29";
-            button29.Size = new Size(30, 30);
-            button29.TabIndex = 22;
-            button29.UseVisualStyleBackColor = false;
+            RequestFiltersApplyButton.BackColor = Color.Transparent;
+            RequestFiltersApplyButton.BackgroundImage = (Image)resources.GetObject("RequestFiltersApplyButton.BackgroundImage");
+            RequestFiltersApplyButton.BackgroundImageLayout = ImageLayout.Stretch;
+            RequestFiltersApplyButton.Location = new Point(714, 3);
+            RequestFiltersApplyButton.Name = "RequestFiltersApplyButton";
+            RequestFiltersApplyButton.Size = new Size(30, 30);
+            RequestFiltersApplyButton.TabIndex = 22;
+            RequestFiltersApplyButton.UseVisualStyleBackColor = false;
+            RequestFiltersApplyButton.Click += RequestFiltersApplyButton_Click;
             // 
-            // checkBox3
+            // chkPersonal
             // 
-            checkBox3.AutoSize = true;
-            checkBox3.Location = new Point(294, 7);
-            checkBox3.Name = "checkBox3";
-            checkBox3.RightToLeft = RightToLeft.Yes;
-            checkBox3.Size = new Size(76, 24);
-            checkBox3.TabIndex = 3;
-            checkBox3.Text = "Лични";
-            checkBox3.UseVisualStyleBackColor = true;
+            chkPersonal.AutoSize = true;
+            chkPersonal.Location = new Point(294, 7);
+            chkPersonal.Name = "chkPersonal";
+            chkPersonal.RightToLeft = RightToLeft.Yes;
+            chkPersonal.Size = new Size(76, 24);
+            chkPersonal.TabIndex = 3;
+            chkPersonal.Text = "Лични";
+            chkPersonal.UseVisualStyleBackColor = true;
             // 
-            // StarredCheckBox
+            // chkStarred
             // 
-            StarredCheckBox.AutoSize = true;
-            StarredCheckBox.Location = new Point(602, 7);
-            StarredCheckBox.Name = "StarredCheckBox";
-            StarredCheckBox.RightToLeft = RightToLeft.Yes;
-            StarredCheckBox.Size = new Size(104, 24);
-            StarredCheckBox.TabIndex = 21;
-            StarredCheckBox.Text = "със звезда";
-            StarredCheckBox.UseVisualStyleBackColor = true;
+            chkStarred.AutoSize = true;
+            chkStarred.Location = new Point(602, 7);
+            chkStarred.Name = "chkStarred";
+            chkStarred.RightToLeft = RightToLeft.Yes;
+            chkStarred.Size = new Size(104, 24);
+            chkStarred.TabIndex = 21;
+            chkStarred.Text = "със звезда";
+            chkStarred.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // chkForDay
             // 
-            checkBox2.AutoSize = true;
-            checkBox2.Location = new Point(383, 7);
-            checkBox2.Name = "checkBox2";
-            checkBox2.RightToLeft = RightToLeft.Yes;
-            checkBox2.Size = new Size(83, 24);
-            checkBox2.TabIndex = 2;
-            checkBox2.Text = "за деня";
-            checkBox2.UseVisualStyleBackColor = true;
+            chkForDay.AutoSize = true;
+            chkForDay.Location = new Point(383, 7);
+            chkForDay.Name = "chkForDay";
+            chkForDay.RightToLeft = RightToLeft.Yes;
+            chkForDay.Size = new Size(83, 24);
+            chkForDay.TabIndex = 2;
+            chkForDay.Text = "за деня";
+            chkForDay.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
@@ -486,16 +494,16 @@ namespace WolfClient.UserControls
             label6.TabIndex = 20;
             label6.Text = "филтри";
             // 
-            // checkBox1
+            // chkForWeek
             // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(472, 7);
-            checkBox1.Name = "checkBox1";
-            checkBox1.RightToLeft = RightToLeft.Yes;
-            checkBox1.Size = new Size(124, 24);
-            checkBox1.TabIndex = 1;
-            checkBox1.Text = "за седмицата";
-            checkBox1.UseVisualStyleBackColor = true;
+            chkForWeek.AutoSize = true;
+            chkForWeek.Location = new Point(472, 7);
+            chkForWeek.Name = "chkForWeek";
+            chkForWeek.RightToLeft = RightToLeft.Yes;
+            chkForWeek.Size = new Size(124, 24);
+            chkForWeek.TabIndex = 1;
+            chkForWeek.Text = "за седмицата";
+            chkForWeek.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -508,23 +516,24 @@ namespace WolfClient.UserControls
             label1.TabIndex = 14;
             label1.Text = "Номер : ";
             // 
-            // comboBox2
+            // statusCheckBox
             // 
-            comboBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(627, 35);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(117, 28);
-            comboBox2.TabIndex = 19;
+            statusCheckBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            statusCheckBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            statusCheckBox.FormattingEnabled = true;
+            statusCheckBox.Items.AddRange(new object[] { "Зададена", "Завършена", "Оферта" });
+            statusCheckBox.Location = new Point(627, 35);
+            statusCheckBox.Name = "statusCheckBox";
+            statusCheckBox.Size = new Size(117, 28);
+            statusCheckBox.TabIndex = 19;
             // 
-            // textBox1
+            // txtNumber
             // 
-            textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            textBox1.Location = new Point(89, 37);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(148, 27);
-            textBox1.TabIndex = 15;
+            txtNumber.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            txtNumber.Location = new Point(89, 37);
+            txtNumber.Name = "txtNumber";
+            txtNumber.Size = new Size(148, 27);
+            txtNumber.TabIndex = 15;
             // 
             // label4
             // 
@@ -548,15 +557,16 @@ namespace WolfClient.UserControls
             label3.TabIndex = 16;
             label3.Text = "Статус Плащане : ";
             // 
-            // comboBox1
+            // cmbPaymentStatus
             // 
-            comboBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(416, 35);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(117, 28);
-            comboBox1.TabIndex = 17;
+            cmbPaymentStatus.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            cmbPaymentStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbPaymentStatus.FormattingEnabled = true;
+            cmbPaymentStatus.Items.AddRange(new object[] { "Платен", "Не Платен", "Аванс" });
+            cmbPaymentStatus.Location = new Point(416, 35);
+            cmbPaymentStatus.Name = "cmbPaymentStatus";
+            cmbPaymentStatus.Size = new Size(117, 28);
+            cmbPaymentStatus.TabIndex = 17;
             // 
             // editRequestButton
             // 
@@ -607,10 +617,11 @@ namespace WolfClient.UserControls
             // 
             // panel2
             // 
-            panel2.Controls.Add(button13);
-            panel2.Controls.Add(button14);
-            panel2.Controls.Add(button15);
-            panel2.Controls.Add(button16);
+            panel2.Controls.Add(panel1);
+            panel2.Controls.Add(btnLastActivityDataGridView);
+            panel2.Controls.Add(btnNextActivityDataGridView);
+            panel2.Controls.Add(btnPreviousActivityDataGridView);
+            panel2.Controls.Add(btnFirstActivityDataGridView);
             panel2.Controls.Add(editActivityButton);
             panel2.Controls.Add(CreateDocumentButton);
             panel2.Controls.Add(DeleteActivityButton);
@@ -623,49 +634,119 @@ namespace WolfClient.UserControls
             panel2.Size = new Size(1330, 329);
             panel2.TabIndex = 36;
             // 
-            // button13
+            // panel1
             // 
-            button13.BackColor = Color.Transparent;
-            button13.BackgroundImage = (Image)resources.GetObject("button13.BackgroundImage");
-            button13.BackgroundImageLayout = ImageLayout.Stretch;
-            button13.Location = new Point(126, 4);
-            button13.Name = "button13";
-            button13.Size = new Size(35, 35);
-            button13.TabIndex = 34;
-            button13.UseVisualStyleBackColor = false;
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            panel1.BackColor = Color.Gainsboro;
+            panel1.BorderStyle = BorderStyle.Fixed3D;
+            panel1.Controls.Add(ApplyActivityFiltersButton);
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(taskDayCheck);
+            panel1.Controls.Add(taskSelfCheck);
+            panel1.Controls.Add(taskWeekCheck);
+            panel1.Location = new Point(992, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(335, 41);
+            panel1.TabIndex = 35;
             // 
-            // button14
+            // ApplyActivityFiltersButton
             // 
-            button14.BackColor = Color.Transparent;
-            button14.BackgroundImage = (Image)resources.GetObject("button14.BackgroundImage");
-            button14.BackgroundImageLayout = ImageLayout.Stretch;
-            button14.Location = new Point(85, 4);
-            button14.Name = "button14";
-            button14.Size = new Size(35, 35);
-            button14.TabIndex = 33;
-            button14.UseVisualStyleBackColor = false;
+            ApplyActivityFiltersButton.BackColor = Color.Transparent;
+            ApplyActivityFiltersButton.BackgroundImage = (Image)resources.GetObject("ApplyActivityFiltersButton.BackgroundImage");
+            ApplyActivityFiltersButton.BackgroundImageLayout = ImageLayout.Stretch;
+            ApplyActivityFiltersButton.Location = new Point(299, 7);
+            ApplyActivityFiltersButton.Name = "ApplyActivityFiltersButton";
+            ApplyActivityFiltersButton.Size = new Size(30, 30);
+            ApplyActivityFiltersButton.TabIndex = 23;
+            ApplyActivityFiltersButton.UseVisualStyleBackColor = false;
+            ApplyActivityFiltersButton.Click += ApplyActivityFiltersButton_Click;
             // 
-            // button15
+            // label2
             // 
-            button15.BackColor = Color.Transparent;
-            button15.BackgroundImage = (Image)resources.GetObject("button15.BackgroundImage");
-            button15.BackgroundImageLayout = ImageLayout.Stretch;
-            button15.Location = new Point(44, 4);
-            button15.Name = "button15";
-            button15.Size = new Size(35, 35);
-            button15.TabIndex = 32;
-            button15.UseVisualStyleBackColor = false;
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            label2.Location = new Point(-2, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(49, 15);
+            label2.TabIndex = 25;
+            label2.Text = "филтри";
             // 
-            // button16
+            // taskDayCheck
             // 
-            button16.BackColor = Color.Transparent;
-            button16.BackgroundImage = (Image)resources.GetObject("button16.BackgroundImage");
-            button16.BackgroundImageLayout = ImageLayout.Stretch;
-            button16.Location = new Point(3, 4);
-            button16.Name = "button16";
-            button16.Size = new Size(35, 35);
-            button16.TabIndex = 31;
-            button16.UseVisualStyleBackColor = false;
+            taskDayCheck.AutoSize = true;
+            taskDayCheck.Location = new Point(80, 15);
+            taskDayCheck.Name = "taskDayCheck";
+            taskDayCheck.RightToLeft = RightToLeft.Yes;
+            taskDayCheck.Size = new Size(83, 24);
+            taskDayCheck.TabIndex = 24;
+            taskDayCheck.Text = "за деня";
+            taskDayCheck.UseVisualStyleBackColor = true;
+            // 
+            // taskSelfCheck
+            // 
+            taskSelfCheck.AutoSize = true;
+            taskSelfCheck.Location = new Point(-2, 15);
+            taskSelfCheck.Name = "taskSelfCheck";
+            taskSelfCheck.RightToLeft = RightToLeft.Yes;
+            taskSelfCheck.Size = new Size(76, 24);
+            taskSelfCheck.TabIndex = 23;
+            taskSelfCheck.Text = "Лични";
+            taskSelfCheck.UseVisualStyleBackColor = true;
+            // 
+            // taskWeekCheck
+            // 
+            taskWeekCheck.AutoSize = true;
+            taskWeekCheck.Location = new Point(169, 15);
+            taskWeekCheck.Name = "taskWeekCheck";
+            taskWeekCheck.RightToLeft = RightToLeft.Yes;
+            taskWeekCheck.Size = new Size(124, 24);
+            taskWeekCheck.TabIndex = 23;
+            taskWeekCheck.Text = "за седмицата";
+            taskWeekCheck.UseVisualStyleBackColor = true;
+            // 
+            // btnLastActivityDataGridView
+            // 
+            btnLastActivityDataGridView.BackColor = Color.Transparent;
+            btnLastActivityDataGridView.BackgroundImage = (Image)resources.GetObject("btnLastActivityDataGridView.BackgroundImage");
+            btnLastActivityDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnLastActivityDataGridView.Location = new Point(126, 4);
+            btnLastActivityDataGridView.Name = "btnLastActivityDataGridView";
+            btnLastActivityDataGridView.Size = new Size(35, 35);
+            btnLastActivityDataGridView.TabIndex = 34;
+            btnLastActivityDataGridView.UseVisualStyleBackColor = false;
+            // 
+            // btnNextActivityDataGridView
+            // 
+            btnNextActivityDataGridView.BackColor = Color.Transparent;
+            btnNextActivityDataGridView.BackgroundImage = (Image)resources.GetObject("btnNextActivityDataGridView.BackgroundImage");
+            btnNextActivityDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnNextActivityDataGridView.Location = new Point(85, 4);
+            btnNextActivityDataGridView.Name = "btnNextActivityDataGridView";
+            btnNextActivityDataGridView.Size = new Size(35, 35);
+            btnNextActivityDataGridView.TabIndex = 33;
+            btnNextActivityDataGridView.UseVisualStyleBackColor = false;
+            // 
+            // btnPreviousActivityDataGridView
+            // 
+            btnPreviousActivityDataGridView.BackColor = Color.Transparent;
+            btnPreviousActivityDataGridView.BackgroundImage = (Image)resources.GetObject("btnPreviousActivityDataGridView.BackgroundImage");
+            btnPreviousActivityDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnPreviousActivityDataGridView.Location = new Point(44, 4);
+            btnPreviousActivityDataGridView.Name = "btnPreviousActivityDataGridView";
+            btnPreviousActivityDataGridView.Size = new Size(35, 35);
+            btnPreviousActivityDataGridView.TabIndex = 32;
+            btnPreviousActivityDataGridView.UseVisualStyleBackColor = false;
+            // 
+            // btnFirstActivityDataGridView
+            // 
+            btnFirstActivityDataGridView.BackColor = Color.Transparent;
+            btnFirstActivityDataGridView.BackgroundImage = (Image)resources.GetObject("btnFirstActivityDataGridView.BackgroundImage");
+            btnFirstActivityDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnFirstActivityDataGridView.Location = new Point(3, 4);
+            btnFirstActivityDataGridView.Name = "btnFirstActivityDataGridView";
+            btnFirstActivityDataGridView.Size = new Size(35, 35);
+            btnFirstActivityDataGridView.TabIndex = 31;
+            btnFirstActivityDataGridView.UseVisualStyleBackColor = false;
             // 
             // editActivityButton
             // 
@@ -711,14 +792,14 @@ namespace WolfClient.UserControls
             ActivityDataGridView.ColumnHeadersHeight = 28;
             ActivityDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             ActivityDataGridView.Columns.AddRange(new DataGridViewColumn[] { ParentActivity, Activity, Task, Executant, StartDate, Duration, Control, Plots, Comment, tax, taxComment });
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            ActivityDataGridView.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = SystemColors.Window;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            ActivityDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
             ActivityDataGridView.Location = new Point(0, 46);
             ActivityDataGridView.Margin = new Padding(3, 4, 3, 4);
             ActivityDataGridView.MinimumSize = new Size(933, 188);
@@ -834,13 +915,13 @@ namespace WolfClient.UserControls
             // panel4
             // 
             panel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panel4.Controls.Add(button9);
+            panel4.Controls.Add(btnLastClientsDataGridView);
             panel4.Controls.Add(editClientButton);
-            panel4.Controls.Add(button10);
+            panel4.Controls.Add(btnNextClientsDataGridView);
             panel4.Controls.Add(deleteClientsButton);
-            panel4.Controls.Add(button11);
+            panel4.Controls.Add(btnPreviousClientsDataGridView);
             panel4.Controls.Add(button1);
-            panel4.Controls.Add(button12);
+            panel4.Controls.Add(btnFirstClientsDataGridView);
             panel4.Controls.Add(clientsDataGridView);
             panel4.Dock = DockStyle.Fill;
             panel4.Location = new Point(3, 3);
@@ -849,16 +930,16 @@ namespace WolfClient.UserControls
             panel4.Size = new Size(1330, 329);
             panel4.TabIndex = 18;
             // 
-            // button9
+            // btnLastClientsDataGridView
             // 
-            button9.BackColor = Color.Transparent;
-            button9.BackgroundImage = (Image)resources.GetObject("button9.BackgroundImage");
-            button9.BackgroundImageLayout = ImageLayout.Stretch;
-            button9.Location = new Point(126, 4);
-            button9.Name = "button9";
-            button9.Size = new Size(35, 35);
-            button9.TabIndex = 8;
-            button9.UseVisualStyleBackColor = false;
+            btnLastClientsDataGridView.BackColor = Color.Transparent;
+            btnLastClientsDataGridView.BackgroundImage = (Image)resources.GetObject("btnLastClientsDataGridView.BackgroundImage");
+            btnLastClientsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnLastClientsDataGridView.Location = new Point(126, 4);
+            btnLastClientsDataGridView.Name = "btnLastClientsDataGridView";
+            btnLastClientsDataGridView.Size = new Size(35, 35);
+            btnLastClientsDataGridView.TabIndex = 8;
+            btnLastClientsDataGridView.UseVisualStyleBackColor = false;
             // 
             // editClientButton
             // 
@@ -871,16 +952,16 @@ namespace WolfClient.UserControls
             editClientButton.UseVisualStyleBackColor = true;
             editClientButton.Click += editClientButton_Click;
             // 
-            // button10
+            // btnNextClientsDataGridView
             // 
-            button10.BackColor = Color.Transparent;
-            button10.BackgroundImage = (Image)resources.GetObject("button10.BackgroundImage");
-            button10.BackgroundImageLayout = ImageLayout.Stretch;
-            button10.Location = new Point(85, 4);
-            button10.Name = "button10";
-            button10.Size = new Size(35, 35);
-            button10.TabIndex = 7;
-            button10.UseVisualStyleBackColor = false;
+            btnNextClientsDataGridView.BackColor = Color.Transparent;
+            btnNextClientsDataGridView.BackgroundImage = (Image)resources.GetObject("btnNextClientsDataGridView.BackgroundImage");
+            btnNextClientsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnNextClientsDataGridView.Location = new Point(85, 4);
+            btnNextClientsDataGridView.Name = "btnNextClientsDataGridView";
+            btnNextClientsDataGridView.Size = new Size(35, 35);
+            btnNextClientsDataGridView.TabIndex = 7;
+            btnNextClientsDataGridView.UseVisualStyleBackColor = false;
             // 
             // deleteClientsButton
             // 
@@ -893,16 +974,16 @@ namespace WolfClient.UserControls
             deleteClientsButton.UseVisualStyleBackColor = true;
             deleteClientsButton.Click += deleteClientsButton_Click;
             // 
-            // button11
+            // btnPreviousClientsDataGridView
             // 
-            button11.BackColor = Color.Transparent;
-            button11.BackgroundImage = (Image)resources.GetObject("button11.BackgroundImage");
-            button11.BackgroundImageLayout = ImageLayout.Stretch;
-            button11.Location = new Point(44, 4);
-            button11.Name = "button11";
-            button11.Size = new Size(35, 35);
-            button11.TabIndex = 6;
-            button11.UseVisualStyleBackColor = false;
+            btnPreviousClientsDataGridView.BackColor = Color.Transparent;
+            btnPreviousClientsDataGridView.BackgroundImage = (Image)resources.GetObject("btnPreviousClientsDataGridView.BackgroundImage");
+            btnPreviousClientsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnPreviousClientsDataGridView.Location = new Point(44, 4);
+            btnPreviousClientsDataGridView.Name = "btnPreviousClientsDataGridView";
+            btnPreviousClientsDataGridView.Size = new Size(35, 35);
+            btnPreviousClientsDataGridView.TabIndex = 6;
+            btnPreviousClientsDataGridView.UseVisualStyleBackColor = false;
             // 
             // button1
             // 
@@ -916,16 +997,16 @@ namespace WolfClient.UserControls
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click_1;
             // 
-            // button12
+            // btnFirstClientsDataGridView
             // 
-            button12.BackColor = Color.Transparent;
-            button12.BackgroundImage = (Image)resources.GetObject("button12.BackgroundImage");
-            button12.BackgroundImageLayout = ImageLayout.Stretch;
-            button12.Location = new Point(3, 4);
-            button12.Name = "button12";
-            button12.Size = new Size(35, 35);
-            button12.TabIndex = 5;
-            button12.UseVisualStyleBackColor = false;
+            btnFirstClientsDataGridView.BackColor = Color.Transparent;
+            btnFirstClientsDataGridView.BackgroundImage = (Image)resources.GetObject("btnFirstClientsDataGridView.BackgroundImage");
+            btnFirstClientsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnFirstClientsDataGridView.Location = new Point(3, 4);
+            btnFirstClientsDataGridView.Name = "btnFirstClientsDataGridView";
+            btnFirstClientsDataGridView.Size = new Size(35, 35);
+            btnFirstClientsDataGridView.TabIndex = 5;
+            btnFirstClientsDataGridView.UseVisualStyleBackColor = false;
             // 
             // clientsDataGridView
             // 
@@ -937,14 +1018,14 @@ namespace WolfClient.UserControls
             clientsDataGridView.BackgroundColor = Color.Moccasin;
             clientsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             clientsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ClientNumber, FirstName, MiddleName, LastName, Phone, Email, Address, ClientLegalType });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            clientsDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            clientsDataGridView.DefaultCellStyle = dataGridViewCellStyle6;
             clientsDataGridView.GridColor = SystemColors.ControlText;
             clientsDataGridView.Location = new Point(1, 46);
             clientsDataGridView.Margin = new Padding(3, 4, 3, 4);
@@ -1037,10 +1118,10 @@ namespace WolfClient.UserControls
             // 
             // panel5
             // 
-            panel5.Controls.Add(button17);
-            panel5.Controls.Add(button18);
-            panel5.Controls.Add(button19);
-            panel5.Controls.Add(button20);
+            panel5.Controls.Add(btnLastPlotsDataGridView);
+            panel5.Controls.Add(btnNextPlotsDataGridView);
+            panel5.Controls.Add(btnPreviousPlotsDataGridView);
+            panel5.Controls.Add(btnFirstPlotsDataGridView);
             panel5.Controls.Add(editPlotButton);
             panel5.Controls.Add(DeletePlotsButton);
             panel5.Controls.Add(PlotsDataGridView);
@@ -1053,49 +1134,49 @@ namespace WolfClient.UserControls
             panel5.Size = new Size(1330, 329);
             panel5.TabIndex = 35;
             // 
-            // button17
+            // btnLastPlotsDataGridView
             // 
-            button17.BackColor = Color.Transparent;
-            button17.BackgroundImage = (Image)resources.GetObject("button17.BackgroundImage");
-            button17.BackgroundImageLayout = ImageLayout.Stretch;
-            button17.Location = new Point(126, 4);
-            button17.Name = "button17";
-            button17.Size = new Size(35, 35);
-            button17.TabIndex = 38;
-            button17.UseVisualStyleBackColor = false;
+            btnLastPlotsDataGridView.BackColor = Color.Transparent;
+            btnLastPlotsDataGridView.BackgroundImage = (Image)resources.GetObject("btnLastPlotsDataGridView.BackgroundImage");
+            btnLastPlotsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnLastPlotsDataGridView.Location = new Point(126, 4);
+            btnLastPlotsDataGridView.Name = "btnLastPlotsDataGridView";
+            btnLastPlotsDataGridView.Size = new Size(35, 35);
+            btnLastPlotsDataGridView.TabIndex = 38;
+            btnLastPlotsDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button18
+            // btnNextPlotsDataGridView
             // 
-            button18.BackColor = Color.Transparent;
-            button18.BackgroundImage = (Image)resources.GetObject("button18.BackgroundImage");
-            button18.BackgroundImageLayout = ImageLayout.Stretch;
-            button18.Location = new Point(85, 4);
-            button18.Name = "button18";
-            button18.Size = new Size(35, 35);
-            button18.TabIndex = 37;
-            button18.UseVisualStyleBackColor = false;
+            btnNextPlotsDataGridView.BackColor = Color.Transparent;
+            btnNextPlotsDataGridView.BackgroundImage = (Image)resources.GetObject("btnNextPlotsDataGridView.BackgroundImage");
+            btnNextPlotsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnNextPlotsDataGridView.Location = new Point(85, 4);
+            btnNextPlotsDataGridView.Name = "btnNextPlotsDataGridView";
+            btnNextPlotsDataGridView.Size = new Size(35, 35);
+            btnNextPlotsDataGridView.TabIndex = 37;
+            btnNextPlotsDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button19
+            // btnPreviousPlotsDataGridView
             // 
-            button19.BackColor = Color.Transparent;
-            button19.BackgroundImage = (Image)resources.GetObject("button19.BackgroundImage");
-            button19.BackgroundImageLayout = ImageLayout.Stretch;
-            button19.Location = new Point(44, 4);
-            button19.Name = "button19";
-            button19.Size = new Size(35, 35);
-            button19.TabIndex = 36;
-            button19.UseVisualStyleBackColor = false;
+            btnPreviousPlotsDataGridView.BackColor = Color.Transparent;
+            btnPreviousPlotsDataGridView.BackgroundImage = (Image)resources.GetObject("btnPreviousPlotsDataGridView.BackgroundImage");
+            btnPreviousPlotsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnPreviousPlotsDataGridView.Location = new Point(44, 4);
+            btnPreviousPlotsDataGridView.Name = "btnPreviousPlotsDataGridView";
+            btnPreviousPlotsDataGridView.Size = new Size(35, 35);
+            btnPreviousPlotsDataGridView.TabIndex = 36;
+            btnPreviousPlotsDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button20
+            // btnFirstPlotsDataGridView
             // 
-            button20.BackColor = Color.Transparent;
-            button20.BackgroundImage = (Image)resources.GetObject("button20.BackgroundImage");
-            button20.BackgroundImageLayout = ImageLayout.Stretch;
-            button20.Location = new Point(3, 4);
-            button20.Name = "button20";
-            button20.Size = new Size(35, 35);
-            button20.TabIndex = 35;
-            button20.UseVisualStyleBackColor = false;
+            btnFirstPlotsDataGridView.BackColor = Color.Transparent;
+            btnFirstPlotsDataGridView.BackgroundImage = (Image)resources.GetObject("btnFirstPlotsDataGridView.BackgroundImage");
+            btnFirstPlotsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnFirstPlotsDataGridView.Location = new Point(3, 4);
+            btnFirstPlotsDataGridView.Name = "btnFirstPlotsDataGridView";
+            btnFirstPlotsDataGridView.Size = new Size(35, 35);
+            btnFirstPlotsDataGridView.TabIndex = 35;
+            btnFirstPlotsDataGridView.UseVisualStyleBackColor = false;
             // 
             // editPlotButton
             // 
@@ -1123,8 +1204,8 @@ namespace WolfClient.UserControls
             // 
             PlotsDataGridView.AllowUserToResizeColumns = false;
             PlotsDataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             PlotsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             PlotsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             PlotsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
@@ -1227,10 +1308,10 @@ namespace WolfClient.UserControls
             // 
             // tabPage5
             // 
-            tabPage5.Controls.Add(button21);
-            tabPage5.Controls.Add(button22);
-            tabPage5.Controls.Add(button23);
-            tabPage5.Controls.Add(button24);
+            tabPage5.Controls.Add(btnLastOwnershipDataGridView);
+            tabPage5.Controls.Add(btnNextOwnershipDataGridView);
+            tabPage5.Controls.Add(btnPreviousOwnershipDataGridView);
+            tabPage5.Controls.Add(btnFirstOwnershipDataGridView);
             tabPage5.Controls.Add(editOwnershipButton);
             tabPage5.Controls.Add(DeleteOwnershipButton);
             tabPage5.Controls.Add(AddOwnersButton);
@@ -1243,49 +1324,49 @@ namespace WolfClient.UserControls
             tabPage5.Text = "Собственост";
             tabPage5.UseVisualStyleBackColor = true;
             // 
-            // button21
+            // btnLastOwnershipDataGridView
             // 
-            button21.BackColor = Color.Transparent;
-            button21.BackgroundImage = (Image)resources.GetObject("button21.BackgroundImage");
-            button21.BackgroundImageLayout = ImageLayout.Stretch;
-            button21.Location = new Point(129, 7);
-            button21.Name = "button21";
-            button21.Size = new Size(35, 35);
-            button21.TabIndex = 42;
-            button21.UseVisualStyleBackColor = false;
+            btnLastOwnershipDataGridView.BackColor = Color.Transparent;
+            btnLastOwnershipDataGridView.BackgroundImage = (Image)resources.GetObject("btnLastOwnershipDataGridView.BackgroundImage");
+            btnLastOwnershipDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnLastOwnershipDataGridView.Location = new Point(129, 7);
+            btnLastOwnershipDataGridView.Name = "btnLastOwnershipDataGridView";
+            btnLastOwnershipDataGridView.Size = new Size(35, 35);
+            btnLastOwnershipDataGridView.TabIndex = 42;
+            btnLastOwnershipDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button22
+            // btnNextOwnershipDataGridView
             // 
-            button22.BackColor = Color.Transparent;
-            button22.BackgroundImage = (Image)resources.GetObject("button22.BackgroundImage");
-            button22.BackgroundImageLayout = ImageLayout.Stretch;
-            button22.Location = new Point(88, 7);
-            button22.Name = "button22";
-            button22.Size = new Size(35, 35);
-            button22.TabIndex = 41;
-            button22.UseVisualStyleBackColor = false;
+            btnNextOwnershipDataGridView.BackColor = Color.Transparent;
+            btnNextOwnershipDataGridView.BackgroundImage = (Image)resources.GetObject("btnNextOwnershipDataGridView.BackgroundImage");
+            btnNextOwnershipDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnNextOwnershipDataGridView.Location = new Point(88, 7);
+            btnNextOwnershipDataGridView.Name = "btnNextOwnershipDataGridView";
+            btnNextOwnershipDataGridView.Size = new Size(35, 35);
+            btnNextOwnershipDataGridView.TabIndex = 41;
+            btnNextOwnershipDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button23
+            // btnPreviousOwnershipDataGridView
             // 
-            button23.BackColor = Color.Transparent;
-            button23.BackgroundImage = (Image)resources.GetObject("button23.BackgroundImage");
-            button23.BackgroundImageLayout = ImageLayout.Stretch;
-            button23.Location = new Point(47, 7);
-            button23.Name = "button23";
-            button23.Size = new Size(35, 35);
-            button23.TabIndex = 40;
-            button23.UseVisualStyleBackColor = false;
+            btnPreviousOwnershipDataGridView.BackColor = Color.Transparent;
+            btnPreviousOwnershipDataGridView.BackgroundImage = (Image)resources.GetObject("btnPreviousOwnershipDataGridView.BackgroundImage");
+            btnPreviousOwnershipDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnPreviousOwnershipDataGridView.Location = new Point(47, 7);
+            btnPreviousOwnershipDataGridView.Name = "btnPreviousOwnershipDataGridView";
+            btnPreviousOwnershipDataGridView.Size = new Size(35, 35);
+            btnPreviousOwnershipDataGridView.TabIndex = 40;
+            btnPreviousOwnershipDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button24
+            // btnFirstOwnershipDataGridView
             // 
-            button24.BackColor = Color.Transparent;
-            button24.BackgroundImage = (Image)resources.GetObject("button24.BackgroundImage");
-            button24.BackgroundImageLayout = ImageLayout.Stretch;
-            button24.Location = new Point(6, 7);
-            button24.Name = "button24";
-            button24.Size = new Size(35, 35);
-            button24.TabIndex = 39;
-            button24.UseVisualStyleBackColor = false;
+            btnFirstOwnershipDataGridView.BackColor = Color.Transparent;
+            btnFirstOwnershipDataGridView.BackgroundImage = (Image)resources.GetObject("btnFirstOwnershipDataGridView.BackgroundImage");
+            btnFirstOwnershipDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnFirstOwnershipDataGridView.Location = new Point(6, 7);
+            btnFirstOwnershipDataGridView.Name = "btnFirstOwnershipDataGridView";
+            btnFirstOwnershipDataGridView.Size = new Size(35, 35);
+            btnFirstOwnershipDataGridView.TabIndex = 39;
+            btnFirstOwnershipDataGridView.UseVisualStyleBackColor = false;
             // 
             // editOwnershipButton
             // 
@@ -1328,14 +1409,14 @@ namespace WolfClient.UserControls
             OwnershipDataGridView.BackgroundColor = Color.Moccasin;
             OwnershipDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             OwnershipDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlotNumberDocTable, DocumentId, OwnerId, EKG, OwnerAddress, IdealParts, PowerOfAttorney });
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            OwnershipDataGridView.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = SystemColors.Window;
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle8.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+            OwnershipDataGridView.DefaultCellStyle = dataGridViewCellStyle8;
             OwnershipDataGridView.Location = new Point(0, 49);
             OwnershipDataGridView.Name = "OwnershipDataGridView";
             OwnershipDataGridView.RowHeadersWidth = 51;
@@ -1394,10 +1475,10 @@ namespace WolfClient.UserControls
             // 
             // tabPage4
             // 
-            tabPage4.Controls.Add(button25);
-            tabPage4.Controls.Add(button26);
-            tabPage4.Controls.Add(button27);
-            tabPage4.Controls.Add(button28);
+            tabPage4.Controls.Add(btnLastInvoicesDataGridView);
+            tabPage4.Controls.Add(btnNextInvoicesDataGridView);
+            tabPage4.Controls.Add(btnPreviousInvoicesDataGridView);
+            tabPage4.Controls.Add(btnFirstInvoicesDataGridView);
             tabPage4.Controls.Add(button8);
             tabPage4.Controls.Add(InvoicesDataGridView);
             tabPage4.Controls.Add(button3);
@@ -1409,49 +1490,49 @@ namespace WolfClient.UserControls
             tabPage4.Text = "Фактури и такси";
             tabPage4.UseVisualStyleBackColor = true;
             // 
-            // button25
+            // btnLastInvoicesDataGridView
             // 
-            button25.BackColor = Color.Transparent;
-            button25.BackgroundImage = (Image)resources.GetObject("button25.BackgroundImage");
-            button25.BackgroundImageLayout = ImageLayout.Stretch;
-            button25.Location = new Point(129, 7);
-            button25.Name = "button25";
-            button25.Size = new Size(35, 35);
-            button25.TabIndex = 46;
-            button25.UseVisualStyleBackColor = false;
+            btnLastInvoicesDataGridView.BackColor = Color.Transparent;
+            btnLastInvoicesDataGridView.BackgroundImage = (Image)resources.GetObject("btnLastInvoicesDataGridView.BackgroundImage");
+            btnLastInvoicesDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnLastInvoicesDataGridView.Location = new Point(129, 7);
+            btnLastInvoicesDataGridView.Name = "btnLastInvoicesDataGridView";
+            btnLastInvoicesDataGridView.Size = new Size(35, 35);
+            btnLastInvoicesDataGridView.TabIndex = 46;
+            btnLastInvoicesDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button26
+            // btnNextInvoicesDataGridView
             // 
-            button26.BackColor = Color.Transparent;
-            button26.BackgroundImage = (Image)resources.GetObject("button26.BackgroundImage");
-            button26.BackgroundImageLayout = ImageLayout.Stretch;
-            button26.Location = new Point(88, 7);
-            button26.Name = "button26";
-            button26.Size = new Size(35, 35);
-            button26.TabIndex = 45;
-            button26.UseVisualStyleBackColor = false;
+            btnNextInvoicesDataGridView.BackColor = Color.Transparent;
+            btnNextInvoicesDataGridView.BackgroundImage = (Image)resources.GetObject("btnNextInvoicesDataGridView.BackgroundImage");
+            btnNextInvoicesDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnNextInvoicesDataGridView.Location = new Point(88, 7);
+            btnNextInvoicesDataGridView.Name = "btnNextInvoicesDataGridView";
+            btnNextInvoicesDataGridView.Size = new Size(35, 35);
+            btnNextInvoicesDataGridView.TabIndex = 45;
+            btnNextInvoicesDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button27
+            // btnPreviousInvoicesDataGridView
             // 
-            button27.BackColor = Color.Transparent;
-            button27.BackgroundImage = (Image)resources.GetObject("button27.BackgroundImage");
-            button27.BackgroundImageLayout = ImageLayout.Stretch;
-            button27.Location = new Point(47, 7);
-            button27.Name = "button27";
-            button27.Size = new Size(35, 35);
-            button27.TabIndex = 44;
-            button27.UseVisualStyleBackColor = false;
+            btnPreviousInvoicesDataGridView.BackColor = Color.Transparent;
+            btnPreviousInvoicesDataGridView.BackgroundImage = (Image)resources.GetObject("btnPreviousInvoicesDataGridView.BackgroundImage");
+            btnPreviousInvoicesDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnPreviousInvoicesDataGridView.Location = new Point(47, 7);
+            btnPreviousInvoicesDataGridView.Name = "btnPreviousInvoicesDataGridView";
+            btnPreviousInvoicesDataGridView.Size = new Size(35, 35);
+            btnPreviousInvoicesDataGridView.TabIndex = 44;
+            btnPreviousInvoicesDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button28
+            // btnFirstInvoicesDataGridView
             // 
-            button28.BackColor = Color.Transparent;
-            button28.BackgroundImage = (Image)resources.GetObject("button28.BackgroundImage");
-            button28.BackgroundImageLayout = ImageLayout.Stretch;
-            button28.Location = new Point(6, 7);
-            button28.Name = "button28";
-            button28.Size = new Size(35, 35);
-            button28.TabIndex = 43;
-            button28.UseVisualStyleBackColor = false;
+            btnFirstInvoicesDataGridView.BackColor = Color.Transparent;
+            btnFirstInvoicesDataGridView.BackgroundImage = (Image)resources.GetObject("btnFirstInvoicesDataGridView.BackgroundImage");
+            btnFirstInvoicesDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnFirstInvoicesDataGridView.Location = new Point(6, 7);
+            btnFirstInvoicesDataGridView.Name = "btnFirstInvoicesDataGridView";
+            btnFirstInvoicesDataGridView.Size = new Size(35, 35);
+            btnFirstInvoicesDataGridView.TabIndex = 43;
+            btnFirstInvoicesDataGridView.UseVisualStyleBackColor = false;
             // 
             // MenuRequestsUserControl
             // 
@@ -1473,6 +1554,8 @@ namespace WolfClient.UserControls
             panel6.PerformLayout();
             tabPage2.ResumeLayout(false);
             panel2.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)ActivityDataGridView).EndInit();
             tabPage1.ResumeLayout(false);
             panel4.ResumeLayout(false);
@@ -1573,42 +1656,48 @@ namespace WolfClient.UserControls
         private Label label4;
         private Panel panel6;
         private Panel panel7;
-        private Button button4;
-        private Button button2;
+        private Button btnPreviousRequestsDataGridView;
+        private Button btnFirstRequestsDataGridView;
         private Label label6;
         private Label label1;
-        private ComboBox comboBox2;
-        private TextBox textBox1;
+        private ComboBox statusCheckBox;
+        private TextBox txtNumber;
         private Label label3;
-        private ComboBox comboBox1;
-        private Button button6;
-        private Button button5;
+        private ComboBox cmbPaymentStatus;
+        private Button btnLastRequestsDataGridView;
+        private Button btnNextRequestsDataGridView;
         private Button button7;
-        private CheckBox StarredCheckBox;
-        private Button button9;
-        private Button button10;
-        private Button button11;
-        private Button button12;
-        private Button button13;
-        private Button button14;
-        private Button button15;
-        private Button button16;
-        private Button button17;
-        private Button button18;
-        private Button button19;
-        private Button button20;
-        private Button button21;
-        private Button button22;
-        private Button button23;
-        private Button button24;
+        private CheckBox chkStarred;
+        private Button btnLastClientsDataGridView;
+        private Button btnNextClientsDataGridView;
+        private Button btnPreviousClientsDataGridView;
+        private Button btnFirstClientsDataGridView;
+        private Button btnLastActivityDataGridView;
+        private Button btnNextActivityDataGridView;
+        private Button btnPreviousActivityDataGridView;
+        private Button btnFirstActivityDataGridView;
+        private Button btnLastPlotsDataGridView;
+        private Button btnNextPlotsDataGridView;
+        private Button btnPreviousPlotsDataGridView;
+        private Button btnFirstPlotsDataGridView;
+        private Button btnLastOwnershipDataGridView;
+        private Button btnNextOwnershipDataGridView;
+        private Button btnPreviousOwnershipDataGridView;
+        private Button btnFirstOwnershipDataGridView;
         private TabPage tabPage4;
-        private Button button25;
-        private Button button26;
-        private Button button27;
-        private Button button28;
-        private CheckBox checkBox3;
-        private CheckBox checkBox2;
-        private CheckBox checkBox1;
-        private Button button29;
+        private Button btnLastInvoicesDataGridView;
+        private Button btnNextInvoicesDataGridView;
+        private Button btnPreviousInvoicesDataGridView;
+        private Button btnFirstInvoicesDataGridView;
+        private CheckBox chkPersonal;
+        private CheckBox chkForDay;
+        private CheckBox chkForWeek;
+        private Button RequestFiltersApplyButton;
+        private CheckBox taskSelfCheck;
+        private Panel panel1;
+        private Label label2;
+        private CheckBox taskDayCheck;
+        private CheckBox taskWeekCheck;
+        private Button ApplyActivityFiltersButton;
     }
 }

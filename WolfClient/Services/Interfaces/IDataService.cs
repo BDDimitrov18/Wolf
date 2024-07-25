@@ -10,6 +10,12 @@ namespace WolfClient.Services.Interfaces
 {
     public interface IDataService
     {
+        public List<GetRequestDTO> filterRequestByStatusSelfActivitiesAndTasks(List<GetRequestDTO> requestDTOs, string status);
+        public List<GetRequestDTO> FilterRequestByWeekSelfActivitiesAndTasks(List<GetRequestDTO> requestDTOs);
+        public List<GetRequestDTO> filterRequestByDaySelfActivitiesAndTasks(List<GetRequestDTO> requestDTOs);
+        public List<GetRequestDTO> filterRequestsBySelfActivitiesAndTasks(List<GetRequestDTO> requestDTOs);
+        public GetEmployeeDTO getLoggedEmployee();
+        public void SetLoggedEmployee(GetEmployeeDTO employeeDTO);
         public GetPlotDTO getPlotFromPlotOwnerID(int plotOwnerId);
         public void EditPlot(GetPlotDTO plotDTO);
         public GetActivityDTO GetSelectedActivity();

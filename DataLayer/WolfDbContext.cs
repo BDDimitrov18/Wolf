@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
-    public class WolfDbContext : IdentityDbContext<IdentityUser>
+    public class WolfDbContext : IdentityDbContext<ApplicationUser>
     {
         public WolfDbContext(DbContextOptions<WolfDbContext> options) : base(options)
         {
@@ -332,8 +332,13 @@ namespace DataAccessLayer
 
             base.OnModelCreating(modelBuilder);
             #endregion
-
-
+            #region applicationUser configuration
+            modelBuilder.Entity<ApplicationUser>()
+                .HasOne(a => a.Employee)
+                .WithOne()
+                .HasForeignKey<ApplicationUser>(a => a.EmployeeId)
+                .IsRequired(false);
+            #endregion
             #region SeedRoles
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole

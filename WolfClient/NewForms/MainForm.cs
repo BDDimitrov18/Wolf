@@ -84,7 +84,7 @@ namespace WolfClient.NewForms
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            LoginForm loginForm = new LoginForm(_apiClient, _userClient, _adminClient, _fileUploader, _websocketClientService);
+            LoginForm loginForm = new LoginForm(_apiClient, _userClient, _adminClient, _fileUploader, _websocketClientService,_dataService);
             loginForm.Show();
         }
 

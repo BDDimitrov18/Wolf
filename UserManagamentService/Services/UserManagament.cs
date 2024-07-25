@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DataAccessLayer.Models;
+using DataAccessLayer.Repositories.Interfaces;
+using DTOS.DTO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -19,30 +23,32 @@ namespace UserManagamentService.Services
 {
     public class UserManagament : IUserManagament
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IEmployeeModelRepository _employeeModelRepository;
         private readonly IConfiguration _config;
 
-        public UserManagament(UserManager<IdentityUser> userManager,
+        public UserManagament(UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IConfiguration config)
+            IConfiguration config, IEmployeeModelRepository employeeModelRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _config = config;
+            _employeeModelRepository = employeeModelRepository;
         }
 
-        public async Task<ApiResponse<object>> LoginUserWithJwtTokenAsync(LoginUser loginUser)
+        public async Task<ApiResponse<JwtTokenResponse>> LoginUserWithJwtTokenAsync(LoginUser loginUser)
         {
             var user = await _userManager.FindByNameAsync(loginUser.Username);
 
             if (user != null && await _userManager.CheckPasswordAsync(user, loginUser.Password) && user.EmailConfirmed)
             {
                 var authClaims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    };
+        {
+            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        };
 
                 var userRoles = await _userManager.GetRolesAsync(user);
                 foreach (var role in userRoles)
@@ -52,18 +58,24 @@ namespace UserManagamentService.Services
 
                 var jwtToken = GetToken(authClaims);
 
-
-                return new ApiResponse<object> { IsSuccess = true, StatusCode = 200, Message = $"Token Created", Response = new
+                var jwtTokenResponse = new JwtTokenResponse
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
                     expiration = jwtToken.ValidTo,
-                    role = userRoles,
-                }};
-                
+                    role = userRoles.ToArray()
+                };
+
+                return new ApiResponse<JwtTokenResponse>
+                {
+                    IsSuccess = true,
+                    StatusCode = 200,
+                    Message = "Token Created",
+                    Response = jwtTokenResponse
+                };
             }
             else
             {
-                return new ApiResponse<object> { IsSuccess = false, StatusCode = 401, Message = "Unauthorized" };
+                return new ApiResponse<JwtTokenResponse> { IsSuccess = false, StatusCode = 401, Message = "Unauthorized" };
             }
         }
 
@@ -76,7 +88,7 @@ namespace UserManagamentService.Services
                 return new ApiResponse<string> { IsSuccess = false, StatusCode = 403, Message = "User Already Exist" };
             }
 
-            IdentityUser user = new()
+            ApplicationUser user = new()
             {
                 Email = registerUser.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
@@ -104,6 +116,31 @@ namespace UserManagamentService.Services
             {
                 return new ApiResponse<string> { IsSuccess = false, StatusCode = 500, Message = $"Role Does not exist!" };
             }
+        }
+
+        public async Task<ApiResponse<object>> LinkEmployeeToUserAsync(string userId, int employeeId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return new ApiResponse<object> { IsSuccess = false, StatusCode = 404, Message = "User not found" };
+            }
+
+            var employee = await _employeeModelRepository.Get(employeeId);
+            if (employee == null)
+            {
+                return new ApiResponse<object> { IsSuccess = false, StatusCode = 404, Message = "Employee not found" };
+            }
+
+            user.EmployeeId = employeeId;
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return new ApiResponse<object> { IsSuccess = true, StatusCode = 200, Message = "Employee linked to user successfully." };
+            }
+
+            return new ApiResponse<object> { IsSuccess = false, StatusCode = 500, Message = "Failed to link employee to user." };
         }
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)

@@ -60,5 +60,9 @@ namespace WolfAPI.Services
             }
             return createEmployeeDTOs;
         }
+
+        public async Task<GetEmployeeDTO> GetEmployeeById(int id) {
+           return _mapper.Map<GetEmployeeDTO>(await _employeeRepository.Get(id));
+        }
     }
 }

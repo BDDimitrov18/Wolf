@@ -7,6 +7,9 @@ using WolfAPI.Services;
 using WolfAPI.Services.Interfaces;
 using DTOS.DTO;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Identity;
+using UserManagamentService.Services.Interfaces;
+using WolfAPI.Models;
 
 namespace WolfApi.Controllers
 {
@@ -18,10 +21,14 @@ namespace WolfApi.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
-
-        public AdminController(IEmployeeService employeeService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserManagament _userManagament;
+        public AdminController(IEmployeeService employeeService, UserManager<ApplicationUser> userManager
+        , IUserManagament userManagament)
         {
             _employeeService = employeeService;
+            _userManager = userManager;
+            _userManagament = userManagament;
         }
 
         
@@ -30,6 +37,18 @@ namespace WolfApi.Controllers
             var token = GetJwtTokenFromRequest();
             var clientId = GetClientIdFromJwt(token);
             return await _employeeService.Add(employeeDTO,clientId);
+        }
+
+        [HttpPost("link-employee")]
+        public async Task<IActionResult> LinkEmployeeToUser([FromBody] LinkEmployeeModel linkEmployeeModel )
+        {
+            var result = await _userManagament.LinkEmployeeToUserAsync(linkEmployeeModel.UserId, linkEmployeeModel.EmployeeId);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Message);
+            }
+
+            return StatusCode(result.StatusCode, result.Message);
         }
 
         private string GetJwtTokenFromRequest()
@@ -42,8 +61,19 @@ namespace WolfApi.Controllers
         {
             var handler = new JwtSecurityTokenHandler();
             var jsonToken = handler.ReadToken(jwtToken) as JwtSecurityToken;
-            var clientId = jsonToken.Claims.First(claim => claim.Type == "sub").Value; // Assuming "sub" is used for client ID
-            return clientId;
+
+            if (jsonToken == null)
+            {
+                throw new InvalidOperationException("Invalid JWT token.");
+            }
+
+            var clientIdClaim = jsonToken.Claims.FirstOrDefault(claim => claim.Type == "jti");
+            if (clientIdClaim == null)
+            {
+                throw new InvalidOperationException("Client ID claim not found in JWT token.");
+            }
+
+            return clientIdClaim.Value;
         }
     }
 }

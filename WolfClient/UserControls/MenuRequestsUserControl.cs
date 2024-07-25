@@ -63,6 +63,31 @@ namespace WolfClient.UserControls
             LogInEvent.logIn += OnUserLoggedIn;
             OwnershipDataGridView.CellPainting += OwnershipDataGridView_CellPainting;
             ActivityDataGridView.SelectionChanged += ActivityDataGridView_SelectionChanged;
+
+            btnFirstRequestsDataGridView.Click += (s, e) => NavigateDataGridView(RequestDataGridView, "First");
+            btnPreviousRequestsDataGridView.Click += (s, e) => NavigateDataGridView(RequestDataGridView, "Previous");
+            btnNextRequestsDataGridView.Click += (s, e) => NavigateDataGridView(RequestDataGridView, "Next");
+            btnLastRequestsDataGridView.Click += (s, e) => NavigateDataGridView(RequestDataGridView, "Last");
+
+            btnFirstClientsDataGridView.Click += (s, e) => NavigateDataGridView(clientsDataGridView, "First");
+            btnPreviousClientsDataGridView.Click += (s, e) => NavigateDataGridView(clientsDataGridView, "Previous");
+            btnNextClientsDataGridView.Click += (s, e) => NavigateDataGridView(clientsDataGridView, "Next");
+            btnLastClientsDataGridView.Click += (s, e) => NavigateDataGridView(clientsDataGridView, "Last");
+
+            btnFirstActivityDataGridView.Click += (s, e) => NavigateDataGridView(ActivityDataGridView, "First");
+            btnPreviousActivityDataGridView.Click += (s, e) => NavigateDataGridView(ActivityDataGridView, "Previous");
+            btnNextActivityDataGridView.Click += (s, e) => NavigateDataGridView(ActivityDataGridView, "Next");
+            btnLastActivityDataGridView.Click += (s, e) => NavigateDataGridView(ActivityDataGridView, "Last");
+
+            btnFirstPlotsDataGridView.Click += (s, e) => NavigateDataGridView(PlotsDataGridView, "First");
+            btnPreviousPlotsDataGridView.Click += (s, e) => NavigateDataGridView(PlotsDataGridView, "Previous");
+            btnNextPlotsDataGridView.Click += (s, e) => NavigateDataGridView(PlotsDataGridView, "Next");
+            btnLastPlotsDataGridView.Click += (s, e) => NavigateDataGridView(PlotsDataGridView, "Last");
+
+            btnFirstOwnershipDataGridView.Click += (s, e) => NavigateDataGridView(OwnershipDataGridView, "First");
+            btnPreviousOwnershipDataGridView.Click += (s, e) => NavigateDataGridView(OwnershipDataGridView, "Previous");
+            btnNextOwnershipDataGridView.Click += (s, e) => NavigateDataGridView(OwnershipDataGridView, "Next");
+            btnLastOwnershipDataGridView.Click += (s, e) => NavigateDataGridView(OwnershipDataGridView, "Last");
         }
 
         private async void setRequestsDataGridView()
@@ -592,57 +617,197 @@ namespace WolfClient.UserControls
 
             clientsDataGridView.Refresh();
         }
+        private List<GetActivityDTO> ApplyActivityFilters(List<GetActivityDTO> activityDTOs)
+        {
+            var filteredList = activityDTOs;
+            var employee = _dataService.getLoggedEmployee();
+            // Filter by personal (assuming IsPersonal is a boolean property of GetActivityDTO)
+            if (taskSelfCheck.Checked)
+            {
+                var activitiesToRemove = new List<GetActivityDTO>();
 
-        private void BindActivityDataGridView(RequestWithClientsDTO matchingRequestWithClients)
+                foreach (var activity in filteredList)
+                {
+                    bool toRemove = true;
+                    var tasksToRemove = new List<GetTaskDTO>();
+
+                    foreach (var task in activity.Tasks)
+                    {
+                        if (task.ExecutantId != employee.EmployeeId)
+                        {
+                            tasksToRemove.Add(task);
+                        }
+                        else
+                        {
+                            toRemove = false;
+                        }
+                    }
+
+                    // Remove the tasks after iterating over them
+                    foreach (var task in tasksToRemove)
+                    {
+                        activity.Tasks.Remove(task);
+                    }
+
+                    if (activity.Tasks.Count() == 0) {
+                        toRemove = true;
+                    }
+
+                    if (toRemove)
+                    {
+                        activitiesToRemove.Add(activity);
+                    }
+                }
+
+                // Remove the activities after iterating over them
+                foreach (var activity in activitiesToRemove)
+                {
+                    filteredList.Remove(activity);
+                }
+            }
+
+            // Filter by date (for the day)
+            if (taskDayCheck.Checked)
+            {
+                var activitiesToRemove = new List<GetActivityDTO>();
+
+                foreach (var activity in filteredList)
+                {
+                    bool toRemove = true;
+                    var tasksToRemove = new List<GetTaskDTO>();
+
+                    foreach (var task in activity.Tasks)
+                    {
+                        if (!(task.FinishDate.Year == DateTime.Now.Year &&
+                        task.FinishDate.Month == DateTime.Now.Month &&
+                        task.FinishDate.Day == DateTime.Now.Day))
+                        {
+                            tasksToRemove.Add(task);
+                        }
+                        else
+                        {
+                            toRemove = false;
+                        }
+                    }
+
+                    // Remove the tasks after iterating over them
+                    foreach (var task in tasksToRemove)
+                    {
+                        activity.Tasks.Remove(task);
+                    }
+                    
+                    if (activity.Tasks.Count() == 0)
+                    {
+                        toRemove = true;
+                    }
+
+                    if (toRemove)
+                    {
+                        activitiesToRemove.Add(activity);
+                    }
+                }
+
+                // Remove the activities after iterating over them
+                foreach (var activity in activitiesToRemove)
+                {
+                    filteredList.Remove(activity);
+                }
+            }
+
+            // Filter by date (for the week)
+            if (taskWeekCheck.Checked)
+            {
+                var activitiesToRemove = new List<GetActivityDTO>();
+
+                // Get the start and end date of the current week
+                DateTime startOfWeek = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                DateTime endOfWeek = startOfWeek.AddDays(7);
+
+                foreach (var activity in filteredList)
+                {
+                    bool toRemove = true;
+                    var tasksToRemove = new List<GetTaskDTO>();
+
+                    foreach (var task in activity.Tasks)
+                    {
+                        if (!(task.FinishDate >= startOfWeek && task.FinishDate < endOfWeek))
+                        {
+                            tasksToRemove.Add(task);
+                        }
+                        else
+                        {
+                            toRemove = false;
+                        }
+                    }
+
+                    // Remove the tasks after iterating over them
+                    foreach (var task in tasksToRemove)
+                    {
+                        activity.Tasks.Remove(task);
+                    }
+
+                    if (activity.Tasks.Count == 0)
+                    {
+                        toRemove = true;
+                    }
+
+                    if (toRemove)
+                    {
+                        activitiesToRemove.Add(activity);
+                    }
+                }
+
+                // Remove the activities after iterating over them
+                foreach (var activity in activitiesToRemove)
+                {
+                    filteredList.Remove(activity);
+                }
+            }
+
+            return filteredList;
+        }
+
+        private void BindActivityDataGridView(List<GetActivityDTO> activityDTOs)
         {
             ActivityDataGridView.AutoGenerateColumns = false;
             ActivityDataGridView.DataSource = null; // Force reset DataSource
 
             var activityViewModels = new List<ActivityViewModel>();
 
-            if (matchingRequestWithClients != null)
+            foreach (var activity in activityDTOs)
             {
-                if (matchingRequestWithClients.activityDTOs != null)
+                string Identities = "";
+                if (activity.Plots.Count() > 0)
                 {
-                    foreach (var activity in matchingRequestWithClients.activityDTOs)
+                    foreach (var plot in activity.Plots)
                     {
-                        string Identities = "";
-                        if (activity.Plots.Count() > 0)
-                        {
-                            foreach (var plot in activity.Plots)
-                            {
-                                string plotInfo = $"Поземлен имот:{plot.PlotNumber}, {plot.City};";
-                                Identities += plotInfo;
-                            }
-                        }
-                        foreach (var task in activity.Tasks)
-                        {
-                            var viewModel = new ActivityViewModel
-                            {
-                                ActivityTypeName = activity.ActivityType.ActivityTypeName + activity.ActivityId.ToString(),
-                                ActivityId = activity.ActivityId,
-                                TaskTypeName = task.taskType.TaskTypeName,
-                                TaskId = task.TaskId,
-                                ExecutantFullName = task.Executant.FullName,
-                                StartDate = task.StartDate,
-                                Duration = task.Duration,
-                                ControlFullName = task.Control?.FullName,
-                                Comments = task.Comments,
-                                Identities = Identities,
-                                ParentActivity = activity.ParentActivity == null ? "" : activity.ParentActivity.ActivityTypeName,
-                                tax = task.tax.ToString(),
-                                taxComment = task.CommentTax,
-                            };
-
-                            activityViewModels.Add(viewModel);
-                        }
+                        string plotInfo = $"Поземлен имот:{plot.PlotNumber}, {plot.City};";
+                        Identities += plotInfo;
                     }
                 }
+                foreach (var task in activity.Tasks)
+                {
+                    var viewModel = new ActivityViewModel
+                    {
+                        ActivityTypeName = activity.ActivityType.ActivityTypeName + activity.ActivityId.ToString(),
+                        ActivityId = activity.ActivityId,
+                        TaskTypeName = task.taskType.TaskTypeName,
+                        TaskId = task.TaskId,
+                        ExecutantFullName = task.Executant.FullName,
+                        StartDate = task.StartDate,
+                        Duration = task.Duration,
+                        ControlFullName = task.Control?.FullName,
+                        Comments = task.Comments,
+                        Identities = Identities,
+                        ParentActivity = activity.ParentActivity == null ? "" : activity.ParentActivity.ActivityTypeName,
+                        tax = task.tax.ToString(),
+                        taxComment = task.CommentTax,
+                    };
+
+                    activityViewModels.Add(viewModel);
+                }
             }
-            else
-            {
-                clientsDataGridView.DataSource = null;
-            }
+
             ActivityDataGridView.DataSource = activityViewModels;
             ActivityDataGridView.Refresh();
         }
@@ -761,20 +926,26 @@ namespace WolfClient.UserControls
                 var matchingRequestWithClients = _dataService.GetFetchedLinkedRequests()
                     .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _dataService.GetSelectedRequest().RequestId);
 
-                if (ActivityDataGridView.InvokeRequired)
+                if (matchingRequestWithClients != null)
                 {
-                    ActivityDataGridView.Invoke(new MethodInvoker(delegate
+                    var filteredActivities = ApplyActivityFilters(matchingRequestWithClients.activityDTOs.ToList());
+
+                    if (ActivityDataGridView.InvokeRequired)
                     {
-                        BindActivityDataGridView(matchingRequestWithClients);
-                    }));
-                }
-                else
-                {
-                    BindActivityDataGridView(matchingRequestWithClients);
-                }
-                foreach (DataGridViewRow row in ActivityDataGridView.Rows)
-                {
-                    row.Height = 60; // Set the height to 60 pixels
+                        ActivityDataGridView.Invoke(new MethodInvoker(delegate
+                        {
+                            BindActivityDataGridView(filteredActivities);
+                        }));
+                    }
+                    else
+                    {
+                        BindActivityDataGridView(filteredActivities);
+                    }
+
+                    foreach (DataGridViewRow row in ActivityDataGridView.Rows)
+                    {
+                        row.Height = 60; // Set the height to 60 pixels
+                    }
                 }
             }
             catch (Exception ex)
@@ -782,8 +953,8 @@ namespace WolfClient.UserControls
                 Console.WriteLine("Exception in UpdateActivityDataGridView: " + ex.Message);
                 MessageBox.Show("Exception in UpdateActivityDataGridView: " + ex.Message);
             }
-
         }
+
 
         private async void RefreshButton_Click(object sender, EventArgs e)
         {
@@ -815,6 +986,55 @@ namespace WolfClient.UserControls
             }
         }
 
+        private List<GetRequestDTO> ApplyFilters(List<GetRequestDTO> requestDTOs)
+        {
+            var filteredList = requestDTOs;
+
+            // Example filter by RequestId (assuming txtNumber.Text contains a valid integer or is empty)
+            if (!string.IsNullOrEmpty(txtNumber.Text) && int.TryParse(txtNumber.Text, out int requestId))
+            {
+                filteredList = filteredList.Where(r => r.RequestId == requestId).ToList();
+            }
+
+            // Filter by PaymentStatus
+            if (cmbPaymentStatus.SelectedIndex > 0)
+            {
+                var selectedPaymentStatus = cmbPaymentStatus.SelectedItem.ToString();
+                filteredList = filteredList.Where(r => r.PaymentStatus == selectedPaymentStatus).ToList();
+            }
+
+            // Filter by IsPersonal (if applicable)
+            if (chkPersonal.Checked)
+            {
+                filteredList = _dataService.filterRequestsBySelfActivitiesAndTasks(filteredList); // Assuming IsPersonal is a boolean property
+            }
+
+            // Filter by date (for the day)
+            if (chkForDay.Checked)
+            {
+                filteredList = _dataService.filterRequestByDaySelfActivitiesAndTasks(filteredList);
+            }
+
+            // Filter by date (for the week)
+            if (chkForWeek.Checked)
+            {
+                filteredList = _dataService.FilterRequestByWeekSelfActivitiesAndTasks(filteredList);
+            }
+
+            // Filter by IsStarred (if applicable)
+            if (chkStarred.Checked)
+            {
+                //filteredList = filteredList.Where(r => r.IsStarred).ToList(); // Assuming IsStarred is a boolean property
+            }
+            if (statusCheckBox.SelectedIndex > 0)
+            {
+                var Status = statusCheckBox.SelectedItem.ToString();
+                filteredList = _dataService.filterRequestByStatusSelfActivitiesAndTasks(filteredList, Status);
+            }
+
+            return filteredList;
+        }
+
         private void UpdateRequestDataGridView(List<GetRequestDTO> requestDTOs)
         {
             _isRefreshing = true;
@@ -825,13 +1045,16 @@ namespace WolfClient.UserControls
                     throw new ArgumentNullException(nameof(requestDTOs), "requestDTOs is null.");
                 }
 
+                // Apply filters to the requestDTOs list
+                var filteredList = ApplyFilters(requestDTOs);
+
                 if (RequestDataGridView.InvokeRequired)
                 {
                     RequestDataGridView.Invoke(new MethodInvoker(delegate
                     {
                         RequestDataGridView.AutoGenerateColumns = false;
                         RequestDataGridView.DataSource = null; // Force reset DataSource
-                        RequestDataGridView.DataSource = requestDTOs;
+                        RequestDataGridView.DataSource = filteredList;
                         RequestDataGridView.Refresh();
                     }));
                 }
@@ -839,11 +1062,11 @@ namespace WolfClient.UserControls
                 {
                     RequestDataGridView.AutoGenerateColumns = false;
                     RequestDataGridView.DataSource = null; // Force reset DataSource
-                    RequestDataGridView.DataSource = requestDTOs;
+                    RequestDataGridView.DataSource = filteredList;
                     RequestDataGridView.Refresh();
                 }
 
-                Console.WriteLine("DataSource set successfully with " + requestDTOs.Count + " items.");
+                Console.WriteLine("DataSource set successfully with " + filteredList.Count + " items.");
             }
             catch (Exception ex)
             {
@@ -1165,11 +1388,73 @@ namespace WolfClient.UserControls
         {
             EditOwnerForm editOwnerForm = new EditOwnerForm(_apiClient, _userClient, _adminClient, _dataService);
             editOwnerForm.Show();
-            editOwnerForm.Disposed += EditOwnershipFormDispose; 
+            editOwnerForm.Disposed += EditOwnershipFormDispose;
         }
         private void EditOwnershipFormDispose(object sender, EventArgs e)
         {
             UpdateOwnershipDataGridView();
+        }
+
+        private void NavigateDataGridView(DataGridView dgv, string direction)
+        {
+            if (dgv.Rows.Count == 0) return;
+
+            int currentIndex = dgv.CurrentRow != null ? dgv.CurrentRow.Index : -1;
+
+            switch (direction)
+            {
+                case "First":
+                    if (currentIndex != 0) // Only navigate if not already at the first row
+                    {
+                        dgv.ClearSelection();
+                        dgv.Rows[0].Selected = true;
+                        dgv.CurrentCell = dgv.Rows[0].Cells[0];
+                    }
+                    break;
+                case "Previous":
+                    if (currentIndex > 0)
+                    {
+                        dgv.ClearSelection();
+                        dgv.Rows[currentIndex - 1].Selected = true;
+                        dgv.CurrentCell = dgv.Rows[currentIndex - 1].Cells[0];
+                    }
+                    else if (currentIndex == 0) // Already at the first row, no need to navigate
+                    {
+                        MessageBox.Show("You are already at the first row.");
+                    }
+                    break;
+                case "Next":
+                    if (currentIndex < dgv.Rows.Count - 1)
+                    {
+                        dgv.ClearSelection();
+                        dgv.Rows[currentIndex + 1].Selected = true;
+                        dgv.CurrentCell = dgv.Rows[currentIndex + 1].Cells[0];
+                    }
+                    else if (currentIndex == dgv.Rows.Count - 1) // Already at the last row, no need to navigate
+                    {
+                        MessageBox.Show("You are already at the last row.");
+                    }
+                    break;
+                case "Last":
+                    int lastIndex = dgv.Rows.Count - 1;
+                    if (currentIndex != lastIndex) // Only navigate if not already at the last row
+                    {
+                        dgv.ClearSelection();
+                        dgv.Rows[lastIndex].Selected = true;
+                        dgv.CurrentCell = dgv.Rows[lastIndex].Cells[0];
+                    }
+                    break;
+            }
+        }
+
+        private void RequestFiltersApplyButton_Click(object sender, EventArgs e)
+        {
+            UpdateRequestDataGridView(_dataService.getRequests());
+        }
+
+        private void ApplyActivityFiltersButton_Click(object sender, EventArgs e)
+        {
+            UpdateActivityDataGridView();
         }
     }
 }

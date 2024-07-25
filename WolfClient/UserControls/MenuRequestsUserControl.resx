@@ -135,6 +135,24 @@
   <metadata name="Comments.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="RequestId.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="RequestName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Price.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="PaymentStatus.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Advance.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Comments.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="RequestAddButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -156,6 +174,12 @@
         RK5CYII=
 </value>
   </data>
+  <metadata name="InvoiceId.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Sum.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <metadata name="InvoiceId.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -272,7 +296,7 @@
         TkSuQmCC
 </value>
   </data>
-  <data name="button6.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnLastRequestsDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABDhJREFUeF7t
         3UGKHEcQhtE5gBBI4LP4Jj6uNt55IxAGH8QHsKslCkmo1OqeioiMzHoPYtG7XuT/wcymXwAAAAAAAAAA
@@ -296,7 +320,7 @@
         pgAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button5.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnNextRequestsDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAA3hJREFUeF7t
         1c+qjlEYxuEdkrRTlDJQ/kwMTMycsJmRkRElE5koKQMDA4pShAPgWWqVwdratm/53ve9r6uewTqA370O
@@ -317,7 +341,7 @@
         gg==
 </value>
   </data>
-  <data name="button4.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnPreviousRequestsDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAA0hJREFUeF7t
         1juKVFEUheHygYg0CoJgoCgmBg7ACZsZGYmBJmaCCCYGBgYaCIKBDkD3bTjQQdH0o6r2vXd9H+zgDOBf
@@ -337,7 +361,7 @@
         7gAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button2.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnFirstRequestsDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABiFJREFUeF7t
         2c2N3EYUBGAFIEiAAcfiROxgfXEAAgQBvjgQB2CzVxppZ/XmZ7c4JLv7+4A68Dz1ChjyHQAAAAAAAAAA
@@ -369,7 +393,7 @@
         7n/+xdh8CR5a1QAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button29.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="RequestFiltersApplyButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAACgxJREFUeF7t
         3W/I/Xddx/FtbVhj5TRwgZEYdkMTC6QbC4oFtaDylnYjWBGIRigSYaaEf4j+S3+8kXWjItgoUwpb3WiU
@@ -560,7 +584,56 @@
         AAAAAAAAAABaaaqp/gvmCwJQXJ1h6AAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button13.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="ApplyActivityFiltersButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAACgxJREFUeF7t
+        3W/I/Xddx/FtbVhj5TRwgZEYdkMTC6QbC4oFtaDylnYjWBGIRigSYaaEf4j+S3+8kXWjItgoUwpb3WiU
+        /aFcCuvGyIQQQcQbsxZaQ1mbW73em0e23967fudc5/s95/P9fh8PeDKcN3au8/183ue6Ptf3XOcaAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGA4z01vTnelj6TPp/+TZujf0l+kX04vSZzZO9IXU3ex
+        pLl7X3pB4sSelz6auosinbLPpe9OnMjz07+m7mJI5+gLyRA4kQ+m7iJI5+yzqV6cmNGrU/fkSyP0B4kZ
+        fSx1T7w0Qo+lFydmcGvqnnRppN6VmMFbUveESyP114kZ/GHqnnBppD6TmMH7U/eESyP1YGIGH0jdEy6N
+        1H8mZlD3X3dPuDRSH07M4IdT94RLI/WexAyek+rnq+5Jl0bppYmZvDV1T7o0Qn+ZmNEN6ZOpe/Klc1Z3
+        Ab48MbPvSt0FkM7ZrydOpP4CUHcRpHN0b7o+cUJ3p+5iSKfsgXRL4sRuSp9I3UWRTtGjqd6kxpnUr1zq
+        r7F0F0eau59KnNlrUndxpDmrW9MZRJ3AdhdJmqOPpxsTg6gT2DqJ7S6WNGUPJZ8JMKA6ia0T2e6iSVP1
+        qsSg6kS2Tma7Cycd268lBvem1F086Zj+Ll2XWAB/PERTVn/m6+sTC1EntHVS211M6ZAeSa9MLEyd1NaJ
+        bXdRpX17Q2Kh6sS2u6jSPt2ZWLhfSd3FlS7q/lR/hYqFq5PbOsHtLrLUVR/5/aLEStQJbp3kdhdburLb
+        EytTJ7l1ottdcGnXLyRW6idTd9Glys0+G1Anu93F17Zzs89G1MlunfB2i0DbzM0+G1MnvHXS2y0Gba/X
+        JTamTnofT92C0HZys8+G/XzqFoW2kZt9Nu7adE/qFofWnZt9eMLN6VOpWyRaZ/Wjn5t9+IpXpIdTt1i0
+        vt6R4Glem7rFonVVP/LVj37wDG4SWnf1o179yActNwmtt/oRr37Ugwu5SWid3ZFgL24SWle/k+Agb0/d
+        YtKyui/dkOAgbhJafg+mFya4FDcJLbfH0m0JjuImoWX21gSTqBPkbpFpzO5OMKn3pm6xaaw+kW5KMKk6
+        Sa4T5W7RaYy+kF6aYBZ1olwny93i0/l7TYJZ1clynTB3C1Dn6z0JTuJnU7cIdZ7uTdcnOJk6ae4Wo07b
+        A+mWBCdVJ8114twtSp2mR9OtCc6iTpzr5LlbnJq/n05wVnXy3C1OzdsHEgyhTqC7Rap5+ni6McEQ6gS6
+        TqK7xappeyi9JMFQ6iS6TqS7RavpelWCIdWJdJ1MdwtXx/fuBEOrk+lu8eq4fHY/i1En1N0i1uWqH618
+        dj+LUSfUdVLdLWYdlpt9WKQ6qa4T625Ra//emGCR6sS6W9TaLzf7sHh1ct0tbl2cm31YhTq5dpPQYbnZ
+        h1Vxk9BhudmH1XGT0H79YoJVqhPtbtHrydzsw+q5SajvM8nNPqyem4Se2SPplQk2wU1CT+/1CTbFTUJP
+        dmeCTfql1G2KrXR/ek6CTaoT7zr57jbH2vtcelGCTauT7zoB7zbJWns83Z6AqBPwOgnvNssae2cCnuIn
+        UrdZ1tY96doEXKFOxLtNs5Y+lW5OQKNOxOtkvNs8S+/h9IoEXKBOxuuEvNtES+6OBOyhTsjrpLzbSEvs
+        dxNwgHelbjMtrfvSDQk4QJ2U14l5t6mW0oPphQm4hDoxr5PzbnON3mPptgQcoU7O6wS922Qj97YETKBO
+        0LtNNmp3J2BCS/pLQsDEDADYMAMANswAgA0zAGDDDADYMAMANswAgA0zAGDDDADYMAMANswAgA0zAGDD
+        DADYMAMANswAgA0zAGDDDADYMAMANswAgA0zAGDDDADYMAMANswAgA0zAGDDDADYMAMANswAgA0zAGDD
+        DADYsD9J3WYbMcbx9i//k4XzHQCHuDb9carr8f76FyybAcC+nrr5d/1cYsEMAPbRbf7q8fT9iYUyALia
+        Z9v8ux5KL0sskAHARa62+Xd9Oj0vsTAGAM9m382/65/SDYkFMQDoHLr5d92ZWBADgCtddvPvelNiIQwA
+        nurYzV99KX1PYgEMAHam2Py7/ju9ODE4A4Ay5ebf9e/p6xIDMwCYY/Pv+tt0XWJQBsC2zbn5d/1GYlAG
+        wHadYvPvuiMxIG8H3q67Uvc8z9GfJwbkO4DtOeUrf/Wh9NWJARkA22Lz8zQGwHbY/DyDAbANNj8tA2D9
+        bH6eld8CzOfmL//z3Oodet3zOUd/k2z+BfEdwDx+LP1X+vYn/td5eOXnqgyA6dXmr7+VV4+53hRzjiFg
+        87MXA2Bar0u7zb+rhsB3pFOx+dmbATCd2vzd467qD2eeYgh8VbL52ZsBMI2LNv+uuYdAbf4/S91/e45s
+        /hUwAI73xtQ93q4aAt+ZpmbzcykGwHEO2fy7vpimHAI2P5dmAFzeZTb/rhoCt6Vj2fwcxQC4nDen7jEe
+        0sPpmCFg83M0A+BwU2z+XZcdAjY/kzAADvO21D22Yzv0AzZPeQu3zb9iH0zdRR+xc3tn6h7XFD2Svi9d
+        jVd+JnV36i78iJ3br6bucU3ZD6WLnPomn69JrNhvpe7ij9gI/ih1j22qHk0/mK506lf+f0xe+TfgR1O3
+        AEZsBLUR70nd45uqK4fAOTb/jYkN+IbULYIRG0W9MtZHYXePccpencr7Uvf/z9HfJ5t/Y34zdYthtEby
+        3HR/6h7nlNWG7P79HNn8G/X89EDqFsVIjeaW9MnUPdalZfNv3O2pWxgjNaJvTp9N3eNdSn7m5wmn+DXX
+        MY3q21K9y697zKP3D8nm5yvem7qFMkIjq3f3/W/qHveoeeWnNeoQGF3dxPOl1D320bL5udCIQ2AJfiR1
+        j32kbH72MtoQWIqfSd3jHyGbn4OMNASWZMRbrG1+LmWUIbA0c79v4JBsfo7y+6lbWKdsaU7xvoF9svk5
+        Wn3YxLmHwBLV+wY+nLqv5xTZ/Ezm3ENgqb42fSx1X9Oc2fxM7pxDYMlekD6duq9rjmx+ZnOuIbB0p3rf
+        gM3P7M4xBNbgW9P/pO7rmyKbn5M59RCo/94azPW+AZufkzvlELg+rcXU7xv4SLL5OZtTDIG1+fHUfZ2H
+        Vr9mvCnB2cz9ncC/pDV6S+q+3n2rV36bn2H8XuoW6rHVvfVr9e7Ufc1X65+Tzc9Qrkt3pW7BXrbH07ek
+        NTv0fQNe+RnW1EOgPr5s7Q5534DNz/CmGgKfT9+UtmCf9w3Y/CzGsUOgvvX/3rQlF71vwOZnceq3A/WR
+        2of+zrte+bvPyNuC7n0DNj+Ldmu6Lz11UT9bd6ZvTFtW7xv4j1TPx73J5mcVfiD9abpy09cr/m+nlyee
+        VJ838FfJ5gcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9nDNNf8PXCfPzMz+S0QAAAAASUVO
+        RK5CYII=
+</value>
+  </data>
+  <data name="btnLastActivityDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABDhJREFUeF7t
         3UGKHEcQhtE5gBBI4LP4Jj6uNt55IxAGH8QHsKslCkmo1OqeioiMzHoPYtG7XuT/wcymXwAAAAAAAAAA
@@ -584,7 +657,7 @@
         pgAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button14.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnNextActivityDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAA3hJREFUeF7t
         1c+qjlEYxuEdkrRTlDJQ/kwMTMycsJmRkRElE5koKQMDA4pShAPgWWqVwdratm/53ve9r6uewTqA370O
@@ -605,7 +678,7 @@
         gg==
 </value>
   </data>
-  <data name="button15.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnPreviousActivityDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAA0hJREFUeF7t
         1juKVFEUheHygYg0CoJgoCgmBg7ACZsZGYmBJmaCCCYGBgYaCIKBDkD3bTjQQdH0o6r2vXd9H+zgDOBf
@@ -625,7 +698,7 @@
         7gAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button16.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnFirstActivityDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABiFJREFUeF7t
         2c2N3EYUBGAFIEiAAcfiROxgfXEAAgQBvjgQB2CzVxppZ/XmZ7c4JLv7+4A68Dz1ChjyHQAAAAAAAAAA
@@ -869,7 +942,7 @@
         RK5CYII=
 </value>
   </data>
-  <data name="button9.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnLastClientsDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABDhJREFUeF7t
         3UGKHEcQhtE5gBBI4LP4Jj6uNt55IxAGH8QHsKslCkmo1OqeioiMzHoPYtG7XuT/wcymXwAAAAAAAAAA
@@ -937,7 +1010,7 @@
         AAAASUVORK5CYII=
 </value>
   </data>
-  <data name="button10.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnNextClientsDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAA3hJREFUeF7t
         1c+qjlEYxuEdkrRTlDJQ/kwMTMycsJmRkRElE5koKQMDA4pShAPgWWqVwdratm/53ve9r6uewTqA370O
@@ -960,34 +1033,19 @@
   </data>
   <data name="deleteClientsButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABVlJREFUeF7t
-        3U2rr/scx/GtiDJxMzJiKGViogx0HoDiYRiSoZIMmSsTMxOegJKkGJgqMzFg4qAUxcTN7zo5xPmc4+b8
-        z8213q9XvR/A+l+f67tbu7XXfgYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcEMfPf3+9Ncn
-        1vU1feQEvIzrBXmKL/+L/e7kCMBwvRjXC7JenKeUIwD/pvLyv5gjAH9Xe/lf7PqaP3yCrOsFKL78L/bb
-        kyNA0jX86wVYL0YpR4AcL/+/5giQ4eXfPX/64AmeLC//K+cI8BAfOj33JusTp1+f1vD1z351uj6r9Rm+
-        kV2b4ia+dVrjkv7fvnniJhwAPToH4EYcAD06B+BGHAA9OgfgRhwAPToH4EYcAD06B+BGHAA9OgfgRhwA
-        PToH4EYcAD06B+BGHAA9OgfgRhwAPToH4EYcAD06B+BGHAA9OgfgRhwAPToH4EYcAD06B+BGHAA9Ogfg
-        RhwAPToH4EYcAD06B+BGHAA9OgfgRhwAPToH4EYcAD06BwAAAAAAAAAAAADgTWf9X/DqRNz6uW91Im6N
-        Qp2IW6NQJ+LWKNSJuDUKdSJujUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2I
-        W6NQJ+LWKNSJuDUKdSJujUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQ
-        J+LWKNSJuDUKdSJujUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LW
-        KNSJuDUKdSJujUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJ
-        uDUKdSJujUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJuDUK
-        dSJujUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJuDUKdSJu
-        jUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJuDUKdSJujUKd
-        iFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJuDUKdSJujUKdiFuj
-        UCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJuDUKdSJujUKdiFujUCfi
-        1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJuDUKdSJujUKdiFujUCfi1ijU
-        ibjfntYw9PT7zYm4n5zWOPT0+/GJuO+e1jj09Pv2ibhvnNY49PT7+om4z5zWOPT0+/SJuPed1jj0tPvL
-        6T0nePaj0xqJnm4/OMELPndaI9HT7frWD17wzpOfB+h0PevrmcM/fPa0xqKnlz/9eYm3nX5xWoPR0+mX
-        p+tZw0s8d7r+dngNR/fvz6ePn+BlfeG0xqP79/kTvKK3nL53WgPSffvO6Xq28B+9+/Tz0xqS7tdPT+86
-        wX/tvacfntagdJ+uZ3g9S/ifvfV0/YORNSy9+bue3fUM4VX51Mm3BPfpZ6dPnuBh3nH60ulPpzU6vfH9
-        8fTF09tP8Jr4wOlrp+dPa4R6/bt+tddXT+8/wevmY6evnL5/un612PVTZn84rZHq1Xd9ttdnfH3W12f+
-        5dP1DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXiPPnv0NY9ua50FvLgYAAAAASUVORK5C
-        YII=
+        iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAAfxJREFUeF7t
+        1EENwgAABMGaqB9MgH8n0HroPZbMJOvgcgcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAB/5Lx6SYHurfKwz9VXCvS+4mEOQJUcwIADUCUHMOAAVMkBDDgAVXIAAw5AlRzAgANQ
+        JQcw4ABUyQEMOABVcgADDkCVHMCAA1AlBzDgAFTJAQw4AFVyAAMOQJUcwIADUCUHMOAAVMkBDDgAVXIA
+        Aw5AlRzAgANQJQcw4ABUyQEMOABVcgADDkCVHMCAA1AlBzDgAFTJAQw4AFVyAAMOQJUcwIADUCUHMOAA
+        VMkBDDgAVXIAAw5AlRzAgANQJQcw4ABUyQEMOABVcgADDkCVHMCAA1AlBzDgAFTJAQw4AFVyAAMOQJUc
+        wIADUCUHMOAAVMkBDDgAVXIAAw5AlRzAwHn1kgLdWwUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAOAPHMcPYb07IwXnRrcAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="button11.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnPreviousClientsDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAA0hJREFUeF7t
         1juKVFEUheHygYg0CoJgoCgmBg7ACZsZGYmBJmaCCCYGBgYaCIKBDkD3bTjQQdH0o6r2vXd9H+zgDOBf
@@ -1027,7 +1085,7 @@
         RK5CYII=
 </value>
   </data>
-  <data name="button12.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnFirstClientsDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABiFJREFUeF7t
         2c2N3EYUBGAFIEiAAcfiROxgfXEAAgQBvjgQB2CzVxppZ/XmZ7c4JLv7+4A68Dz1ChjyHQAAAAAAAAAA
@@ -1083,7 +1141,7 @@
   <metadata name="ClientLegalType.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="button17.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnLastPlotsDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABDhJREFUeF7t
         3UGKHEcQhtE5gBBI4LP4Jj6uNt55IxAGH8QHsKslCkmo1OqeioiMzHoPYtG7XuT/wcymXwAAAAAAAAAA
@@ -1107,7 +1165,7 @@
         pgAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button18.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnNextPlotsDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAA3hJREFUeF7t
         1c+qjlEYxuEdkrRTlDJQ/kwMTMycsJmRkRElE5koKQMDA4pShAPgWWqVwdratm/53ve9r6uewTqA370O
@@ -1128,7 +1186,7 @@
         gg==
 </value>
   </data>
-  <data name="button19.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnPreviousPlotsDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAA0hJREFUeF7t
         1juKVFEUheHygYg0CoJgoCgmBg7ACZsZGYmBJmaCCCYGBgYaCIKBDkD3bTjQQdH0o6r2vXd9H+zgDOBf
@@ -1148,7 +1206,7 @@
         7gAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button20.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnFirstPlotsDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABiFJREFUeF7t
         2c2N3EYUBGAFIEiAAcfiROxgfXEAAgQBvjgQB2CzVxppZ/XmZ7c4JLv7+4A68Dz1ChjyHQAAAAAAAAAA
@@ -1226,31 +1284,16 @@
   </data>
   <data name="DeletePlotsButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABVlJREFUeF7t
-        3U2rr/scx/GtiDJxMzJiKGViogx0HoDiYRiSoZIMmSsTMxOegJKkGJgqMzFg4qAUxcTN7zo5xPmc4+b8
-        z8213q9XvR/A+l+f67tbu7XXfgYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcEMfPf3+9Ncn
-        1vU1feQEvIzrBXmKL/+L/e7kCMBwvRjXC7JenKeUIwD/pvLyv5gjAH9Xe/lf7PqaP3yCrOsFKL78L/bb
-        kyNA0jX86wVYL0YpR4AcL/+/5giQ4eXfPX/64AmeLC//K+cI8BAfOj33JusTp1+f1vD1z351uj6r9Rm+
-        kV2b4ia+dVrjkv7fvnniJhwAPToH4EYcAD06B+BGHAA9OgfgRhwAPToH4EYcAD06B+BGHAA9OgfgRhwA
-        PToH4EYcAD06B+BGHAA9OgfgRhwAPToH4EYcAD06B+BGHAA9OgfgRhwAPToH4EYcAD06B+BGHAA9Ogfg
-        RhwAPToH4EYcAD06B+BGHAA9OgfgRhwAPToH4EYcAD06BwAAAAAAAAAAAADgTWf9X/DqRNz6uW91Im6N
-        Qp2IW6NQJ+LWKNSJuDUKdSJujUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2I
-        W6NQJ+LWKNSJuDUKdSJujUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQ
-        J+LWKNSJuDUKdSJujUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LW
-        KNSJuDUKdSJujUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJ
-        uDUKdSJujUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJuDUK
-        dSJujUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJuDUKdSJu
-        jUKdiFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJuDUKdSJujUKd
-        iFujUCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJuDUKdSJujUKdiFuj
-        UCfi1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJuDUKdSJujUKdiFujUCfi
-        1ijUibg1CnUibo1CnYhbo1An4tYo1Im4NQp1Im6NQp2IW6NQJ+LWKNSJuDUKdSJujUKdiFujUCfi1ijU
-        ibjfntYw9PT7zYm4n5zWOPT0+/GJuO+e1jj09Pv2ibhvnNY49PT7+om4z5zWOPT0+/SJuPed1jj0tPvL
-        6T0nePaj0xqJnm4/OMELPndaI9HT7frWD17wzpOfB+h0PevrmcM/fPa0xqKnlz/9eYm3nX5xWoPR0+mX
-        p+tZw0s8d7r+dngNR/fvz6ePn+BlfeG0xqP79/kTvKK3nL53WgPSffvO6Xq28B+9+/Tz0xqS7tdPT+86
-        wX/tvacfntagdJ+uZ3g9S/ifvfV0/YORNSy9+bue3fUM4VX51Mm3BPfpZ6dPnuBh3nH60ulPpzU6vfH9
-        8fTF09tP8Jr4wOlrp+dPa4R6/bt+tddXT+8/wevmY6evnL5/un612PVTZn84rZHq1Xd9ttdnfH3W12f+
-        5dP1DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXiPPnv0NY9ua50FvLgYAAAAASUVORK5C
-        YII=
+        iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAAfxJREFUeF7t
+        1EENwgAABMGaqB9MgH8n0HroPZbMJOvgcgcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAB/5Lx6SYHurfKwz9VXCvS+4mEOQJUcwIADUCUHMOAAVMkBDDgAVXIAAw5AlRzAgANQ
+        JQcw4ABUyQEMOABVcgADDkCVHMCAA1AlBzDgAFTJAQw4AFVyAAMOQJUcwIADUCUHMOAAVMkBDDgAVXIA
+        Aw5AlRzAgANQJQcw4ABUyQEMOABVcgADDkCVHMCAA1AlBzDgAFTJAQw4AFVyAAMOQJUcwIADUCUHMOAA
+        VMkBDDgAVXIAAw5AlRzAgANQJQcw4ABUyQEMOABVcgADDkCVHMCAA1AlBzDgAFTJAQw4AFVyAAMOQJUc
+        wIADUCUHMOAAVMkBDDgAVXIAAw5AlRzAwHn1kgLdWwUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAOAPHMcPYb07IwXnRrcAAAAASUVORK5CYII=
 </value>
   </data>
   <metadata name="PlotNumber.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -1300,7 +1343,7 @@
         RK5CYII=
 </value>
   </data>
-  <data name="button21.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnLastOwnershipDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABDhJREFUeF7t
         3UGKHEcQhtE5gBBI4LP4Jj6uNt55IxAGH8QHsKslCkmo1OqeioiMzHoPYtG7XuT/wcymXwAAAAAAAAAA
@@ -1324,7 +1367,7 @@
         pgAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button22.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnNextOwnershipDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAA3hJREFUeF7t
         1c+qjlEYxuEdkrRTlDJQ/kwMTMycsJmRkRElE5koKQMDA4pShAPgWWqVwdratm/53ve9r6uewTqA370O
@@ -1345,7 +1388,7 @@
         gg==
 </value>
   </data>
-  <data name="button23.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnPreviousOwnershipDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAA0hJREFUeF7t
         1juKVFEUheHygYg0CoJgoCgmBg7ACZsZGYmBJmaCCCYGBgYaCIKBDkD3bTjQQdH0o6r2vXd9H+zgDOBf
@@ -1365,7 +1408,7 @@
         7gAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button24.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnFirstOwnershipDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABiFJREFUeF7t
         2c2N3EYUBGAFIEiAAcfiROxgfXEAAgQBvjgQB2CzVxppZ/XmZ7c4JLv7+4A68Dz1ChjyHQAAAAAAAAAA
@@ -1511,7 +1554,7 @@
   <metadata name="PowerOfAttorney.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="button25.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnLastInvoicesDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABDhJREFUeF7t
         3UGKHEcQhtE5gBBI4LP4Jj6uNt55IxAGH8QHsKslCkmo1OqeioiMzHoPYtG7XuT/wcymXwAAAAAAAAAA
@@ -1535,7 +1578,7 @@
         pgAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button26.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnNextInvoicesDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAA3hJREFUeF7t
         1c+qjlEYxuEdkrRTlDJQ/kwMTMycsJmRkRElE5koKQMDA4pShAPgWWqVwdratm/53ve9r6uewTqA370O
@@ -1556,7 +1599,7 @@
         gg==
 </value>
   </data>
-  <data name="button27.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnPreviousInvoicesDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAA0hJREFUeF7t
         1juKVFEUheHygYg0CoJgoCgmBg7ACZsZGYmBJmaCCCYGBgYaCIKBDkD3bTjQQdH0o6r2vXd9H+zgDOBf
@@ -1576,7 +1619,7 @@
         7gAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button28.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnFirstInvoicesDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABiFJREFUeF7t
         2c2N3EYUBGAFIEiAAcfiROxgfXEAAgQBvjgQB2CzVxppZ/XmZ7c4JLv7+4A68Dz1ChjyHQAAAAAAAAAA

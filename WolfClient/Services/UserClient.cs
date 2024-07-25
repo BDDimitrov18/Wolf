@@ -9,7 +9,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Wolf.Models;
-using WolfClient.Models;
 using WolfClient.Services.Interfaces;
 
 namespace WolfClient.Services
