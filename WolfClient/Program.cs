@@ -35,7 +35,7 @@ namespace WolfClient
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MenuRequestsUserControl menuRequestsUserControl = new MenuRequestsUserControl(apiClient, userClient, adminClient, dataService, fileUploader);
-            MenuClientsUserControl menuClientsUserControl = new MenuClientsUserControl(apiClient, userClient, adminClient);
+            MenuClientsUserControl menuClientsUserControl = new MenuClientsUserControl(apiClient, userClient, adminClient, dataService);
             MenuEmployeesUserControl menuEmployeesUserControl = new MenuEmployeesUserControl(apiClient, userClient, adminClient, dataService);
             Application.Run(new MainForm(apiClient, userClient, adminClient, dataService, menuRequestsUserControl, menuClientsUserControl, menuEmployeesUserControl, fileUploader ,_webSocketClientService));
         }

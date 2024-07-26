@@ -52,7 +52,7 @@ namespace WolfClient.UserControls
             button8 = new Button();
             panel3 = new Panel();
             panel7 = new Panel();
-            button7 = new Button();
+            starRequestButton = new Button();
             btnLastRequestsDataGridView = new Button();
             btnNextRequestsDataGridView = new Button();
             btnPreviousRequestsDataGridView = new Button();
@@ -76,6 +76,8 @@ namespace WolfClient.UserControls
             tabPage2 = new TabPage();
             panel2 = new Panel();
             panel1 = new Panel();
+            taskStatusComboBox = new ComboBox();
+            label7 = new Label();
             ApplyActivityFiltersButton = new Button();
             label2 = new Label();
             taskDayCheck = new CheckBox();
@@ -353,7 +355,7 @@ namespace WolfClient.UserControls
             // panel7
             // 
             panel7.BorderStyle = BorderStyle.Fixed3D;
-            panel7.Controls.Add(button7);
+            panel7.Controls.Add(starRequestButton);
             panel7.Controls.Add(btnLastRequestsDataGridView);
             panel7.Controls.Add(btnNextRequestsDataGridView);
             panel7.Controls.Add(btnPreviousRequestsDataGridView);
@@ -363,16 +365,17 @@ namespace WolfClient.UserControls
             panel7.Size = new Size(237, 50);
             panel7.TabIndex = 21;
             // 
-            // button7
+            // starRequestButton
             // 
-            button7.BackColor = Color.Transparent;
-            button7.BackgroundImage = (Image)resources.GetObject("button7.BackgroundImage");
-            button7.BackgroundImageLayout = ImageLayout.Stretch;
-            button7.Location = new Point(187, 3);
-            button7.Name = "button7";
-            button7.Size = new Size(40, 40);
-            button7.TabIndex = 4;
-            button7.UseVisualStyleBackColor = false;
+            starRequestButton.BackColor = Color.Transparent;
+            starRequestButton.BackgroundImage = (Image)resources.GetObject("starRequestButton.BackgroundImage");
+            starRequestButton.BackgroundImageLayout = ImageLayout.Stretch;
+            starRequestButton.Location = new Point(187, 3);
+            starRequestButton.Name = "starRequestButton";
+            starRequestButton.Size = new Size(40, 40);
+            starRequestButton.TabIndex = 4;
+            starRequestButton.UseVisualStyleBackColor = false;
+            starRequestButton.Click += starRequestButton_Click;
             // 
             // btnLastRequestsDataGridView
             // 
@@ -521,7 +524,7 @@ namespace WolfClient.UserControls
             statusCheckBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             statusCheckBox.DropDownStyle = ComboBoxStyle.DropDownList;
             statusCheckBox.FormattingEnabled = true;
-            statusCheckBox.Items.AddRange(new object[] { "Зададена", "Завършена", "Оферта" });
+            statusCheckBox.Items.AddRange(new object[] { "", "Зададена", "Завършена", "Оферта" });
             statusCheckBox.Location = new Point(627, 35);
             statusCheckBox.Name = "statusCheckBox";
             statusCheckBox.Size = new Size(117, 28);
@@ -562,7 +565,7 @@ namespace WolfClient.UserControls
             cmbPaymentStatus.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             cmbPaymentStatus.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPaymentStatus.FormattingEnabled = true;
-            cmbPaymentStatus.Items.AddRange(new object[] { "Платен", "Не Платен", "Аванс" });
+            cmbPaymentStatus.Items.AddRange(new object[] { "", "Платен", "Не Платен", "Аванс" });
             cmbPaymentStatus.Location = new Point(416, 35);
             cmbPaymentStatus.Name = "cmbPaymentStatus";
             cmbPaymentStatus.Size = new Size(117, 28);
@@ -639,22 +642,46 @@ namespace WolfClient.UserControls
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             panel1.BackColor = Color.Gainsboro;
             panel1.BorderStyle = BorderStyle.Fixed3D;
+            panel1.Controls.Add(taskStatusComboBox);
+            panel1.Controls.Add(label7);
             panel1.Controls.Add(ApplyActivityFiltersButton);
             panel1.Controls.Add(label2);
             panel1.Controls.Add(taskDayCheck);
             panel1.Controls.Add(taskSelfCheck);
             panel1.Controls.Add(taskWeekCheck);
-            panel1.Location = new Point(992, 0);
+            panel1.Location = new Point(786, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(335, 41);
+            panel1.Size = new Size(543, 41);
             panel1.TabIndex = 35;
+            // 
+            // taskStatusComboBox
+            // 
+            taskStatusComboBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            taskStatusComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            taskStatusComboBox.FormattingEnabled = true;
+            taskStatusComboBox.Items.AddRange(new object[] { "", "Зададена", "Завършена", "Оферта" });
+            taskStatusComboBox.Location = new Point(383, 9);
+            taskStatusComboBox.Name = "taskStatusComboBox";
+            taskStatusComboBox.Size = new Size(117, 28);
+            taskStatusComboBox.TabIndex = 27;
+            // 
+            // label7
+            // 
+            label7.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label7.Location = new Point(298, 8);
+            label7.Name = "label7";
+            label7.Size = new Size(88, 28);
+            label7.TabIndex = 26;
+            label7.Text = "Статус :  ";
             // 
             // ApplyActivityFiltersButton
             // 
             ApplyActivityFiltersButton.BackColor = Color.Transparent;
             ApplyActivityFiltersButton.BackgroundImage = (Image)resources.GetObject("ApplyActivityFiltersButton.BackgroundImage");
             ApplyActivityFiltersButton.BackgroundImageLayout = ImageLayout.Stretch;
-            ApplyActivityFiltersButton.Location = new Point(299, 7);
+            ApplyActivityFiltersButton.Location = new Point(506, 6);
             ApplyActivityFiltersButton.Name = "ApplyActivityFiltersButton";
             ApplyActivityFiltersButton.Size = new Size(30, 30);
             ApplyActivityFiltersButton.TabIndex = 23;
@@ -1666,7 +1693,7 @@ namespace WolfClient.UserControls
         private ComboBox cmbPaymentStatus;
         private Button btnLastRequestsDataGridView;
         private Button btnNextRequestsDataGridView;
-        private Button button7;
+        private Button starRequestButton;
         private CheckBox chkStarred;
         private Button btnLastClientsDataGridView;
         private Button btnNextClientsDataGridView;
@@ -1699,5 +1726,7 @@ namespace WolfClient.UserControls
         private CheckBox taskDayCheck;
         private CheckBox taskWeekCheck;
         private Button ApplyActivityFiltersButton;
+        private ComboBox taskStatusComboBox;
+        private Label label7;
     }
 }

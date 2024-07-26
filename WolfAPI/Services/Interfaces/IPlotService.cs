@@ -5,6 +5,6 @@ namespace WolfAPI.Services.Interfaces
     public interface IPlotService
     {
         public Task<GetPlotDTO> CreatePlot(CreatePlotDTO plot, string clientId);
-        public Task<bool> edit(GetPlotDTO plotDTO);
+        public Task<bool> edit(GetPlotDTO plotDTO, string clientId);
     }
 }

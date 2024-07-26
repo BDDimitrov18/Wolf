@@ -10,6 +10,14 @@ namespace WolfClient.Services.Interfaces
 {
     public interface IDataService
     {
+        public void addClientsToAll(GetClientDTO client);
+        public List<GetClientDTO> getAllClients();
+        public void SetAllClients(List<GetClientDTO> clientDTOs);
+        public GetstarRequest_EmployeeRelashionshipDTO getCurrentStar();
+        public bool isStarred();
+        public void addStar(GetstarRequest_EmployeeRelashionshipDTO starredRequest);
+        public void removeStar();
+        public List<GetstarRequest_EmployeeRelashionshipDTO> GetStarredRequests();
         public List<GetRequestDTO> filterRequestByStatusSelfActivitiesAndTasks(List<GetRequestDTO> requestDTOs, string status);
         public List<GetRequestDTO> FilterRequestByWeekSelfActivitiesAndTasks(List<GetRequestDTO> requestDTOs);
         public List<GetRequestDTO> filterRequestByDaySelfActivitiesAndTasks(List<GetRequestDTO> requestDTOs);
@@ -115,5 +123,7 @@ namespace WolfClient.Services.Interfaces
 
         public void EditPowerOfAttorney(GetPowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO);
         public void EditPlotOwnerRelashionship(GetDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO);
+
+        public void SetStarredRequests(List<GetstarRequest_EmployeeRelashionshipDTO> starredRequests);
     }
 }

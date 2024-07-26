@@ -12,10 +12,12 @@ namespace WolfAPI.Services
         public IOwnerModelRepository _ownerModelRepository { get; set; }
         public IMapper _mapper { get; set; }
 
-        public OwnerService(IOwnerModelRepository ownerModelRepository, IMapper mapper)
+        private readonly IWebSocketService _webSocketService;
+        public OwnerService(IOwnerModelRepository ownerModelRepository, IMapper mapper, IWebSocketService webSocketService)
         {
             _mapper = mapper;
             _ownerModelRepository = ownerModelRepository;
+            _webSocketService = webSocketService;
         }
 
         public async Task<GetOwnerDTO> CreateOwner(CreateOwnerDTO ownerDTO) { 
@@ -31,8 +33,15 @@ namespace WolfAPI.Services
             return getOwner;
         }
 
-        public async Task<bool> editOwner(GetOwnerDTO ownerDTO) {
-            Owner owner = _mapper.Map<Owner>(ownerDTO); 
+        public async Task<bool> editOwner(GetOwnerDTO ownerDTO, string clientId) {
+            Owner owner = _mapper.Map<Owner>(ownerDTO);
+            var updateNotification = new UpdateNotification<GetOwnerDTO>
+            {
+                OperationType = "Edit",
+                EntityType = "GetOwnerDTO",
+                UpdatedEntity = ownerDTO
+            };
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
             return await  _ownerModelRepository.EditOwner(owner);
         }
     }

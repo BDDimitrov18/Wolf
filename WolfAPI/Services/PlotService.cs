@@ -33,10 +33,18 @@ namespace WolfAPI.Services
             await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
             return getPlotMapped;
         }
-        public async Task<bool> edit(GetPlotDTO plotDTO)
+        public async Task<bool> edit(GetPlotDTO plotDTO, string clientId)
         {
             Plot plot = _mapper.Map<Plot>(plotDTO);
             var result = await _plotModelRepository.EditPlot(plot);
+
+            var updateNotification = new UpdateNotification<GetPlotDTO>
+            {
+                OperationType = "Edit",
+                EntityType = "GetPlotDTO",
+                UpdatedEntity = plotDTO
+            };
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
             return result;
         }
     }

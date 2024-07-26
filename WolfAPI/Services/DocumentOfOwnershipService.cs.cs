@@ -40,8 +40,17 @@ namespace WolfAPI.Services
             return _mapper.Map<GetDocumentOfOwnershipDTO>(document);
         }
 
-        public async Task<bool> editDocumentOfOwnership(GetDocumentOfOwnershipDTO documentOfOwnershipDTO) {
+        public async Task<bool> editDocumentOfOwnership(GetDocumentOfOwnershipDTO documentOfOwnershipDTO, string clientId) {
             DocumentOfOwnership document = _mapper.Map<DocumentOfOwnership>(documentOfOwnershipDTO);
+
+            var updateNotification = new UpdateNotification<GetDocumentOfOwnershipDTO>
+            {
+                OperationType = "Edit",
+                EntityType = "GetDocumentOfOwnershipDTO",
+                UpdatedEntity = documentOfOwnershipDTO
+            };
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
+
             return await _documentOfOwnershipModelRepository.EditDocument(document);
         }
     }

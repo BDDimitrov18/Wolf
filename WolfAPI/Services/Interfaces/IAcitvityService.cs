@@ -10,6 +10,6 @@ namespace WolfAPI.Services.Interfaces
         public Task<bool> DeleteOnRequest(Request request);
         public Task<bool> DeleteActivities(List<GetActivityDTO> activityDTOs, string clientId);
 
-        public Task<bool> EditActivity(GetActivityDTO activityDTO);
+        public Task<bool> EditActivity(GetActivityDTO activityDTO, string clientId);
     }
 }

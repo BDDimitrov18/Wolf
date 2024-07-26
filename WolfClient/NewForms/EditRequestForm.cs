@@ -311,15 +311,15 @@ namespace WolfClient.NewForms
             string paymentStatus;
             if (float.Parse(advance) == float.Parse(price))
             {
-                paymentStatus = "Paid";
+                paymentStatus = "Платен";
             }
             else if (float.Parse(advance) > 0)
             {
-                paymentStatus = "Advance";
+                paymentStatus = "Аванс";
             }
             else
             {
-                paymentStatus = "NotPaid";
+                paymentStatus = "Не платен";
             }
 
             return paymentStatus;

@@ -26,6 +26,8 @@ namespace DataAccessLayer.Models
         public ICollection<Invoice> Invoices { get; set; }
 
         public ICollection<Activity> Activities { get; set; }
+
+        public ICollection<starRequest_EmployeeRelashionship> Request_EmployeeRelashionships { get; set; }
         [Timestamp]
         public byte[] RowVersion { get; set; }
     }

@@ -45,22 +45,22 @@ namespace WolfClient.UserControls
             RefreshButton = new Button();
             label1 = new Label();
             panel7 = new Panel();
-            button7 = new Button();
-            button6 = new Button();
-            button5 = new Button();
-            button4 = new Button();
-            button2 = new Button();
-            button1 = new Button();
+            btnLastClientsDataGridView = new Button();
+            btnNextClientsDataGridView = new Button();
+            btnPreviousClientsDataGridView = new Button();
+            btnFirstClientsDataGridView = new Button();
             label2 = new Label();
             panel1 = new Panel();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            label3 = new Label();
-            textBox3 = new TextBox();
-            label4 = new Label();
-            textBox4 = new TextBox();
-            label5 = new Label();
             label6 = new Label();
+            phoneTextBox = new TextBox();
+            label5 = new Label();
+            emailTextBox = new TextBox();
+            label4 = new Label();
+            FullNameTextBox = new TextBox();
+            label3 = new Label();
+            numberTextBox = new TextBox();
+            button1 = new Button();
+            EditClientButton = new Button();
             ((System.ComponentModel.ISupportInitialize)ClientsDataGridView).BeginInit();
             panel7.SuspendLayout();
             panel1.SuspendLayout();
@@ -178,81 +178,60 @@ namespace WolfClient.UserControls
             // panel7
             // 
             panel7.BorderStyle = BorderStyle.Fixed3D;
-            panel7.Controls.Add(button7);
-            panel7.Controls.Add(button6);
-            panel7.Controls.Add(button5);
-            panel7.Controls.Add(button4);
-            panel7.Controls.Add(button2);
-            panel7.Location = new Point(3, 55);
+            panel7.Controls.Add(btnLastClientsDataGridView);
+            panel7.Controls.Add(btnNextClientsDataGridView);
+            panel7.Controls.Add(btnPreviousClientsDataGridView);
+            panel7.Controls.Add(btnFirstClientsDataGridView);
+            panel7.Location = new Point(8, 56);
             panel7.Name = "panel7";
-            panel7.Size = new Size(237, 50);
+            panel7.Size = new Size(187, 50);
             panel7.TabIndex = 22;
+            panel7.Paint += panel7_Paint;
             // 
-            // button7
+            // btnLastClientsDataGridView
             // 
-            button7.BackColor = Color.Transparent;
-            button7.BackgroundImage = (Image)resources.GetObject("button7.BackgroundImage");
-            button7.BackgroundImageLayout = ImageLayout.Stretch;
-            button7.Location = new Point(187, 3);
-            button7.Name = "button7";
-            button7.Size = new Size(40, 40);
-            button7.TabIndex = 4;
-            button7.UseVisualStyleBackColor = false;
+            btnLastClientsDataGridView.BackColor = Color.Transparent;
+            btnLastClientsDataGridView.BackgroundImage = (Image)resources.GetObject("btnLastClientsDataGridView.BackgroundImage");
+            btnLastClientsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnLastClientsDataGridView.Location = new Point(141, 3);
+            btnLastClientsDataGridView.Name = "btnLastClientsDataGridView";
+            btnLastClientsDataGridView.Size = new Size(40, 40);
+            btnLastClientsDataGridView.TabIndex = 3;
+            btnLastClientsDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button6
+            // btnNextClientsDataGridView
             // 
-            button6.BackColor = Color.Transparent;
-            button6.BackgroundImage = (Image)resources.GetObject("button6.BackgroundImage");
-            button6.BackgroundImageLayout = ImageLayout.Stretch;
-            button6.Location = new Point(141, 3);
-            button6.Name = "button6";
-            button6.Size = new Size(40, 40);
-            button6.TabIndex = 3;
-            button6.UseVisualStyleBackColor = false;
+            btnNextClientsDataGridView.BackColor = Color.Transparent;
+            btnNextClientsDataGridView.BackgroundImage = (Image)resources.GetObject("btnNextClientsDataGridView.BackgroundImage");
+            btnNextClientsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnNextClientsDataGridView.Location = new Point(95, 3);
+            btnNextClientsDataGridView.Name = "btnNextClientsDataGridView";
+            btnNextClientsDataGridView.Size = new Size(40, 40);
+            btnNextClientsDataGridView.TabIndex = 2;
+            btnNextClientsDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button5
+            // btnPreviousClientsDataGridView
             // 
-            button5.BackColor = Color.Transparent;
-            button5.BackgroundImage = (Image)resources.GetObject("button5.BackgroundImage");
-            button5.BackgroundImageLayout = ImageLayout.Stretch;
-            button5.Location = new Point(95, 3);
-            button5.Name = "button5";
-            button5.Size = new Size(40, 40);
-            button5.TabIndex = 2;
-            button5.UseVisualStyleBackColor = false;
+            btnPreviousClientsDataGridView.BackColor = Color.Transparent;
+            btnPreviousClientsDataGridView.BackgroundImage = (Image)resources.GetObject("btnPreviousClientsDataGridView.BackgroundImage");
+            btnPreviousClientsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnPreviousClientsDataGridView.Location = new Point(49, 3);
+            btnPreviousClientsDataGridView.Name = "btnPreviousClientsDataGridView";
+            btnPreviousClientsDataGridView.Size = new Size(40, 40);
+            btnPreviousClientsDataGridView.TabIndex = 1;
+            btnPreviousClientsDataGridView.UseVisualStyleBackColor = false;
             // 
-            // button4
+            // btnFirstClientsDataGridView
             // 
-            button4.BackColor = Color.Transparent;
-            button4.BackgroundImage = (Image)resources.GetObject("button4.BackgroundImage");
-            button4.BackgroundImageLayout = ImageLayout.Stretch;
-            button4.Location = new Point(49, 3);
-            button4.Name = "button4";
-            button4.Size = new Size(40, 40);
-            button4.TabIndex = 1;
-            button4.UseVisualStyleBackColor = false;
-            // 
-            // button2
-            // 
-            button2.BackColor = Color.Transparent;
-            button2.BackgroundImage = (Image)resources.GetObject("button2.BackgroundImage");
-            button2.BackgroundImageLayout = ImageLayout.Stretch;
-            button2.Location = new Point(3, 3);
-            button2.Name = "button2";
-            button2.Size = new Size(40, 40);
-            button2.TabIndex = 0;
-            button2.UseVisualStyleBackColor = false;
-            // 
-            // button1
-            // 
-            button1.BackColor = Color.Transparent;
-            button1.BackgroundImage = (Image)resources.GetObject("button1.BackgroundImage");
-            button1.BackgroundImageLayout = ImageLayout.Stretch;
-            button1.Location = new Point(185, 15);
-            button1.Name = "button1";
-            button1.Size = new Size(35, 35);
-            button1.TabIndex = 23;
-            button1.UseVisualStyleBackColor = false;
+            btnFirstClientsDataGridView.BackColor = Color.Transparent;
+            btnFirstClientsDataGridView.BackgroundImage = (Image)resources.GetObject("btnFirstClientsDataGridView.BackgroundImage");
+            btnFirstClientsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnFirstClientsDataGridView.Location = new Point(3, 3);
+            btnFirstClientsDataGridView.Name = "btnFirstClientsDataGridView";
+            btnFirstClientsDataGridView.Size = new Size(40, 40);
+            btnFirstClientsDataGridView.TabIndex = 0;
+            btnFirstClientsDataGridView.UseVisualStyleBackColor = false;
+            btnFirstClientsDataGridView.Click += button2_Click;
             // 
             // label2
             // 
@@ -268,76 +247,18 @@ namespace WolfClient.UserControls
             // 
             panel1.BorderStyle = BorderStyle.Fixed3D;
             panel1.Controls.Add(label6);
-            panel1.Controls.Add(textBox4);
+            panel1.Controls.Add(phoneTextBox);
             panel1.Controls.Add(label5);
-            panel1.Controls.Add(textBox3);
+            panel1.Controls.Add(emailTextBox);
             panel1.Controls.Add(label4);
-            panel1.Controls.Add(textBox2);
+            panel1.Controls.Add(FullNameTextBox);
             panel1.Controls.Add(label3);
-            panel1.Controls.Add(textBox1);
+            panel1.Controls.Add(numberTextBox);
             panel1.Controls.Add(label2);
-            panel1.Location = new Point(246, 15);
+            panel1.Location = new Point(267, 16);
             panel1.Name = "panel1";
             panel1.Size = new Size(560, 90);
             panel1.TabIndex = 25;
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(86, 15);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(85, 27);
-            textBox1.TabIndex = 25;
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(265, 15);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(281, 27);
-            textBox2.TabIndex = 27;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(177, 11);
-            label3.Name = "label3";
-            label3.Size = new Size(87, 28);
-            label3.TabIndex = 26;
-            label3.Text = "Имена : ";
-            // 
-            // textBox3
-            // 
-            textBox3.Location = new Point(87, 55);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(220, 27);
-            textBox3.TabIndex = 29;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.Location = new Point(3, 51);
-            label4.Name = "label4";
-            label4.Size = new Size(73, 28);
-            label4.TabIndex = 28;
-            label4.Text = "Email : ";
-            // 
-            // textBox4
-            // 
-            textBox4.Location = new Point(364, 55);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(182, 27);
-            textBox4.TabIndex = 31;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label5.Location = new Point(313, 51);
-            label5.Name = "label5";
-            label5.Size = new Size(55, 28);
-            label5.TabIndex = 30;
-            label5.Text = "тел : ";
             // 
             // label6
             // 
@@ -349,11 +270,93 @@ namespace WolfClient.UserControls
             label6.TabIndex = 32;
             label6.Text = "филтри";
             // 
+            // phoneTextBox
+            // 
+            phoneTextBox.Location = new Point(364, 55);
+            phoneTextBox.Name = "phoneTextBox";
+            phoneTextBox.Size = new Size(182, 27);
+            phoneTextBox.TabIndex = 31;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label5.Location = new Point(313, 51);
+            label5.Name = "label5";
+            label5.Size = new Size(55, 28);
+            label5.TabIndex = 30;
+            label5.Text = "тел : ";
+            // 
+            // emailTextBox
+            // 
+            emailTextBox.Location = new Point(87, 55);
+            emailTextBox.Name = "emailTextBox";
+            emailTextBox.Size = new Size(220, 27);
+            emailTextBox.TabIndex = 29;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label4.Location = new Point(3, 51);
+            label4.Name = "label4";
+            label4.Size = new Size(73, 28);
+            label4.TabIndex = 28;
+            label4.Text = "Email : ";
+            // 
+            // FullNameTextBox
+            // 
+            FullNameTextBox.Location = new Point(265, 15);
+            FullNameTextBox.Name = "FullNameTextBox";
+            FullNameTextBox.Size = new Size(281, 27);
+            FullNameTextBox.TabIndex = 27;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label3.Location = new Point(177, 11);
+            label3.Name = "label3";
+            label3.Size = new Size(87, 28);
+            label3.TabIndex = 26;
+            label3.Text = "Имена : ";
+            // 
+            // numberTextBox
+            // 
+            numberTextBox.Location = new Point(86, 15);
+            numberTextBox.Name = "numberTextBox";
+            numberTextBox.Size = new Size(85, 27);
+            numberTextBox.TabIndex = 25;
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.Transparent;
+            button1.BackgroundImage = (Image)resources.GetObject("button1.BackgroundImage");
+            button1.BackgroundImageLayout = ImageLayout.Stretch;
+            button1.Location = new Point(185, 15);
+            button1.Name = "button1";
+            button1.Size = new Size(35, 35);
+            button1.TabIndex = 23;
+            button1.UseVisualStyleBackColor = false;
+            // 
+            // EditClientButton
+            // 
+            EditClientButton.BackColor = Color.Transparent;
+            EditClientButton.BackgroundImage = (Image)resources.GetObject("EditClientButton.BackgroundImage");
+            EditClientButton.BackgroundImageLayout = ImageLayout.Stretch;
+            EditClientButton.Location = new Point(226, 15);
+            EditClientButton.Name = "EditClientButton";
+            EditClientButton.Size = new Size(35, 35);
+            EditClientButton.TabIndex = 26;
+            EditClientButton.UseVisualStyleBackColor = false;
+            EditClientButton.Click += EditClientButton_Click;
+            // 
             // MenuClientsUserControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
+            Controls.Add(EditClientButton);
             Controls.Add(panel1);
             Controls.Add(button1);
             Controls.Add(panel7);
@@ -387,21 +390,21 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn ClientLegalType;
         private Label label1;
         private Panel panel7;
-        private Button button7;
-        private Button button6;
-        private Button button5;
-        private Button button4;
-        private Button button2;
-        private Button button1;
+        private Button btnLastClientsDataGridView;
+        private Button btnNextClientsDataGridView;
+        private Button btnPreviousClientsDataGridView;
+        private Button btnFirstClientsDataGridView;
         private Label label2;
         private Panel panel1;
-        private TextBox textBox4;
+        private TextBox phoneTextBox;
         private Label label5;
-        private TextBox textBox3;
+        private TextBox emailTextBox;
         private Label label4;
-        private TextBox textBox2;
+        private TextBox FullNameTextBox;
         private Label label3;
-        private TextBox textBox1;
+        private TextBox numberTextBox;
         private Label label6;
+        private Button button1;
+        private Button EditClientButton;
     }
 }

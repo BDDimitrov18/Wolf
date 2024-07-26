@@ -101,8 +101,16 @@ namespace WolfAPI.Services
             }
         }
 
-        public async Task<bool> EditTask(GetTaskDTO taskDTO) {
+        public async Task<bool> EditTask(GetTaskDTO taskDTO, string clientId) {
             bool result = await _taskModelRepository.EditTask(_mapper.Map<WorkTask>(taskDTO));
+
+            var updateNotification = new UpdateNotification<GetTaskDTO>
+            {
+                OperationType = "Edit",
+                EntityType = "GetTaskDTO",
+                UpdatedEntity = taskDTO
+            };
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
             return result;
         }
     }

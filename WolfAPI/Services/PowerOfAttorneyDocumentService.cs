@@ -12,10 +12,13 @@ namespace WolfAPI.Services
         private IPowerOfAttorneyModelRepository _powerOfattorneyModelRepository { get; set; }
         private IMapper _mapper { get; set; }
 
-        public PowerOfAttorneyDocumentService(IPowerOfAttorneyModelRepository powerOfattorneyModelRepository, IMapper mapper)
+        private readonly IWebSocketService _webSocketService;
+
+        public PowerOfAttorneyDocumentService(IPowerOfAttorneyModelRepository powerOfattorneyModelRepository, IMapper mapper, IWebSocketService webSocketService)
         {
             _powerOfattorneyModelRepository = powerOfattorneyModelRepository;
             _mapper = mapper;
+            _webSocketService = webSocketService;
         }
 
         public async Task<GetPowerOfAttorneyDocumentDTO> createPowerOfAttorneyDocument(CreatePowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO) {
@@ -24,8 +27,15 @@ namespace WolfAPI.Services
             return _mapper.Map<GetPowerOfAttorneyDocumentDTO>(powerOfattorney); 
         }
 
-        public async Task<bool> EditPowerOfAttorneyDocument(GetPowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO) {
+        public async Task<bool> EditPowerOfAttorneyDocument(GetPowerOfAttorneyDocumentDTO powerOfAttorneyDocumentDTO, string clientId) {
             PowerOfAttorneyDocument document = _mapper.Map<PowerOfAttorneyDocument>(powerOfAttorneyDocumentDTO);
+            var updateNotification = new UpdateNotification<GetPowerOfAttorneyDocumentDTO>
+            {
+                OperationType = "Edit",
+                EntityType = "GetPowerOfAttorneyDocumentDTO",
+                UpdatedEntity = powerOfAttorneyDocumentDTO
+            };
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
             return await _powerOfattorneyModelRepository.EditPowerOfAttorney(document);
         }
     }

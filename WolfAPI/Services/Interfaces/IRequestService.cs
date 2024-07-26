@@ -11,7 +11,7 @@ namespace WolfAPI.Services.Interfaces
         public Task<List<RequestWithClientsDTO>> GetLinked(List<GetRequestDTO> requestsDTO);
 
         public Task<bool> Delete(List<GetRequestDTO> requestDTOs, string clientId);
-        public Task<bool> EditRequestAsync(GetRequestDTO requestDTO);
+        public Task<bool> EditRequestAsync(GetRequestDTO requestDTO, string clientId);
 
 
     }

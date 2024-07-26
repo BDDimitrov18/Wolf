@@ -61,12 +61,22 @@ namespace WolfAPI.Services
             return createClientDTOs;
         }
 
-        public async Task<bool> EditClient(GetClientDTO clientDTO)
+        public async Task<bool> EditClient(GetClientDTO clientDTO,string clientId)
         {
             try
             {
                 Client client = _mapper.Map<Client>(clientDTO);
                 bool isEdited = await _clientRepository.Edit(client);
+
+                var updateNotification = new UpdateNotification<GetClientDTO>
+                {
+                    OperationType = "Edit",
+                    EntityType = "GetClientDTO",
+                    UpdatedEntity = clientDTO
+                };
+
+                await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
+
                 return isEdited;
             }
             catch (Exception ex)

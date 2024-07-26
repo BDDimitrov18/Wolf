@@ -125,13 +125,22 @@ namespace WolfAPI.Services
             }
         }
 
-        public async Task<bool> EditActivity(GetActivityDTO activityDTO)
+        public async Task<bool> EditActivity(GetActivityDTO activityDTO, string clientId)
         {
             // Map the DTO to the Activity model
             Activity activity = _mapper.Map<Activity>(activityDTO);
 
             // Call the repository method to edit the activity
             bool result = await _activityModelRespository.EditActivity(activity);
+
+            var updateNotification = new UpdateNotification<GetActivityDTO>
+            {
+                OperationType = "Edit",
+                EntityType = "GetActivityDTO",
+                UpdatedEntity = activityDTO
+            };
+
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
 
             // Return the result
             return result;

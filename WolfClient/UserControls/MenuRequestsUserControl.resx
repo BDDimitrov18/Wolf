@@ -235,7 +235,7 @@
         YII=
 </value>
   </data>
-  <data name="button7.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="starRequestButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAADN1JREFUeF7t
         3QmMXVUdx3GQCoYgLmg0mCJYothUDG4Ego2iFA0iYZNqkNRgBRURWYossmNrQ2QrQRQiBSmhiCgNEWUJ

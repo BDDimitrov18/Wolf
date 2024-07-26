@@ -156,10 +156,19 @@ namespace WolfAPI.Services
             return allDeletionsSuccessful;
         }
 
-        public async Task<bool> EditRequestAsync(GetRequestDTO requestDTO)
+        public async Task<bool> EditRequestAsync(GetRequestDTO requestDTO, string clientId)
         {
             Request request = _mapper.Map<Request>(requestDTO);
             bool result = _requestRepository.Edit(request);
+
+            var updateNotification = new UpdateNotification<GetRequestDTO>
+            {
+                OperationType = "Edit",
+                EntityType = "GetRequestDTO",
+                UpdatedEntity = requestDTO
+            };
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
+
             return result;
         }
     }

@@ -41,6 +41,8 @@ namespace WolfClient.Services
 
         public GetEmployeeDTO LoggedEmployee { get; set; }
 
+        public List<GetstarRequest_EmployeeRelashionshipDTO> _starredRequests { get; set; }
+
         public DataService()
         {
             compositeData = new CompositeDataDTO();
@@ -51,6 +53,71 @@ namespace WolfClient.Services
             _allClients = new List<GetClientDTO>();
             _selectedActivity = new List<ActivityViewModel>();
             LoggedEmployee = new GetEmployeeDTO();
+            _starredRequests = new List<GetstarRequest_EmployeeRelashionshipDTO>();
+        }
+
+
+        public List<GetClientDTO> getAllClients() {
+            return _allClients;
+        }
+
+        public void SetAllClients(List<GetClientDTO> clientDTOs) {
+            _allClients = clientDTOs;
+        }
+        public GetstarRequest_EmployeeRelashionshipDTO getCurrentStar() { 
+            foreach(var star in _starredRequests)
+            {
+              if(star.RequestId == _selectedRequest.RequestId) {
+                    return star;    
+              }       
+            }
+            return null;
+        }
+
+        public void SetStarredRequests(List<GetstarRequest_EmployeeRelashionshipDTO> starredRequests) {
+            _starredRequests = starredRequests;
+        }
+        public List<GetstarRequest_EmployeeRelashionshipDTO> GetStarredRequests()
+        {
+            return _starredRequests;
+        }
+
+        public void addStar(GetstarRequest_EmployeeRelashionshipDTO starredRequest) {
+            _starredRequests.Add(starredRequest);
+        }
+        public void addClientsToAll(GetClientDTO client) {
+            _allClients.Add(client);
+        }
+        public void removeStar()
+        {
+
+            var itemsToRemove = new List<GetstarRequest_EmployeeRelashionshipDTO>();
+
+            // Collect items to remove
+            foreach (var star in _starredRequests)
+            {
+                if (star.RequestId == _selectedRequest.RequestId)
+                {
+                    itemsToRemove.Add(star);
+                }
+            }
+
+            // Remove collected items
+            foreach (var item in itemsToRemove)
+            {
+                _starredRequests.Remove(item);
+            }
+        }
+
+        public bool isStarred() {
+            foreach (var star in _starredRequests)
+            {
+                if (star.RequestId == _selectedRequest.RequestId)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         public GetPlotDTO getPlotFromPlotOwnerID(int plotOwnerId) {
             foreach (var link in compositeData.linkedDocuments) {
@@ -92,7 +159,10 @@ namespace WolfClient.Services
                         }
                     }
                 }
-                returnRequest.Add(link.requestDTO);
+                if (toAdd)
+                {
+                    returnRequest.Add(link.requestDTO);
+                }
             }
             return returnRequest;
         }
@@ -199,7 +269,7 @@ namespace WolfClient.Services
                                     {
                                         if (task.FinishDate >= startOfWeek && task.FinishDate < endOfWeek)
                                         {
-                                            toadd = true; returnRequest.Add(request);
+                                            toadd = true;
                                         }
                                     }
                                 }
@@ -1135,7 +1205,7 @@ namespace WolfClient.Services
                     HandleDeleteOperation(baseNotification);
                     break;
                 case "Edit":
-                    // Handle Edit operation if necessary
+                    HandleEditOperation(baseNotification);
                     break;
             }
             WebSocketDataUpdate.OnDataUpdated();
@@ -1386,6 +1456,104 @@ namespace WolfClient.Services
                 _activityTypesDTOs.Add(activityTypeDTO);
             }
             WebSocketDataUpdate.OnActivityTypeUpdated(activityTypeDTO);
+        }
+        private void HandleEditOperation(UpdateNotification<JsonElement> baseNotification)
+        {
+            switch (baseNotification.EntityType)
+            {
+                case "GetRequestDTO":
+                    HandleEditRequest(baseNotification);
+                    break;
+                case "GetClientDTO":
+                    HandleEditClient(baseNotification);
+                    break;
+                case "GetTaskDTO":
+                    HandleEditTask(baseNotification);
+                    break;
+                case "GetActivityDTO":
+                    HandleEditActivity(baseNotification);
+                    break;
+                case "GetPlotDTO":
+                    HandleEditPlot(baseNotification);
+                    break;
+                case "GetDocumentPlot_DocumentOwnerRelashionshipDTO":
+                    HandleEditDocumentPlotOwnerRelationship(baseNotification);
+                    break;
+                case "GetPowerOfAttorneyDocumentDTO":
+                    HandleEditPowerOfAttorneyDocument(baseNotification);
+                    break;
+                case "GetOwnerDTO":
+                    HandleEditOwner(baseNotification);
+                    break;
+                case "GetDocumentOfOwnershipDTO":
+                    HandleEditDocumentOfOwnership(baseNotification);
+                    break;
+                    // Add other cases as needed
+            }
+        }
+        private void HandleEditPowerOfAttorneyDocument(UpdateNotification<JsonElement> baseNotification)
+        {
+            var powerOfAttorneyDocumentDTO = baseNotification.UpdatedEntity.Deserialize<GetPowerOfAttorneyDocumentDTO>();
+            EditPowerOfAttorney(powerOfAttorneyDocumentDTO);
+        }
+
+        private void HandleEditOwner(UpdateNotification<JsonElement> baseNotification)
+        {
+            var ownerDTO = baseNotification.UpdatedEntity.Deserialize<GetOwnerDTO>();
+            EditOwner(ownerDTO);
+        }
+
+        private void HandleEditDocumentOfOwnership(UpdateNotification<JsonElement> baseNotification)
+        {
+            var documentOfOwnershipDTO = baseNotification.UpdatedEntity.Deserialize<GetDocumentOfOwnershipDTO>();
+            EditDocument(documentOfOwnershipDTO);
+        }
+
+        private void HandleEditRequest(UpdateNotification<JsonElement> baseNotification)
+        {
+            var requestDTO = baseNotification.UpdatedEntity.Deserialize<GetRequestDTO>();
+            EditRequest(requestDTO);
+            WebSocketDataUpdate.OnRequestsUpdated(new List<GetRequestDTO> { requestDTO });
+        }
+
+        // Method to edit a client
+        private void HandleEditClient(UpdateNotification<JsonElement> baseNotification)
+        {
+            var clientDTO = baseNotification.UpdatedEntity.Deserialize<GetClientDTO>();
+            editClient(clientDTO);
+            WebSocketDataUpdate.OnClientRelationshipsUpdated(null);
+        }
+
+        // Method to edit a task
+        private void HandleEditTask(UpdateNotification<JsonElement> baseNotification)
+        {
+            var taskDTO = baseNotification.UpdatedEntity.Deserialize<GetTaskDTO>();
+            editTask(taskDTO);
+            WebSocketDataUpdate.OnActivitiesUpdated(null);
+        }
+
+        // Method to edit an activity
+        private void HandleEditActivity(UpdateNotification<JsonElement> baseNotification)
+        {
+            var activityDTO = baseNotification.UpdatedEntity.Deserialize<GetActivityDTO>();
+            editActivity(activityDTO);
+            WebSocketDataUpdate.OnActivitiesUpdated(new List<GetActivityDTO> { activityDTO });
+        }
+
+        // Method to edit a plot
+        private void HandleEditPlot(UpdateNotification<JsonElement> baseNotification)
+        {
+            var plotDTO = baseNotification.UpdatedEntity.Deserialize<GetPlotDTO>();
+            EditPlot(plotDTO);
+            WebSocketDataUpdate.OnActivityPlotRelationshipsUpdated(null);
+        }
+
+        // Method to edit a document plot owner relationship
+        private void HandleEditDocumentPlotOwnerRelationship(UpdateNotification<JsonElement> baseNotification)
+        {
+            var relashionshipDTO = baseNotification.UpdatedEntity.Deserialize<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
+            EditPlotOwnerRelashionship(relashionshipDTO);
+            WebSocketDataUpdate.OnDocumentPlotOwnerRelationshipsUpdated(new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> { relashionshipDTO });
         }
     }
 }

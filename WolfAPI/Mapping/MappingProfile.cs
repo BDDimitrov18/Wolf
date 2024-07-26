@@ -228,6 +228,24 @@ namespace WolfAPI.Mapping
             CreateMap<CreateFileDTO, Files>();
             CreateMap<GetFileDTO, Files>();
             CreateMap<Files, GetFileDTO>();
+
+            CreateMap<starRequest_EmployeeRelashionship, GetstarRequest_EmployeeRelashionshipDTO>()
+            .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RequestId))
+            .ForMember(dest => dest.Request, opt => opt.MapFrom(src => src.Request))
+            .ForMember(dest => dest.EmployeeID, opt => opt.MapFrom(src => src.EmployeeID))
+            .ForMember(dest => dest.Employee, opt => opt.MapFrom(src => src.Employee));
+
+            CreateMap<GetstarRequest_EmployeeRelashionshipDTO, starRequest_EmployeeRelashionship>()
+                .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RequestId))
+                .ForMember(dest => dest.Request, opt => opt.MapFrom(src => src.Request))
+                .ForMember(dest => dest.EmployeeID, opt => opt.MapFrom(src => src.EmployeeID))
+                .ForMember(dest => dest.Employee, opt => opt.MapFrom(src => src.Employee));
+
+            CreateMap<CreateStarRequest_EmployeeRelashionshipDTO, starRequest_EmployeeRelashionship>()
+            .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RequestId))
+            .ForMember(dest => dest.EmployeeID, opt => opt.MapFrom(src => src.EmployeeID))
+            .ForMember(dest => dest.Request, opt => opt.Ignore()) // Assuming Request will be set separately
+            .ForMember(dest => dest.Employee, opt => opt.Ignore()); // Assuming Employee will be set separately
         }
     }
 }

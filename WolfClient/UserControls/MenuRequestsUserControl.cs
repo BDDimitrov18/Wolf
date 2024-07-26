@@ -109,10 +109,14 @@ namespace WolfClient.UserControls
                 }
                 var linkedDocs = await _userClient.GetLinkedPlotOwnerRelashionships(_dataService.GetAllPlots());
                 _dataService.setPlotOwnersRelashionships(linkedDocs.ResponseObj);
-                RequestDataGridView.AutoGenerateColumns = false;
-                RequestDataGridView.DataSource = requestList;
-                RequestDataGridView.Refresh();
+                var responseStars = await _userClient.GetStarredRequests(_dataService.getLoggedEmployee());
+                if (responseStars.IsSuccess)
+                {
+                    _dataService.SetStarredRequests(responseStars.ResponseObj);
+                }
+                UpdateRequestDataGridView(_dataService.getRequests());
             }
+
         }
 
         private void OnRequestsUpdated(List<GetRequestDTO> requests)
@@ -649,7 +653,8 @@ namespace WolfClient.UserControls
                         activity.Tasks.Remove(task);
                     }
 
-                    if (activity.Tasks.Count() == 0) {
+                    if (activity.Tasks.Count() == 0)
+                    {
                         toRemove = true;
                     }
 
@@ -695,7 +700,7 @@ namespace WolfClient.UserControls
                     {
                         activity.Tasks.Remove(task);
                     }
-                    
+
                     if (activity.Tasks.Count() == 0)
                     {
                         toRemove = true;
@@ -763,6 +768,46 @@ namespace WolfClient.UserControls
                     filteredList.Remove(activity);
                 }
             }
+            if (taskStatusComboBox.SelectedIndex > 0)
+            {
+                var Status = taskStatusComboBox.SelectedItem.ToString();
+                var activitiesToRemove = new List<GetActivityDTO>();
+
+                foreach (var activity in filteredList)
+                {
+                    bool toRemove = true;
+                    var tasksToRemove = new List<GetTaskDTO>();
+
+                    foreach (var task in activity.Tasks)
+                    {
+                        if (task.Status != Status)
+                        {
+                            tasksToRemove.Add(task);
+                        }
+                        else
+                        {
+                            toRemove = false;
+                        }
+                    }
+
+                    // Remove the tasks after iterating over them
+                    foreach (var task in tasksToRemove)
+                    {
+                        activity.Tasks.Remove(task);
+                    }
+
+                    if (activity.Tasks.Count() == 0)
+                    {
+                        toRemove = true;
+                    }
+
+                    if (toRemove)
+                    {
+                        activitiesToRemove.Add(activity);
+                    }
+                }
+            }
+
 
             return filteredList;
         }
@@ -922,9 +967,9 @@ namespace WolfClient.UserControls
                     ActivityDataGridView.Refresh();
                     return;
                 }
-
-                var matchingRequestWithClients = _dataService.GetFetchedLinkedRequests()
-                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _dataService.GetSelectedRequest().RequestId);
+                RequestWithClientsDTO matchingRequestWithClients = new RequestWithClientsDTO();
+                matchingRequestWithClients = _dataService.GetFetchedLinkedRequests()
+                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _dataService.GetSelectedRequest().RequestId).Copy();
 
                 if (matchingRequestWithClients != null)
                 {
@@ -1024,7 +1069,11 @@ namespace WolfClient.UserControls
             // Filter by IsStarred (if applicable)
             if (chkStarred.Checked)
             {
-                //filteredList = filteredList.Where(r => r.IsStarred).ToList(); // Assuming IsStarred is a boolean property
+                var stars = _dataService.GetStarredRequests();
+
+                filteredList = filteredList
+                    .Where(request => stars.Any(star => star.RequestId == request.RequestId))
+                    .ToList();
             }
             if (statusCheckBox.SelectedIndex > 0)
             {
@@ -1035,7 +1084,7 @@ namespace WolfClient.UserControls
             return filteredList;
         }
 
-        private void UpdateRequestDataGridView(List<GetRequestDTO> requestDTOs)
+        public void UpdateRequestDataGridView(List<GetRequestDTO> requestDTOs)
         {
             _isRefreshing = true;
             try
@@ -1052,18 +1101,12 @@ namespace WolfClient.UserControls
                 {
                     RequestDataGridView.Invoke(new MethodInvoker(delegate
                     {
-                        RequestDataGridView.AutoGenerateColumns = false;
-                        RequestDataGridView.DataSource = null; // Force reset DataSource
-                        RequestDataGridView.DataSource = filteredList;
-                        RequestDataGridView.Refresh();
+                        UpdateRequestGridViewRows(filteredList);
                     }));
                 }
                 else
                 {
-                    RequestDataGridView.AutoGenerateColumns = false;
-                    RequestDataGridView.DataSource = null; // Force reset DataSource
-                    RequestDataGridView.DataSource = filteredList;
-                    RequestDataGridView.Refresh();
+                    UpdateRequestGridViewRows(filteredList);
                 }
 
                 Console.WriteLine("DataSource set successfully with " + filteredList.Count + " items.");
@@ -1072,6 +1115,35 @@ namespace WolfClient.UserControls
             {
                 Console.WriteLine("Exception in UpdateRequestDataGridView: " + ex.Message);
                 MessageBox.Show("Exception in UpdateRequestDataGridView: " + ex.Message);
+            }
+            finally
+            {
+                _isRefreshing = false;
+            }
+        }
+
+        private void UpdateRequestGridViewRows(List<GetRequestDTO> filteredList)
+        {
+            RequestDataGridView.AutoGenerateColumns = false;
+            RequestDataGridView.DataSource = null; // Force reset DataSource
+            RequestDataGridView.DataSource = filteredList;
+            RequestDataGridView.Refresh();
+
+            // Fetch the starred requests
+            var starredRequests = _dataService.GetStarredRequests();
+
+            // Paint the rows that match the requestId in starred requests
+            foreach (DataGridViewRow row in RequestDataGridView.Rows)
+            {
+                var requestDTO = row.DataBoundItem as GetRequestDTO;
+                if (requestDTO != null && starredRequests.Any(s => s.RequestId == requestDTO.RequestId))
+                {
+                    row.DefaultCellStyle.BackColor = Color.Yellow;
+                }
+                else
+                {
+                    row.DefaultCellStyle.BackColor = RequestDataGridView.DefaultCellStyle.BackColor;
+                }
             }
         }
 
@@ -1456,5 +1528,38 @@ namespace WolfClient.UserControls
         {
             UpdateActivityDataGridView();
         }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void starRequestButton_Click(object sender, EventArgs e)
+        {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Моля Изберете поръчка");
+                return;
+            }
+            if (!_dataService.isStarred())
+            {
+                CreateStarRequest_EmployeeRelashionshipDTO starRequest_EmployeeRelashionshipDTO = new CreateStarRequest_EmployeeRelashionshipDTO()
+                {
+                    RequestId = _dataService.GetSelectedRequest().RequestId,
+                    EmployeeID = _dataService.getLoggedEmployee().EmployeeId,
+                };
+                var responseStar = await _userClient.AddStar(starRequest_EmployeeRelashionshipDTO);
+                GetstarRequest_EmployeeRelashionshipDTO getstarRequest_EmployeeRelashionshipDTO = responseStar.ResponseObj;
+                _dataService.addStar(getstarRequest_EmployeeRelashionshipDTO);
+            }
+            else
+            {
+                _userClient.DeleteStar(_dataService.getCurrentStar());
+                _dataService.removeStar();
+            }
+
+            UpdateRequestDataGridView(_dataService.getRequests());
+        }
+
     }
 }

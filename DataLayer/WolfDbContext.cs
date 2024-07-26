@@ -50,6 +50,8 @@ namespace DataAccessLayer
 
         public DbSet<Files> files { get; set; }
 
+        public DbSet<starRequest_EmployeeRelashionship> starRequest_EmployeeRelashionships { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
@@ -356,6 +358,21 @@ namespace DataAccessLayer
                     ConcurrencyStamp = "2"
                 }
             );
+            #endregion
+            #region starRequest
+
+            modelBuilder.Entity<starRequest_EmployeeRelashionship>()
+            .HasKey(re => new { re.RequestId, re.EmployeeID });
+
+            modelBuilder.Entity<starRequest_EmployeeRelashionship>()
+                .HasOne(re => re.Request)
+                .WithMany(r => r.Request_EmployeeRelashionships)
+                .HasForeignKey(re => re.RequestId);
+
+            modelBuilder.Entity<starRequest_EmployeeRelashionship>()
+                .HasOne(re => re.Employee)
+                .WithMany(e => e.Request_EmployeeRelashionships)
+                .HasForeignKey(re => re.EmployeeID);
             #endregion
 
             #region Seed activity and task types

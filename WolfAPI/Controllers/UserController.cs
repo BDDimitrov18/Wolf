@@ -30,11 +30,13 @@ namespace WolfAPI.Controllers
         private readonly IPlot_DocumentOfOwnershipRelashionshipService _plot_DocumentOfOwnershipRelashionshipService;
         private readonly IDocumentPlot_DocumentOwnerRelashionshipService _documentPlot_DocumentOwnerRelashionshipService;
         private readonly IPowerOfAttorneyDocumentService _powerOfAttorneyDocumentService;
+        private readonly IStarRequest_EmployeeRelashionshipService _starRequest_EmployeeRelashionshipService;
         public UserController(IClientService clientService, IRequestService requestService, IClient_RequestRelashionshipService requestRelashionshipService,
             IActivityTypesService activityTypesService, IEmployeeService employeeService, ItaskTypesService taskTypesService, IAcitvityService acitvityService,
             ItaskServices taskService, IPlotService plotService, IActivity_PlotReleashionshipService activityPlotReleashionshipService, IDocumentOfOwnershipService documentOfOwnershipService,
             IOwnerService ownerService, IDocumentOfOwnership_OwnerRelashionshipService ownerDocumentOfOwnershipService, IPlot_DocumentOfOwnershipRelashionshipService plot_DocumentOfOwnershipRelashionshipService,
-            IDocumentPlot_DocumentOwnerRelashionshipService documentPlot_DocumentOwnerRelashionshipService, IPowerOfAttorneyDocumentService powerOfAttorneyDocumentService)
+            IDocumentPlot_DocumentOwnerRelashionshipService documentPlot_DocumentOwnerRelashionshipService, IPowerOfAttorneyDocumentService powerOfAttorneyDocumentService,
+            IStarRequest_EmployeeRelashionshipService starRequest_EmployeeRelashionshipService)
         {
             _clientService = clientService;
             _requestService = requestService;
@@ -52,6 +54,7 @@ namespace WolfAPI.Controllers
             _plot_DocumentOfOwnershipRelashionshipService = plot_DocumentOfOwnershipRelashionshipService;
             _documentPlot_DocumentOwnerRelashionshipService = documentPlot_DocumentOwnerRelashionshipService;
             _powerOfAttorneyDocumentService = powerOfAttorneyDocumentService;
+            _starRequest_EmployeeRelashionshipService = starRequest_EmployeeRelashionshipService;
         }
 
         [HttpPost("CreateClient")]
@@ -383,7 +386,9 @@ namespace WolfAPI.Controllers
         [HttpPost("EditRequest")]
         public async Task<IActionResult> EditRequest([FromBody] GetRequestDTO requestDTO)
         {
-            bool result = await _requestService.EditRequestAsync(requestDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            bool result = await _requestService.EditRequestAsync(requestDTO, clientId);
 
             if (result)
             {
@@ -402,8 +407,9 @@ namespace WolfAPI.Controllers
             {
                 return BadRequest("Client data is null.");
             }
-
-            bool result = await _clientService.EditClient(clientDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            bool result = await _clientService.EditClient(clientDTO, clientId);
 
             if (result)
             {
@@ -422,8 +428,9 @@ namespace WolfAPI.Controllers
             {
                 return BadRequest("Invalid activity data.");
             }
-
-            bool result = await _acitvityService.EditActivity(activityDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            bool result = await _acitvityService.EditActivity(activityDTO, clientId);
 
             if (result)
             {
@@ -442,8 +449,9 @@ namespace WolfAPI.Controllers
             {
                 return BadRequest("Task data is null.");
             }
-
-            bool result = await _taskService.EditTask(taskDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            bool result = await _taskService.EditTask(taskDTO, clientId);
 
             if (result)
             {
@@ -462,8 +470,10 @@ namespace WolfAPI.Controllers
             {
                 return BadRequest("Plot data is null.");
             }
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
 
-            bool result = await _plotService.edit(plotDTO);
+            bool result = await _plotService.edit(plotDTO, clientId);
 
             if (result)
             {
@@ -482,8 +492,9 @@ namespace WolfAPI.Controllers
             {
                 return BadRequest("Document data is null.");
             }
-
-            bool result = await _documentOfOwnershipService.editDocumentOfOwnership(documentOfOwnershipDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            bool result = await _documentOfOwnershipService.editDocumentOfOwnership(documentOfOwnershipDTO, clientId);
 
             if (result)
             {
@@ -502,8 +513,9 @@ namespace WolfAPI.Controllers
             {
                 return BadRequest("Owner data is null.");
             }
-
-            bool result = await _ownerService.editOwner(ownerDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            bool result = await _ownerService.editOwner(ownerDTO, clientId);
 
             if (result)
             {
@@ -522,8 +534,9 @@ namespace WolfAPI.Controllers
             {
                 return BadRequest("Power of Attorney Document data is null.");
             }
-
-            bool result = await _powerOfAttorneyDocumentService.EditPowerOfAttorneyDocument(powerOfAttorneyDocumentDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            bool result = await _powerOfAttorneyDocumentService.EditPowerOfAttorneyDocument(powerOfAttorneyDocumentDTO, clientId);
 
             if (result)
             {
@@ -542,8 +555,9 @@ namespace WolfAPI.Controllers
             {
                 return BadRequest("Document data is null.");
             }
-
-            bool result = await _documentPlot_DocumentOwnerRelashionshipService.editDocument(documentDTO);
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            bool result = await _documentPlot_DocumentOwnerRelashionshipService.editDocument(documentDTO, clientId);
 
             if (result)
             {
@@ -555,6 +569,76 @@ namespace WolfAPI.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("addStar")]
+        public async Task<ActionResult<GetstarRequest_EmployeeRelashionshipDTO>> Add(CreateStarRequest_EmployeeRelashionshipDTO createRelashionshipDTO)
+        {
+            if (createRelashionshipDTO == null)
+            {
+                return BadRequest("Invalid request data.");
+            }
+
+            try
+            {
+                var result = await _starRequest_EmployeeRelashionshipService.add(createRelashionshipDTO);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (not shown here for brevity)
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
+        [HttpPost]
+        [Route("deleteStar")]
+        public async Task<IActionResult> Delete(GetstarRequest_EmployeeRelashionshipDTO relashionshipDTO)
+        {
+            if (relashionshipDTO == null)
+            {
+                return BadRequest("Invalid request data.");
+            }
+
+            try
+            {
+                var result = await _starRequest_EmployeeRelashionshipService.Delete(relashionshipDTO);
+                if (!result)
+                {
+                    return NotFound();
+                }
+                return Ok(new { message = "Star successfully deleted" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (not shown here for brevity)
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
+        [HttpPost]
+        [Route("getStarByEmployeeID")]
+        public async Task<ActionResult<List<GetstarRequest_EmployeeRelashionshipDTO>>> GetByEmployeeID(GetEmployeeDTO employeeDTO)
+        {
+            if (employeeDTO == null)
+            {
+                return BadRequest("Invalid request data.");
+            }
+
+            try
+            {
+                var result = await _starRequest_EmployeeRelashionshipService.GetByEmployeeID(employeeDTO);
+                if (result == null || result.Count == 0)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (not shown here for brevity)
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
 
         private string GetJwtTokenFromRequest()
         {

@@ -23,6 +23,7 @@ namespace WolfClient.NewForms
         private readonly bool _canCreate;
 
         private CreateClientDTO _clientDTO;
+        private GetClientDTO _getClientDTO;
 
         private CreateClientDTO _clientValidator;
         public AddClientForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, bool canCreate)
@@ -32,6 +33,7 @@ namespace WolfClient.NewForms
             _userClient = userClient;
             _adminClient = adminClient;
             _canCreate = canCreate;
+            _getClientDTO = new GetClientDTO();
 
             _clientValidator = new CreateClientDTO();
 
@@ -165,13 +167,18 @@ namespace WolfClient.NewForms
             else {
                 List<CreateClientDTO> clientsList = new List<CreateClientDTO>();
                 clientsList.Add(client);
-                await _userClient.AddClients(clientsList);
+                var responseClient = await _userClient.AddClients(clientsList);
+                _getClientDTO = responseClient.ResponseObj[0];
+                DialogResult = DialogResult.OK;
             }
             Close();
         }
 
         public CreateClientDTO getClientResponseObj() {
             return _clientDTO;
+        }
+        public GetClientDTO returnGetClientResponseObj() {
+            return _getClientDTO;
         }
 
     }

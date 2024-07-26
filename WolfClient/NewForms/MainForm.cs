@@ -62,6 +62,12 @@ namespace WolfClient.NewForms
 
             // Add the new UserControl
             panelContent.Controls.Add(userControl);
+
+            // If it's a MenuRequestsUserControl, trigger data and style reapplication
+            if (userControl is MenuRequestsUserControl requestsUserControl)
+            {
+                requestsUserControl.UpdateRequestDataGridView(_dataService.getRequests());
+            }
         }
 
 

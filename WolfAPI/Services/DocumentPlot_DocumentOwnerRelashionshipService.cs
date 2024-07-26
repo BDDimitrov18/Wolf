@@ -131,8 +131,15 @@ namespace WolfAPI.Services
             return EndResult;
         }
 
-        public async Task<bool> editDocument(GetDocumentPlot_DocumentOwnerRelashionshipDTO documentDTO) {
+        public async Task<bool> editDocument(GetDocumentPlot_DocumentOwnerRelashionshipDTO documentDTO,string clientId) {
             DocumentPlot_DocumentOwnerRelashionship document = _mapper.Map<DocumentPlot_DocumentOwnerRelashionship>(documentDTO);
+            var updateNotification = new UpdateNotification<GetDocumentPlot_DocumentOwnerRelashionshipDTO>
+            {
+                OperationType = "Edit",
+                EntityType = "GetDocumentPlot_DocumentOwnerRelashionshipDTO",
+                UpdatedEntity = documentDTO
+            };
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
             return await _DocumentOwnerRelashionshipModelRepository.EditRelashionship(document);
         }
     }
