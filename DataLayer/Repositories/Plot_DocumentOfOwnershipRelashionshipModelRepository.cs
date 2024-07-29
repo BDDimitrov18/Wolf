@@ -18,25 +18,25 @@ namespace DataAccessLayer.Repositories
             _WolfDbContext = wolfDbContext;
         }
 
-        public async Task AddRelashionship(Plot_DocumentOfOwnershipRelashionship relashionship) {
-            var existingRelationship = _WolfDbContext.Plot_DocumentOfOwnerships
-                .FirstOrDefault(p => p.PlotId == relashionship.PlotId && p.DocumentOfOwnershipId == relashionship.DocumentOfOwnershipId);
+        public async Task AddRelashionship(Plot_DocumentOfOwnershipRelashionship relashionship)
+        {
+            var existingRelationship = await _WolfDbContext.Plot_DocumentOfOwnerships
+                .FirstOrDefaultAsync(p => p.PlotId == relashionship.PlotId && p.DocumentOfOwnershipId == relashionship.DocumentOfOwnershipId);
 
             if (existingRelationship != null)
             {
-                // Update the input plotDocument with existing values if they are not null or empty
+                // Copy necessary fields from existing relationship to the input relationship
                 relashionship.DocumentPlotId = existingRelationship.DocumentPlotId;
-                relashionship.PlotId = existingRelationship.PlotId != 0 ? existingRelationship.PlotId : relashionship.PlotId;
-                relashionship.Plot = existingRelationship.Plot ?? relashionship.Plot;
-                relashionship.DocumentOfOwnershipId = existingRelationship.DocumentOfOwnershipId != 0 ? existingRelationship.DocumentOfOwnershipId : relashionship.DocumentOfOwnershipId;
-                relashionship.documentOfOwnership = existingRelationship.documentOfOwnership ?? relashionship.documentOfOwnership;
+                relashionship.Plot = existingRelationship.Plot;
+                relashionship.documentOfOwnership = existingRelationship.documentOfOwnership;
+                relashionship.DocumentOfOwnershipId = existingRelationship.DocumentOfOwnershipId;
+                relashionship.RowVersion = existingRelationship.RowVersion;
+                return;
             }
-            else
-            {
-                // Add the new plot-document relationship
-                _WolfDbContext.Plot_DocumentOfOwnerships.Add(relashionship);
-                await _WolfDbContext.SaveChangesAsync();
-            }
+
+            // Add the new plot-document relationship
+            await _WolfDbContext.Plot_DocumentOfOwnerships.AddAsync(relashionship);
+            await _WolfDbContext.SaveChangesAsync();
         }
 
         public async Task<Plot_DocumentOfOwnershipRelashionship> FindById(int id) {

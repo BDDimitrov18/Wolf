@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DurationNumericUpDown = new NumericUpDown();
             TaskComboBox = new ComboBox();
             ActivityComboBox = new ComboBox();
@@ -37,13 +38,16 @@
             ControlComboBox = new ComboBox();
             ControlLabel = new Label();
             label6 = new Label();
-            startDateDateTimePicker = new DateTimePicker();
+            endDateDateTimePicker = new DateTimePicker();
             label5 = new Label();
             ExecitantComboBox = new ComboBox();
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
             panel1 = new Panel();
+            ExecutantPriceErrorLabel = new Label();
+            TaxPriceErrorLabel = new Label();
+            label14 = new Label();
             StatusComboBox = new ComboBox();
             label11 = new Label();
             ExecutantPaymentTextBox = new TextBox();
@@ -53,6 +57,7 @@
             TaxTextBox = new TextBox();
             label7 = new Label();
             panel2 = new Panel();
+            label13 = new Label();
             panel3 = new Panel();
             ParentActivityLabel = new Label();
             MainExecutantLabel = new Label();
@@ -61,12 +66,12 @@
             ActivityTypeLabel = new Label();
             label1 = new Label();
             label12 = new Label();
-            label13 = new Label();
-            label14 = new Label();
+            ActivityErrorProvider = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)DurationNumericUpDown).BeginInit();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ActivityErrorProvider).BeginInit();
             SuspendLayout();
             // 
             // DurationNumericUpDown
@@ -159,13 +164,13 @@
             label6.TabIndex = 43;
             label6.Text = "Времетраене";
             // 
-            // startDateDateTimePicker
+            // endDateDateTimePicker
             // 
-            startDateDateTimePicker.Location = new Point(12, 170);
-            startDateDateTimePicker.Margin = new Padding(3, 4, 3, 4);
-            startDateDateTimePicker.Name = "startDateDateTimePicker";
-            startDateDateTimePicker.Size = new Size(302, 27);
-            startDateDateTimePicker.TabIndex = 42;
+            endDateDateTimePicker.Location = new Point(12, 170);
+            endDateDateTimePicker.Margin = new Padding(3, 4, 3, 4);
+            endDateDateTimePicker.Name = "endDateDateTimePicker";
+            endDateDateTimePicker.Size = new Size(302, 27);
+            endDateDateTimePicker.TabIndex = 42;
             // 
             // label5
             // 
@@ -222,6 +227,8 @@
             // 
             panel1.BackColor = SystemColors.GradientActiveCaption;
             panel1.BorderStyle = BorderStyle.Fixed3D;
+            panel1.Controls.Add(ExecutantPriceErrorLabel);
+            panel1.Controls.Add(TaxPriceErrorLabel);
             panel1.Controls.Add(label14);
             panel1.Controls.Add(StatusComboBox);
             panel1.Controls.Add(label11);
@@ -239,7 +246,7 @@
             panel1.Controls.Add(DurationNumericUpDown);
             panel1.Controls.Add(ExecitantComboBox);
             panel1.Controls.Add(label5);
-            panel1.Controls.Add(startDateDateTimePicker);
+            panel1.Controls.Add(endDateDateTimePicker);
             panel1.Controls.Add(ControlComboBox);
             panel1.Controls.Add(label6);
             panel1.Controls.Add(ControlLabel);
@@ -248,11 +255,43 @@
             panel1.Size = new Size(745, 500);
             panel1.TabIndex = 54;
             // 
+            // ExecutantPriceErrorLabel
+            // 
+            ExecutantPriceErrorLabel.AutoSize = true;
+            ExecutantPriceErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            ExecutantPriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            ExecutantPriceErrorLabel.Location = new Point(387, 364);
+            ExecutantPriceErrorLabel.Name = "ExecutantPriceErrorLabel";
+            ExecutantPriceErrorLabel.Size = new Size(147, 15);
+            ExecutantPriceErrorLabel.TabIndex = 61;
+            ExecutantPriceErrorLabel.Text = "Моля спазвайте формата";
+            // 
+            // TaxPriceErrorLabel
+            // 
+            TaxPriceErrorLabel.AutoSize = true;
+            TaxPriceErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            TaxPriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            TaxPriceErrorLabel.Location = new Point(387, 174);
+            TaxPriceErrorLabel.Name = "TaxPriceErrorLabel";
+            TaxPriceErrorLabel.Size = new Size(147, 15);
+            TaxPriceErrorLabel.TabIndex = 60;
+            TaxPriceErrorLabel.Text = "Моле спазвайте формата";
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            label14.Location = new Point(-2, -2);
+            label14.Name = "label14";
+            label14.Size = new Size(43, 15);
+            label14.TabIndex = 52;
+            label14.Text = "задача";
+            // 
             // StatusComboBox
             // 
             StatusComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             StatusComboBox.FormattingEnabled = true;
-            StatusComboBox.Items.AddRange(new object[] { "зададена", "завършена", "оферта" });
+            StatusComboBox.Items.AddRange(new object[] { "Зададена", "Завършена", "Оферта" });
             StatusComboBox.Location = new Point(12, 455);
             StatusComboBox.Name = "StatusComboBox";
             StatusComboBox.Size = new Size(302, 28);
@@ -333,6 +372,16 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(745, 166);
             panel2.TabIndex = 55;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            label13.Location = new Point(-2, -2);
+            label13.Name = "label13";
+            label13.Size = new Size(51, 15);
+            label13.TabIndex = 51;
+            label13.Text = "дейност";
             // 
             // panel3
             // 
@@ -417,25 +466,10 @@
             label12.Size = new Size(0, 20);
             label12.TabIndex = 56;
             // 
-            // label13
+            // ActivityErrorProvider
             // 
-            label13.AutoSize = true;
-            label13.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
-            label13.Location = new Point(-2, -2);
-            label13.Name = "label13";
-            label13.Size = new Size(51, 15);
-            label13.TabIndex = 51;
-            label13.Text = "дейност";
-            // 
-            // label14
-            // 
-            label14.AutoSize = true;
-            label14.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
-            label14.Location = new Point(-2, -2);
-            label14.Name = "label14";
-            label14.Size = new Size(43, 15);
-            label14.TabIndex = 52;
-            label14.Text = "задача";
+            ActivityErrorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+            ActivityErrorProvider.ContainerControl = this;
             // 
             // ExistingActivityAddTask
             // 
@@ -457,6 +491,7 @@
             panel2.PerformLayout();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)ActivityErrorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -470,7 +505,7 @@
         private ComboBox ControlComboBox;
         private Label ControlLabel;
         private Label label6;
-        private DateTimePicker startDateDateTimePicker;
+        private DateTimePicker endDateDateTimePicker;
         private Label label5;
         private ComboBox ExecitantComboBox;
         private Label label4;
@@ -497,5 +532,8 @@
         private Label label12;
         private Label label14;
         private Label label13;
+        private ErrorProvider ActivityErrorProvider;
+        private Label ExecutantPriceErrorLabel;
+        private Label TaxPriceErrorLabel;
     }
 }

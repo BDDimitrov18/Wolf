@@ -39,7 +39,7 @@ namespace DataAccessLayer.Repositories
                 existingRequest.PaymentStatus = request.PaymentStatus;
                 existingRequest.Advance = request.Advance;
                 existingRequest.Comments = request.Comments;
-
+                existingRequest.Path= request.Path;
                 // Save changes to the database
                 _WolfDbContext.SaveChanges();
                 return true; // Indicate the operation was successful

@@ -26,9 +26,30 @@ namespace DataAccessLayer.Repositories
 
             if (existingOwnerWithSameEgn != null)
             {
-                owner = existingOwnerWithSameEgn;
+                // Compare all relevant fields to check for differences
+                bool isDifferent = existingOwnerWithSameEgn.FirstName != owner.FirstName ||
+                                   existingOwnerWithSameEgn.MiddleName != owner.MiddleName ||
+                                   existingOwnerWithSameEgn.LastName != owner.LastName ||
+                                   existingOwnerWithSameEgn.Address != owner.Address;
+
+                if (isDifferent)
+                {
+                    // Update existing entity with the new values
+                    existingOwnerWithSameEgn.FirstName = owner.FirstName;
+                    existingOwnerWithSameEgn.MiddleName = owner.MiddleName;
+                    existingOwnerWithSameEgn.LastName = owner.LastName;
+                    existingOwnerWithSameEgn.Address = owner.Address;
+
+                    _WolfDbContext.Owners.Update(existingOwnerWithSameEgn);
+                    await _WolfDbContext.SaveChangesAsync();
+                }
+
+                // Set the OwnerID of the input owner to the existing one
+                owner.OwnerID = existingOwnerWithSameEgn.OwnerID;
+                return;
             }
 
+            // Add the new owner
             _WolfDbContext.Owners.Add(owner);
             await _WolfDbContext.SaveChangesAsync();
         }
@@ -79,6 +100,10 @@ namespace DataAccessLayer.Repositories
         private bool OwnerExists(int id)
         {
             return _WolfDbContext.Owners.Any(e => e.OwnerID == id);
+        }
+
+        public async Task<List<Owner>> getAllOwners() { 
+            return await _WolfDbContext.Owners.ToListAsync();
         }
     }
 }

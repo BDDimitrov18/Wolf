@@ -42,7 +42,10 @@ namespace WolfClient.NewForms
             {
                 // Clear previous error messages
                 errorProvider.Clear();
-
+                foreach (Control control in Controls)
+                {
+                    errorProvider.SetError(control, string.Empty);
+                }
                 // Bind the form controls to the model properties
                 plotValidator.PlotNumber = PlotNumberComboBox.Text;
 
@@ -69,14 +72,7 @@ namespace WolfClient.NewForms
                         }
                     }
                 }
-                else
-                {
-                    // Clear all error messages if validation passes
-                    foreach (Control control in Controls)
-                    {
-                        errorProvider.SetError(control, string.Empty);
-                    }
-                }
+                
             }
             finally
             {

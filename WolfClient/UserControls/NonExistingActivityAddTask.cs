@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace WolfClient.UserControls
         private readonly IDataService _dataService;
 
         public List<GetActivityTypeDTO> _activityTypesDTOs;
+        CreateActivityDTO _activityValidator;
+        CreateTaskDTO _taskValidator;
         public NonExistingActivityAddTask(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
@@ -27,6 +30,8 @@ namespace WolfClient.UserControls
             _userClient = userClient;
             _adminClient = adminClient;
             _dataService = dataService;
+            _activityValidator = new CreateActivityDTO();
+            _taskValidator = new CreateTaskDTO();
             _activityTypesDTOs = new List<GetActivityTypeDTO>();
         }
 
@@ -88,8 +93,136 @@ namespace WolfClient.UserControls
             ParentActivityComboBox.DataSource = activityDTOs;
             ParentActivityComboBox.DisplayMember = "ActivityTypeName";
             ParentActivityComboBox.ValueMember = "ActivityId";
+
+            StatusComboBox.SelectedIndex = 0;
         }
 
+        private void ValidateModel()
+        {
+            // Temporarily disable redrawing to reduce flickering
+            SuspendLayout();
+
+            try
+            {
+                // Clear previous error messages
+                ActivityErrorProvider.Clear();
+                // Clear all error messages if validation passes
+                foreach (Control control in Controls)
+                {
+                    ActivityErrorProvider.SetError(control, string.Empty);
+                }
+
+
+                if (ExecutantPaymentTextBox.Text == "")
+                {
+                    ExecutantPriceErrorLabel.Text = "Моля попълнете";
+                    ActivityErrorProvider.SetError(ExecutantPaymentTextBox, "Invalid Price format");
+                }
+                else if (float.TryParse(ExecutantPaymentTextBox.Text, out float price))
+                {
+                    _taskValidator.executantPayment = price;
+                    ExecutantPriceErrorLabel.Text = "Моля спазвайте формата";
+                }
+                else
+                {
+                    ActivityErrorProvider.SetError(ExecutantPaymentTextBox, "Invalid Price format");
+                }
+
+                if (TaxTextBox.Text == "")
+                {
+                    TaxPriceErrorLabel.Text = "Моля попълнете";
+                    ActivityErrorProvider.SetError(TaxTextBox, "Invalid Price format");
+                }
+                else if (float.TryParse(TaxTextBox.Text, out float tax))
+                {
+                    _taskValidator.tax = tax;
+                    TaxPriceErrorLabel.Text = "Моля спазвайте формата";
+                }
+                else
+                {
+                    ActivityErrorProvider.SetError(TaxTextBox, "Invalid Price format");
+                }
+
+                if (PaymentMainExecutantTextBox.Text == "")
+                {
+                    MainExecutantPaymentErrorLabel.Text = "Моля попълнете";
+                    ActivityErrorProvider.SetError(PaymentMainExecutantTextBox, "Invalid Price format");
+                }
+                else if (float.TryParse(PaymentMainExecutantTextBox.Text, out float mainExecutantPayment))
+                {
+                    _activityValidator.employeePayment = mainExecutantPayment;
+                    MainExecutantPaymentErrorLabel.Text = "Моля спазвайте формата";
+                }
+                else
+                {
+                    ActivityErrorProvider.SetError(PaymentMainExecutantTextBox, "Invalid Price format");
+                }
+
+                // Validate the model
+                IList<ValidationResult> memberNameResults = WolfClient.Validators.Validator.Validate(_taskValidator);
+
+                if (memberNameResults.Any())
+                {
+                    foreach (var result in memberNameResults)
+                    {
+                        foreach (var memberName in result.MemberNames)
+                        {
+                            // Map property names to control names
+                            string controlName = GetControlNameForMember(memberName);
+                            if (controlName != null)
+                            {
+                                Control control = Controls.Find(controlName, true).FirstOrDefault();
+                                if (control != null)
+                                {
+                                    ActivityErrorProvider.SetError(control, result.ErrorMessage);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                memberNameResults = WolfClient.Validators.Validator.Validate(_activityValidator);
+
+                if (memberNameResults.Any())
+                {
+                    foreach (var result in memberNameResults)
+                    {
+                        foreach (var memberName in result.MemberNames)
+                        {
+                            // Map property names to control names
+                            string controlName = GetControlNameForMember(memberName);
+                            if (controlName != null)
+                            {
+                                Control control = Controls.Find(controlName, true).FirstOrDefault();
+                                if (control != null)
+                                {
+                                    ActivityErrorProvider.SetError(control, result.ErrorMessage);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+
+                
+            }
+            finally
+            {
+                // Re-enable redrawing
+                ResumeLayout();
+            }
+        }
+
+        private string GetControlNameForMember(string memberName)
+        {
+            return memberName switch
+            {
+                nameof(_taskValidator.tax) => "TaxTextBox",
+                nameof(_taskValidator.executantPayment) => "ExecutantPaymentTextBox",
+                nameof(_activityValidator.employeePayment) => "PaymentMainExecutantTextBox",
+                _ => null
+            };
+        }
         private void ActivityComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedActivity = ActivityComboBox.SelectedItem as GetActivityTypeDTO;
@@ -127,6 +260,31 @@ namespace WolfClient.UserControls
 
         private async void AddActivitySubmit_Click(object sender, EventArgs e)
         {
+            ValidateModel();
+
+            MainExecutantPaymentErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            TaxPriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            ExecutantPriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            bool flag = false;
+            if (!string.IsNullOrEmpty(ActivityErrorProvider.GetError(PaymentMainExecutantTextBox)))
+            {
+                MainExecutantPaymentErrorLabel.ForeColor = Color.Red;
+                flag = true;
+            }
+            if (!string.IsNullOrEmpty(ActivityErrorProvider.GetError(TaxTextBox)))
+            {
+                TaxPriceErrorLabel.ForeColor = Color.Red;
+                flag = true;
+            }
+            if (!string.IsNullOrEmpty(ActivityErrorProvider.GetError(ExecutantPaymentTextBox)))
+            {
+                ExecutantPriceErrorLabel.ForeColor = Color.Red;
+                flag = true;
+            }
+            if (flag) { return; }
+
+
+
             if (ValidateActivityComboBox())
             {
                 if (ValidateTaskComboBox())
@@ -280,6 +438,7 @@ namespace WolfClient.UserControls
 
 
             }
+            Dispose();
         }
 
         private void label5_Click(object sender, EventArgs e)

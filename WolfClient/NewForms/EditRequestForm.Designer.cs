@@ -49,6 +49,9 @@
             NameOfRequestErrorLabel = new Label();
             FinalPriceErrorLabel = new Label();
             AdvancePriceErrorLabel = new Label();
+            PathTextBox = new TextBox();
+            openFilesButton = new Button();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)RequestErrorProvider).BeginInit();
             SuspendLayout();
             // 
@@ -107,10 +110,10 @@
             // 
             // CommentsRichTextBox
             // 
-            CommentsRichTextBox.Location = new Point(45, 584);
+            CommentsRichTextBox.Location = new Point(45, 657);
             CommentsRichTextBox.Margin = new Padding(3, 4, 3, 4);
             CommentsRichTextBox.Name = "CommentsRichTextBox";
-            CommentsRichTextBox.Size = new Size(316, 216);
+            CommentsRichTextBox.Size = new Size(316, 143);
             CommentsRichTextBox.TabIndex = 23;
             CommentsRichTextBox.Text = "";
             // 
@@ -118,7 +121,7 @@
             // 
             NewClientsFlowPanel.AutoSize = true;
             NewClientsFlowPanel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            NewClientsFlowPanel.Location = new Point(40, 534);
+            NewClientsFlowPanel.Location = new Point(45, 628);
             NewClientsFlowPanel.Name = "NewClientsFlowPanel";
             NewClientsFlowPanel.Size = new Size(107, 25);
             NewClientsFlowPanel.TabIndex = 22;
@@ -247,6 +250,33 @@
             AdvancePriceErrorLabel.TabIndex = 36;
             AdvancePriceErrorLabel.Text = "Спазвайте формата на цената";
             // 
+            // PathTextBox
+            // 
+            PathTextBox.Location = new Point(45, 571);
+            PathTextBox.Name = "PathTextBox";
+            PathTextBox.Size = new Size(316, 27);
+            PathTextBox.TabIndex = 42;
+            // 
+            // openFilesButton
+            // 
+            openFilesButton.Location = new Point(243, 534);
+            openFilesButton.Name = "openFilesButton";
+            openFilesButton.Size = new Size(118, 29);
+            openFilesButton.TabIndex = 41;
+            openFilesButton.Text = "отвори";
+            openFilesButton.UseVisualStyleBackColor = true;
+            openFilesButton.Click += openFilesButton_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(45, 534);
+            label1.Name = "label1";
+            label1.Size = new Size(197, 25);
+            label1.TabIndex = 40;
+            label1.Text = "Път към поръчката";
+            // 
             // EditRequestForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -254,6 +284,9 @@
             AutoSize = true;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(1047, 836);
+            Controls.Add(PathTextBox);
+            Controls.Add(openFilesButton);
+            Controls.Add(label1);
             Controls.Add(AdvancePriceErrorLabel);
             Controls.Add(FinalPriceErrorLabel);
             Controls.Add(NameOfRequestErrorLabel);
@@ -307,5 +340,8 @@
         private Label NameOfRequestErrorLabel;
         private Label AdvancePriceErrorLabel;
         private Label FinalPriceErrorLabel;
+        private TextBox PathTextBox;
+        private Button openFilesButton;
+        private Label label1;
     }
 }

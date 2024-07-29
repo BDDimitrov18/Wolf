@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace WolfClient.UserControls
         private readonly IDataService _dataService;
 
         public List<GetActivityTypeDTO> _activityTypesDTOs;
+        CreateTaskDTO _taskValidator;
         public GetActivityDTO _selectedActivity;
         public ExistingActivityAddTask(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
@@ -29,6 +31,7 @@ namespace WolfClient.UserControls
             _adminClient = adminClient;
             _dataService = dataService;
             _activityTypesDTOs = new List<GetActivityTypeDTO>();
+            _taskValidator = new CreateTaskDTO();
             _selectedActivity = null;
         }
 
@@ -74,6 +77,96 @@ namespace WolfClient.UserControls
             ControlComboBox.DataSource = employeesListForControl;
             ControlComboBox.DisplayMember = "FullName";
             ControlComboBox.ValueMember = "EmployeeId";
+
+            StatusComboBox.SelectedIndex = 0;
+        }
+
+        private void ValidateModel()
+        {
+            // Temporarily disable redrawing to reduce flickering
+            SuspendLayout();
+
+            try
+            {
+                // Clear previous error messages
+                ActivityErrorProvider.Clear();
+                // Clear all error messages if validation passes
+                foreach (Control control in Controls)
+                {
+                    ActivityErrorProvider.SetError(control, string.Empty);
+                }
+
+
+                if (ExecutantPaymentTextBox.Text == "")
+                {
+                    ExecutantPriceErrorLabel.Text = "Моля попълнете";
+                    ActivityErrorProvider.SetError(ExecutantPaymentTextBox, "Invalid Price format");
+                }
+                else if (float.TryParse(ExecutantPaymentTextBox.Text, out float price))
+                {
+                    _taskValidator.executantPayment = price;
+                    ExecutantPriceErrorLabel.Text = "Моля спазвайте формата";
+                }
+                else
+                {
+                    ActivityErrorProvider.SetError(ExecutantPaymentTextBox, "Invalid Price format");
+                }
+
+                if (TaxTextBox.Text == "")
+                {
+                    TaxPriceErrorLabel.Text = "Моля попълнете";
+                    ActivityErrorProvider.SetError(TaxTextBox, "Invalid Price format");
+                }
+                else if (float.TryParse(TaxTextBox.Text, out float tax))
+                {
+                    _taskValidator.tax = tax;
+                    TaxPriceErrorLabel.Text = "Моля спазвайте формата";
+                }
+                else
+                {
+                    ActivityErrorProvider.SetError(TaxTextBox, "Invalid Price format");
+                }
+
+               
+
+                // Validate the model
+                IList<ValidationResult> memberNameResults = WolfClient.Validators.Validator.Validate(_taskValidator);
+
+                if (memberNameResults.Any())
+                {
+                    foreach (var result in memberNameResults)
+                    {
+                        foreach (var memberName in result.MemberNames)
+                        {
+                            // Map property names to control names
+                            string controlName = GetControlNameForMember(memberName);
+                            if (controlName != null)
+                            {
+                                Control control = Controls.Find(controlName, true).FirstOrDefault();
+                                if (control != null)
+                                {
+                                    ActivityErrorProvider.SetError(control, result.ErrorMessage);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                // Re-enable redrawing
+                ResumeLayout();
+            }
+        }
+
+        private string GetControlNameForMember(string memberName)
+        {
+            return memberName switch
+            {
+                nameof(_taskValidator.tax) => "TaxTextBox",
+                nameof(_taskValidator.executantPayment) => "ExecutantPaymentTextBox",
+                _ => null
+            };
         }
 
         private void ActivityComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -137,9 +230,10 @@ namespace WolfClient.UserControls
 
                 CreateTaskDTO createTaskDTO = new CreateTaskDTO()
                 {
+                    FinishDate = endDateDateTimePicker.Value,
                     ActivityId = (int)ActivityComboBox.SelectedValue,
                     Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
-                    StartDate = startDateDateTimePicker.Value,
+                    StartDate = DateTime.Now,
                     ExecutantId = (int)ExecitantComboBox.SelectedValue,
                     ControlId = ControlComboBox.Text == "Няма Контрол" ? null : (int)ControlComboBox.SelectedValue,
                     Comments = CommentsRichTextBox.Text,
@@ -173,9 +267,10 @@ namespace WolfClient.UserControls
 
                 CreateTaskDTO createTaskDTO = new CreateTaskDTO()
                 {
+                    FinishDate = endDateDateTimePicker.Value,
                     ActivityId = activityDTO.ActivityId,
                     Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
-                    StartDate = startDateDateTimePicker.Value,
+                    StartDate = DateTime.Now,
                     ExecutantId = (int)ExecitantComboBox.SelectedValue,
                     ControlId = ControlComboBox.Text == "Няма Контрол" ? null : (int)ControlComboBox.SelectedValue,
                     Comments = CommentsRichTextBox.Text,

@@ -57,7 +57,11 @@ namespace WolfClient.NewForms
             {
                 // Clear previous error messages
                 RequestErrorProvider.Clear();
-
+                // Clear all error messages if validation passes
+                foreach (Control control in Controls)
+                {
+                    RequestErrorProvider.SetError(control, string.Empty);
+                }
                 // Bind the form controls to the model properties
                 _requestValidator.RequestName = NameOfRequestTextBox.Text;
 
@@ -98,14 +102,6 @@ namespace WolfClient.NewForms
                                 }
                             }
                         }
-                    }
-                }
-                else
-                {
-                    // Clear all error messages if validation passes
-                    foreach (Control control in Controls)
-                    {
-                        RequestErrorProvider.SetError(control, string.Empty);
                     }
                 }
             }
@@ -220,6 +216,7 @@ namespace WolfClient.NewForms
             string paymentStatus = createPaymentStatus(AdvanceTextBox.Text, PriceOfRequestTextBox.Text);
             CreateRequestDTO createRequestDTO = new CreateRequestDTO()
             {
+                Path = PathTextBox.Text,
                 Price = float.Parse(PriceOfRequestTextBox.Text),
                 PaymentStatus = paymentStatus,
                 Advance = float.Parse(AdvanceTextBox.Text),
@@ -336,6 +333,23 @@ namespace WolfClient.NewForms
         private void AddRequestTitleLabel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void openFilesButton_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+            {
+                folderBrowserDialog.Description = "Select the folder";
+
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Get the selected folder path
+                    string selectedFolderPath = folderBrowserDialog.SelectedPath;
+
+                    // Set the PathTextBox.Text to the selected folder path
+                    PathTextBox.Text = selectedFolderPath;
+                }
+            }
         }
     }
 }

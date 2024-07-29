@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             expectedDurationDateTime = new DateTimePicker();
             label7 = new Label();
             DurationNumericUpDown = new NumericUpDown();
@@ -52,10 +53,13 @@
             label10 = new Label();
             StatusComboBox = new ComboBox();
             panel1 = new Panel();
+            MainExecutantPaymentErrorLabel = new Label();
             label13 = new Label();
             MainExecutantComboBox = new ComboBox();
             label11 = new Label();
             panel2 = new Panel();
+            ExecutantPriceErrorLabel = new Label();
+            TaxPriceErrorLabel = new Label();
             label15 = new Label();
             ExecutantPaymentTextBox = new TextBox();
             label17 = new Label();
@@ -63,9 +67,11 @@
             label16 = new Label();
             TaxTextBox = new TextBox();
             label12 = new Label();
+            ActivityErrorProvider = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)DurationNumericUpDown).BeginInit();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ActivityErrorProvider).BeginInit();
             SuspendLayout();
             // 
             // expectedDurationDateTime
@@ -298,6 +304,7 @@
             // 
             panel1.BackColor = SystemColors.GradientActiveCaption;
             panel1.BorderStyle = BorderStyle.Fixed3D;
+            panel1.Controls.Add(MainExecutantPaymentErrorLabel);
             panel1.Controls.Add(label13);
             panel1.Controls.Add(MainExecutantComboBox);
             panel1.Controls.Add(label2);
@@ -313,6 +320,18 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(681, 296);
             panel1.TabIndex = 60;
+            // 
+            // MainExecutantPaymentErrorLabel
+            // 
+            MainExecutantPaymentErrorLabel.AutoSize = true;
+            MainExecutantPaymentErrorLabel.BackColor = SystemColors.GradientActiveCaption;
+            MainExecutantPaymentErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            MainExecutantPaymentErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            MainExecutantPaymentErrorLabel.Location = new Point(8, 225);
+            MainExecutantPaymentErrorLabel.Name = "MainExecutantPaymentErrorLabel";
+            MainExecutantPaymentErrorLabel.Size = new Size(147, 15);
+            MainExecutantPaymentErrorLabel.TabIndex = 63;
+            MainExecutantPaymentErrorLabel.Text = "Моля спазвайте формата";
             // 
             // label13
             // 
@@ -348,6 +367,8 @@
             // 
             panel2.BackColor = SystemColors.GradientActiveCaption;
             panel2.BorderStyle = BorderStyle.Fixed3D;
+            panel2.Controls.Add(ExecutantPriceErrorLabel);
+            panel2.Controls.Add(TaxPriceErrorLabel);
             panel2.Controls.Add(label15);
             panel2.Controls.Add(ExecutantPaymentTextBox);
             panel2.Controls.Add(label17);
@@ -373,6 +394,30 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(680, 491);
             panel2.TabIndex = 61;
+            // 
+            // ExecutantPriceErrorLabel
+            // 
+            ExecutantPriceErrorLabel.AutoSize = true;
+            ExecutantPriceErrorLabel.BackColor = SystemColors.GradientActiveCaption;
+            ExecutantPriceErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            ExecutantPriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            ExecutantPriceErrorLabel.Location = new Point(350, 366);
+            ExecutantPriceErrorLabel.Name = "ExecutantPriceErrorLabel";
+            ExecutantPriceErrorLabel.Size = new Size(147, 15);
+            ExecutantPriceErrorLabel.TabIndex = 68;
+            ExecutantPriceErrorLabel.Text = "Моля спазвайте формата";
+            // 
+            // TaxPriceErrorLabel
+            // 
+            TaxPriceErrorLabel.AutoSize = true;
+            TaxPriceErrorLabel.BackColor = SystemColors.GradientActiveCaption;
+            TaxPriceErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            TaxPriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
+            TaxPriceErrorLabel.Location = new Point(350, 164);
+            TaxPriceErrorLabel.Name = "TaxPriceErrorLabel";
+            TaxPriceErrorLabel.Size = new Size(147, 15);
+            TaxPriceErrorLabel.TabIndex = 64;
+            TaxPriceErrorLabel.Text = "Моля спазвайте формата";
             // 
             // label15
             // 
@@ -437,6 +482,11 @@
             label12.TabIndex = 60;
             label12.Text = "задача";
             // 
+            // ActivityErrorProvider
+            // 
+            ActivityErrorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+            ActivityErrorProvider.ContainerControl = this;
+            // 
             // NonExistingActivityAddTask
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -454,6 +504,7 @@
             panel1.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)ActivityErrorProvider).EndInit();
             ResumeLayout(false);
         }
 
@@ -494,5 +545,9 @@
         private TextBox TaxTextBox;
         private Label label15;
         private TextBox ExecutantPaymentTextBox;
+        private Label MainExecutantPaymentErrorLabel;
+        private Label ExecutantPriceErrorLabel;
+        private Label TaxPriceErrorLabel;
+        private ErrorProvider ActivityErrorProvider;
     }
 }

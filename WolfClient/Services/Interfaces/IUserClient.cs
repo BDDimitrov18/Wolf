@@ -80,5 +80,9 @@ namespace WolfClient.Services.Interfaces
         public Task<ClientResponse<HttpResponseMessage>> DeleteStar(GetstarRequest_EmployeeRelashionshipDTO starDTO);
 
         public Task<ClientResponse<List<GetstarRequest_EmployeeRelashionshipDTO>>> GetStarredRequests(GetEmployeeDTO employeeDTO);
+
+        public Task<ClientResponse<List<GetOwnerDTO>>> GetAllOwners();
+
+        public Task<ClientResponse<List<GetPlotDTO>>> GetAllPlots();
     }
 }

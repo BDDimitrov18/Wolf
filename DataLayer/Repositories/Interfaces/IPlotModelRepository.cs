@@ -10,6 +10,7 @@ namespace DataAccessLayer.Repositories.Interfaces
     public interface IPlotModelRepository
     {
         public Task Add(Plot plot);
+        public Task<List<Plot>> GetAllPlots();
         public Task<List<Plot>> GetLinkedPlotsToActivty(int activityId);
         public Task<bool> EditPlot(Plot plot);
     }

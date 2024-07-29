@@ -47,6 +47,15 @@ namespace WolfAPI.Services
             await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
             return result;
         }
+        public async Task<List<GetPlotDTO>> getAllPlots()
+        {
+            List<GetPlotDTO> getPlotDTOs = new List<GetPlotDTO>();
+            List<Plot> plots = await _plotModelRepository.GetAllPlots();
+            foreach(var plot in plots) {
+                getPlotDTOs.Add(_mapper.Map<GetPlotDTO>(plot));    
+            }
+            return getPlotDTOs;
+        }
     }
 
     

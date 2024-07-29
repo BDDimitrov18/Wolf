@@ -41,14 +41,27 @@ namespace WolfClient.NewForms
                 }
             }
         }
+        public byte[] ReadFileToByteArray()
+        {
+            // Ensure the file exists
+            if (!File.Exists(lastFile))
+            {
+                throw new FileNotFoundException("The specified file does not exist.", lastFile);
+            }
 
+            // Read the file into a byte array
+            byte[] fileBytes = File.ReadAllBytes(lastFile);
+
+            return fileBytes;
+        }
 
 
         private async void OpenFileReaderButton_Click(object sender, EventArgs e)
         {
             if (newDocumentRadioButton.Checked)
             {
-
+                DocumentEditor documentEditor = new DocumentEditor(_dataService, ReadFileToByteArray(), ActivityComboBox.SelectedItem as GetActivityDTO);
+                documentEditor.Show();
             }
             if (OldDocumentRadioButton.Checked)
             {

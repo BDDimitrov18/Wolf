@@ -640,6 +640,19 @@ namespace WolfAPI.Controllers
             }
         }
 
+        [HttpGet("GetAllOwners")]
+        public async Task<List<GetOwnerDTO>> getAllOwners()
+        {
+            return await _ownerService.getAllOwners();
+        }
+
+        [HttpGet("GetAllPlots")]
+
+        public async Task<List<GetPlotDTO>> getAllPlots()
+        {
+            return await _plotService.getAllPlots();
+        }
+
         private string GetJwtTokenFromRequest()
         {
             var authHeader = HttpContext.Request.Headers["Authorization"].ToString();

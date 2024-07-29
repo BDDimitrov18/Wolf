@@ -49,7 +49,10 @@ namespace WolfClient.NewForms
             {
                 // Clear previous error messages
                 UsernameErrorProvider.Clear();
-
+                foreach (Control control in Controls)
+                {
+                    UsernameErrorProvider.SetError(control, string.Empty);
+                }
                 // Bind the form controls to the model properties
                 _clientValidator.FirstName = NameTextBox.Text;
                 _clientValidator.MiddleName = SecondNameTextBox.Text;
@@ -79,14 +82,6 @@ namespace WolfClient.NewForms
                                 }
                             }
                         }
-                    }
-                }
-                else
-                {
-                    // Clear all error messages if validation passes
-                    foreach (Control control in Controls)
-                    {
-                        UsernameErrorProvider.SetError(control, string.Empty);
                     }
                 }
             }

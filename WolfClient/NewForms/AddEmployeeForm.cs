@@ -46,7 +46,11 @@ namespace WolfClient.NewForms
             {
                 // Clear previous error messages
                 EmployeeFormErrorProvider.Clear();
-
+                // Clear all error messages if validation passes
+                foreach (Control control in Controls)
+                {
+                    EmployeeFormErrorProvider.SetError(control, string.Empty);
+                }
                 // Bind the form controls to the model properties
                 _employeeValidation.FirstName = NameTextBox.Text;
                 _employeeValidation.SecondName = SecondNameTextBox.Text;
@@ -75,14 +79,6 @@ namespace WolfClient.NewForms
                                 }
                             }
                         }
-                    }
-                }
-                else
-                {
-                    // Clear all error messages if validation passes
-                    foreach (Control control in Controls)
-                    {
-                        EmployeeFormErrorProvider.SetError(control, string.Empty);
                     }
                 }
             }

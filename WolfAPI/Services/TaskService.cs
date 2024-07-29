@@ -20,10 +20,10 @@ namespace WolfAPI.Services
             _activityModelRespository = activityModelRespository;
             _webSocketService = webSocketService;
         }
-        
-        public async Task<GetActivityDTO> CreateTask(CreateTaskDTO createTaskDTO,string clientId)
+
+        public async Task<GetActivityDTO> CreateTask(CreateTaskDTO createTaskDTO, string clientId)
         {
-            WorkTask task = _mapper.Map<WorkTask>(createTaskDTO); 
+            WorkTask task = _mapper.Map<WorkTask>(createTaskDTO);
             await _taskModelRepository.createTask(task);
 
             var activity = await _activityModelRespository.GetActivity(task.ActivityId);

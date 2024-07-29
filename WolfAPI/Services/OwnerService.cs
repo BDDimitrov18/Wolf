@@ -44,5 +44,14 @@ namespace WolfAPI.Services
             await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
             return await  _ownerModelRepository.EditOwner(owner);
         }
+
+        public async Task<List<GetOwnerDTO>> getAllOwners() { 
+            List<Owner> owners = await _ownerModelRepository.getAllOwners();
+            List<GetOwnerDTO> ownerDTOs = new List<GetOwnerDTO>();
+            foreach (var owner in owners) {
+                ownerDTOs.Add(_mapper.Map<GetOwnerDTO>(owner));
+            }
+            return ownerDTOs;
+        }
     }
 }

@@ -31,10 +31,11 @@ namespace WolfClient.UserControls
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuRequestsUserControl));
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
             RequestDataGridView = new DataGridView();
             RequestId = new DataGridViewTextBoxColumn();
             RequestName = new DataGridViewTextBoxColumn();
@@ -51,6 +52,7 @@ namespace WolfClient.UserControls
             button3 = new Button();
             button8 = new Button();
             panel3 = new Panel();
+            PathLink = new LinkLabel();
             panel7 = new Panel();
             starRequestButton = new Button();
             btnLastRequestsDataGridView = new Button();
@@ -131,6 +133,7 @@ namespace WolfClient.UserControls
             editPlotButton = new Button();
             DeletePlotsButton = new Button();
             PlotsDataGridView = new DataGridView();
+            ActivityName = new DataGridViewTextBoxColumn();
             PlotNumber = new DataGridViewTextBoxColumn();
             RegulatedPlotNumber = new DataGridViewTextBoxColumn();
             neighborhood = new DataGridViewTextBoxColumn();
@@ -336,6 +339,7 @@ namespace WolfClient.UserControls
             // panel3
             // 
             panel3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            panel3.Controls.Add(PathLink);
             panel3.Controls.Add(panel7);
             panel3.Controls.Add(panel6);
             panel3.Controls.Add(editRequestButton);
@@ -351,6 +355,17 @@ namespace WolfClient.UserControls
             panel3.Size = new Size(1337, 564);
             panel3.TabIndex = 17;
             panel3.Paint += panel3_Paint;
+            // 
+            // PathLink
+            // 
+            PathLink.AutoSize = true;
+            PathLink.Location = new Point(139, 541);
+            PathLink.Name = "PathLink";
+            PathLink.Size = new Size(76, 20);
+            PathLink.TabIndex = 22;
+            PathLink.TabStop = true;
+            PathLink.Text = "linkLabel1";
+            PathLink.LinkClicked += PathLink_LinkClicked;
             // 
             // panel7
             // 
@@ -819,14 +834,14 @@ namespace WolfClient.UserControls
             ActivityDataGridView.ColumnHeadersHeight = 28;
             ActivityDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             ActivityDataGridView.Columns.AddRange(new DataGridViewColumn[] { ParentActivity, Activity, Task, Executant, StartDate, Duration, Control, Plots, Comment, tax, taxComment });
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = SystemColors.Window;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            ActivityDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            ActivityDataGridView.DefaultCellStyle = dataGridViewCellStyle1;
             ActivityDataGridView.Location = new Point(0, 46);
             ActivityDataGridView.Margin = new Padding(3, 4, 3, 4);
             ActivityDataGridView.MinimumSize = new Size(933, 188);
@@ -1045,14 +1060,14 @@ namespace WolfClient.UserControls
             clientsDataGridView.BackgroundColor = Color.Moccasin;
             clientsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             clientsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ClientNumber, FirstName, MiddleName, LastName, Phone, Email, Address, ClientLegalType });
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = SystemColors.Window;
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
-            clientsDataGridView.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            clientsDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
             clientsDataGridView.GridColor = SystemColors.ControlText;
             clientsDataGridView.Location = new Point(1, 46);
             clientsDataGridView.Margin = new Padding(3, 4, 3, 4);
@@ -1231,15 +1246,23 @@ namespace WolfClient.UserControls
             // 
             PlotsDataGridView.AllowUserToResizeColumns = false;
             PlotsDataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             PlotsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             PlotsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             PlotsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             PlotsDataGridView.BackgroundColor = Color.Moccasin;
-            PlotsDataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             PlotsDataGridView.ColumnHeadersHeight = 29;
-            PlotsDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlotNumber, RegulatedPlotNumber, neighborhood, City, Municipality, Street, StreetNumber, designation, locality });
+            PlotsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ActivityName, PlotNumber, RegulatedPlotNumber, neighborhood, City, Municipality, Street, StreetNumber, designation, locality });
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            PlotsDataGridView.DefaultCellStyle = dataGridViewCellStyle4;
             PlotsDataGridView.Location = new Point(0, 46);
             PlotsDataGridView.Margin = new Padding(100, 4, 3, 4);
             PlotsDataGridView.Name = "PlotsDataGridView";
@@ -1247,6 +1270,13 @@ namespace WolfClient.UserControls
             PlotsDataGridView.RowTemplate.Height = 50;
             PlotsDataGridView.Size = new Size(1330, 282);
             PlotsDataGridView.TabIndex = 21;
+            // 
+            // ActivityName
+            // 
+            ActivityName.DataPropertyName = "ActivityName";
+            ActivityName.HeaderText = "Дейност";
+            ActivityName.MinimumWidth = 6;
+            ActivityName.Name = "ActivityName";
             // 
             // PlotNumber
             // 
@@ -1436,14 +1466,14 @@ namespace WolfClient.UserControls
             OwnershipDataGridView.BackgroundColor = Color.Moccasin;
             OwnershipDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             OwnershipDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlotNumberDocTable, DocumentId, OwnerId, EKG, OwnerAddress, IdealParts, PowerOfAttorney });
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = SystemColors.Window;
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle8.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
-            OwnershipDataGridView.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = SystemColors.Window;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            OwnershipDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
             OwnershipDataGridView.Location = new Point(0, 49);
             OwnershipDataGridView.Name = "OwnershipDataGridView";
             OwnershipDataGridView.RowHeadersWidth = 51;
@@ -1630,15 +1660,6 @@ namespace WolfClient.UserControls
         private DataGridView PlotsDataGridView;
         private Button PlotsAddButton;
         private Label DestinationOfPlotLabel;
-        private DataGridViewTextBoxColumn PlotNumber;
-        private DataGridViewTextBoxColumn RegulatedPlotNumber;
-        private DataGridViewTextBoxColumn neighborhood;
-        private DataGridViewTextBoxColumn City;
-        private DataGridViewTextBoxColumn Municipality;
-        private DataGridViewTextBoxColumn Street;
-        private DataGridViewTextBoxColumn StreetNumber;
-        private DataGridViewTextBoxColumn designation;
-        private DataGridViewTextBoxColumn locality;
         private TabPage tabPage5;
         private DataGridView OwnershipDataGridView;
         private Button AddOwnersButton;
@@ -1728,5 +1749,16 @@ namespace WolfClient.UserControls
         private Button ApplyActivityFiltersButton;
         private ComboBox taskStatusComboBox;
         private Label label7;
+        private DataGridViewTextBoxColumn ActivityName;
+        private DataGridViewTextBoxColumn PlotNumber;
+        private DataGridViewTextBoxColumn RegulatedPlotNumber;
+        private DataGridViewTextBoxColumn neighborhood;
+        private DataGridViewTextBoxColumn City;
+        private DataGridViewTextBoxColumn Municipality;
+        private DataGridViewTextBoxColumn Street;
+        private DataGridViewTextBoxColumn StreetNumber;
+        private DataGridViewTextBoxColumn designation;
+        private DataGridViewTextBoxColumn locality;
+        private LinkLabel PathLink;
     }
 }

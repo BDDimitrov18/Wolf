@@ -18,5 +18,6 @@ namespace DTOS.DTO
         public string? Comments { get; set; }
 
         public string RequestName { get; set; }
+        public string? Path { get; set; }
     }
 }

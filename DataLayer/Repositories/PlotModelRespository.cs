@@ -42,6 +42,10 @@ namespace DataAccessLayer.Repositories
             }
         }
 
+        public async Task<List<Plot>> GetAllPlots() {
+            return await _WolfDbContext.Plots.ToListAsync();
+        }
+
         public async Task<List<Plot>> GetLinkedPlotsToActivty(int activityId) {
             var activity = _WolfDbContext.Activities
                 .Include(a => a.ActivityPlots)

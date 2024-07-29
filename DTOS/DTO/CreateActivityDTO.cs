@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTOS.CustomValidation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace DTOS.DTO
 
         public DateTime ExpectedDuration { get; set; }
         public DateTime StartDate { get; set; }
+        [Float(ErrorMessage = "Invalid float value")]
         public float employeePayment { get; set; }
         public int ExecutantId { get; set; }
 

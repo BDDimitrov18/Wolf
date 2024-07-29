@@ -47,16 +47,21 @@ namespace WolfClient.NewForms
             {
                 case "От Налични Дейности":
                     selectedControl = new ExistingActivityAddTask(_apiClient, _userClient, _adminClient, _dataService);
+                    selectedControl.Disposed += onControlDispose;
                     break;
                 case "Към Нова дейност":
                     selectedControl = new NonExistingActivityAddTask(_apiClient, _userClient, _adminClient, _dataService);
+                    selectedControl.Disposed += onControlDispose;
                     break;
             }
 
             LoadUserControl(selectedControl);
         }
 
-        
+        public void onControlDispose(object sender, EventArgs e)
+        {
+            Dispose();
+        }
 
         private void LoadUserControl(UserControl userControl)
         {

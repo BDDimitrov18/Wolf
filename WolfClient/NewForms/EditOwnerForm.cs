@@ -51,7 +51,10 @@ namespace WolfClient.NewForms
 
             try
             {
-
+                foreach (Control control in Controls)
+                {
+                    errorProvider.SetError(control, string.Empty);
+                }
                 // Clear previous error messages
                 errorProvider.Clear();
                 if (getIdealPart() == -1)
@@ -175,14 +178,6 @@ namespace WolfClient.NewForms
                         }
                     }
                 }
-                else
-                {
-                    // Clear all error messages if validation passes
-                    foreach (Control control in Controls)
-                    {
-                        errorProvider.SetError(control, string.Empty);
-                    }
-                }
 
                 memberNameResults = WolfClient.Validators.Validator.Validate(_documentOfOwnershipValidator);
 
@@ -203,14 +198,6 @@ namespace WolfClient.NewForms
                                 }
                             }
                         }
-                    }
-                }
-                else
-                {
-                    // Clear all error messages if validation passes
-                    foreach (Control control in Controls)
-                    {
-                        errorProvider.SetError(control, string.Empty);
                     }
                 }
             }

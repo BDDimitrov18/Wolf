@@ -88,11 +88,11 @@ namespace WolfClient.Services.Interfaces
 
         public List<GetPowerOfAttorneyDocumentDTO> GetPowerOfAttorneyFromPlots(GetPlotDTO plot);
 
-        public void SetSelectedPlotsOnRequestMenu(List<GetPlotDTO> plots);
+        public void SetSelectedPlotsOnRequestMenu(List<PlotViewModel> plots);
 
         public List<GetActivity_PlotRelashionshipDTO> getActivity_PlotRelashionshipDTOs(List<GetPlotDTO> plots);
 
-        public List<GetPlotDTO> getSelectedPlotsOnRequestMenu();
+        public List<PlotViewModel> getSelectedPlotsOnRequestMenu();
 
         public void RemovePlots(List<GetPlotDTO> plots);
         public void SetSelectedOwnershipViewModelsRequestMenu(List<OwnershipViewModel> ownershipViewModels);
@@ -125,5 +125,6 @@ namespace WolfClient.Services.Interfaces
         public void EditPlotOwnerRelashionship(GetDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO);
 
         public void SetStarredRequests(List<GetstarRequest_EmployeeRelashionshipDTO> starredRequests);
+        public bool ActivityPlotExists(string number, GetActivityDTO activityDTO);
     }
 }

@@ -34,7 +34,7 @@ namespace DTOS.CustomValidation
         private bool IsValidFloat(string input)
         {
             // Regex for validating float: allows numbers and a single dot
-            var regex = new Regex(@"^[0-9]*\.?[0-9]+$");
+            var regex = new Regex(@"^[0-9]*\,?[0-9]+$");
             return regex.IsMatch(input);
         }
     }

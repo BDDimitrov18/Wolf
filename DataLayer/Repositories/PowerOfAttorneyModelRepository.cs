@@ -18,9 +18,28 @@ namespace DataAccessLayer.Repositories
         {
             _WolfDbContext = wolfDbContext;
         }
+        public async Task CreatePowerOfAttorney(PowerOfAttorneyDocument powerOfAttorney)
+        {
+            var existingDocument = await _WolfDbContext.powerOfAttorneyDocuments
+                .FirstOrDefaultAsync(d => d.number == powerOfAttorney.number);
 
-        public async Task CreatePowerOfAttorney(PowerOfAttorneyDocument powerOfattorney) {
-            _WolfDbContext.powerOfAttorneyDocuments.Add(powerOfattorney);
+            if (existingDocument != null)
+            {
+                // Compare all relevant fields to check for differences
+                bool isDifferent = existingDocument.dateOfIssuing != powerOfAttorney.dateOfIssuing ||
+                                   existingDocument.Issuer != powerOfAttorney.Issuer;
+
+                if (!isDifferent)
+                {
+                    // Copy necessary fields from existing document to the input document
+                    powerOfAttorney.PowerOfAttorneyId = existingDocument.PowerOfAttorneyId;
+                    powerOfAttorney.RowVersion = existingDocument.RowVersion;
+                    return;
+                }
+            }
+
+            // Add the new document
+            _WolfDbContext.powerOfAttorneyDocuments.Add(powerOfAttorney);
             await _WolfDbContext.SaveChangesAsync();
         }
 

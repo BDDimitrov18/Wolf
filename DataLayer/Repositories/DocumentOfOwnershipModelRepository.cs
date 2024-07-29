@@ -19,28 +19,35 @@ namespace DataAccessLayer.Repositories
             _WolfDbContext = wolfDbContext;
         }
 
-        public async Task AddDocument(DocumentOfOwnership document) {
-            var existingDocument = _WolfDbContext.DocumentsOfOwnership
-                .FirstOrDefault(d => d.NumberOfDocument == document.NumberOfDocument);
+        public async Task AddDocument(DocumentOfOwnership document)
+        {
+            var existingDocument = await _WolfDbContext.DocumentsOfOwnership
+                .FirstOrDefaultAsync(d => d.NumberOfDocument == document.NumberOfDocument);
 
             if (existingDocument != null)
             {
-                // Update the input document with existing values if they are not null or empty
-                document.DocumentId = existingDocument.DocumentId;
-                document.TypeOfDocument = !string.IsNullOrEmpty(existingDocument.TypeOfDocument) ? existingDocument.TypeOfDocument : document.TypeOfDocument;
-                document.Issuer = !string.IsNullOrEmpty(existingDocument.Issuer) ? existingDocument.Issuer : document.Issuer;
-                document.TOM = existingDocument.TOM != 0 ? existingDocument.TOM : document.TOM;
-                document.register = !string.IsNullOrEmpty(existingDocument.register) ? existingDocument.register : document.register;
-                document.DocCase = !string.IsNullOrEmpty(existingDocument.DocCase) ? existingDocument.DocCase : document.DocCase;
-                document.DateOfIssuing = existingDocument.DateOfIssuing != DateTime.MinValue ? existingDocument.DateOfIssuing : document.DateOfIssuing;
-                document.DateOfRegistering = existingDocument.DateOfRegistering != DateTime.MinValue ? existingDocument.DateOfRegistering : document.DateOfRegistering;
+                // Compare all relevant fields to check for differences
+                bool isDifferent = existingDocument.TypeOfDocument != document.TypeOfDocument ||
+                                   existingDocument.Issuer != document.Issuer ||
+                                   existingDocument.TOM != document.TOM ||
+                                   existingDocument.register != document.register ||
+                                   existingDocument.DocCase != document.DocCase ||
+                                   existingDocument.TypeOfOwnership != document.TypeOfOwnership ||
+                                   existingDocument.DateOfIssuing != document.DateOfIssuing ||
+                                   existingDocument.DateOfRegistering != document.DateOfRegistering;
+
+                if (!isDifferent)
+                {
+                    // Copy necessary fields from existing document to the input document
+                    document.DocumentId = existingDocument.DocumentId;
+                    document.RowVersion = existingDocument.RowVersion;
+                    return;
+                }
             }
-            else
-            {
-                // Add the new document
-                _WolfDbContext.DocumentsOfOwnership.Add(document);
-                await _WolfDbContext.SaveChangesAsync();
-            }
+
+            // Add the new document
+            _WolfDbContext.DocumentsOfOwnership.Add(document);
+            await _WolfDbContext.SaveChangesAsync();
         }
 
         public async Task<DocumentOfOwnership> FindById(int id) {

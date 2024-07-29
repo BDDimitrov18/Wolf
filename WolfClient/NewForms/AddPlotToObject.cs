@@ -22,6 +22,10 @@ namespace WolfClient.NewForms
         private readonly IAdminClient _adminClient;
 
         private CreatePlotDTO plotValidator;
+        List<GetPlotDTO> allPlots;
+
+        private int initial = 0;
+      
         public AddPlotToObject(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
@@ -29,7 +33,7 @@ namespace WolfClient.NewForms
             _userClient = userClient;
             _adminClient = adminClient;
             _dataService = dataService;
-
+            allPlots = new List<GetPlotDTO>();
             plotValidator = new CreatePlotDTO();
         }
 
@@ -94,8 +98,10 @@ namespace WolfClient.NewForms
             };
         }
 
-        private void AddPlotToObject_Load(object sender, EventArgs e)
+        private async void AddPlotToObject_Load(object sender, EventArgs e)
         {
+            var allPlotsResponse  = await _userClient.GetAllPlots();
+            allPlots = allPlotsResponse.ResponseObj;
             var selected = _dataService.GetSelectedRequest();
             var linkedRequests = _dataService.GetFetchedLinkedRequests();
             List<GetActivityDTO> activityDTOs = new List<GetActivityDTO>();
@@ -110,31 +116,69 @@ namespace WolfClient.NewForms
             ActivityComboBox.DataSource = activityDTOs;
             ActivityComboBox.DisplayMember = "ActivityTypeName";
             ActivityComboBox.ValueMember = "ActivityId";
+
+            PlotNumberComboBox.DataSource = allPlots;
+            PlotNumberComboBox.DisplayMember = "PlotNumber";
+            PlotNumberComboBox.ValueMember = "PlotId";
+            PlotNumberComboBox.Text = "";
         }
 
-        private void LoadPlotNumbers()
-        {
-            var plotNumbers = _dataService.GetEKTViewModels().Select(x => x.EKTNumber).Distinct().ToList();
-            PlotNumberComboBox.DataSource = plotNumbers;
-        }
 
         private void PlotNumberComboBox_TextChanged(object sender, EventArgs e)
         {
-            string selectedPlotNumber = PlotNumberComboBox.Text as string;
+            if (initial <2) 
+            { 
+                initial++; 
+                return; 
+            }
+            string selectedPlotNumber = PlotNumberComboBox.Text;
 
+            // Temporarily remove the event handler to prevent it from firing while updating the items
+            PlotNumberComboBox.TextChanged -= PlotNumberComboBox_TextChanged;
+
+            // Filter the list based on the text input or show all items if the text is empty
+            List<GetPlotDTO> filteredPlots;
+            if (string.IsNullOrWhiteSpace(selectedPlotNumber))
+            {
+                // If the text is empty, display all plots
+                filteredPlots =allPlots;
+            }
+            else
+            {
+                // Get the list of plots and filter based on the text input
+                filteredPlots = allPlots
+                    .Where(plot => plot.PlotNumber.IndexOf(selectedPlotNumber, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .OrderBy(plot => plot.PlotNumber)
+                    .ToList();
+            }
+
+            // Update the ComboBox DataSource
+            PlotNumberComboBox.DataSource = filteredPlots;
+            PlotNumberComboBox.DisplayMember = "PlotNumber";
+            PlotNumberComboBox.ValueMember = "PlotId";
+
+            // Restore the user's text and keep the ComboBox open
+            PlotNumberComboBox.Text = selectedPlotNumber;
+            PlotNumberComboBox.SelectionStart = selectedPlotNumber.Length;
+            PlotNumberComboBox.DroppedDown = true;
+
+            // Reattach the event handler
+            PlotNumberComboBox.TextChanged += PlotNumberComboBox_TextChanged;
+
+            // Execute the existing logic for handling plot selection
             if (!string.IsNullOrEmpty(selectedPlotNumber))
             {
-                var selectedPlot = _dataService.GetAllPlots().FirstOrDefault(x => x.PlotNumber == selectedPlotNumber);
+                var selectedPlot = filteredPlots.FirstOrDefault(x => x.PlotNumber.Equals(selectedPlotNumber, StringComparison.OrdinalIgnoreCase));
                 if (selectedPlot != null)
                 {
                     CityTextBox.Text = selectedPlot.City;
                     MunicipalityTextBox.Text = selectedPlot.Municipality;
                     LocalityTextBox.Text = selectedPlot.locality;
-                    DesignationComboBox.Text = selectedPlot.designation != null ? selectedPlot.designation : "";
-                    RegulatedNumberTextBox.Text = selectedPlot.RegulatedPlotNumber != null ? selectedPlot.RegulatedPlotNumber : "";
-                    NeighborhoodTextBox.Text = selectedPlot.neighborhood != null ? selectedPlot.neighborhood : "";
-                    StreetTextBox.Text = selectedPlot.Street != null ? selectedPlot.Street : "";
-                    StreetNumberTextBox.Text = selectedPlot.StreetNumber != null ? selectedPlot.StreetNumber.ToString() : "";
+                    DesignationComboBox.Text = selectedPlot.designation ?? "";
+                    RegulatedNumberTextBox.Text = selectedPlot.RegulatedPlotNumber ?? "";
+                    NeighborhoodTextBox.Text = selectedPlot.neighborhood ?? "";
+                    StreetTextBox.Text = selectedPlot.Street ?? "";
+                    StreetNumberTextBox.Text = selectedPlot.StreetNumber?.ToString() ?? "";
                     CityTextBox.Enabled = false;
                     MunicipalityTextBox.Enabled = false;
                     LocalityTextBox.Enabled = false;
@@ -169,6 +213,7 @@ namespace WolfClient.NewForms
             }
         }
 
+
         private async void AddPlotToObjectSubmitButton_Click(object sender, EventArgs e)
         {
             ValidateModel();
@@ -181,17 +226,21 @@ namespace WolfClient.NewForms
                 flag = true;
             }
             if (flag) return;
-            CreatePlotDTO newPlot = new CreatePlotDTO() { 
+            CreatePlotDTO newPlot = new CreatePlotDTO() {
                 PlotNumber = PlotNumberComboBox.Text,
                 RegulatedPlotNumber = RegulatedNumberTextBox.Text,
                 neighborhood = NeighborhoodTextBox.Text,
                 City = CityTextBox.Text,
                 Municipality = MunicipalityTextBox.Text,
                 Street = StreetTextBox.Text,
-                StreetNumber  = int.Parse(StreetNumberTextBox.Text),
+                StreetNumber = int.Parse(StreetNumberTextBox.Text),
                 designation = DesignationComboBox.Text,
                 locality = LocalityTextBox.Text,
             };
+            if (_dataService.ActivityPlotExists(PlotNumberComboBox.Text, ActivityComboBox.SelectedItem as GetActivityDTO)) {
+                MessageBox.Show($"Имот с номер {PlotNumberComboBox.Text} вече е добавен към {ActivityComboBox.Text}");
+                return;
+            }
 
             var plotResponse = await _userClient.AddPlot(newPlot);
 

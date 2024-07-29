@@ -22,5 +22,7 @@ namespace DTOS.DTO
 
         [Required(ErrorMessage = "Name is required")]
         public string RequestName { get; set; }
+
+        public string? Path { get; set; }
     }
 }

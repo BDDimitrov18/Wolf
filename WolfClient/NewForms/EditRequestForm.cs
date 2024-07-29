@@ -41,7 +41,7 @@ namespace WolfClient.NewForms
             _clientsList = new List<CreateClientDTO>();
             _availableClientsList = new List<GetClientDTO>();
 
-            _dataService = dataService; 
+            _dataService = dataService;
             _requestValidator = new CreateRequestDTO();
 
             this.SetStyle(ControlStyles.DoubleBuffer |
@@ -61,7 +61,11 @@ namespace WolfClient.NewForms
             {
                 // Clear previous error messages
                 RequestErrorProvider.Clear();
-
+                // Clear all error messages if validation passes
+                foreach (Control control in Controls)
+                {
+                    RequestErrorProvider.SetError(control, string.Empty);
+                }
                 // Bind the form controls to the model properties
                 _requestValidator.RequestName = NameOfRequestTextBox.Text;
 
@@ -102,14 +106,6 @@ namespace WolfClient.NewForms
                                 }
                             }
                         }
-                    }
-                }
-                else
-                {
-                    // Clear all error messages if validation passes
-                    foreach (Control control in Controls)
-                    {
-                        RequestErrorProvider.SetError(control, string.Empty);
                     }
                 }
             }
@@ -158,9 +154,11 @@ namespace WolfClient.NewForms
             CommentsRichTextBox.Text = _dataService.GetSelectedRequest().Comments;
 
             List<GetClientDTO> clientDTOs = new List<GetClientDTO>(_dataService.getLinkedClients());
-            foreach(var client in clientDTOs) {
+            foreach (var client in clientDTOs)
+            {
                 AddNewPanelWithUserControlAddClientsFromAvailable(client);
             }
+            PathTextBox.Text = _dataService.GetSelectedRequest().Path;
 
         }
 
@@ -245,7 +243,8 @@ namespace WolfClient.NewForms
 
             List<GetClient_RequestRelashionshipDTO> client_RequestRelashionshipDTOs = new List<GetClient_RequestRelashionshipDTO>();
             List<GetClientDTO> linkedClients = _dataService.getLinkedClients();
-            foreach (GetClientDTO linkedClient in linkedClients) {
+            foreach (GetClientDTO linkedClient in linkedClients)
+            {
                 GetClient_RequestRelashionshipDTO relashionship = new GetClient_RequestRelashionshipDTO()
                 {
                     Request = _dataService.GetSelectedRequest(),
@@ -258,8 +257,9 @@ namespace WolfClient.NewForms
             }
             GetRequestDTO editRequest = new GetRequestDTO();
             editRequest = _dataService.GetSelectedRequest();
+            editRequest.Path = PathTextBox.Text;
             editRequest.Price = float.Parse(PriceOfRequestTextBox.Text);
-            editRequest.PaymentStatus = createPaymentStatus(AdvanceTextBox.Text, PriceOfRequestTextBox.Text); 
+            editRequest.PaymentStatus = createPaymentStatus(AdvanceTextBox.Text, PriceOfRequestTextBox.Text);
             editRequest.Advance = float.Parse(AdvanceTextBox.Text);
             editRequest.Comments = CommentsRichTextBox.Text;
             editRequest.RequestName = NameOfRequestTextBox.Text;
@@ -270,7 +270,8 @@ namespace WolfClient.NewForms
             {
                 MessageBox.Show("Edited Successfully");
             }
-            else {
+            else
+            {
                 MessageBox.Show("Not Success");
                 return;
             }
@@ -293,11 +294,11 @@ namespace WolfClient.NewForms
             {
                 MessageBox.Show("Success");
                 _dataService.EditRequest(editRequest);
-                _dataService.SetEditedRequestClients(SelectedClients,editRequest);
+                _dataService.SetEditedRequestClients(SelectedClients, editRequest);
                 _returnRequest = _dataService.GetSelectedRequest();
                 _returnClients = SelectedClients;
                 DialogResult = DialogResult.OK;
-                
+
             }
             else
             {
@@ -379,6 +380,23 @@ namespace WolfClient.NewForms
         private void AddRequestTitleLabel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void openFilesButton_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+            {
+                folderBrowserDialog.Description = "Select the folder";
+
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Get the selected folder path
+                    string selectedFolderPath = folderBrowserDialog.SelectedPath;
+
+                    // Set the PathTextBox.Text to the selected folder path
+                    PathTextBox.Text = selectedFolderPath;
+                }
+            }
         }
     }
 }

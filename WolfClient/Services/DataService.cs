@@ -33,7 +33,7 @@ namespace WolfClient.Services
 
         public List<ActivityViewModel> _selectedActivity { get; set; }
 
-        public List<GetPlotDTO> _selectedPlotsRequestMenuService { get; set; }
+        public List<PlotViewModel> _selectedPlotsRequestMenuService { get; set; }
 
         public List<OwnershipViewModel> _selectedOwnershipRequestMenu { get; set; }
 
@@ -588,7 +588,20 @@ namespace WolfClient.Services
 
             return activityDTOs;
         }
-
+        public bool ActivityPlotExists(string number, GetActivityDTO activityDTO) {
+            foreach (var link in compositeData._fetchedLinkedClients) {
+                foreach (var activity in link.activityDTOs) {
+                    if (activity.ActivityId == activityDTO.ActivityId) {
+                        foreach (var plot in activity.Plots) {
+                            if (plot.PlotNumber == number) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
         public void DeleteActivities(List<GetActivityDTO> activityDTOs)
         {
             foreach (var link in compositeData._fetchedLinkedClients)
@@ -755,17 +768,20 @@ namespace WolfClient.Services
         {
             List<GetPlotDTO> plotDTOs = new List<GetPlotDTO>();
             var selected = GetSelectedLinkedRequest();
-            if (selected.activityDTOs?.Count() > 0)
+            if (selected != null)
             {
-                foreach (var activity in selected.activityDTOs)
+                if (selected.activityDTOs != null && selected.activityDTOs?.Count() > 0)
                 {
-                    if (activity.Plots.Count() > 0)
+                    foreach (var activity in selected.activityDTOs)
                     {
-                        foreach (var plot in activity.Plots)
+                        if (activity.Plots.Count() > 0)
                         {
-                            if (!plotDTOs.Any(p => p.PlotId == plot.PlotId))
+                            foreach (var plot in activity.Plots)
                             {
-                                plotDTOs.Add(plot);
+                                if (!plotDTOs.Any(p => p.PlotId == plot.PlotId))
+                                {
+                                    plotDTOs.Add(plot);
+                                }
                             }
                         }
                     }
@@ -905,7 +921,7 @@ namespace WolfClient.Services
             _selectedActivity = activityViewModels;
         }
 
-        public void SetSelectedPlotsOnRequestMenu(List<GetPlotDTO> plots)
+        public void SetSelectedPlotsOnRequestMenu(List<PlotViewModel> plots)
         {
             _selectedPlotsRequestMenuService = plots;
         }
@@ -935,7 +951,7 @@ namespace WolfClient.Services
             return relashionshipDTOs;
         }
 
-        public List<GetPlotDTO> getSelectedPlotsOnRequestMenu() {
+        public List<PlotViewModel> getSelectedPlotsOnRequestMenu() {
             return _selectedPlotsRequestMenuService;
         }
 
@@ -1426,6 +1442,8 @@ namespace WolfClient.Services
         {
             var getDocumentPlot_DocumentOwnerRelashionshipDTO = baseNotification.UpdatedEntity.Deserialize<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
             compositeData.linkedDocuments.Add(getDocumentPlot_DocumentOwnerRelashionshipDTO);
+
+            EditOwner(getDocumentPlot_DocumentOwnerRelashionshipDTO.DocumentOwner.Owner);
             WebSocketDataUpdate.OnDocumentPlotOwnerRelationshipsUpdated(new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> { getDocumentPlot_DocumentOwnerRelashionshipDTO });
         }
 

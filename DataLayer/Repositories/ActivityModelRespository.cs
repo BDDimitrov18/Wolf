@@ -140,6 +140,24 @@ namespace DataAccessLayer.Repositories
                 .Include(a => a.Tasks)
                     .ThenInclude(t => t.taskType)
                 .Include(a => a.mainExecutant)
+                .Include(a => a.ActivityPlots)  // Include the relationship
+                    .ThenInclude(ap => ap.Plot)  // Include the actual plots
+                .Include(a => a.ParentActivity) // Include the parent activity
+                    .ThenInclude(pa => pa.ActivityType) // Include the parent activity type
+                .Include(a => a.ParentActivity) // Include the parent activity again for tasks
+                    .ThenInclude(pa => pa.Tasks) // Include the parent activity tasks
+                        .ThenInclude(t => t.Executant) // Include executant of parent activity tasks
+                .Include(a => a.ParentActivity) // Include the parent activity again for tasks control
+                    .ThenInclude(pa => pa.Tasks)
+                        .ThenInclude(t => t.Control) // Include control of parent activity tasks
+                .Include(a => a.ParentActivity) // Include the parent activity again for tasks type
+                    .ThenInclude(pa => pa.Tasks)
+                        .ThenInclude(t => t.taskType) // Include task type of parent activity tasks
+                .Include(a => a.ParentActivity) // Include the parent activity again for mainExecutant
+                    .ThenInclude(pa => pa.mainExecutant) // Include main executant of parent activity
+                .Include(a => a.ParentActivity) // Include the parent activity again for ActivityPlots
+                    .ThenInclude(pa => pa.ActivityPlots) // Include ActivityPlots of parent activity
+                        .ThenInclude(ap => ap.Plot) // Include plots of parent activity
                 .FirstOrDefaultAsync(a => a.ActivityId == id);
         }
 

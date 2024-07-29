@@ -57,33 +57,8 @@ namespace DataAccessLayer.Repositories
                     throw new ArgumentException("Invalid PowerOfAttorneyId");
             }
 
-            var existingRelashionship = await _WolfDbContext.documentPlot_DocumentOwenerRelashionships
-                .Include(r => r.DocumentPlot)
-                    .ThenInclude(dp => dp.Plot)
-                .Include(r => r.DocumentPlot)
-                    .ThenInclude(dp => dp.documentOfOwnership)
-                        .ThenInclude(documentOfOwnership => documentOfOwnership.DocumentOwners)
-                            .ThenInclude(ownerRel => ownerRel.Owner)
-                .Include(r => r.DocumentOwner)
-                    .ThenInclude(ownerRel => ownerRel.Document)
-                .Include(r => r.DocumentOwner)
-                    .ThenInclude(ownerRel => ownerRel.Owner)
-                .Include(r => r.powerOfAttorneyDocument) // Include PowerOfAttorneyDocument
-                .FirstOrDefaultAsync(r => r.DocumentPlotId == relashionship.DocumentPlotId && r.DocumentOwnerID == relashionship.DocumentOwnerID);
-
-            if (existingRelashionship != null)
-            {
-                // Update the existing relationship with input values
-                existingRelashionship.IdealParts = relashionship.IdealParts != 0 ? relashionship.IdealParts : existingRelashionship.IdealParts;
-                existingRelashionship.WayOfAcquiring = !string.IsNullOrEmpty(relashionship.WayOfAcquiring) ? relashionship.WayOfAcquiring : existingRelashionship.WayOfAcquiring;
-                existingRelashionship.PowerOfAttorneyId = relashionship.PowerOfAttorneyId != 0 ? relashionship.PowerOfAttorneyId : existingRelashionship.PowerOfAttorneyId;
-
-                _WolfDbContext.Entry(existingRelashionship).State = EntityState.Modified;
-            }
-            else
-            {
-                await _WolfDbContext.documentPlot_DocumentOwenerRelashionships.AddAsync(relashionship);
-            }
+            
+            await _WolfDbContext.documentPlot_DocumentOwenerRelashionships.AddAsync(relashionship);
 
             await _WolfDbContext.SaveChangesAsync();
         }

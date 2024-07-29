@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WolfClient.Services.Interfaces;
 using WolfClient.UserControls;
+using static CSJ2K.j2k.codestream.HeaderInfo;
 
 namespace WolfClient.NewForms
 {
@@ -25,6 +26,7 @@ namespace WolfClient.NewForms
 
         private CreateOwnerDTO _ownerValidator;
         private CreateDocumentOfOwnershipDTO _documentOfOwnershipValidator;
+        private List<GetOwnerDTO> owners;
 
         public AddOwnerForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
@@ -33,7 +35,7 @@ namespace WolfClient.NewForms
             _userClient = userClient;
             _adminClient = adminClient;
             _dataService = dataService;
-
+            owners = new List<GetOwnerDTO>();
             _ownerValidator = new CreateOwnerDTO();
             _documentOfOwnershipValidator = new CreateDocumentOfOwnershipDTO();
         }
@@ -50,9 +52,13 @@ namespace WolfClient.NewForms
 
             try
             {
-
                 // Clear previous error messages
                 errorProvider.Clear();
+                // Clear all error messages if validation passes
+                    foreach (Control control in Controls)
+                    {
+                        errorProvider.SetError(control, string.Empty);
+                    }
                 if (getIdealPart() == -1)
                 {
                     errorProvider.SetError(IdealPartsPanel, "Моля въведете стойности");
@@ -174,14 +180,6 @@ namespace WolfClient.NewForms
                         }
                     }
                 }
-                else
-                {
-                    // Clear all error messages if validation passes
-                    foreach (Control control in Controls)
-                    {
-                        errorProvider.SetError(control, string.Empty);
-                    }
-                }
 
                 memberNameResults = WolfClient.Validators.Validator.Validate(_documentOfOwnershipValidator);
 
@@ -202,14 +200,6 @@ namespace WolfClient.NewForms
                                 }
                             }
                         }
-                    }
-                }
-                else
-                {
-                    // Clear all error messages if validation passes
-                    foreach (Control control in Controls)
-                    {
-                        errorProvider.SetError(control, string.Empty);
                     }
                 }
             }
@@ -281,8 +271,10 @@ namespace WolfClient.NewForms
 
         }
 
-        private void AddOwnerForm_Load(object sender, EventArgs e)
+        private async void AddOwnerForm_Load(object sender, EventArgs e)
         {
+            var ownersResponse = await _userClient.GetAllOwners();
+            owners = ownersResponse.ResponseObj;
             List<GetPlotDTO> plotDTOs = _dataService.GetSelectedPlots();
 
             plotComboBox.DataSource = plotDTOs;
@@ -305,33 +297,17 @@ namespace WolfClient.NewForms
 
             if (matchingDocument != null)
             {
-                DocumentTypeComboBox.Enabled = true;
                 DocumentTypeComboBox.DropDownStyle = ComboBoxStyle.DropDown;
-                TOMComboBox.Enabled = true;
-                RegisterComboBox.Enabled = true;
-                CaseComboBox.Enabled = true;
-                IssingDateTimePicker.Enabled = true;
-                registeringDateTimePicker.Enabled = true;
-                Issuer.Enabled = true;
-                TypeOfOwnership.Enabled = true;
 
                 DocumentTypeComboBox.Text = matchingDocument.TypeOfDocument;
                 DocumentTypeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-                DocumentTypeComboBox.Enabled = false;
                 TOMComboBox.Text = matchingDocument.TOM.ToString();
-                TOMComboBox.Enabled = false;
                 RegisterComboBox.Text = matchingDocument.register;
-                RegisterComboBox.Enabled = false;
                 CaseComboBox.Text = matchingDocument.DocCase;
-                CaseComboBox.Enabled = false;
                 IssingDateTimePicker.Value = matchingDocument.DateOfIssuing;
-                IssingDateTimePicker.Enabled = false;
                 registeringDateTimePicker.Value = matchingDocument.DateOfRegistering;
-                registeringDateTimePicker.Enabled = false;
                 Issuer.Text = matchingDocument.Issuer;
-                Issuer.Enabled = false;
                 TypeOfOwnership.Text = matchingDocument.TypeOfOwnership;
-                TypeOfOwnership.Enabled = false;
             }
             var powerOfattorneys = _dataService.GetPowerOfAttorneyFromPlots(plotComboBox.SelectedItem as GetPlotDTO);
             if (powerOfattorneys != null && powerOfattorneys.Count() > 0)
@@ -344,14 +320,10 @@ namespace WolfClient.NewForms
                 var matchingDocumentPow = PowerOfAttorneyNumber.SelectedItem as GetPowerOfAttorneyDocumentDTO;
                 if (matchingDocumentPow != null)
                 {
-                    PowerOfAttorneyIssuerComboBox.Enabled = true;
                     PowerOfAttorneyIssuerComboBox.DropDownStyle = ComboBoxStyle.DropDown;
                     PowerOfAttorneyIssuerComboBox.Text = matchingDocumentPow.Issuer;
-                    PowerOfAttorneyIssuerComboBox.Enabled = false;
 
-                    PowerOfAttorneyDatetimePicker.Enabled = true;
                     PowerOfAttorneyDatetimePicker.Value = matchingDocumentPow.dateOfIssuing;
-                    PowerOfAttorneyDatetimePicker.Enabled = false;
                 }
 
             }
@@ -383,11 +355,6 @@ namespace WolfClient.NewForms
 
 
             DocumentTypeComboBox.DropDownStyle = ComboBoxStyle.DropDown;
-            TOMComboBox.Enabled = true;
-            RegisterComboBox.Enabled = true;
-            CaseComboBox.Enabled = true;
-            IssingDateTimePicker.Enabled = true;
-            registeringDateTimePicker.Enabled = true;
             DocumentTypeComboBox.Text = "";
             TOMComboBox.Text = "";
             RegisterComboBox.Text = "";
@@ -573,6 +540,21 @@ namespace WolfClient.NewForms
             };
             int.Parse(DocumentNumberComboBox.Text);
             var OwnerResponse = await _userClient.AddOwner(createOwnerDTO);
+
+            GetOwnerDTO OWNERTOEDIT = owners.Where(ow => ow.EGN == OwnerResponse.ResponseObj.EGN).FirstOrDefault();
+            if (OWNERTOEDIT != null)
+            {
+                // Compare all relevant fields to check for differences
+                bool isDifferent = OwnerResponse.ResponseObj.FirstName != OWNERTOEDIT.FirstName ||
+                                   OwnerResponse.ResponseObj.MiddleName != OWNERTOEDIT.MiddleName ||
+                                   OwnerResponse.ResponseObj.LastName != OWNERTOEDIT.LastName ||
+                                   OwnerResponse.ResponseObj.Address != OWNERTOEDIT.Address;
+
+                if (isDifferent) {
+
+                    _dataService.EditOwner(OwnerResponse.ResponseObj);
+                }
+            }
             CreateDocumentOfOwnershipDTO createDocumentOfOwnership = new CreateDocumentOfOwnershipDTO()
             {
                 TypeOfDocument = DocumentTypeComboBox.Text,
@@ -644,51 +626,27 @@ namespace WolfClient.NewForms
 
             if (matchingDocument != null)
             {
-                DocumentTypeComboBox.Enabled = true;
                 DocumentTypeComboBox.DropDownStyle = ComboBoxStyle.DropDown;
-                TOMComboBox.Enabled = true;
-                RegisterComboBox.Enabled = true;
-                CaseComboBox.Enabled = true;
-                IssingDateTimePicker.Enabled = true;
-                registeringDateTimePicker.Enabled = true;
-                Issuer.Enabled = true;
-                TypeOfOwnership.Enabled = true;
 
                 DocumentTypeComboBox.Text = matchingDocument.TypeOfDocument;
                 DocumentTypeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-                DocumentTypeComboBox.Enabled = false;
                 TOMComboBox.Text = matchingDocument.TOM.ToString();
-                TOMComboBox.Enabled = false;
                 RegisterComboBox.Text = matchingDocument.register;
-                RegisterComboBox.Enabled = false;
                 CaseComboBox.Text = matchingDocument.DocCase;
-                CaseComboBox.Enabled = false;
                 IssingDateTimePicker.Value = matchingDocument.DateOfIssuing;
-                IssingDateTimePicker.Enabled = false;
                 registeringDateTimePicker.Value = matchingDocument.DateOfRegistering;
-                registeringDateTimePicker.Enabled = false;
                 Issuer.Text = matchingDocument.Issuer;
-                Issuer.Enabled = false;
                 TypeOfOwnership.Text = matchingDocument.TypeOfOwnership;
-                TypeOfOwnership.Enabled = false;
             }
             else
             {
-                DocumentTypeComboBox.Enabled = true;
                 DocumentTypeComboBox.DropDownStyle = ComboBoxStyle.DropDown;
-                TOMComboBox.Enabled = true;
-                RegisterComboBox.Enabled = true;
-                CaseComboBox.Enabled = true;
-                IssingDateTimePicker.Enabled = true;
-                registeringDateTimePicker.Enabled = true;
                 DocumentTypeComboBox.Text = "";
                 TOMComboBox.Text = "";
                 RegisterComboBox.Text = "";
                 CaseComboBox.Text = "";
                 IssingDateTimePicker.Value = DateTime.Now;
                 registeringDateTimePicker.Value = DateTime.Now;
-                TypeOfOwnership.Enabled = true;
-                Issuer.Enabled = true;
             }
         }
         private void panel2_Paint(object sender, PaintEventArgs e)
@@ -702,40 +660,27 @@ namespace WolfClient.NewForms
             var matchingDocument = powerOfAttorneys.FirstOrDefault(doc => doc.number == PowerOfAttorneyNumber.Text);
             if (matchingDocument != null)
             {
-                PowerOfAttorneyIssuerComboBox.Enabled = true;
                 PowerOfAttorneyIssuerComboBox.DropDownStyle = ComboBoxStyle.DropDown;
                 PowerOfAttorneyIssuerComboBox.Text = matchingDocument.Issuer;
-                PowerOfAttorneyIssuerComboBox.Enabled = false;
 
-                PowerOfAttorneyDatetimePicker.Enabled = true;
                 PowerOfAttorneyDatetimePicker.Value = matchingDocument.dateOfIssuing;
-                PowerOfAttorneyDatetimePicker.Enabled = false;
             }
             else
             {
-                PowerOfAttorneyIssuerComboBox.Enabled = true;
                 PowerOfAttorneyIssuerComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-                PowerOfAttorneyDatetimePicker.Enabled = true;
             }
         }
 
         private void EGNTextBox_TextChanged(object sender, EventArgs e)
         {
             string egn = EGNTextBox.Text;
-            GetOwnerDTO owner = _dataService.GetOwnerByEgn(egn);
+            GetOwnerDTO owner = owners.Where(ow => ow.EGN == egn).FirstOrDefault();
             if (owner != null)
             {
-                NameTextBox.Enabled = true;
                 NameTextBox.Text = owner.FirstName + " " + owner.MiddleName + " " +owner.LastName;
-                NameTextBox.Enabled = false;
-                AddressTextBox.Enabled= true;
                 AddressTextBox.Text = owner.Address;
-                AddressTextBox.Enabled = false;
             }
-            else {
-                NameTextBox.Enabled = true;
-                AddressTextBox.Enabled = true;
-            }
+            
         }
     }
 }

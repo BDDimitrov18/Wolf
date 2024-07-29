@@ -55,7 +55,8 @@ namespace WolfAPI.Mapping
 
             CreateMap<Activity, GetActivityDTO>()
                 .ForMember(dest => dest.Tasks, opt => opt.MapFrom(src => src.Tasks))
-                .ForMember(dest => dest.ParentActivity, opt => opt.MapFrom(src => src.ParentActivity));
+                .ForMember(dest => dest.ParentActivity, opt => opt.MapFrom(src => src.ParentActivity))
+                .ForMember(dest => dest.Plots, opt => opt.MapFrom(src => src.ActivityPlots.Select(ap => ap.Plot)));
 
             CreateMap<GetActivityDTO, Activity>()
     .ForMember(dest => dest.ActivityId, opt => opt.MapFrom(src => src.ActivityId))

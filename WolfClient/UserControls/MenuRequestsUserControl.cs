@@ -62,7 +62,9 @@ namespace WolfClient.UserControls
             }
             LogInEvent.logIn += OnUserLoggedIn;
             OwnershipDataGridView.CellPainting += OwnershipDataGridView_CellPainting;
+            ActivityDataGridView.CellPainting += ActivityDataGridView_CellPainting;
             ActivityDataGridView.SelectionChanged += ActivityDataGridView_SelectionChanged;
+            PlotsDataGridView.CellPainting += PlotsDataGridView_CellPainting;
 
             btnFirstRequestsDataGridView.Click += (s, e) => NavigateDataGridView(RequestDataGridView, "First");
             btnPreviousRequestsDataGridView.Click += (s, e) => NavigateDataGridView(RequestDataGridView, "Previous");
@@ -207,21 +209,6 @@ namespace WolfClient.UserControls
         {
             if (_isRefreshing)
             {
-                _isRefreshing = false;
-
-                var selectedRequest = _dataService.GetSelectedRequest();
-                if (selectedRequest != null)
-                {
-                    foreach (DataGridViewRow row in RequestDataGridView.Rows)
-                    {
-                        if (row.DataBoundItem is GetRequestDTO request && request.RequestId == selectedRequest.RequestId)
-                        {
-                            row.Selected = true;
-                            break;
-                        }
-                    }
-                }
-
                 return;
             }
 
@@ -246,13 +233,16 @@ namespace WolfClient.UserControls
 
             if (_dataService.GetSelectedRequest() != null)
             {
+                UpdatePathLink();
                 UpdateClientsDataGridView();
                 UpdateActivityDataGridView();
                 UpdatePlotsDataGridView();
                 UpdateOwnershipDataGridView();
             }
         }
-
+        public void UpdatePathLink() {
+            PathLink.Text = _dataService.GetSelectedRequest().Path;
+        }
         private void clientsDataGridView_SelectionChanged(object sender, EventArgs e)
         {
             // Check if any rows are selected
@@ -338,53 +328,206 @@ namespace WolfClient.UserControls
                     e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
                 }
 
-                // Check if the next cell is empty, and if so, clear the bottom border
+                // Check if the next cell has a value, and if so, paint the bottom border
                 if (e.RowIndex < OwnershipDataGridView.RowCount - 1)
                 {
                     var nextCellValue = OwnershipDataGridView.Rows[e.RowIndex + 1].Cells[e.ColumnIndex].Value as string;
-                    if (string.IsNullOrEmpty(nextCellValue))
+                    if (!string.IsNullOrEmpty(nextCellValue))
                     {
-                        // Clear the bottom border with a thicker line
-                        using (Pen backColorPen = new Pen(e.CellStyle.BackColor)) // Thicker pen
+                        // Paint the bottom border with a thicker line
+                        using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
                         {
-                            e.Graphics.DrawLine(backColorPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 3, e.CellBounds.Bottom - 1);
+                            e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
                         }
                     }
-                }
-                else
-                {
-                    e.Paint(e.CellBounds, DataGridViewPaintParts.All);
                 }
             }
             else
             {
-                // Check if the next cell is not empty
+                // Always paint the right border
+                using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
+                {
+                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                }
+
+                // Check if the next cell has a value, and if so, paint the bottom border
                 if (e.RowIndex < OwnershipDataGridView.RowCount - 1 &&
                     !string.IsNullOrEmpty(OwnershipDataGridView.Rows[e.RowIndex + 1].Cells[e.ColumnIndex].Value as string))
                 {
-                    // Paint bottom border
+                    // Paint the bottom border with a thicker line
                     using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
+                    {
+                        e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
+                    }
+                }
+            }
+
+            // Always paint the bottom border if it is the last row
+            if (e.RowIndex == OwnershipDataGridView.RowCount - 1)
+            {
+                using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
+                {
+                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
+                }
+            }
+        }
+
+        private void PlotsDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex != PlotsDataGridView.Columns["ActivityName"].Index)
+                return;
+
+            var cellValue = e.Value as string;
+
+            e.Handled = true;  // Always handle the painting
+
+            // Fill the background
+            using (Brush backColorBrush = new SolidBrush(e.CellStyle.BackColor))
+            {
+                e.Graphics.FillRectangle(backColorBrush, e.CellBounds);
+            }
+
+            // Check if the cell has data and paint accordingly
+            if (!string.IsNullOrEmpty(cellValue))
+            {
+                // Adjust the bounds for padding
+                Rectangle adjustedBounds = e.CellBounds;
+                adjustedBounds.X += 2;
+                adjustedBounds.Y += 2;
+                adjustedBounds.Width -= 4;
+                adjustedBounds.Height -= 4;
+
+                // Paint the text with word wrapping
+                TextRenderer.DrawText(e.Graphics, cellValue, e.CellStyle.Font, adjustedBounds, e.CellStyle.ForeColor,
+                                      TextFormatFlags.VerticalCenter | TextFormatFlags.Left | TextFormatFlags.WordBreak);
+
+                // Always paint the right border
+                using (Pen gridLinePen = new Pen(PlotsDataGridView.GridColor))
+                {
+                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                }
+
+                // Check if the next cell is not empty and paint the bottom border
+                if (e.RowIndex < PlotsDataGridView.RowCount - 1)
+                {
+                    var nextCellValue = PlotsDataGridView.Rows[e.RowIndex + 1].Cells[e.ColumnIndex].Value as string;
+                    if (!string.IsNullOrEmpty(nextCellValue))
+                    {
+                        // Paint the bottom border with a thicker line
+                        using (Pen gridLinePen = new Pen(PlotsDataGridView.GridColor)) // Thicker pen
+                        {
+                            e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // Check if the next cell is not empty and paint the bottom border
+                if (e.RowIndex < PlotsDataGridView.RowCount - 1 &&
+                    !string.IsNullOrEmpty(PlotsDataGridView.Rows[e.RowIndex + 1].Cells[e.ColumnIndex].Value as string))
+                {
+                    // Paint bottom border
+                    using (Pen gridLinePen = new Pen(PlotsDataGridView.GridColor))
                     {
                         e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
                     }
                 }
 
                 // Always paint the right border
-                using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
+                using (Pen gridLinePen = new Pen(PlotsDataGridView.GridColor))
                 {
                     e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
                 }
             }
-            if (!(e.RowIndex < OwnershipDataGridView.RowCount - 1))
+        }
+
+        private void ActivityDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            // Define the indexes for the Activity and ParentActivity columns
+            int activityColumnIndex = ActivityDataGridView.Columns["Activity"].Index;
+            int parentActivityColumnIndex = ActivityDataGridView.Columns["ParentActivity"].Index;
+
+            if (e.RowIndex < 0 ||
+                (e.ColumnIndex != activityColumnIndex &&
+                 e.ColumnIndex != parentActivityColumnIndex))
+                return;
+
+            // Get the value of the current cell
+            var cellValue = e.Value as string;
+
+            // Get the value of the corresponding cell in the Activity column
+            var activityCellValue = ActivityDataGridView.Rows[e.RowIndex].Cells[activityColumnIndex].Value as string;
+
+            e.Handled = true;  // Always handle the painting
+
+            // Fill the background
+            using (Brush backColorBrush = new SolidBrush(e.CellStyle.BackColor))
             {
-                // Paint bottom border
-                using (Pen gridLinePen = new Pen(OwnershipDataGridView.GridColor))
+                e.Graphics.FillRectangle(backColorBrush, e.CellBounds);
+            }
+
+            // Check if the cell has data and paint accordingly
+            if (!string.IsNullOrEmpty(activityCellValue))
+            {
+                // Adjust the bounds for padding
+                Rectangle adjustedBounds = e.CellBounds;
+                adjustedBounds.X += 2;
+                adjustedBounds.Y += 2;
+                adjustedBounds.Width -= 4;
+                adjustedBounds.Height -= 4;
+
+                // Paint the text with word wrapping
+                TextRenderer.DrawText(e.Graphics, cellValue, e.CellStyle.Font, adjustedBounds, e.CellStyle.ForeColor, TextFormatFlags.VerticalCenter | TextFormatFlags.Left | TextFormatFlags.WordBreak);
+
+                // Always paint the right border
+                using (Pen gridLinePen = new Pen(ActivityDataGridView.GridColor))
+                {
+                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                }
+
+                // Check if the next cell in the Activity column has a value, and if so, paint the bottom border
+                if (e.RowIndex < ActivityDataGridView.RowCount - 1)
+                {
+                    var nextActivityCellValue = ActivityDataGridView.Rows[e.RowIndex + 1].Cells[activityColumnIndex].Value as string;
+                    if (!string.IsNullOrEmpty(nextActivityCellValue))
+                    {
+                        // Paint the bottom border with a thicker line
+                        using (Pen gridLinePen = new Pen(ActivityDataGridView.GridColor)) // Thicker pen
+                        {
+                            e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // Always paint the right border
+                using (Pen gridLinePen = new Pen(ActivityDataGridView.GridColor))
+                {
+                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                }
+
+                // Check if the next cell in the Activity column has a value, and if so, paint the bottom border
+                if (e.RowIndex < ActivityDataGridView.RowCount - 1 &&
+                    !string.IsNullOrEmpty(ActivityDataGridView.Rows[e.RowIndex + 1].Cells[activityColumnIndex].Value as string))
+                {
+                    // Paint the bottom border with a thicker line
+                    using (Pen gridLinePen = new Pen(ActivityDataGridView.GridColor))
+                    {
+                        e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
+                    }
+                }
+            }
+
+            // Always paint the bottom border if it is the last row
+            if (e.RowIndex == ActivityDataGridView.RowCount - 1)
+            {
+                using (Pen gridLinePen = new Pen(ActivityDataGridView.GridColor))
                 {
                     e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
                 }
             }
-
-
         }
 
         private string ConvertFloatToFraction(float value)
@@ -584,13 +727,32 @@ namespace WolfClient.UserControls
         {
             PlotsDataGridView.AutoGenerateColumns = false;
             PlotsDataGridView.DataSource = null; // Force reset DataSource
-            List<GetPlotDTO> plotList = new List<GetPlotDTO>();
+            List<PlotViewModel> plotList = new List<PlotViewModel>();
 
             if (matchingRequestWithClients?.activityDTOs?.Count() > 0)
             {
                 foreach (var activityDTO in matchingRequestWithClients.activityDTOs)
                 {
-                    plotList.AddRange(activityDTO.Plots);
+                    bool first = true;
+                    foreach (var plot in activityDTO.Plots)
+                    {
+                        PlotViewModel plotViewModel = new PlotViewModel()
+                        {
+                            ActivityName = first ? activityDTO.ActivityTypeName : "",
+                            PlotId = plot.PlotId,
+                            PlotNumber = plot.PlotNumber,
+                            RegulatedPlotNumber = plot.RegulatedPlotNumber,
+                            neighborhood = plot.neighborhood,
+                            City = plot.City,
+                            Municipality = plot.Municipality,
+                            Street = plot.Street,
+                            StreetNumber = plot.StreetNumber,
+                            designation = plot.designation,
+                            locality = plot.locality
+                        };
+                        plotList.Add(plotViewModel);
+                        first = false;
+                    }
                 }
             }
 
@@ -621,8 +783,10 @@ namespace WolfClient.UserControls
 
             clientsDataGridView.Refresh();
         }
-        private List<GetActivityDTO> ApplyActivityFilters(List<GetActivityDTO> activityDTOs)
+        private List<GetActivityDTO> ApplyActivityFilters(List<GetActivityDTO>? activityDTOs)
         {
+            if (activityDTOs == null || activityDTOs.Count() == 0) return activityDTOs;
+
             var filteredList = activityDTOs;
             var employee = _dataService.getLoggedEmployee();
             // Filter by personal (assuming IsPersonal is a boolean property of GetActivityDTO)
@@ -821,6 +985,7 @@ namespace WolfClient.UserControls
 
             foreach (var activity in activityDTOs)
             {
+                bool first = true;
                 string Identities = "";
                 if (activity.Plots.Count() > 0)
                 {
@@ -834,7 +999,7 @@ namespace WolfClient.UserControls
                 {
                     var viewModel = new ActivityViewModel
                     {
-                        ActivityTypeName = activity.ActivityType.ActivityTypeName + activity.ActivityId.ToString(),
+                        ActivityTypeName = first ? activity.ActivityType.ActivityTypeName + activity.ActivityId.ToString() : "",
                         ActivityId = activity.ActivityId,
                         TaskTypeName = task.taskType.TaskTypeName,
                         TaskId = task.TaskId,
@@ -844,12 +1009,13 @@ namespace WolfClient.UserControls
                         ControlFullName = task.Control?.FullName,
                         Comments = task.Comments,
                         Identities = Identities,
-                        ParentActivity = activity.ParentActivity == null ? "" : activity.ParentActivity.ActivityTypeName,
+                        ParentActivity = first ? activity.ParentActivity == null ? "" : activity.ParentActivity.ActivityTypeName : "",
                         tax = task.tax.ToString(),
                         taxComment = task.CommentTax,
                     };
 
                     activityViewModels.Add(viewModel);
+                    first = false;
                 }
             }
 
@@ -877,6 +1043,7 @@ namespace WolfClient.UserControls
                     {
                         requestDTO = requestDTO,
                         clientDTOs = getClientDTOs,
+                        activityDTOs = new List<GetActivityDTO>()
                     };
 
                     _dataService.AddSingleRequest(requestWithClients);
@@ -969,11 +1136,13 @@ namespace WolfClient.UserControls
                 }
                 RequestWithClientsDTO matchingRequestWithClients = new RequestWithClientsDTO();
                 matchingRequestWithClients = _dataService.GetFetchedLinkedRequests()
-                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _dataService.GetSelectedRequest().RequestId).Copy();
+                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _dataService.GetSelectedRequest().RequestId);
 
                 if (matchingRequestWithClients != null)
                 {
-                    var filteredActivities = ApplyActivityFilters(matchingRequestWithClients.activityDTOs.ToList());
+                    matchingRequestWithClients = matchingRequestWithClients.Copy();
+
+                    var filteredActivities = ApplyActivityFilters(matchingRequestWithClients.activityDTOs);
 
                     if (ActivityDataGridView.InvokeRequired)
                     {
@@ -1015,24 +1184,10 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void RestorePreviousSelection()
+        private List<GetRequestDTO> ApplyFilters(List<GetRequestDTO>? requestDTOs)
         {
-            var selectedRequest = _dataService.GetSelectedRequest();
-            if (selectedRequest != null)
-            {
-                foreach (DataGridViewRow row in RequestDataGridView.Rows)
-                {
-                    if (row.DataBoundItem is GetRequestDTO request && request.RequestId == selectedRequest.RequestId)
-                    {
-                        row.Selected = true;
-                        break;
-                    }
-                }
-            }
-        }
+            if (requestDTOs == null || requestDTOs.Count() == 0) return requestDTOs;
 
-        private List<GetRequestDTO> ApplyFilters(List<GetRequestDTO> requestDTOs)
-        {
             var filteredList = requestDTOs;
 
             // Example filter by RequestId (assuming txtNumber.Text contains a valid integer or is empty)
@@ -1086,12 +1241,19 @@ namespace WolfClient.UserControls
 
         public void UpdateRequestDataGridView(List<GetRequestDTO> requestDTOs)
         {
+            int? previousSelectedRequestId = null;
             _isRefreshing = true;
             try
             {
                 if (requestDTOs == null)
                 {
                     throw new ArgumentNullException(nameof(requestDTOs), "requestDTOs is null.");
+                }
+
+                // Step 1: Store the selected RequestId
+                if (RequestDataGridView.CurrentRow != null && RequestDataGridView.CurrentRow.DataBoundItem is GetRequestDTO currentRequest)
+                {
+                    previousSelectedRequestId = currentRequest.RequestId;
                 }
 
                 // Apply filters to the requestDTOs list
@@ -1102,11 +1264,13 @@ namespace WolfClient.UserControls
                     RequestDataGridView.Invoke(new MethodInvoker(delegate
                     {
                         UpdateRequestGridViewRows(filteredList);
+                        RestoreSelectedRow(previousSelectedRequestId);
                     }));
                 }
                 else
                 {
                     UpdateRequestGridViewRows(filteredList);
+                    RestoreSelectedRow(previousSelectedRequestId);
                 }
 
                 Console.WriteLine("DataSource set successfully with " + filteredList.Count + " items.");
@@ -1122,12 +1286,87 @@ namespace WolfClient.UserControls
             }
         }
 
+        private void RestoreSelectedRow(int? previousSelectedRequestId)
+        {
+            if (previousSelectedRequestId.HasValue)
+            {
+                int rowIndex = -1;
+
+                // Find the row with the previously selected RequestId
+                foreach (DataGridViewRow row in RequestDataGridView.Rows)
+                {
+                    if (row.DataBoundItem is GetRequestDTO requestDTO && requestDTO.RequestId == previousSelectedRequestId.Value)
+                    {
+                        rowIndex = row.Index;
+                        break;
+                    }
+                }
+
+                // Select the row if it exists
+                if (rowIndex >= 0)
+                {
+                    RequestDataGridView.Rows[rowIndex].Selected = true;
+                    RequestDataGridView.CurrentCell = RequestDataGridView.Rows[rowIndex].Cells[0];
+                }
+                else
+                {
+                    // Try to select the closest previous row
+                    for (int i = previousSelectedRequestId.Value - 1; i >= 0; i--)
+                    {
+                        rowIndex = FindRowIndexByRequestId(i);
+                        if (rowIndex >= 0)
+                        {
+                            RequestDataGridView.Rows[rowIndex].Selected = true;
+                            RequestDataGridView.CurrentCell = RequestDataGridView.Rows[rowIndex].Cells[0];
+                            return;
+                        }
+                    }
+
+                    // Try to select the closest next row
+                    for (int i = previousSelectedRequestId.Value + 1; i <= RequestDataGridView.Rows.Count; i++)
+                    {
+                        rowIndex = FindRowIndexByRequestId(i);
+                        if (rowIndex >= 0)
+                        {
+                            RequestDataGridView.Rows[rowIndex].Selected = true;
+                            RequestDataGridView.CurrentCell = RequestDataGridView.Rows[rowIndex].Cells[0];
+                            return;
+                        }
+                    }
+
+                    // If no rows exist, handle appropriately (e.g., deselect all)
+                    if (RequestDataGridView.Rows.Count > 0)
+                    {
+                        RequestDataGridView.Rows[0].Selected = true;
+                    }
+                    else
+                    {
+                        RequestDataGridView.ClearSelection();
+                    }
+                }
+            }
+        }
+
+        private int FindRowIndexByRequestId(int requestId)
+        {
+            for (int i = 0; i < RequestDataGridView.Rows.Count; i++)
+            {
+                if (RequestDataGridView.Rows[i].DataBoundItem is GetRequestDTO requestDTO && requestDTO.RequestId == requestId)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         private void UpdateRequestGridViewRows(List<GetRequestDTO> filteredList)
         {
+
             RequestDataGridView.AutoGenerateColumns = false;
             RequestDataGridView.DataSource = null; // Force reset DataSource
             RequestDataGridView.DataSource = filteredList;
             RequestDataGridView.Refresh();
+            _isRefreshing = false;
 
             // Fetch the starred requests
             var starredRequests = _dataService.GetStarredRequests();
@@ -1181,9 +1420,14 @@ namespace WolfClient.UserControls
         {
             AddPlotToObject plotForm = new AddPlotToObject(_apiClient, _userClient, _adminClient, _dataService);
             plotForm.Show();
-            UpdatePlotsDataGridView();
+            plotForm.Disposed += PlotFormDispose;
         }
-
+        private void PlotFormDispose(object sender, EventArgs e)
+        {
+            UpdatePlotsDataGridView();
+            UpdateActivityDataGridView();
+            UpdateOwnershipDataGridView();
+        }
         private void panel6_Paint(object sender, PaintEventArgs e)
         {
 
@@ -1193,9 +1437,12 @@ namespace WolfClient.UserControls
         {
             AddOwnerForm ownerForm = new AddOwnerForm(_apiClient, _userClient, _adminClient, _dataService);
             ownerForm.Show();
+            ownerForm.Disposed += OwnershipFormDispose;
+        }
+        private void OwnershipFormDispose(object sender, EventArgs e)
+        {
             UpdateOwnershipDataGridView();
         }
-
         private async void DeleteRequestButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
@@ -1260,9 +1507,12 @@ namespace WolfClient.UserControls
                     if (activityResponse.IsSuccess)
                     {
                         _dataService.DeleteActivities(activities);
-                        UpdateActivityDataGridView();
+
                     }
                 }
+                UpdateActivityDataGridView();
+                UpdatePlotsDataGridView();
+                UpdateOwnershipDataGridView();
             }
             else
             {
@@ -1312,13 +1562,13 @@ namespace WolfClient.UserControls
             // Check if any rows are selected
             if (PlotsDataGridView.SelectedRows.Count > 0)
             {
-                var selectedPlots = new List<GetPlotDTO>();
+                var selectedPlots = new List<PlotViewModel>();
 
                 // Iterate through all selected rows
                 foreach (DataGridViewRow selectedRow in PlotsDataGridView.SelectedRows)
                 {
                     // Check if the DataBoundItem is of type GetClientDTO
-                    if (selectedRow.DataBoundItem is GetPlotDTO activityViewModel)
+                    if (selectedRow.DataBoundItem is PlotViewModel activityViewModel)
                     {
                         // Add the client DTO to the list
                         selectedPlots.Add(activityViewModel);
@@ -1361,11 +1611,31 @@ namespace WolfClient.UserControls
 
         private async void DeletePlotsButton_Click(object sender, EventArgs e)
         {
-            List<GetActivity_PlotRelashionshipDTO> getActivity_PlotRelashionshipDTOs = _dataService.getActivity_PlotRelashionshipDTOs(_dataService.getSelectedPlotsOnRequestMenu());
+            List<PlotViewModel> viewModels = _dataService.getSelectedPlotsOnRequestMenu();
+            List<GetPlotDTO> getPlotDTOs = new List<GetPlotDTO>();
+            foreach (var viewModel in viewModels)
+            {
+                GetPlotDTO plot = new GetPlotDTO()
+                {
+                    PlotId = viewModel.PlotId,
+                    PlotNumber = viewModel.PlotNumber,
+                    RegulatedPlotNumber = viewModel.RegulatedPlotNumber,
+                    neighborhood = viewModel.neighborhood,
+                    City = viewModel.City,
+                    Municipality = viewModel.Municipality,
+                    Street = viewModel.Street,
+                    StreetNumber = viewModel.StreetNumber,
+                    designation = viewModel.designation,
+                    locality = viewModel.locality
+                };
+                getPlotDTOs.Add(plot);
+            }
+
+            List<GetActivity_PlotRelashionshipDTO> getActivity_PlotRelashionshipDTOs = _dataService.getActivity_PlotRelashionshipDTOs(getPlotDTOs);
             var response = await _userClient.activityPlotRelashionshipRemove(getActivity_PlotRelashionshipDTOs);
             if (response.IsSuccess)
             {
-                _dataService.RemovePlots(_dataService.getSelectedPlotsOnRequestMenu());
+                _dataService.RemovePlots(getPlotDTOs);
                 UpdatePlotsDataGridView();
             }
 
@@ -1561,5 +1831,19 @@ namespace WolfClient.UserControls
             UpdateRequestDataGridView(_dataService.getRequests());
         }
 
+        private void PathLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string path = PathLink.Text;
+
+            if (Directory.Exists(path) || File.Exists(path))
+            {
+                // Open the File Explorer at the specified path
+                Process.Start("explorer.exe", path);
+            }
+            else
+            {
+                MessageBox.Show("The specified path does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
