@@ -247,6 +247,10 @@ namespace WolfAPI.Mapping
             .ForMember(dest => dest.EmployeeID, opt => opt.MapFrom(src => src.EmployeeID))
             .ForMember(dest => dest.Request, opt => opt.Ignore()) // Assuming Request will be set separately
             .ForMember(dest => dest.Employee, opt => opt.Ignore()); // Assuming Employee will be set separately
+
+            CreateMap<CreateInvoiceDTO, Invoice>();
+            CreateMap<Invoice, GetInvoiceDTO>();
+            CreateMap<GetInvoiceDTO, Invoice>();
         }
     }
 }

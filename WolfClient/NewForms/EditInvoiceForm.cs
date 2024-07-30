@@ -13,7 +13,7 @@ using WolfClient.Services.Interfaces;
 
 namespace WolfClient.NewForms
 {
-    public partial class AddInvoiceForm : Form
+    public partial class EditInvoiceForm : Form
     {
         private readonly IAdminClient _adminClient;
         private readonly IApiClient _apiClient;
@@ -21,12 +21,14 @@ namespace WolfClient.NewForms
         private readonly IDataService _dataService;
 
         CreateInvoiceDTO _invoiceValidation;
-        public AddInvoiceForm(IApiClient apiClient, IAdminClient adminClient, IUserClient userClient, IDataService dataService)
+        GetInvoiceDTO selectedInvoice;
+        public EditInvoiceForm(IApiClient apiClient, IAdminClient adminClient, IUserClient userClient, IDataService dataService)
         {
             _adminClient = adminClient;
             _apiClient = apiClient;
             _userClient = userClient;
             _dataService = dataService;
+            selectedInvoice = _dataService.getSelectedInvoices()[0];
             _invoiceValidation = new CreateInvoiceDTO();
             InitializeComponent();
         }
@@ -44,7 +46,8 @@ namespace WolfClient.NewForms
                 {
                     InvoiceErrorProvider.SetError(control, string.Empty);
                 }
-                if (SumTextBox.Text == "") {
+                if (SumTextBox.Text == "")
+                {
                     SumErrorLabel.Text = "Моля попълнете!";
                     InvoiceErrorProvider.SetError(SumTextBox, "Invalid Price format");
                 }
@@ -58,7 +61,7 @@ namespace WolfClient.NewForms
                     InvoiceErrorProvider.SetError(SumTextBox, "Invalid Price format");
                 }
 
-                
+
                 // Validate the model
                 IList<ValidationResult> memberNameResults = WolfClient.Validators.Validator.Validate(_invoiceValidation);
 
@@ -110,20 +113,22 @@ namespace WolfClient.NewForms
                 SumErrorLabel.ForeColor = Color.Red;
                 flag = true;
             }
-            
+
             if (flag) { return; }
 
-            CreateInvoiceDTO invoiceDTO = new CreateInvoiceDTO()
-            {
-                number = NumberTextBox.Text,
-                RequestId = _dataService.GetSelectedRequest().RequestId,
-                Sum = float.Parse(SumTextBox.Text)
-            };
+            selectedInvoice.number = NumberTextBox.Text;
+            selectedInvoice.Sum = float.Parse(SumTextBox.Text);
 
-            var response = await _userClient.CreateInvoice(invoiceDTO);
+            var response = await _userClient.EditInvoice(selectedInvoice);
 
-            _dataService.AddInvoice(response.ResponseObj);
+            _dataService.EditInvoice(selectedInvoice);
             Dispose();
+        }
+
+        private void EditInvoiceForm_Load(object sender, EventArgs e)
+        {
+            NumberTextBox.Text = selectedInvoice.number;
+            SumTextBox.Text = selectedInvoice.Sum.ToString();
         }
     }
 }

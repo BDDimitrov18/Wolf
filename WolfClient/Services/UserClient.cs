@@ -2052,5 +2052,144 @@ namespace WolfClient.Services
                 };
             }
         }
+
+        public async Task<ClientResponse<GetInvoiceDTO>> CreateInvoice(CreateInvoiceDTO invoiceDTO)
+        {
+            var jsonContent = JsonSerializer.Serialize(invoiceDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateInvoice", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Invoice added successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseInvoice = JsonSerializer.Deserialize<GetInvoiceDTO>(jsonResponse, options);
+                    return new ClientResponse<GetInvoiceDTO> { IsSuccess = true, Message = "Invoice Created Successfully", ResponseObj = responseInvoice};
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<GetInvoiceDTO> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to add Invoice: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<GetInvoiceDTO> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<GetInvoiceDTO> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<GetInvoiceDTO> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+
+        }
+
+        public async Task<ClientResponse<HttpResponseMessage>> EditInvoice(GetInvoiceDTO invoiceDTO)
+        {
+            var jsonContent = JsonSerializer.Serialize(invoiceDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/EditInvoice", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Invoice edited successfully!");
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseRequests = JsonSerializer.Deserialize<HttpResponseMessage>(jsonResponse, options);
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Invoice Edited Successfully", ResponseObj = responseRequests };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to edit invoice: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
+        public async Task<ClientResponse<HttpResponseMessage>> DeleteInvoices(List<GetInvoiceDTO> invoices)
+        {
+            var jsonContent = JsonSerializer.Serialize(invoices);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://localhost:44359/api/User/DeleteInvoices", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Invoices Deleted successfully!");
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Invoices Deleted successfully!", ResponseObj = response };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to delete Invoices: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
     }
 }

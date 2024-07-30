@@ -48,6 +48,7 @@ namespace WolfClient.UserControls
             WebSocketDataUpdate.ActivityTypeUpdated += OnActivityTypeUpdated;
             WebSocketDataUpdate.EmployeesUpdated += OnEmployeesUpdated;
             WebSocketDataUpdate.ClientsUpdated += OnClientsUpdated;
+            WebSocketDataUpdate.InvoicesUpdated += OnInvoicesUpdated;
         }
         private void MenuRequestsUserControl_Load(object sender, EventArgs e)
         {
@@ -55,6 +56,7 @@ namespace WolfClient.UserControls
             clientsDataGridView.SelectionChanged += clientsDataGridView_SelectionChanged;
             PlotsDataGridView.SelectionChanged += PlotsDataGridView_SelectionChanged;
             OwnershipDataGridView.SelectionChanged += OwnershipDataGridView_SelectionChanged;
+            InvoicesDataGridView.SelectionChanged += invoiceDataGridView_SelectionChanged;
             if (_apiClient.getLoginStatus())
             {
                 setRequestsDataGridView();
@@ -124,6 +126,11 @@ namespace WolfClient.UserControls
         private void OnRequestsUpdated(List<GetRequestDTO> requests)
         {
             UpdateRequestDataGridView(_dataService.getRequests());
+        }
+
+        private void OnInvoicesUpdated(List<GetInvoiceDTO> requests)
+        {
+            UpdateInvoicessDataGridView();
         }
 
         private void OnClientRelationshipsUpdated(List<GetClient_RequestRelashionshipDTO> clientRelationships)
@@ -238,9 +245,11 @@ namespace WolfClient.UserControls
                 UpdateActivityDataGridView();
                 UpdatePlotsDataGridView();
                 UpdateOwnershipDataGridView();
+                UpdateInvoicessDataGridView();
             }
         }
-        public void UpdatePathLink() {
+        public void UpdatePathLink()
+        {
             PathLink.Text = _dataService.GetSelectedRequest().Path;
         }
         private void clientsDataGridView_SelectionChanged(object sender, EventArgs e)
@@ -265,6 +274,32 @@ namespace WolfClient.UserControls
                 if (selectedClients.Count > 0)
                 {
                     _dataService.SetSelectedClients(selectedClients);
+                }
+            }
+        }
+
+        private void invoiceDataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            // Check if any rows are selected
+            if (InvoicesDataGridView.SelectedRows.Count > 0)
+            {
+                var selectedInvoices = new List<GetInvoiceDTO>();
+
+                // Iterate through all selected rows
+                foreach (DataGridViewRow selectedRow in InvoicesDataGridView.SelectedRows)
+                {
+                    // Check if the DataBoundItem is of type GetClientDTO
+                    if (selectedRow.DataBoundItem is GetInvoiceDTO clientDto)
+                    {
+                        // Add the client DTO to the list
+                        selectedInvoices.Add(clientDto);
+                    }
+                }
+
+                // Check if there are any selected clients
+                if (selectedInvoices.Count > 0)
+                {
+                    _dataService.SetSelectedInvoices(selectedInvoices);
                 }
             }
         }
@@ -783,6 +818,59 @@ namespace WolfClient.UserControls
 
             clientsDataGridView.Refresh();
         }
+
+        private void UpdateInvoicessDataGridView()
+        {
+            try
+            {
+                if (_dataService.GetSelectedRequest() == null || _dataService.GetFetchedLinkedRequests() == null)
+                {
+                    InvoicesDataGridView.DataSource = null;
+                    InvoicesDataGridView.Refresh();
+                    return;
+                }
+
+                var matchingRequestWithClients = _dataService.GetFetchedLinkedRequests()
+                    .FirstOrDefault(rwc => rwc.requestDTO.RequestId == _dataService.GetSelectedRequest().RequestId);
+
+                if (InvoicesDataGridView.InvokeRequired)
+                {
+                    InvoicesDataGridView.Invoke(new MethodInvoker(delegate
+                    {
+                        BindInvoicesDataGridView(matchingRequestWithClients);
+                    }));
+                }
+                else
+                {
+                    BindInvoicesDataGridView(matchingRequestWithClients);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception in UpdateInvoicessDataGridView: " + ex.Message);
+                MessageBox.Show("Exception in UpdateInvoicessDataGridView: " + ex.Message);
+            }
+        }
+
+        private void BindInvoicesDataGridView(RequestWithClientsDTO matchingRequestWithClients)
+        {
+            InvoicesDataGridView.AutoGenerateColumns = false;
+            InvoicesDataGridView.DataSource = null; // Force reset DataSource
+
+            if (matchingRequestWithClients != null)
+            {
+                InvoicesDataGridView.DataSource = matchingRequestWithClients.invoiceDTOs;
+            }
+            else
+            {
+                InvoicesDataGridView.DataSource = null;
+            }
+
+            InvoicesDataGridView.Refresh();
+        }
+
         private List<GetActivityDTO> ApplyActivityFilters(List<GetActivityDTO>? activityDTOs)
         {
             if (activityDTOs == null || activityDTOs.Count() == 0) return activityDTOs;
@@ -1043,7 +1131,8 @@ namespace WolfClient.UserControls
                     {
                         requestDTO = requestDTO,
                         clientDTOs = getClientDTOs,
-                        activityDTOs = new List<GetActivityDTO>()
+                        activityDTOs = new List<GetActivityDTO>(),
+                        invoiceDTOs = new List<GetInvoiceDTO>()
                     };
 
                     _dataService.AddSingleRequest(requestWithClients);
@@ -1061,10 +1150,19 @@ namespace WolfClient.UserControls
 
         private void button3_Click(object sender, EventArgs e)
         {
-            AddInvoiceForm addInvoiceForm = new AddInvoiceForm();
-            addInvoiceForm.Show();
-        }
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Моля изберете поръчка!");
+            }
 
+            AddInvoiceForm addInvoiceForm = new AddInvoiceForm(_apiClient, _adminClient, _userClient, _dataService);
+            addInvoiceForm.Show();
+            addInvoiceForm.Disposed += InvoiceForm_Disposed;
+        }
+        private void InvoiceForm_Disposed(object sender, EventArgs e)
+        {
+            UpdateInvoicessDataGridView();
+        }
         private void button1_Click_1(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() != null)
@@ -1844,6 +1942,38 @@ namespace WolfClient.UserControls
             {
                 MessageBox.Show("The specified path does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void EditInvoiceButton_Click(object sender, EventArgs e)
+        {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Моля изберете поръчка!");
+            }
+            if (_dataService.getSelectedInvoices().Count == 0 || _dataService.getSelectedInvoices() == null)
+            {
+                MessageBox.Show("Моля изберете фактура");
+                return;
+            }
+            EditInvoiceForm editInvoiceForm = new EditInvoiceForm(_apiClient, _adminClient, _userClient, _dataService);
+            editInvoiceForm.Show();
+            editInvoiceForm.Disposed += InvoiceForm_Disposed;
+        }
+
+        private async void DeleteInvoiceButton_Click(object sender, EventArgs e)
+        {
+            if (_dataService.GetSelectedRequest() == null) {
+                MessageBox.Show("Моля изберете поръчка!");
+            }
+
+            if (_dataService.getSelectedInvoices().Count == 0 || _dataService.getSelectedInvoices() == null)
+            {
+                MessageBox.Show("Моля изберете фактури за изтриване!");
+                return;
+            }
+            await _userClient.DeleteInvoices(_dataService.getSelectedInvoices());
+            _dataService.DeleteInvoices(_dataService.getSelectedInvoices());
+            UpdateInvoicessDataGridView();
         }
     }
 }

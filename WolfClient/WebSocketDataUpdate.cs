@@ -20,6 +20,9 @@ namespace WolfClient
         public static event Action<List<GetEmployeeDTO>> EmployeesUpdated;
         public static event Action<List<GetClientDTO>> ClientsUpdated;
 
+        // New events for invoices
+        public static event Action<List<GetInvoiceDTO>> InvoicesUpdated;
+
         public static void OnDataUpdated() => DataUpdated?.Invoke();
         public static void OnRequestsUpdated(List<GetRequestDTO> requests) => RequestsUpdated?.Invoke(requests);
         public static void OnClientRelationshipsUpdated(List<GetClient_RequestRelashionshipDTO> clientRelationships) => ClientRelationshipsUpdated?.Invoke(clientRelationships);
@@ -30,5 +33,8 @@ namespace WolfClient
         public static void OnActivityTypeUpdated(GetActivityTypeDTO activityType) => ActivityTypeUpdated?.Invoke(activityType);
         public static void OnEmployeesUpdated(List<GetEmployeeDTO> employees) => EmployeesUpdated?.Invoke(employees);
         public static void OnClientsUpdated(List<GetClientDTO> clients) => ClientsUpdated?.Invoke(clients);
+
+        // New methods for invoices
+        public static void OnInvoicesUpdated(List<GetInvoiceDTO> invoices) => InvoicesUpdated?.Invoke(invoices);
     }
 }

@@ -43,6 +43,8 @@ namespace WolfClient.Services
 
         public List<GetstarRequest_EmployeeRelashionshipDTO> _starredRequests { get; set; }
 
+        public List<GetInvoiceDTO> _selectedInvoices { get; set; }
+
         public DataService()
         {
             compositeData = new CompositeDataDTO();
@@ -54,13 +56,56 @@ namespace WolfClient.Services
             _selectedActivity = new List<ActivityViewModel>();
             LoggedEmployee = new GetEmployeeDTO();
             _starredRequests = new List<GetstarRequest_EmployeeRelashionshipDTO>();
+            _selectedInvoices = new List<GetInvoiceDTO>();
+        }
+        public void EditInvoice(GetInvoiceDTO invoiceDTO)
+        {
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                for (int i = 0; i < link.invoiceDTOs.Count; i++)
+                {
+                    if (link.invoiceDTOs[i].InvoiceId == invoiceDTO.InvoiceId)
+                    {
+                        link.invoiceDTOs[i].number = invoiceDTO.number;
+                        link.invoiceDTOs[i].Sum = invoiceDTO.Sum;
+                    }
+                }
+            }
         }
 
+        public void DeleteInvoices(List<GetInvoiceDTO> invoiceDTOs)
+        {
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                // Collect invoices to remove
+                var invoicesToRemove = link.invoiceDTOs
+                    .Where(invoice => invoiceDTOs.Any(opt => opt.InvoiceId == invoice.InvoiceId))
+                    .ToList();
 
+                // Remove the collected invoices
+                foreach (var invoice in invoicesToRemove)
+                {
+                    link.invoiceDTOs.Remove(invoice);
+                }
+            }
+        }
+
+        public List<GetInvoiceDTO> getSelectedInvoices() {
+            return _selectedInvoices;
+        }
+
+        public void SetSelectedInvoices(List<GetInvoiceDTO> getInvoiceDTOs)
+        {
+            _selectedInvoices = getInvoiceDTOs;
+        }
         public List<GetClientDTO> getAllClients() {
             return _allClients;
         }
 
+        public void AddInvoice(GetInvoiceDTO invoiceDTO) {
+            var req = GetSelectedLinkedRequest();
+            req.invoiceDTOs.Add(invoiceDTO);
+        }
         public void SetAllClients(List<GetClientDTO> clientDTOs) {
             _allClients = clientDTOs;
         }
@@ -1249,9 +1294,17 @@ namespace WolfClient.Services
                 case "List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>":
                     HandleDeleteDocumentPlotOwnerRelationship(baseNotification);
                     break;
+                case "List<GetInvoiceDTO>":
+                    HandleDeleteInvoices(baseNotification);
+                    break;
             }
         }
-
+        private void HandleDeleteInvoices(UpdateNotification<JsonElement> baseNotification)
+        {
+            var invoiceDTOs = baseNotification.UpdatedEntity.Deserialize<List<GetInvoiceDTO>>();
+            DeleteInvoices(invoiceDTOs);
+            WebSocketDataUpdate.OnInvoicesUpdated(null); // Trigger data update notification
+        }
         private void HandleDeleteRequest(UpdateNotification<JsonElement> baseNotification)
         {
             var requestDTOs = baseNotification.UpdatedEntity.Deserialize<List<GetRequestDTO>>();
@@ -1370,7 +1423,17 @@ namespace WolfClient.Services
                 case "GetActivityTypeDTO":
                     HandleCreateActivityType(baseNotification);
                     break;
+                case "GetInvoiceDTO":
+                    HandleCreateInvoice(baseNotification);
+                    break;
             }
+        }
+        
+        private void HandleCreateInvoice(UpdateNotification<JsonElement> baseNotification)
+        {
+            var invoiceDTO = baseNotification.UpdatedEntity.Deserialize<GetInvoiceDTO>();
+            AddInvoice(invoiceDTO);
+            WebSocketDataUpdate.OnInvoicesUpdated(null); // Trigger data update notification
         }
 
         private void HandleCreateRequest(UpdateNotification<JsonElement> baseNotification)
@@ -1506,8 +1569,16 @@ namespace WolfClient.Services
                 case "GetDocumentOfOwnershipDTO":
                     HandleEditDocumentOfOwnership(baseNotification);
                     break;
-                    // Add other cases as needed
+                case "GetInvoiceDTO":
+                    HandleEditInvoice(baseNotification);
+                    break;
             }
+        }
+        private void HandleEditInvoice(UpdateNotification<JsonElement> baseNotification)
+        {
+            var invoiceDTO = baseNotification.UpdatedEntity.Deserialize<GetInvoiceDTO>();
+            EditInvoice(invoiceDTO);
+            WebSocketDataUpdate.OnInvoicesUpdated(null); // Trigger data update notification
         }
         private void HandleEditPowerOfAttorneyDocument(UpdateNotification<JsonElement> baseNotification)
         {

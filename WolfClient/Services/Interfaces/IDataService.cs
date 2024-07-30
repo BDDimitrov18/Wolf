@@ -10,6 +10,8 @@ namespace WolfClient.Services.Interfaces
 {
     public interface IDataService
     {
+        public void EditInvoice(GetInvoiceDTO invoiceDTO);
+        public void AddInvoice(GetInvoiceDTO invoiceDTO);
         public void addClientsToAll(GetClientDTO client);
         public List<GetClientDTO> getAllClients();
         public void SetAllClients(List<GetClientDTO> clientDTOs);
@@ -126,5 +128,9 @@ namespace WolfClient.Services.Interfaces
 
         public void SetStarredRequests(List<GetstarRequest_EmployeeRelashionshipDTO> starredRequests);
         public bool ActivityPlotExists(string number, GetActivityDTO activityDTO);
+
+        public List<GetInvoiceDTO> getSelectedInvoices();
+        public void SetSelectedInvoices(List<GetInvoiceDTO> getInvoiceDTOs);
+        public void DeleteInvoices(List<GetInvoiceDTO> invoiceDTOs);
     }
 }

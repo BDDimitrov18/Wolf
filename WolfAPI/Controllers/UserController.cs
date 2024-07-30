@@ -30,13 +30,14 @@ namespace WolfAPI.Controllers
         private readonly IPlot_DocumentOfOwnershipRelashionshipService _plot_DocumentOfOwnershipRelashionshipService;
         private readonly IDocumentPlot_DocumentOwnerRelashionshipService _documentPlot_DocumentOwnerRelashionshipService;
         private readonly IPowerOfAttorneyDocumentService _powerOfAttorneyDocumentService;
+        private readonly IInvoiceService _invoiceService;
         private readonly IStarRequest_EmployeeRelashionshipService _starRequest_EmployeeRelashionshipService;
         public UserController(IClientService clientService, IRequestService requestService, IClient_RequestRelashionshipService requestRelashionshipService,
             IActivityTypesService activityTypesService, IEmployeeService employeeService, ItaskTypesService taskTypesService, IAcitvityService acitvityService,
             ItaskServices taskService, IPlotService plotService, IActivity_PlotReleashionshipService activityPlotReleashionshipService, IDocumentOfOwnershipService documentOfOwnershipService,
             IOwnerService ownerService, IDocumentOfOwnership_OwnerRelashionshipService ownerDocumentOfOwnershipService, IPlot_DocumentOfOwnershipRelashionshipService plot_DocumentOfOwnershipRelashionshipService,
             IDocumentPlot_DocumentOwnerRelashionshipService documentPlot_DocumentOwnerRelashionshipService, IPowerOfAttorneyDocumentService powerOfAttorneyDocumentService,
-            IStarRequest_EmployeeRelashionshipService starRequest_EmployeeRelashionshipService)
+            IStarRequest_EmployeeRelashionshipService starRequest_EmployeeRelashionshipService, IInvoiceService invoiceService)
         {
             _clientService = clientService;
             _requestService = requestService;
@@ -55,6 +56,7 @@ namespace WolfAPI.Controllers
             _documentPlot_DocumentOwnerRelashionshipService = documentPlot_DocumentOwnerRelashionshipService;
             _powerOfAttorneyDocumentService = powerOfAttorneyDocumentService;
             _starRequest_EmployeeRelashionshipService = starRequest_EmployeeRelashionshipService;
+            _invoiceService = invoiceService;
         }
 
         [HttpPost("CreateClient")]
@@ -651,6 +653,55 @@ namespace WolfAPI.Controllers
         public async Task<List<GetPlotDTO>> getAllPlots()
         {
             return await _plotService.getAllPlots();
+        }
+
+        [HttpPost("CreateInvoice")]
+
+        public async Task<GetInvoiceDTO> createInvoice([FromBody] CreateInvoiceDTO invoiceDTO) {
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            return await _invoiceService.Add(invoiceDTO, clientId);
+        }
+
+        [HttpPost("DeleteInvoices")]
+        public async Task<IActionResult> DeleteInvoices([FromBody] List<GetInvoiceDTO> invoiceDTOs)
+        {
+            if (invoiceDTOs == null || invoiceDTOs.Count == 0)
+            {
+                return BadRequest("No invoices provided for deletion.");
+            }
+
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            var result = await _invoiceService.DeleteInvoices(invoiceDTOs, clientId);
+            if (result)
+            {
+                return Ok("Invoices deleted successfully.");
+            }
+            else
+            {
+                return StatusCode(500, "An error occurred while deleting invoices.");
+            }
+        }
+
+        [HttpPost("EditInvoice")]
+        public async Task<IActionResult> EditInvoice([FromBody] GetInvoiceDTO invoiceDTO)
+        {
+            if (invoiceDTO == null)
+            {
+                return BadRequest("Invalid invoice data.");
+            }
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            var result = await _invoiceService.EditInvoice(invoiceDTO, clientId);
+            if (result)
+            {
+                return Ok(invoiceDTO);
+            }
+            else
+            {
+                return StatusCode(500, "An error occurred while editing the invoice.");
+            }
         }
 
         private string GetJwtTokenFromRequest()

@@ -1,6 +1,6 @@
 ﻿namespace WolfClient.NewForms
 {
-    partial class AddInvoiceForm
+    partial class EditInvoiceForm
     {
         /// <summary>
         /// Required designer variable.
@@ -100,7 +100,7 @@
             InvoiceErrorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
             InvoiceErrorProvider.ContainerControl = this;
             // 
-            // AddInvoiceForm
+            // EditInvoiceForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -112,8 +112,9 @@
             Controls.Add(NumberTextBox);
             Controls.Add(label2);
             Controls.Add(AddButton);
-            Name = "AddInvoiceForm";
-            Text = "AddInvoiceForm";
+            Name = "EditInvoiceForm";
+            Text = "EditInvoiceForm";
+            Load += EditInvoiceForm_Load;
             ((System.ComponentModel.ISupportInitialize)InvoiceErrorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();

@@ -5,19 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.Models
+namespace DTOS.DTO
 {
-    public class Invoice
+    public class GetInvoiceDTO
     {
         [Key]
         public int InvoiceId { get; set; }
         public string number { get; set; }
         public int RequestId { get; set; }
-        public Request Request { get; set; }
-
+        public GetRequestDTO? Request { get; set; }
         public float Sum { get; set; }
-
-        [Timestamp]
-        public byte[] RowVersion { get; set; }
     }
 }

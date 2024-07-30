@@ -47,10 +47,10 @@ namespace WolfClient.UserControls
             RequestAddButton = new Button();
             label5 = new Label();
             InvoicesDataGridView = new DataGridView();
-            InvoiceId = new DataGridViewTextBoxColumn();
+            number = new DataGridViewTextBoxColumn();
             Sum = new DataGridViewTextBoxColumn();
-            button3 = new Button();
-            button8 = new Button();
+            addInvoiceButton = new Button();
+            DeleteInvoiceButton = new Button();
             panel3 = new Panel();
             PathLink = new LinkLabel();
             panel7 = new Panel();
@@ -162,6 +162,7 @@ namespace WolfClient.UserControls
             IdealParts = new DataGridViewTextBoxColumn();
             PowerOfAttorney = new DataGridViewTextBoxColumn();
             tabPage4 = new TabPage();
+            EditInvoiceButton = new Button();
             btnLastInvoicesDataGridView = new Button();
             btnNextInvoicesDataGridView = new Button();
             btnPreviousInvoicesDataGridView = new Button();
@@ -292,7 +293,7 @@ namespace WolfClient.UserControls
             InvoicesDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             InvoicesDataGridView.BackgroundColor = Color.Moccasin;
             InvoicesDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            InvoicesDataGridView.Columns.AddRange(new DataGridViewColumn[] { InvoiceId, Sum });
+            InvoicesDataGridView.Columns.AddRange(new DataGridViewColumn[] { number, Sum });
             InvoicesDataGridView.Location = new Point(-1, 49);
             InvoicesDataGridView.Margin = new Padding(3, 4, 3, 4);
             InvoicesDataGridView.Name = "InvoicesDataGridView";
@@ -302,39 +303,42 @@ namespace WolfClient.UserControls
             InvoicesDataGridView.TabIndex = 11;
             InvoicesDataGridView.CellContentClick += InvoicesDataGridView_CellContentClick;
             // 
-            // InvoiceId
+            // number
             // 
-            InvoiceId.HeaderText = "Номер";
-            InvoiceId.MinimumWidth = 6;
-            InvoiceId.Name = "InvoiceId";
+            number.DataPropertyName = "number";
+            number.HeaderText = "Номер";
+            number.MinimumWidth = 6;
+            number.Name = "number";
             // 
             // Sum
             // 
+            Sum.DataPropertyName = "Sum";
             Sum.HeaderText = "Сума";
             Sum.MinimumWidth = 6;
             Sum.Name = "Sum";
             // 
-            // button3
+            // addInvoiceButton
             // 
-            button3.BackgroundImage = (Image)resources.GetObject("button3.BackgroundImage");
-            button3.BackgroundImageLayout = ImageLayout.Stretch;
-            button3.Location = new Point(193, 7);
-            button3.Margin = new Padding(3, 4, 3, 4);
-            button3.Name = "button3";
-            button3.Size = new Size(35, 35);
-            button3.TabIndex = 13;
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            addInvoiceButton.BackgroundImage = (Image)resources.GetObject("addInvoiceButton.BackgroundImage");
+            addInvoiceButton.BackgroundImageLayout = ImageLayout.Stretch;
+            addInvoiceButton.Location = new Point(193, 7);
+            addInvoiceButton.Margin = new Padding(3, 4, 3, 4);
+            addInvoiceButton.Name = "addInvoiceButton";
+            addInvoiceButton.Size = new Size(35, 35);
+            addInvoiceButton.TabIndex = 13;
+            addInvoiceButton.UseVisualStyleBackColor = true;
+            addInvoiceButton.Click += button3_Click;
             // 
-            // button8
+            // DeleteInvoiceButton
             // 
-            button8.BackgroundImage = (Image)resources.GetObject("button8.BackgroundImage");
-            button8.BackgroundImageLayout = ImageLayout.Stretch;
-            button8.Location = new Point(234, 7);
-            button8.Name = "button8";
-            button8.Size = new Size(35, 35);
-            button8.TabIndex = 14;
-            button8.UseVisualStyleBackColor = true;
+            DeleteInvoiceButton.BackgroundImage = (Image)resources.GetObject("DeleteInvoiceButton.BackgroundImage");
+            DeleteInvoiceButton.BackgroundImageLayout = ImageLayout.Stretch;
+            DeleteInvoiceButton.Location = new Point(234, 7);
+            DeleteInvoiceButton.Name = "DeleteInvoiceButton";
+            DeleteInvoiceButton.Size = new Size(35, 35);
+            DeleteInvoiceButton.TabIndex = 14;
+            DeleteInvoiceButton.UseVisualStyleBackColor = true;
+            DeleteInvoiceButton.Click += DeleteInvoiceButton_Click;
             // 
             // panel3
             // 
@@ -1532,13 +1536,14 @@ namespace WolfClient.UserControls
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(EditInvoiceButton);
             tabPage4.Controls.Add(btnLastInvoicesDataGridView);
             tabPage4.Controls.Add(btnNextInvoicesDataGridView);
             tabPage4.Controls.Add(btnPreviousInvoicesDataGridView);
             tabPage4.Controls.Add(btnFirstInvoicesDataGridView);
-            tabPage4.Controls.Add(button8);
+            tabPage4.Controls.Add(DeleteInvoiceButton);
             tabPage4.Controls.Add(InvoicesDataGridView);
-            tabPage4.Controls.Add(button3);
+            tabPage4.Controls.Add(addInvoiceButton);
             tabPage4.Location = new Point(4, 29);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
@@ -1546,6 +1551,17 @@ namespace WolfClient.UserControls
             tabPage4.TabIndex = 5;
             tabPage4.Text = "Фактури и такси";
             tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // EditInvoiceButton
+            // 
+            EditInvoiceButton.BackgroundImage = (Image)resources.GetObject("EditInvoiceButton.BackgroundImage");
+            EditInvoiceButton.BackgroundImageLayout = ImageLayout.Stretch;
+            EditInvoiceButton.Location = new Point(275, 7);
+            EditInvoiceButton.Name = "EditInvoiceButton";
+            EditInvoiceButton.Size = new Size(35, 35);
+            EditInvoiceButton.TabIndex = 47;
+            EditInvoiceButton.UseVisualStyleBackColor = true;
+            EditInvoiceButton.Click += EditInvoiceButton_Click;
             // 
             // btnLastInvoicesDataGridView
             // 
@@ -1635,9 +1651,7 @@ namespace WolfClient.UserControls
         private System.Windows.Forms.Button RequestAddButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridView InvoicesDataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn InvoiceId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Sum;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button addInvoiceButton;
         private System.Windows.Forms.Panel panel3;
         private Button RefreshButton;
         private DataGridViewTextBoxColumn RequestId;
@@ -1663,7 +1677,7 @@ namespace WolfClient.UserControls
         private TabPage tabPage5;
         private DataGridView OwnershipDataGridView;
         private Button AddOwnersButton;
-        private Button button8;
+        private Button DeleteInvoiceButton;
         private Button DeleteRequestButton;
         private Button DeleteActivityButton;
         private Button deleteClientsButton;
@@ -1760,5 +1774,8 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn designation;
         private DataGridViewTextBoxColumn locality;
         private LinkLabel PathLink;
+        private DataGridViewTextBoxColumn number;
+        private DataGridViewTextBoxColumn Sum;
+        private Button EditInvoiceButton;
     }
 }

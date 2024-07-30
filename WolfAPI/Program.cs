@@ -125,7 +125,8 @@ builder.Services.AddScoped<IFileModelRepository, FileModelRepository>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IStarRequest_EmployeeRelashionshipModelRepository, StarRequest_EmployeeModelRepository>();
 builder.Services.AddScoped<IStarRequest_EmployeeRelashionshipService, StarRequest_EmployeeRelashionshipService>();
-
+builder.Services.AddScoped<IInvoiceModelRepository, InvoiceModelRepository>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
 builder.Services.AddScoped<IEmailService, EmailService>();

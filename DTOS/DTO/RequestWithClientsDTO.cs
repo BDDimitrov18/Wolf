@@ -3,8 +3,9 @@
 public class RequestWithClientsDTO
 {
     public GetRequestDTO requestDTO { get; set; }
-    public List<GetClientDTO> clientDTOs { get; set; }
+    public List<GetClientDTO>? clientDTOs { get; set; }
     public List<GetActivityDTO>? activityDTOs { get; set; }
+    public List<GetInvoiceDTO>? invoiceDTOs { get; set; }
 
     public RequestWithClientsDTO Copy()
     {
@@ -223,6 +224,22 @@ public class RequestWithClientsDTO
                     designation = plot.designation,
                     locality = plot.locality
                 }).ToList()
+            }).ToList(),
+            invoiceDTOs = this.invoiceDTOs?.Select(invoice => new GetInvoiceDTO
+            {
+                InvoiceId = invoice.InvoiceId,
+                number = invoice.number,
+                RequestId = invoice.RequestId,
+                Request = invoice.Request != null ? new GetRequestDTO
+                {
+                    RequestId = invoice.Request.RequestId,
+                    Price = invoice.Request.Price,
+                    PaymentStatus = invoice.Request.PaymentStatus,
+                    Advance = invoice.Request.Advance,
+                    Comments = invoice.Request.Comments,
+                    RequestName = invoice.Request.RequestName
+                } : null,
+                Sum = invoice.Sum,
             }).ToList()
         };
     }

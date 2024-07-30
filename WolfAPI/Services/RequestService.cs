@@ -16,12 +16,13 @@ namespace WolfAPI.Services
         private readonly IPlotModelRepository _plotModelRepository;
         private readonly IAcitvityService _acitvityService;
         private readonly IClient_RequestRelashionshipService _client_requestRelashionshipService;
+        private readonly IInvoiceModelRepository _invoiceModelRepository;
         private readonly IWebSocketService _webSocketService;
         private readonly IMapper _mapper;
 
         public RequestService(IRequestModelRepository requestRepository, IMapper mapper, IClientModelRepository clientRepository,
         IActivityModelRespository activityModelRespository, IPlotModelRepository plotModelRepository, IClient_RequestRelashionshipService client_requestRelashionshipService,
-        IAcitvityService acitvityService, IWebSocketService webSocketService)
+        IAcitvityService acitvityService, IWebSocketService webSocketService ,IInvoiceModelRepository invoiceModelRepository)
         {
             _requestRepository = requestRepository;
             _mapper = mapper;
@@ -31,6 +32,7 @@ namespace WolfAPI.Services
             _client_requestRelashionshipService = client_requestRelashionshipService;
             _acitvityService = acitvityService;
             _webSocketService = webSocketService;
+            _invoiceModelRepository = invoiceModelRepository;
         }
 
         public async Task<List<RequestWithClientsDTO>> GetLinked(List<GetRequestDTO> requestsDTO)
@@ -40,9 +42,13 @@ namespace WolfAPI.Services
             {
                 List<Client> clients = _clientRepository.GetLinked(_mapper.Map<Request>(requestDTO));
                 List<Activity> activities = _activityModelRespository.FindLinkedActivity(_mapper.Map<Request>(requestDTO));
-                
+                List<Invoice> invoices = await _invoiceModelRepository.LinkedInvoices(_mapper.Map<Request>(requestDTO));
                 List<GetClientDTO> getClientDTOs = new List<GetClientDTO>();
                 List<GetActivityDTO> getActivityDTOs = new List<GetActivityDTO>();
+                List<GetInvoiceDTO> invoiceDTOs = new List<GetInvoiceDTO>();
+                foreach (var invoice in invoices) {
+                    invoiceDTOs.Add(_mapper.Map<GetInvoiceDTO>(invoice));
+                }
                 foreach (Client client in clients)
                 {
                     getClientDTOs.Add(_mapper.Map<GetClientDTO>(client));
@@ -63,7 +69,8 @@ namespace WolfAPI.Services
                 {
                     requestDTO = requestDTO,
                     clientDTOs = getClientDTOs,
-                    activityDTOs = getActivityDTOs
+                    activityDTOs = getActivityDTOs,
+                    invoiceDTOs = invoiceDTOs
                 };
                 requestWithClientsDTOs.Add(requestLink);
             }

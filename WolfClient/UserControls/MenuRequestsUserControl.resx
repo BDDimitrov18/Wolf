@@ -156,13 +156,13 @@
         RK5CYII=
 </value>
   </data>
-  <metadata name="InvoiceId.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="number.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="Sum.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="button3.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="addInvoiceButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAA0BJREFUeF7t
         1sFtw0AQBEEloXyUhJ2OnLl9+uvJhbXoKmD+JHDs4w0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -182,7 +182,7 @@
         RK5CYII=
 </value>
   </data>
-  <data name="button8.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="DeleteInvoiceButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABVlJREFUeF7t
         3U2rr/scx/GtiDJxMzJiKGViogx0HoDiYRiSoZIMmSsTMxOegJKkGJgqMzFg4qAUxcTN7zo5xPmc4+b8
@@ -1533,6 +1533,50 @@
   <metadata name="PowerOfAttorney.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="EditInvoiceButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAACOZJREFUeF7t
+        3c2r5mUdx/ExMYZREkdLBRctwv6FaNOmXbjqYRHozkURZE/0sOgBQSHLFk6GlmJEi8Sg2UUgWBZpjxs1
+        TMFFkWVlLXxAjOpzMXMzp+lzztwPv9/vvq7v5/2G12YY59znM/d1nXHOfeYcIyIiIiIiIiIiIiIiIiIi
+        IiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiovK9WT4gt8uD8pg8
+        L/8BZtCeW+059j25Td4v7TlIC3a9nJKnxP0mAUt7Utpzsj03aaaulnvkdXG/CcC+tefmN6Q9V2nCviCv
+        ihsd6M3L8jmhHTsu3xc3MtC79tx9o9AWXSW/EjcsMIr2l4btuUwbdIU8K25QYDTtuXxSaI0ukZ+KGxIY
+        1aPSntt0gb4jbkBgdA8IHdEN4oYDqniPkOlieUbcaEAVT8sbhM7rQ+IGA6q5WehAJ+RFcWMB1fxFLhU6
+        28fFDQVU9VGhs/1E3EhAVY8IqTfJv8WNBFT1L7lc4rtJ3EBAdR+U+NrXUbtxgOq+JvGdFjcOUN1DEt9v
+        xI0DVPe4xPdXceMA1f1J4nPDACnic6MAKeJzowAp4nOjACnic6MAKeJzowAp4nOjACnic6MAKeJzowAp
+        4nOjACnic6MAKeJzowAp4nOjACnic6MAKeJzowAp4nOjACnic6MAKeJzowAp4nOjACnic6MAKeJzowAp
+        4nOjACnic6MAKeJzo6C2p+RGWdW+Qexn5W/ifn5l8blRUNedclhXyqPi/ruq4nOjoKbb5UIdl6RLID43
+        CurZ5DvhnpCUSyA+Nwpq2ebbYKdcAvG5UVDHLt8DP+ESiM+Nghp2Ofyrql8C8blRML4pDv+qdgk8Ju7t
+        jC4+NwrGdrdM3WVS8RKIz42Ccc1x+FdVvATic6NgTHMe/lXVLoH43CgYzxKHf1W7BH4t7nGMJj43Csby
+        rCzd5fILcY9nJPG5UTCe+2Tp2iUw+p8E4nOjYExL/m/AqtEvgfjcKBjX12Xp2iXwhLjH07v43CgY2ylZ
+        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
+        ERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERUcmOHfsvnqB3YpPSusMA
+        AAAASUVORK5CYII=
+</value>
+  </data>
   <data name="btnLastInvoicesDataGridView.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAABDhJREFUeF7t
