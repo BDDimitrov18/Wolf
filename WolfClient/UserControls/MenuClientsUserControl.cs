@@ -61,6 +61,7 @@ namespace WolfClient.UserControls
                 loaded = true;
                 setClientsDataGridView();
             }
+            ClientsDataGridView.SelectionChanged += clientsDataGridView_SelectionChanged;
             LogInEvent.logIn += OnUserLoggedIn;
             btnFirstClientsDataGridView.Click += (s, e) => NavigateDataGridView(ClientsDataGridView, "First");
             btnPreviousClientsDataGridView.Click += (s, e) => NavigateDataGridView(ClientsDataGridView, "Previous");
@@ -233,8 +234,12 @@ namespace WolfClient.UserControls
 
         private async void EditClientButton_Click(object sender, EventArgs e)
         {
-
-            EditCientForm editCientForm = new EditCientForm(_apiClient,_userClient,_adminClient,_dataService);
+            if (!(_dataService.getSelectedCLients() != null && _dataService.getSelectedCLients().Count() > 0)) {
+                MessageBox.Show("Please select a client");
+                return;
+            }
+            
+            EditCientForm editCientForm = new EditCientForm(_apiClient, _userClient, _adminClient, _dataService);
             editCientForm.Show();
             editCientForm.Disposed += EditClientFormDispose;
         }
@@ -268,6 +273,11 @@ namespace WolfClient.UserControls
                     _dataService.SetSelectedClients(selectedClients);
                 }
             }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

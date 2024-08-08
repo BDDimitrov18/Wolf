@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WolfClient.Services.Interfaces;
 using WolfClient.UserControls;
-using static CSJ2K.j2k.codestream.HeaderInfo;
 
 namespace WolfClient.NewForms
 {
@@ -38,6 +37,7 @@ namespace WolfClient.NewForms
             owners = new List<GetOwnerDTO>();
             _ownerValidator = new CreateOwnerDTO();
             _documentOfOwnershipValidator = new CreateDocumentOfOwnershipDTO();
+            EGNTextBox.TextChanged += EGNTextBox_TextChanged;
         }
 
         private void label14_Click(object sender, EventArgs e)
@@ -276,6 +276,10 @@ namespace WolfClient.NewForms
             var ownersResponse = await _userClient.GetAllOwners();
             owners = ownersResponse.ResponseObj;
             List<GetPlotDTO> plotDTOs = _dataService.GetSelectedPlots();
+
+            EGNTextBox.DataSource = owners;
+            EGNTextBox.DisplayMember = "EGN";
+            EGNTextBox.ValueMember = "OwnerID";
 
             plotComboBox.DataSource = plotDTOs;
             plotComboBox.DisplayMember = "DisplayMemberPlot";
@@ -673,6 +677,40 @@ namespace WolfClient.NewForms
 
         private void EGNTextBox_TextChanged(object sender, EventArgs e)
         {
+            string selectedEGN = EGNTextBox.Text;
+
+            // Temporarily remove the event handler to prevent it from firing while updating the items
+            EGNTextBox.TextChanged -= EGNTextBox_TextChanged;
+
+            // Filter the list based on the text input or show all items if the text is empty
+            List<GetOwnerDTO> filteredOwners;
+            if (string.IsNullOrWhiteSpace(selectedEGN))
+            {
+                // If the text is empty, display all plots
+                filteredOwners = owners;
+            }
+            else
+            {
+                // Get the list of plots and filter based on the text input
+                filteredOwners = owners
+                    .Where(owner => owner.EGN.IndexOf(selectedEGN, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .OrderBy(owner => owner.EGN)
+                    .ToList();
+            }
+
+            // Update the ComboBox DataSource
+            EGNTextBox.DataSource = filteredOwners;
+            EGNTextBox.DisplayMember = "EGN";
+            EGNTextBox.ValueMember = "OwnerID";
+
+            // Restore the user's text and keep the ComboBox open
+            EGNTextBox.Text = selectedEGN;
+            EGNTextBox.SelectionStart = selectedEGN.Length;
+
+            // Reattach the event handler
+            EGNTextBox.TextChanged += EGNTextBox_TextChanged;
+
+
             string egn = EGNTextBox.Text;
             GetOwnerDTO owner = owners.Where(ow => ow.EGN == egn).FirstOrDefault();
             if (owner != null)

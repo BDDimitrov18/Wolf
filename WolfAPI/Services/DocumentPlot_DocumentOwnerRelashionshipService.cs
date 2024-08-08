@@ -142,5 +142,15 @@ namespace WolfAPI.Services
             await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
             return await _DocumentOwnerRelashionshipModelRepository.EditRelashionship(document);
         }
+
+        public async Task<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>> FetchLinkedRelashionships(GetPlotDTO plotDTO) { 
+            Plot plot = _mapper.Map<Plot>(plotDTO);
+            List<DocumentPlot_DocumentOwnerRelashionship> relashionships = await _DocumentOwnerRelashionshipModelRepository.FetchLinkedRelashionships(plot);
+            List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs = new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
+            foreach (var relashionship in relashionships) {
+                relashionshipDTOs.Add(_mapper.Map<GetDocumentPlot_DocumentOwnerRelashionshipDTO>(relashionship));
+            }
+            return relashionshipDTOs;
+        }
     }
 }

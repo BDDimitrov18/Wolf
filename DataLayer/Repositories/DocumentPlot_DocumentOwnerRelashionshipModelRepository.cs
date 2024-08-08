@@ -126,5 +126,25 @@ namespace DataAccessLayer.Repositories
 
             return false;
         }
+
+        public async Task<List<DocumentPlot_DocumentOwnerRelashionship>> FetchLinkedRelashionships(Plot plot)
+        {
+            List<DocumentPlot_DocumentOwnerRelashionship> relashionships = await _WolfDbContext.documentPlot_DocumentOwenerRelashionships
+                .Include(dp => dp.DocumentPlot)
+                    .ThenInclude(dpr => dpr.Plot)
+                .Include(dp => dp.DocumentPlot)
+                    .ThenInclude(dpr => dpr.documentOfOwnership)
+                        .ThenInclude(documentOfOwnership => documentOfOwnership.DocumentOwners)
+                            .ThenInclude(dor => dor.Owner)
+                .Include(dp => dp.DocumentOwner)
+                    .ThenInclude(documentOwner => documentOwner.Document)
+                .Include(dp => dp.DocumentOwner)
+                    .ThenInclude(documentOwner => documentOwner.Owner)
+                .Include(dp => dp.powerOfAttorneyDocument) // Include PowerOfAttorneyDocument
+                .Where(dp => dp.DocumentPlot.PlotId == plot.PlotId)
+                .ToListAsync();
+
+            return relashionships;
+        }
     }
 }

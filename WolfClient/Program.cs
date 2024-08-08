@@ -1,9 +1,13 @@
-using WolfClient.Services.Interfaces;
-using WolfClient.Services;
-using WolfClient.NewForms;
-using WolfClient.UserControls;
+using System;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Microsoft.Extensions.Configuration;
 using Patagames.Pdf.Net;
+using WolfClient.NewForms;
+using WolfClient.Services;
+using WolfClient.Services.Interfaces;
+using WolfClient.UserControls;
 
 namespace WolfClient
 {
@@ -17,27 +21,48 @@ namespace WolfClient
         [STAThread]
         static void Main()
         {
-            PdfCommon.Initialize(null, @"..\..\..\x64\pdfium.dll");
+            // Set up configuration
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.Production.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
+            IConfiguration configuration = builder.Build();
+
+            string environment = configuration["Environment"] ?? "Production";
+            string pdfiumDllPath = configuration["Paths:PdfiumDll"];
+            string relativePath = configuration["Paths:RelativePath"];
+            string webSocketUrl = configuration["WebSocketClientService:Url"];
+            string apiBaseUrl = configuration["Api:BaseUrl"];
+
             string currentDirectory = Directory.GetCurrentDirectory();
-            string relativePath = @"..\..\..\EKT\ek_atte.xlsx";
+            PdfCommon.Initialize(null, pdfiumDllPath);
             string filePath = Path.GetFullPath(Path.Combine(currentDirectory, relativePath));
 
-            IApiClient apiClient = new ApiClient();
-            IUserClient userClient = new UserClient();
-            IAdminClient adminClient = new AdminClient();
+            IApiClient apiClient = new ApiClient(apiBaseUrl);
+            IUserClient userClient = new UserClient(apiBaseUrl);
+            IAdminClient adminClient = new AdminClient(apiBaseUrl);
             IDataService dataService = new DataService();
             IReadExcel readExcel = new ReadExcel();
-            IFileUploader fileUploader = new FileUploader();
-            _webSocketClientService = new WebSocketClientService("wss://localhost:44359/ws", dataService);
+            IFileUploader fileUploader = new FileUploader(apiBaseUrl);
+            _webSocketClientService = new WebSocketClientService(webSocketUrl, dataService);
 
             dataService.SetEKTViewModels(readExcel.ReadExcelFile(filePath));
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            // Run updates only in production environment
+            if (environment == "Production")
+            {
+               Task.Run(async () => await Updater.CheckForUpdatesAsync()).Wait();
+            }
+
             MenuRequestsUserControl menuRequestsUserControl = new MenuRequestsUserControl(apiClient, userClient, adminClient, dataService, fileUploader);
             MenuClientsUserControl menuClientsUserControl = new MenuClientsUserControl(apiClient, userClient, adminClient, dataService);
             MenuEmployeesUserControl menuEmployeesUserControl = new MenuEmployeesUserControl(apiClient, userClient, adminClient, dataService);
-            Application.Run(new MainForm(apiClient, userClient, adminClient, dataService, menuRequestsUserControl, menuClientsUserControl, menuEmployeesUserControl, fileUploader ,_webSocketClientService));
+            Application.Run(new MainForm(apiClient, userClient, adminClient, dataService, menuRequestsUserControl, menuClientsUserControl, menuEmployeesUserControl, fileUploader, _webSocketClientService));
         }
 
         public static async Task ConnectWebSocketAsync(string token)

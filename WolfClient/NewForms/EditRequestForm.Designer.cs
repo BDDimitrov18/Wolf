@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditRequestForm));
             AddRequestButton = new Button();
             AddNonExistingClientButton = new Button();
             AddNonExistingClientLabel = new Label();
@@ -42,7 +43,6 @@
             PriceOfRequestLabel = new Label();
             NameOfRequestTextBox = new TextBox();
             NameOfRequestTiltleLabel = new Label();
-            AddRequestTitleLabel = new Label();
             AvailableClientsFlowPanel = new FlowLayoutPanel();
             NotAvailableClientsFlowPanel = new FlowLayoutPanel();
             RequestErrorProvider = new ErrorProvider(components);
@@ -57,7 +57,7 @@
             // 
             // AddRequestButton
             // 
-            AddRequestButton.Location = new Point(861, 754);
+            AddRequestButton.Location = new Point(354, 710);
             AddRequestButton.Margin = new Padding(3, 4, 3, 4);
             AddRequestButton.Name = "AddRequestButton";
             AddRequestButton.Size = new Size(174, 46);
@@ -68,7 +68,7 @@
             // 
             // AddNonExistingClientButton
             // 
-            AddNonExistingClientButton.Location = new Point(652, 534);
+            AddNonExistingClientButton.Location = new Point(624, 409);
             AddNonExistingClientButton.Margin = new Padding(3, 4, 3, 4);
             AddNonExistingClientButton.Name = "AddNonExistingClientButton";
             AddNonExistingClientButton.Size = new Size(163, 29);
@@ -81,7 +81,7 @@
             // 
             AddNonExistingClientLabel.AutoSize = true;
             AddNonExistingClientLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            AddNonExistingClientLabel.Location = new Point(415, 534);
+            AddNonExistingClientLabel.Location = new Point(387, 409);
             AddNonExistingClientLabel.Name = "AddNonExistingClientLabel";
             AddNonExistingClientLabel.Size = new Size(231, 25);
             AddNonExistingClientLabel.TabIndex = 27;
@@ -89,7 +89,7 @@
             // 
             // AddClientComboBoxButton
             // 
-            AddClientComboBoxButton.Location = new Point(745, 136);
+            AddClientComboBoxButton.Location = new Point(717, 11);
             AddClientComboBoxButton.Margin = new Padding(3, 4, 3, 4);
             AddClientComboBoxButton.Name = "AddClientComboBoxButton";
             AddClientComboBoxButton.Size = new Size(131, 29);
@@ -102,7 +102,7 @@
             // 
             AddExistingClientToRequestLabel.AutoSize = true;
             AddExistingClientToRequestLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            AddExistingClientToRequestLabel.Location = new Point(415, 134);
+            AddExistingClientToRequestLabel.Location = new Point(387, 9);
             AddExistingClientToRequestLabel.Name = "AddExistingClientToRequestLabel";
             AddExistingClientToRequestLabel.Size = new Size(331, 25);
             AddExistingClientToRequestLabel.TabIndex = 24;
@@ -110,7 +110,7 @@
             // 
             // CommentsRichTextBox
             // 
-            CommentsRichTextBox.Location = new Point(45, 657);
+            CommentsRichTextBox.Location = new Point(17, 532);
             CommentsRichTextBox.Margin = new Padding(3, 4, 3, 4);
             CommentsRichTextBox.Name = "CommentsRichTextBox";
             CommentsRichTextBox.Size = new Size(316, 143);
@@ -121,7 +121,7 @@
             // 
             NewClientsFlowPanel.AutoSize = true;
             NewClientsFlowPanel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            NewClientsFlowPanel.Location = new Point(45, 628);
+            NewClientsFlowPanel.Location = new Point(17, 503);
             NewClientsFlowPanel.Name = "NewClientsFlowPanel";
             NewClientsFlowPanel.Size = new Size(107, 25);
             NewClientsFlowPanel.TabIndex = 22;
@@ -129,7 +129,7 @@
             // 
             // AdvanceTextBox
             // 
-            AdvanceTextBox.Location = new Point(45, 445);
+            AdvanceTextBox.Location = new Point(17, 320);
             AdvanceTextBox.Margin = new Padding(3, 4, 3, 4);
             AdvanceTextBox.Name = "AdvanceTextBox";
             AdvanceTextBox.Size = new Size(253, 27);
@@ -139,7 +139,7 @@
             // 
             AdvanceLabel.AutoSize = true;
             AdvanceLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            AdvanceLabel.Location = new Point(40, 386);
+            AdvanceLabel.Location = new Point(12, 261);
             AdvanceLabel.Name = "AdvanceLabel";
             AdvanceLabel.Size = new Size(164, 25);
             AdvanceLabel.TabIndex = 20;
@@ -147,7 +147,7 @@
             // 
             // PriceOfRequestTextBox
             // 
-            PriceOfRequestTextBox.Location = new Point(45, 316);
+            PriceOfRequestTextBox.Location = new Point(17, 191);
             PriceOfRequestTextBox.Margin = new Padding(3, 4, 3, 4);
             PriceOfRequestTextBox.Name = "PriceOfRequestTextBox";
             PriceOfRequestTextBox.Size = new Size(253, 27);
@@ -157,7 +157,7 @@
             // 
             PriceOfRequestLabel.AutoSize = true;
             PriceOfRequestLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            PriceOfRequestLabel.Location = new Point(40, 257);
+            PriceOfRequestLabel.Location = new Point(12, 132);
             PriceOfRequestLabel.Name = "PriceOfRequestLabel";
             PriceOfRequestLabel.Size = new Size(321, 25);
             PriceOfRequestLabel.TabIndex = 18;
@@ -165,7 +165,7 @@
             // 
             // NameOfRequestTextBox
             // 
-            NameOfRequestTextBox.Location = new Point(45, 185);
+            NameOfRequestTextBox.Location = new Point(17, 60);
             NameOfRequestTextBox.Margin = new Padding(3, 4, 3, 4);
             NameOfRequestTextBox.Name = "NameOfRequestTextBox";
             NameOfRequestTextBox.Size = new Size(253, 27);
@@ -175,29 +175,18 @@
             // 
             NameOfRequestTiltleLabel.AutoSize = true;
             NameOfRequestTiltleLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            NameOfRequestTiltleLabel.Location = new Point(40, 134);
+            NameOfRequestTiltleLabel.Location = new Point(12, 9);
             NameOfRequestTiltleLabel.Name = "NameOfRequestTiltleLabel";
             NameOfRequestTiltleLabel.Size = new Size(185, 25);
             NameOfRequestTiltleLabel.TabIndex = 16;
             NameOfRequestTiltleLabel.Text = "Име На поръчката";
-            // 
-            // AddRequestTitleLabel
-            // 
-            AddRequestTitleLabel.AutoSize = true;
-            AddRequestTitleLabel.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
-            AddRequestTitleLabel.Location = new Point(319, 35);
-            AddRequestTitleLabel.Name = "AddRequestTitleLabel";
-            AddRequestTitleLabel.Size = new Size(462, 42);
-            AddRequestTitleLabel.TabIndex = 15;
-            AddRequestTitleLabel.Text = "Редактиране На поръчка";
-            AddRequestTitleLabel.Click += AddRequestTitleLabel_Click;
             // 
             // AvailableClientsFlowPanel
             // 
             AvailableClientsFlowPanel.AutoScroll = true;
             AvailableClientsFlowPanel.BackColor = SystemColors.ActiveCaption;
             AvailableClientsFlowPanel.BorderStyle = BorderStyle.Fixed3D;
-            AvailableClientsFlowPanel.Location = new Point(415, 172);
+            AvailableClientsFlowPanel.Location = new Point(387, 47);
             AvailableClientsFlowPanel.Name = "AvailableClientsFlowPanel";
             AvailableClientsFlowPanel.Size = new Size(461, 283);
             AvailableClientsFlowPanel.TabIndex = 32;
@@ -207,7 +196,7 @@
             NotAvailableClientsFlowPanel.AutoScroll = true;
             NotAvailableClientsFlowPanel.BackColor = SystemColors.ActiveCaption;
             NotAvailableClientsFlowPanel.BorderStyle = BorderStyle.Fixed3D;
-            NotAvailableClientsFlowPanel.Location = new Point(415, 584);
+            NotAvailableClientsFlowPanel.Location = new Point(387, 459);
             NotAvailableClientsFlowPanel.Name = "NotAvailableClientsFlowPanel";
             NotAvailableClientsFlowPanel.Size = new Size(410, 216);
             NotAvailableClientsFlowPanel.TabIndex = 33;
@@ -222,7 +211,7 @@
             NameOfRequestErrorLabel.AutoSize = true;
             NameOfRequestErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
             NameOfRequestErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
-            NameOfRequestErrorLabel.Location = new Point(45, 166);
+            NameOfRequestErrorLabel.Location = new Point(17, 41);
             NameOfRequestErrorLabel.Name = "NameOfRequestErrorLabel";
             NameOfRequestErrorLabel.Size = new Size(114, 15);
             NameOfRequestErrorLabel.TabIndex = 34;
@@ -233,7 +222,7 @@
             FinalPriceErrorLabel.AutoSize = true;
             FinalPriceErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
             FinalPriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
-            FinalPriceErrorLabel.Location = new Point(45, 297);
+            FinalPriceErrorLabel.Location = new Point(17, 172);
             FinalPriceErrorLabel.Name = "FinalPriceErrorLabel";
             FinalPriceErrorLabel.Size = new Size(171, 15);
             FinalPriceErrorLabel.TabIndex = 35;
@@ -244,7 +233,7 @@
             AdvancePriceErrorLabel.AutoSize = true;
             AdvancePriceErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
             AdvancePriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
-            AdvancePriceErrorLabel.Location = new Point(45, 426);
+            AdvancePriceErrorLabel.Location = new Point(17, 301);
             AdvancePriceErrorLabel.Name = "AdvancePriceErrorLabel";
             AdvancePriceErrorLabel.Size = new Size(171, 15);
             AdvancePriceErrorLabel.TabIndex = 36;
@@ -252,14 +241,14 @@
             // 
             // PathTextBox
             // 
-            PathTextBox.Location = new Point(45, 571);
+            PathTextBox.Location = new Point(17, 446);
             PathTextBox.Name = "PathTextBox";
             PathTextBox.Size = new Size(316, 27);
             PathTextBox.TabIndex = 42;
             // 
             // openFilesButton
             // 
-            openFilesButton.Location = new Point(243, 534);
+            openFilesButton.Location = new Point(215, 409);
             openFilesButton.Name = "openFilesButton";
             openFilesButton.Size = new Size(118, 29);
             openFilesButton.TabIndex = 41;
@@ -271,7 +260,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(45, 534);
+            label1.Location = new Point(17, 409);
             label1.Name = "label1";
             label1.Size = new Size(197, 25);
             label1.TabIndex = 40;
@@ -283,7 +272,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             BackColor = SystemColors.GradientActiveCaption;
-            ClientSize = new Size(1047, 836);
+            ClientSize = new Size(878, 760);
             Controls.Add(PathTextBox);
             Controls.Add(openFilesButton);
             Controls.Add(label1);
@@ -305,11 +294,11 @@
             Controls.Add(PriceOfRequestLabel);
             Controls.Add(NameOfRequestTextBox);
             Controls.Add(NameOfRequestTiltleLabel);
-            Controls.Add(AddRequestTitleLabel);
-            MaximumSize = new Size(1065, 883);
-            MinimumSize = new Size(1065, 883);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximumSize = new Size(896, 807);
+            MinimumSize = new Size(896, 807);
             Name = "EditRequestForm";
-            Text = "EditRequestForm";
+            Text = "Wolf: Редактиране на поръчка";
             Load += AddRequestForm_Load;
             ((System.ComponentModel.ISupportInitialize)RequestErrorProvider).EndInit();
             ResumeLayout(false);
@@ -331,7 +320,6 @@
         private Label PriceOfRequestLabel;
         private TextBox NameOfRequestTextBox;
         private Label NameOfRequestTiltleLabel;
-        private Label AddRequestTitleLabel;
         private Panel NewClientsPanel;
         private FlowLayoutPanel AvailableClientsFlowPanel;
         private Panel panel1;

@@ -59,7 +59,6 @@ namespace WolfClient.UserControls
             FullNameTextBox = new TextBox();
             label3 = new Label();
             numberTextBox = new TextBox();
-            button1 = new Button();
             EditClientButton = new Button();
             ((System.ComponentModel.ISupportInitialize)ClientsDataGridView).BeginInit();
             panel7.SuspendLayout();
@@ -328,23 +327,12 @@ namespace WolfClient.UserControls
             numberTextBox.Size = new Size(85, 27);
             numberTextBox.TabIndex = 25;
             // 
-            // button1
-            // 
-            button1.BackColor = Color.Transparent;
-            button1.BackgroundImage = (Image)resources.GetObject("button1.BackgroundImage");
-            button1.BackgroundImageLayout = ImageLayout.Stretch;
-            button1.Location = new Point(185, 15);
-            button1.Name = "button1";
-            button1.Size = new Size(35, 35);
-            button1.TabIndex = 23;
-            button1.UseVisualStyleBackColor = false;
-            // 
             // EditClientButton
             // 
             EditClientButton.BackColor = Color.Transparent;
             EditClientButton.BackgroundImage = (Image)resources.GetObject("EditClientButton.BackgroundImage");
             EditClientButton.BackgroundImageLayout = ImageLayout.Stretch;
-            EditClientButton.Location = new Point(226, 15);
+            EditClientButton.Location = new Point(185, 15);
             EditClientButton.Name = "EditClientButton";
             EditClientButton.Size = new Size(35, 35);
             EditClientButton.TabIndex = 26;
@@ -358,7 +346,6 @@ namespace WolfClient.UserControls
             BackColor = SystemColors.GradientActiveCaption;
             Controls.Add(EditClientButton);
             Controls.Add(panel1);
-            Controls.Add(button1);
             Controls.Add(panel7);
             Controls.Add(label1);
             Controls.Add(RefreshButton);
@@ -404,7 +391,6 @@ namespace WolfClient.UserControls
         private Label label3;
         private TextBox numberTextBox;
         private Label label6;
-        private Button button1;
         private Button EditClientButton;
     }
 }

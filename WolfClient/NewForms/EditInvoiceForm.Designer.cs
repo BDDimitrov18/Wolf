@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditInvoiceForm));
             AddButton = new Button();
             label2 = new Label();
             NumberTextBox = new TextBox();
@@ -112,8 +113,9 @@
             Controls.Add(NumberTextBox);
             Controls.Add(label2);
             Controls.Add(AddButton);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "EditInvoiceForm";
-            Text = "EditInvoiceForm";
+            Text = "Wolf: Редактиране на фактура ";
             Load += EditInvoiceForm_Load;
             ((System.ComponentModel.ISupportInitialize)InvoiceErrorProvider).EndInit();
             ResumeLayout(false);

@@ -12,5 +12,6 @@ namespace WolfAPI.Services.Interfaces
 
         public Task<bool> editDocument(GetDocumentPlot_DocumentOwnerRelashionshipDTO documentDTO, string clientId);
 
+        public Task<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>> FetchLinkedRelashionships(GetPlotDTO plotDTO);
     }
 }

@@ -29,9 +29,8 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            label1 = new Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddOwnerForm));
             label2 = new Label();
-            EGNTextBox = new TextBox();
             label3 = new Label();
             label4 = new Label();
             TOMComboBox = new TextBox();
@@ -62,6 +61,7 @@
             label20 = new Label();
             IdealPartsTypeComboBox = new ComboBox();
             panel3 = new Panel();
+            EGNTextBox = new ComboBox();
             WayOfAcquiringLabel = new Label();
             IdealPartsValidatorLabel = new Label();
             AddressValidatorLabel = new Label();
@@ -99,16 +99,6 @@
             panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 22F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(192, -2);
-            label1.Name = "label1";
-            label1.Size = new Size(447, 50);
-            label1.TabIndex = 0;
-            label1.Text = "Добавяне на Собственик";
-            // 
             // label2
             // 
             label2.AutoSize = true;
@@ -118,14 +108,6 @@
             label2.Size = new Size(133, 28);
             label2.TabIndex = 1;
             label2.Text = "ЕГН/БУЛСТАТ";
-            // 
-            // EGNTextBox
-            // 
-            EGNTextBox.Location = new Point(18, 56);
-            EGNTextBox.Name = "EGNTextBox";
-            EGNTextBox.Size = new Size(292, 27);
-            EGNTextBox.TabIndex = 2;
-            EGNTextBox.TextChanged += EGNTextBox_TextChanged;
             // 
             // label3
             // 
@@ -321,7 +303,7 @@
             panel2.Controls.Add(label7);
             panel2.Controls.Add(CaseComboBox);
             panel2.Controls.Add(label9);
-            panel2.Location = new Point(458, 62);
+            panel2.Location = new Point(458, 12);
             panel2.Name = "panel2";
             panel2.Size = new Size(424, 609);
             panel2.TabIndex = 24;
@@ -434,6 +416,7 @@
             // 
             panel3.BackColor = SystemColors.GradientActiveCaption;
             panel3.BorderStyle = BorderStyle.Fixed3D;
+            panel3.Controls.Add(EGNTextBox);
             panel3.Controls.Add(WayOfAcquiringLabel);
             panel3.Controls.Add(IdealPartsValidatorLabel);
             panel3.Controls.Add(AddressValidatorLabel);
@@ -447,15 +430,22 @@
             panel3.Controls.Add(label13);
             panel3.Controls.Add(IdealPartsTypeComboBox);
             panel3.Controls.Add(label2);
-            panel3.Controls.Add(EGNTextBox);
             panel3.Controls.Add(label3);
             panel3.Controls.Add(label12);
             panel3.Controls.Add(IdealPartsPanel);
-            panel3.Location = new Point(12, 268);
+            panel3.Location = new Point(12, 218);
             panel3.Name = "panel3";
             panel3.Size = new Size(416, 403);
             panel3.TabIndex = 25;
             panel3.Paint += panel3_Paint;
+            // 
+            // EGNTextBox
+            // 
+            EGNTextBox.FormattingEnabled = true;
+            EGNTextBox.Location = new Point(19, 55);
+            EGNTextBox.Name = "EGNTextBox";
+            EGNTextBox.Size = new Size(291, 28);
+            EGNTextBox.TabIndex = 42;
             // 
             // WayOfAcquiringLabel
             // 
@@ -579,7 +569,7 @@
             panel4.Controls.Add(plotTypeLabel);
             panel4.Controls.Add(plotLocalityLabel);
             panel4.Controls.Add(label14);
-            panel4.Location = new Point(12, 62);
+            panel4.Location = new Point(12, 12);
             panel4.Name = "panel4";
             panel4.Size = new Size(416, 184);
             panel4.TabIndex = 26;
@@ -654,7 +644,7 @@
             // 
             // SubmitButton
             // 
-            SubmitButton.Location = new Point(383, 817);
+            SubmitButton.Location = new Point(383, 767);
             SubmitButton.Name = "SubmitButton";
             SubmitButton.Size = new Size(108, 29);
             SubmitButton.TabIndex = 27;
@@ -679,7 +669,7 @@
             panel1.Controls.Add(label23);
             panel1.Controls.Add(PowerOfAttorneyNumber);
             panel1.Controls.Add(label18);
-            panel1.Location = new Point(12, 693);
+            panel1.Location = new Point(12, 643);
             panel1.Name = "panel1";
             panel1.Size = new Size(870, 107);
             panel1.TabIndex = 28;
@@ -767,15 +757,15 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
-            ClientSize = new Size(897, 852);
+            ClientSize = new Size(897, 801);
             Controls.Add(panel1);
             Controls.Add(SubmitButton);
             Controls.Add(panel4);
             Controls.Add(panel3);
             Controls.Add(panel2);
-            Controls.Add(label1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AddOwnerForm";
-            Text = "AddOwnerForm";
+            Text = "Wolf: Добавяне на собственик";
             Load += AddOwnerForm_Load;
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
@@ -787,14 +777,10 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private Label label1;
         private Label label2;
-        private TextBox EGNTextBox;
         private Label label3;
         private Label label4;
         private TextBox TOMComboBox;
@@ -855,5 +841,6 @@
         private Label label18;
         private Label label24;
         private DateTimePicker PowerOfAttorneyDatetimePicker;
+        private ComboBox EGNTextBox;
     }
 }

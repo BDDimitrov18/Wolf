@@ -23,6 +23,7 @@ namespace WolfClient.UserControls
         public List<GetActivityTypeDTO> _activityTypesDTOs;
         CreateTaskDTO _taskValidator;
         public GetActivityDTO _selectedActivity;
+        public event EventHandler DisposeRequested;
         public ExistingActivityAddTask(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
@@ -35,6 +36,7 @@ namespace WolfClient.UserControls
             _selectedActivity = null;
         }
 
+        
         private async void AddActivityTaskForm_Load(object sender, EventArgs e)
         {
             var response = await _userClient.GetActivityTypes();
@@ -287,6 +289,8 @@ namespace WolfClient.UserControls
                 _dataService.AddActivityToTheList(responseActivityFromTask.ResponseObj);
 
             }
+            DisposeRequested?.Invoke(this, EventArgs.Empty);
+            Dispose();
         }
 
         private void ExecitantComboBox_SelectedIndexChanged(object sender, EventArgs e)

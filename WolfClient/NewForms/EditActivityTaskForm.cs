@@ -493,7 +493,7 @@ namespace WolfClient.NewForms
                     }
                 }
             }
-            Close();
+            Dispose();
         }
     }
 }

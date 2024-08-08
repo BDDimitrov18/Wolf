@@ -267,6 +267,11 @@ namespace WolfClient.NewForms
                     }
                 }
             }
+
+            var responseRelashionships = await _userClient.GetLinkedPlotOwnerRelashionshipSinglePlot(plotResponse.ResponseObj);
+            _dataService.EditOrAddPlotOwnerRelashionships(responseRelashionships.ResponseObj);
+
+            Dispose();
         }
 
         

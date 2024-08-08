@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WolfClient.Services.Interfaces;
 
+
+
 namespace WolfClient.UserControls
 {
     public partial class NonExistingActivityAddTask : UserControl
@@ -23,6 +25,8 @@ namespace WolfClient.UserControls
         public List<GetActivityTypeDTO> _activityTypesDTOs;
         CreateActivityDTO _activityValidator;
         CreateTaskDTO _taskValidator;
+
+        public event EventHandler DisposeRequested;
         public NonExistingActivityAddTask(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
@@ -33,7 +37,10 @@ namespace WolfClient.UserControls
             _activityValidator = new CreateActivityDTO();
             _taskValidator = new CreateTaskDTO();
             _activityTypesDTOs = new List<GetActivityTypeDTO>();
+            ActivityComboBox.TextChanged += ActivityComboBox_TextChanged;
         }
+
+        
 
         private async void AddActivityTaskForm_Load(object sender, EventArgs e)
         {
@@ -95,6 +102,45 @@ namespace WolfClient.UserControls
             ParentActivityComboBox.ValueMember = "ActivityId";
 
             StatusComboBox.SelectedIndex = 0;
+        }
+
+        public void ActivityComboBox_TextChanged(object sender, EventArgs e)
+        {
+            
+            string activity = ActivityComboBox.Text;
+
+            // Temporarily remove the event handler to prevent it from firing while updating the items
+            ActivityComboBox.TextChanged -= ActivityComboBox_TextChanged;
+
+            // Filter the list based on the text input or show all items if the text is empty
+            List<GetActivityTypeDTO> filteredActivityTypes;
+            if (string.IsNullOrWhiteSpace(activity))
+            {
+                // If the text is empty, display all plots
+                filteredActivityTypes = _dataService.GetActivityTypeDTOs();
+            }
+            else
+            {
+                // Get the list of plots and filter based on the text input
+                filteredActivityTypes = _dataService.GetActivityTypeDTOs()
+                    .Where(activityType => activityType.ActivityTypeName.IndexOf(activity, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .OrderBy(activityType => activityType.ActivityTypeName)
+                    .ToList();
+            }
+
+            // Update the ComboBox DataSource
+            ActivityComboBox.DataSource = filteredActivityTypes;
+            ActivityComboBox.DisplayMember = "ActivityTypeName";
+            ActivityComboBox.ValueMember = "ActivityTypeID";
+
+            // Restore the user's text and keep the ComboBox open
+            ActivityComboBox.Text = activity;
+            ActivityComboBox.SelectionStart = activity.Length;
+
+            // Reattach the event handler
+            ActivityComboBox.TextChanged += ActivityComboBox_TextChanged;
+
+
         }
 
         private void ValidateModel()
@@ -438,6 +484,7 @@ namespace WolfClient.UserControls
 
 
             }
+            DisposeRequested?.Invoke(this, EventArgs.Empty);
             Dispose();
         }
 

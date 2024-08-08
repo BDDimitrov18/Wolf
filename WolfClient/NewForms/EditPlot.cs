@@ -170,6 +170,8 @@ namespace WolfClient.NewForms
             await _userClient.EditPlot(editPlot);
 
             _dataService.EditPlot(editPlot);
+
+            Dispose();
         }
 
         

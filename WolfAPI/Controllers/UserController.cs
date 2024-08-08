@@ -704,6 +704,11 @@ namespace WolfAPI.Controllers
             }
         }
 
+        [HttpPost("FetchLinkedPlotOwnerRelashionships")]
+        public async Task<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>> FetchLinkedPlotOwnerRelashionships([FromBody] GetPlotDTO plotDTO) {
+            return await _documentPlot_DocumentOwnerRelashionshipService.FetchLinkedRelashionships(plotDTO);
+        }
+
         private string GetJwtTokenFromRequest()
         {
             var authHeader = HttpContext.Request.Headers["Authorization"].ToString();

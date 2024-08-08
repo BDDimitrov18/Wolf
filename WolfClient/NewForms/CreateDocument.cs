@@ -72,7 +72,6 @@ namespace WolfClient.NewForms
                 {
                     var downloadedFile = response.ResponseObj;
                     DocumentEditor documentEditor = new DocumentEditor(_dataService, downloadedFile, ActivityComboBox.SelectedItem as GetActivityDTO);
-                    documentEditor.Show();
                 }
 
             }

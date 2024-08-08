@@ -1,5 +1,4 @@
-﻿using AngleSharp.Dom;
-using DocumentFormat.OpenXml.Bibliography;
+﻿using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DTOS.DTO;
@@ -57,6 +56,15 @@ namespace WolfClient.Services
             LoggedEmployee = new GetEmployeeDTO();
             _starredRequests = new List<GetstarRequest_EmployeeRelashionshipDTO>();
             _selectedInvoices = new List<GetInvoiceDTO>();
+        }
+
+        public void EditOrAddPlotOwnerRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs) {
+            foreach(var relashionship in relashionshipDTOs)
+            {
+                if (!compositeData.linkedDocuments.Any(link => link.Id == relashionship.Id)) {
+                    compositeData.linkedDocuments.Add(relashionship);
+                }
+            }
         }
         public void EditInvoice(GetInvoiceDTO invoiceDTO)
         {
@@ -902,7 +910,7 @@ namespace WolfClient.Services
             var selectedPlotIds = selectedPlots.Select(p => p.PlotId).ToHashSet();
             foreach (var relashionship in compositeData.linkedDocuments)
             {
-                if (selectedPlotIds.Contains(relashionship.DocumentPlot.Plot.PlotId))
+                if (selectedPlotIds.Contains(relashionship.DocumentPlot.PlotId))
                 {
                     relashionshipDTOs.Add(relashionship);
                 }

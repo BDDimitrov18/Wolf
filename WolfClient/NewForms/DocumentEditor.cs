@@ -10,9 +10,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using WolfClient.Services.Interfaces;
 using DocumentFormat.OpenXml.Wordprocessing;
-using AngleSharp.Dom;
 using DocumentFormat.OpenXml;
-using SkiaSharp;
 
 namespace WolfClient.NewForms
 {
@@ -26,6 +24,8 @@ namespace WolfClient.NewForms
         private List<GetClientDTO> _selectedClients;
         private List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> _selectedPlotOwnerRelashionsip;
         private string _convertedFilePath;
+
+
 
         public DocumentEditor(IDataService dataService, byte[] fileData, GetActivityDTO activity)
         {
@@ -45,22 +45,27 @@ namespace WolfClient.NewForms
             GenerateDocument();
         }
 
+
+
         private string ConvertDocToDocx(byte[] fileData)
         {
+            // Find the LibreOffice path using the helper method
+            string libreOfficePath = LibreOfficeHelper.FindLibreOfficePath();
+            Console.WriteLine($"Using LibreOffice path: {libreOfficePath}");
+
             // Use the current directory for temporary file operations
             string currentDirectory = Directory.GetCurrentDirectory();
             Console.WriteLine($"Current directory: {currentDirectory}");
 
             // Save the .doc file to a temporary location in the current directory
-            string tempDocPath = Path.Combine(currentDirectory, $"test.doc");
+            string tempDocPath = Path.Combine(currentDirectory, "test.doc");
             File.WriteAllBytes(tempDocPath, fileData);
             Console.WriteLine($"Temporary .doc file created at: {tempDocPath}");
 
             // Determine the output path for the .docx file
-            string outputDocxPath = Path.Combine(currentDirectory, $"test.docx");
+            string outputDocxPath = Path.Combine(currentDirectory, "test.docx");
             Console.WriteLine($"Expected .docx output path: {outputDocxPath}");
 
-            string libreOfficePath = @"C:\Program Files\LibreOffice\program\soffice.exe"; // Adjust the path to your LibreOffice installation
             string args = $"--headless --convert-to docx \"{tempDocPath}\" --outdir \"{currentDirectory}\"";
             Console.WriteLine($"Conversion command: {libreOfficePath} {args}");
 
@@ -103,7 +108,79 @@ namespace WolfClient.NewForms
             return outputDocxPath;
         }
 
-        private void GenerateDocument()
+        private async Task<string> ConvertDocxToDoc(byte[] fileData, string outputFilePath)
+        {
+            // Find the LibreOffice path using the helper method
+            string libreOfficePath = LibreOfficeHelper.FindLibreOfficePath();
+            Console.WriteLine($"Using LibreOffice path: {libreOfficePath}");
+
+            // Use the current directory for temporary file operations
+            string currentDirectory = Directory.GetCurrentDirectory();
+            Console.WriteLine($"Current directory: {currentDirectory}");
+
+            // Save the .docx file to a temporary location in the current directory
+            string tempDocxPath = Path.Combine(currentDirectory, "tempInput.docx");
+            File.WriteAllBytes(tempDocxPath, fileData);
+            Console.WriteLine($"Temporary .docx file created at: {tempDocxPath}");
+
+            // Determine the output directory from the output file path
+            string outputDirectory = Path.GetDirectoryName(outputFilePath);
+            if (string.IsNullOrEmpty(outputDirectory))
+            {
+                throw new ArgumentException("Invalid output file path.", nameof(outputFilePath));
+            }
+
+            // Ensure the output directory exists
+            Directory.CreateDirectory(outputDirectory);
+            Console.WriteLine($"Output directory: {outputDirectory}");
+
+            // Command arguments for conversion
+            string args = $"--headless --convert-to doc \"{tempDocxPath}\" --outdir \"{outputDirectory}\"";
+            Console.WriteLine($"Conversion command: {libreOfficePath} {args}");
+
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = libreOfficePath,
+                Arguments = args,
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            };
+
+            using (Process process = Process.Start(startInfo))
+            {
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
+
+                await process.WaitForExitAsync();
+                if (process.ExitCode != 0)
+                {
+                    Console.WriteLine($"LibreOffice conversion error: {error}");
+                    throw new Exception($"LibreOffice conversion failed: {error}");
+                }
+
+                Console.WriteLine($"LibreOffice conversion output: {output}");
+            }
+
+            // Verify that the conversion was successful
+            string convertedFilePath = Path.Combine(outputDirectory, Path.ChangeExtension(Path.GetFileName(tempDocxPath), ".doc"));
+            if (!File.Exists(convertedFilePath))
+            {
+                Console.WriteLine("Converted .doc file not found.");
+                throw new FileNotFoundException("Converted .doc file not found.", convertedFilePath);
+            }
+
+            Console.WriteLine($"Converted .doc file found at: {convertedFilePath}");
+
+            // Clean up the temporary .docx file
+            File.Delete(tempDocxPath);
+
+            return convertedFilePath;
+        }
+
+
+        private async void GenerateDocument()
         {
             // Load the converted .docx file into a MemoryStream
             byte[] docxFileData = File.ReadAllBytes(_convertedFilePath);
@@ -113,7 +190,6 @@ namespace WolfClient.NewForms
             {
                 memoryStream.Write(docxFileData, 0, docxFileData.Length);
                 memoryStream.Position = 0;  // Reset the position to the beginning of the stream
-                documentViewer1.LoadDocument(memoryStream);
                 // Open the document as a WordprocessingDocument from the MemoryStream
                 using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(memoryStream, true))
                 {
@@ -138,12 +214,20 @@ namespace WolfClient.NewForms
 
                 // Write the updated memory stream to a file
                 string outputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "GeneratedDocument.docx");
+                string outputFilePathDoc = Path.Combine(Directory.GetCurrentDirectory(), "GeneratedDocument.doc");
+                await ConvertDocxToDoc(memoryStream.ToArray(), outputFilePathDoc);
+                outputFilePathDoc = Path.Combine(Directory.GetCurrentDirectory(), "tempInput.doc");
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = outputFilePathDoc,
+                    UseShellExecute = true
+                });
                 File.WriteAllBytes(outputFilePath, memoryStream.ToArray());
 
                 // Load the updated document into the viewer
-                documentViewer1.LoadDocument(outputFilePath);
 
-                MessageBox.Show($"Document generated and saved successfully at {outputFilePath}!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Document generated and saved successfully at {outputFilePathDoc}!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Dispose();
             }
 
             // Clean up the temporary .docx file

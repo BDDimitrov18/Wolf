@@ -10,6 +10,7 @@ namespace WolfClient.Services.Interfaces
 {
     public interface IDataService
     {
+        public void EditOrAddPlotOwnerRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs);
         public void EditInvoice(GetInvoiceDTO invoiceDTO);
         public void AddInvoice(GetInvoiceDTO invoiceDTO);
         public void addClientsToAll(GetClientDTO client);

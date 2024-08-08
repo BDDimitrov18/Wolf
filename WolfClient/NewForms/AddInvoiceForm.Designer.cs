@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddInvoiceForm));
             AddButton = new Button();
             label2 = new Label();
             NumberTextBox = new TextBox();
@@ -89,6 +90,7 @@
             // 
             SumErrorLabel.AutoSize = true;
             SumErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            SumErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
             SumErrorLabel.Location = new Point(12, 110);
             SumErrorLabel.Name = "SumErrorLabel";
             SumErrorLabel.Size = new Size(147, 15);
@@ -112,8 +114,9 @@
             Controls.Add(NumberTextBox);
             Controls.Add(label2);
             Controls.Add(AddButton);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AddInvoiceForm";
-            Text = "AddInvoiceForm";
+            Text = "Wolf: Добавяне на фактура";
             ((System.ComponentModel.ISupportInitialize)InvoiceErrorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();

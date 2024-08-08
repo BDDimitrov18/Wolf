@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            label1 = new Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditActivityTaskForm));
             AvailableChoicePanel = new Panel();
             panel2 = new Panel();
             MainExecutantPaymentErrorLabel = new Label();
@@ -81,24 +81,13 @@
             ((System.ComponentModel.ISupportInitialize)ActivityErrorProvider).BeginInit();
             SuspendLayout();
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(15, 9);
-            label1.Name = "label1";
-            label1.Size = new Size(690, 42);
-            label1.TabIndex = 16;
-            label1.Text = "Редактиране на задача и/или дейност";
-            label1.Click += label1_Click;
-            // 
             // AvailableChoicePanel
             // 
             AvailableChoicePanel.BackColor = SystemColors.ActiveCaption;
             AvailableChoicePanel.Controls.Add(panel2);
             AvailableChoicePanel.Controls.Add(panel1);
             AvailableChoicePanel.Controls.Add(AddActivitySubmit);
-            AvailableChoicePanel.Location = new Point(4, 54);
+            AvailableChoicePanel.Location = new Point(5, 12);
             AvailableChoicePanel.Name = "AvailableChoicePanel";
             AvailableChoicePanel.Size = new Size(707, 929);
             AvailableChoicePanel.TabIndex = 18;
@@ -554,13 +543,13 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
-            ClientSize = new Size(717, 981);
+            ClientSize = new Size(717, 945);
             Controls.Add(AvailableChoicePanel);
-            Controls.Add(label1);
-            MaximumSize = new Size(735, 1095);
-            MinimumSize = new Size(735, 1028);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximumSize = new Size(735, 992);
+            MinimumSize = new Size(735, 992);
             Name = "EditActivityTaskForm";
-            Text = "AddActivityTaskForm";
+            Text = "Wolf: Редактиране на дейност";
             WindowState = FormWindowState.Maximized;
             Load += EditActivityTaskForm_Load;
             AvailableChoicePanel.ResumeLayout(false);
@@ -571,11 +560,9 @@
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)ActivityErrorProvider).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-        private Label label1;
         private Panel AvailableChoicePanel;
         private Panel panel2;
         private Label label15;

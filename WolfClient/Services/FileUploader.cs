@@ -20,12 +20,19 @@ namespace WolfClient.Services
     public class FileUploader : IFileUploader
     {
         private readonly HttpClient _client;
-        public FileUploader()
+        string ip = "";
+        public FileUploader(string ip)
         {
-            _client = new HttpClient();
+            this.ip = ip;
+            var handler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true // Always return true
+            };
+            _client = new HttpClient(handler);
         }
         public void SetToken(string token)
         {
+
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
@@ -39,11 +46,10 @@ namespace WolfClient.Services
 
                 try
                 {
-                    var response = await _client.PostAsync("https://localhost:44359/api/Files/upload", content);
+                    var response = await _client.PostAsync("https://" + ip + "/api/Files/upload", content);
 
                     if (response.IsSuccessStatusCode)
                     {
-                        MessageBox.Show("File uploaded successfully!");
                         return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "File uploaded successfully!", ResponseObj = response };
                     }
                     else
@@ -80,12 +86,11 @@ namespace WolfClient.Services
             {
                 var jsonContent = JsonSerializer.Serialize(getFileDTO);
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-                var response = await _client.PostAsync("https://localhost:44359/api/Files/download", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/Files/download", content);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var fileBytes = await response.Content.ReadAsByteArrayAsync();
-                    MessageBox.Show("File downloaded successfully!");
                     return new ClientResponse<byte[]> { IsSuccess = true, Message = "File downloaded successfully!", ResponseObj = fileBytes };
                 }
                 else
@@ -118,7 +123,7 @@ namespace WolfClient.Services
         {
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/Files/GetAllFiles", null);
+                var response = await _client.PostAsync("https://" + ip + "/api/Files/GetAllFiles", null);
 
                 if (response.IsSuccessStatusCode)
                 {

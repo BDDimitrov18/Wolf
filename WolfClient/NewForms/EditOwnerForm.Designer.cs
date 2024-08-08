@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            label1 = new Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditOwnerForm));
             label2 = new Label();
             EGNTextBox = new TextBox();
             label3 = new Label();
@@ -96,17 +96,6 @@
             panel1.SuspendLayout();
             panel4.SuspendLayout();
             SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 22F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(192, -2);
-            label1.Name = "label1";
-            label1.Size = new Size(509, 50);
-            label1.TabIndex = 0;
-            label1.Text = "Редактиране на Собственост";
-            label1.Click += label1_Click;
             // 
             // label2
             // 
@@ -319,7 +308,7 @@
             panel2.Controls.Add(label7);
             panel2.Controls.Add(CaseComboBox);
             panel2.Controls.Add(label9);
-            panel2.Location = new Point(458, 62);
+            panel2.Location = new Point(458, 12);
             panel2.Name = "panel2";
             panel2.Size = new Size(424, 609);
             panel2.TabIndex = 24;
@@ -448,7 +437,7 @@
             panel3.Controls.Add(label3);
             panel3.Controls.Add(label12);
             panel3.Controls.Add(IdealPartsPanel);
-            panel3.Location = new Point(12, 268);
+            panel3.Location = new Point(12, 218);
             panel3.Name = "panel3";
             panel3.Size = new Size(416, 403);
             panel3.TabIndex = 25;
@@ -567,7 +556,7 @@
             // 
             // SubmitButton
             // 
-            SubmitButton.Location = new Point(383, 817);
+            SubmitButton.Location = new Point(403, 756);
             SubmitButton.Name = "SubmitButton";
             SubmitButton.Size = new Size(108, 29);
             SubmitButton.TabIndex = 27;
@@ -592,7 +581,7 @@
             panel1.Controls.Add(label16);
             panel1.Controls.Add(label23);
             panel1.Controls.Add(label18);
-            panel1.Location = new Point(12, 693);
+            panel1.Location = new Point(12, 643);
             panel1.Name = "panel1";
             panel1.Size = new Size(870, 107);
             panel1.TabIndex = 28;
@@ -731,7 +720,7 @@
             panel4.Controls.Add(plotCityLabel);
             panel4.Controls.Add(plotTypeLabel);
             panel4.Controls.Add(plotLocalityLabel);
-            panel4.Location = new Point(12, 62);
+            panel4.Location = new Point(12, 12);
             panel4.Name = "panel4";
             panel4.Size = new Size(416, 184);
             panel4.TabIndex = 26;
@@ -741,15 +730,15 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
-            ClientSize = new Size(897, 852);
+            ClientSize = new Size(897, 789);
             Controls.Add(panel1);
             Controls.Add(SubmitButton);
             Controls.Add(panel4);
             Controls.Add(panel3);
             Controls.Add(panel2);
-            Controls.Add(label1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "EditOwnerForm";
-            Text = "AddOwnerForm";
+            Text = "Wolf: Редактиране на собственост";
             Load += AddOwnerForm_Load;
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
@@ -761,12 +750,9 @@
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private Label label1;
         private Label label2;
         private TextBox EGNTextBox;
         private Label label3;

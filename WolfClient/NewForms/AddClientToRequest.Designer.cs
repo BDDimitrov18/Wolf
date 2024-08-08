@@ -28,19 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddClientToRequest));
             AddClientToRequestSubmitButton = new Button();
             AddNonExistingClientButton = new Button();
             AddNonExistingClientLabel = new Label();
             AddClientComboBoxButton = new Button();
             AddExistingClientToRequestLabel = new Label();
-            AddClientToRequestTitleLabel = new Label();
             AvailableClientsFlowPanel = new FlowLayoutPanel();
             NotAvailableClientsFlowPanel = new FlowLayoutPanel();
             SuspendLayout();
             // 
             // AddClientToRequestSubmitButton
             // 
-            AddClientToRequestSubmitButton.Location = new Point(320, 811);
+            AddClientToRequestSubmitButton.Location = new Point(225, 722);
             AddClientToRequestSubmitButton.Margin = new Padding(3, 4, 3, 4);
             AddClientToRequestSubmitButton.Name = "AddClientToRequestSubmitButton";
             AddClientToRequestSubmitButton.Size = new Size(132, 45);
@@ -51,7 +51,7 @@
             // 
             // AddNonExistingClientButton
             // 
-            AddNonExistingClientButton.Location = new Point(539, 498);
+            AddNonExistingClientButton.Location = new Point(444, 409);
             AddNonExistingClientButton.Margin = new Padding(3, 4, 3, 4);
             AddNonExistingClientButton.Name = "AddNonExistingClientButton";
             AddNonExistingClientButton.Size = new Size(134, 29);
@@ -64,7 +64,7 @@
             // 
             AddNonExistingClientLabel.AutoSize = true;
             AddNonExistingClientLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            AddNonExistingClientLabel.Location = new Point(107, 498);
+            AddNonExistingClientLabel.Location = new Point(12, 409);
             AddNonExistingClientLabel.Name = "AddNonExistingClientLabel";
             AddNonExistingClientLabel.Size = new Size(426, 25);
             AddNonExistingClientLabel.TabIndex = 24;
@@ -72,7 +72,7 @@
             // 
             // AddClientComboBoxButton
             // 
-            AddClientComboBoxButton.Location = new Point(412, 98);
+            AddClientComboBoxButton.Location = new Point(317, 9);
             AddClientComboBoxButton.Margin = new Padding(3, 4, 3, 4);
             AddClientComboBoxButton.Name = "AddClientComboBoxButton";
             AddClientComboBoxButton.Size = new Size(131, 29);
@@ -85,27 +85,17 @@
             // 
             AddExistingClientToRequestLabel.AutoSize = true;
             AddExistingClientToRequestLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            AddExistingClientToRequestLabel.Location = new Point(107, 98);
+            AddExistingClientToRequestLabel.Location = new Point(12, 9);
             AddExistingClientToRequestLabel.Name = "AddExistingClientToRequestLabel";
             AddExistingClientToRequestLabel.Size = new Size(299, 25);
             AddExistingClientToRequestLabel.TabIndex = 21;
             AddExistingClientToRequestLabel.Text = "Заложи Клиент От Наличните";
             // 
-            // AddClientToRequestTitleLabel
-            // 
-            AddClientToRequestTitleLabel.AutoSize = true;
-            AddClientToRequestTitleLabel.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
-            AddClientToRequestTitleLabel.Location = new Point(2, 9);
-            AddClientToRequestTitleLabel.Name = "AddClientToRequestTitleLabel";
-            AddClientToRequestTitleLabel.Size = new Size(632, 42);
-            AddClientToRequestTitleLabel.TabIndex = 20;
-            AddClientToRequestTitleLabel.Text = "Добавяне На Клиент Към Поръчка";
-            // 
             // AvailableClientsFlowPanel
             // 
             AvailableClientsFlowPanel.BackColor = SystemColors.ActiveCaption;
             AvailableClientsFlowPanel.BorderStyle = BorderStyle.Fixed3D;
-            AvailableClientsFlowPanel.Location = new Point(107, 147);
+            AvailableClientsFlowPanel.Location = new Point(12, 58);
             AvailableClientsFlowPanel.Name = "AvailableClientsFlowPanel";
             AvailableClientsFlowPanel.Size = new Size(461, 326);
             AvailableClientsFlowPanel.TabIndex = 27;
@@ -115,7 +105,7 @@
             // 
             NotAvailableClientsFlowPanel.BackColor = SystemColors.ActiveCaption;
             NotAvailableClientsFlowPanel.BorderStyle = BorderStyle.Fixed3D;
-            NotAvailableClientsFlowPanel.Location = new Point(107, 562);
+            NotAvailableClientsFlowPanel.Location = new Point(12, 473);
             NotAvailableClientsFlowPanel.Name = "NotAvailableClientsFlowPanel";
             NotAvailableClientsFlowPanel.Size = new Size(410, 216);
             NotAvailableClientsFlowPanel.TabIndex = 28;
@@ -125,7 +115,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
-            ClientSize = new Size(800, 876);
+            ClientSize = new Size(592, 781);
             Controls.Add(NotAvailableClientsFlowPanel);
             Controls.Add(AvailableClientsFlowPanel);
             Controls.Add(AddClientToRequestSubmitButton);
@@ -133,9 +123,9 @@
             Controls.Add(AddNonExistingClientLabel);
             Controls.Add(AddClientComboBoxButton);
             Controls.Add(AddExistingClientToRequestLabel);
-            Controls.Add(AddClientToRequestTitleLabel);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AddClientToRequest";
-            Text = "AddClientToRequest";
+            Text = "Wolf: Добавяне на клиент към поръчка";
             Load += AddClientToRequest_Load;
             ResumeLayout(false);
             PerformLayout();
@@ -148,7 +138,6 @@
         private Label AddNonExistingClientLabel;
         private Button AddClientComboBoxButton;
         private Label AddExistingClientToRequestLabel;
-        private Label AddClientToRequestTitleLabel;
         private FlowLayoutPanel AvailableClientsFlowPanel;
         private FlowLayoutPanel NotAvailableClientsFlowPanel;
     }

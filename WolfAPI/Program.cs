@@ -20,11 +20,13 @@ using AutoMapper;
 using System.Text.Json.Serialization;
 using System.Net.WebSockets;
 using Microsoft.AspNetCore.WebSockets;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var configuration = builder.Configuration;
+var environment = builder.Environment.EnvironmentName;
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
@@ -54,6 +56,7 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
+
 
 builder.Services.AddDbContext<WolfDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -139,7 +142,27 @@ builder.Services.AddWebSockets(options =>
 });
 builder.Services.AddSingleton<IWebSocketService, WebSocketService>();
 
+
+var config = builder.Configuration.GetSection("Kestrel:Endpoints:Https:Certificate");
+var certPath = config["Path"];
+var certPassword = config["Password"];
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Listen(System.Net.IPAddress.Any, 5003, listenOptions => // HTTPS
+    {
+        listenOptions.UseHttps(certPath, certPassword);
+    });
+});
+
 var app = builder.Build();
+
+// Apply migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<WolfDbContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -147,6 +170,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseHttpsRedirection();
 
@@ -168,5 +192,4 @@ app.UseEndpoints(endpoints =>
         await webSocketService.HandleWebSocketAsync(context);
     });
 });
-
 app.Run();

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddWorkObjectForm));
             AddWorkObjectSubmitFormButton = new Button();
             panel1 = new Panel();
             NameOfWorkObjectLabel = new Label();
@@ -210,8 +211,9 @@
             Controls.Add(AddRequestToWorkObjectComboBox);
             Controls.Add(AddRequestToWorkObjectLabel);
             Controls.Add(AddWorkObjectTitleLabel);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AddWorkObjectForm";
-            Text = "AddWorkObjectForm";
+            Text = "Wolf: Добавяне на обект";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);

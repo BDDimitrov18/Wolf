@@ -15,10 +15,17 @@ namespace WolfClient.Services
 {
     public class UserClient: IUserClient
     {
+
         private readonly HttpClient _client;
-        public UserClient()
+        string ip = "";
+        public UserClient(string ip)
         {
-            _client = new HttpClient();
+            this.ip = ip;
+            var handler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true // Always return true
+            };
+            _client = new HttpClient(handler);
         }
         public void SetToken(string token)
         {
@@ -28,11 +35,10 @@ namespace WolfClient.Services
         public async Task<ClientResponse<IEnumerable<GetClientDTO>>> GetAllClients() {
             try
             {
-                var response = await _client.GetAsync("https://localhost:44359/api/User/GetAllClients");
+                var response = await _client.GetAsync("https://" + ip + "/api/User/GetAllClients");
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Clients fetched  successfully!");
 
                     var options = new JsonSerializerOptions
                     {
@@ -102,14 +108,12 @@ namespace WolfClient.Services
             var jsonContent = JsonSerializer.Serialize(clients);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateClient", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreateClient", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Clients added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -122,7 +126,6 @@ namespace WolfClient.Services
                 {
                     if (response.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        // Optionally refresh the token and retry
                         MessageBox.Show("You are not authorized or your session has expired.");
                         return new ClientResponse<List<GetClientDTO>> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
                     }
@@ -153,11 +156,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateWorkRequest", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreateWorkRequest", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Requests added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -207,11 +209,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/LinkClientsAndRequest", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/LinkClientsAndRequest", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Requests added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -252,11 +253,10 @@ namespace WolfClient.Services
         {
             try
             {
-                var response = await _client.GetAsync("https://localhost:44359/api/User/GetAllRequests");
+                var response = await _client.GetAsync("https://" + ip + "/api/User/GetAllRequests");
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Requests fetched  successfully!");
 
                     var options = new JsonSerializerOptions
                     {
@@ -303,11 +303,10 @@ namespace WolfClient.Services
                 var jsonContent = JsonSerializer.Serialize(requestDTOs);
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-                var response = await _client.PostAsync("https://localhost:44359/api/User/GetLinkedClients", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/GetLinkedClients", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Linked Clients fetched  successfully!");
 
                     var options = new JsonSerializerOptions
                     {
@@ -377,11 +376,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.GetAsync("https://localhost:44359/api/User/GetActivityTypes");
+                var response = await _client.GetAsync("https://" + ip + "/api/User/GetActivityTypes");
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Activity Types fetched successfully!");
 
                     var options = new JsonSerializerOptions
                     {
@@ -425,11 +423,10 @@ namespace WolfClient.Services
         {
             try
             {
-                var response = await _client.GetAsync("https://localhost:44359/api/User/GetAllEmployees");
+                var response = await _client.GetAsync("https://" + ip + "/api/User/GetAllEmployees");
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Employees fetched  successfully!");
 
                     var options = new JsonSerializerOptions
                     {
@@ -476,11 +473,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateActivityTypes", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreateActivityTypes", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("ActivityTypes added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -524,11 +520,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateTaskType", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreateTaskType", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("TaskTypes added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -572,11 +567,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateActivity", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreateActivity", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Activity added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -620,11 +614,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateTask", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreateTask", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Tasks added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -667,11 +660,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreatePlot", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreatePlot", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Plot added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -715,11 +707,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateActivity_PlotRelashionship", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreateActivity_PlotRelashionship", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Relashionships added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -762,7 +753,7 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateDocumentOfOwnership", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreateDocumentOfOwnership", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -810,11 +801,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateOwner", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreateOwner", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Owner added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -857,11 +847,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateDocumentOwnerRelashionship", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreateDocumentOwnerRelashionship", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("DocumentOwner added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -904,11 +893,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateDocumentPlotRelashionship", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreateDocumentPlotRelashionship", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("PlotDocument added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -951,11 +939,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreatePlotOwnerRelashionship", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreatePlotOwnerRelashionship", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("PlotOwner added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -998,11 +985,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/GetLinkedPlotOwnerRelashionships", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/GetLinkedPlotOwnerRelashionships", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("PlotOwner retrieved successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -1045,11 +1031,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/DeleteRequest", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/DeleteRequest", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Request Deleted successfully!");
                     return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Request Deleted successfully!", ResponseObj = response };
                 }
                 else
@@ -1087,11 +1072,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/DeleteClientRequestRelashionships", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/DeleteClientRequestRelashionships", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("ClientRequestRelashionship Deleted successfully!");
                     return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "ClientRequestRelashionship Deleted successfully!", ResponseObj = response };
                 }
                 else
@@ -1129,11 +1113,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/DeleteTasks", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/DeleteTasks", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Tasks Deleted successfully!");
                     return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Tasks Deleted successfully!", ResponseObj = response };
                 }
                 else
@@ -1171,11 +1154,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/DeleteActivities", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/DeleteActivities", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Activities Deleted successfully!");
                     return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Activities Deleted successfully!", ResponseObj = response };
                 }
                 else
@@ -1213,11 +1195,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreatePowerOfAttorney", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreatePowerOfAttorney", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("PowerOfAttorneyDocument added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -1261,11 +1242,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/ActivityPlotOnPlotRemove", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/ActivityPlotOnPlotRemove", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Plots Removed successfully!");
                     return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Plots Removed successfully!", ResponseObj = response };
                 }
                 else
@@ -1303,11 +1283,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/deletePlotOwnerRelashionships", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/deletePlotOwnerRelashionships", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Relashionship Removed successfully!");
                     return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Relashionship Removed successfully!", ResponseObj = response };
                 }
                 else
@@ -1345,11 +1324,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/EditRequest", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/EditRequest", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Requests edited successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -1393,11 +1371,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/EditClient", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/EditClient", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Client edited successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -1441,11 +1418,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/EditActivity", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/EditActivity", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Activity edited successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -1489,11 +1465,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/EditTask", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/EditTask", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Task edited successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -1537,11 +1512,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/EditPlot", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/EditPlot", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Plot edited successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -1585,11 +1559,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/EditOwner", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/EditOwner", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Owner edited successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -1633,11 +1606,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/EditDocumentOfOwnership", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/EditDocumentOfOwnership", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("DocumentOfOwnership edited successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -1681,11 +1653,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/EditPowerOfAttorneyDocument", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/EditPowerOfAttorneyDocument", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("PowerOfAttorney edited successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -1729,11 +1700,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/EditDocumentPlotOwnerRelationship", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/EditDocumentPlotOwnerRelationship", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("PlotOwnerRelashionship edited successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -1777,11 +1747,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/addStar", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/addStar", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Star added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -1826,11 +1795,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/deleteStar", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/deleteStar", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Star Deleted successfully!");
                     return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Star Deleted successfully!", ResponseObj = response };
                 }
                 else
@@ -1868,11 +1836,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/getStarByEmployeeID", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/getStarByEmployeeID", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Stars retrieved successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -1911,11 +1878,10 @@ namespace WolfClient.Services
         {
             try
             {
-                var response = await _client.GetAsync("https://localhost:44359/api/User/GetAllOwners");
+                var response = await _client.GetAsync("https://" + ip + "/api/User/GetAllOwners");
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Owners fetched successfully!");
 
                     var options = new JsonSerializerOptions
                     {
@@ -1984,11 +1950,10 @@ namespace WolfClient.Services
         {
             try
             {
-                var response = await _client.GetAsync("https://localhost:44359/api/User/GetAllPlots");
+                var response = await _client.GetAsync("https://" + ip + "/api/User/GetAllPlots");
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Plots fetched successfully!");
 
                     var options = new JsonSerializerOptions
                     {
@@ -2060,11 +2025,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/CreateInvoice", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/CreateInvoice", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Invoice added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -2109,11 +2073,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/EditInvoice", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/EditInvoice", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Invoice edited successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -2157,11 +2120,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/User/DeleteInvoices", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/User/DeleteInvoices", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Invoices Deleted successfully!");
                     return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Invoices Deleted successfully!", ResponseObj = response };
                 }
                 else
@@ -2190,6 +2152,54 @@ namespace WolfClient.Services
                 MessageBox.Show($"Exception occurred: {ex.Message}");
                 return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
             }
+        }
+
+        public async Task<ClientResponse<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>>> GetLinkedPlotOwnerRelashionshipSinglePlot (GetPlotDTO plotDTO)
+        {
+            var jsonContent = JsonSerializer.Serialize(plotDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://" + ip + "/api/User/FetchLinkedPlotOwnerRelashionships", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseRelashionships = JsonSerializer.Deserialize<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>>(jsonResponse, options);
+                    return new ClientResponse<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>> { IsSuccess = true, Message = "Relashionships fetched Successfully", ResponseObj = responseRelashionships };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to fetch relashionships: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+
         }
     }
 }

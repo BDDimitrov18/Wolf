@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net.Security;
 using System.Net.WebSockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -19,6 +21,9 @@ public class WebSocketClientService
         _client = new ClientWebSocket();
         _serverUri = new Uri(serverUrl);
         _dataService = dataService;
+
+        // Bypass SSL certificate validation for self-signed certificates
+        _client.Options.RemoteCertificateValidationCallback = ValidateServerCertificate;
     }
 
     public async void SetToken(string token)
@@ -36,6 +41,7 @@ public class WebSocketClientService
 
         _cancellationTokenSource = new CancellationTokenSource();
         _client.Options.SetRequestHeader("Authorization", $"Bearer {_token}");
+
         try
         {
             await _client.ConnectAsync(_serverUri, _cancellationTokenSource.Token);
@@ -43,20 +49,23 @@ public class WebSocketClientService
         }
         catch (WebSocketException ex)
         {
-            // Handle the WebSocketException
             Console.WriteLine($"WebSocketException: {ex.Message}");
             await ReconnectAsync();
         }
         catch (Exception ex)
         {
-            // Handle other exceptions
             Console.WriteLine($"Exception: {ex.Message}");
         }
     }
 
+    private static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+    {
+        // Always accept the certificate (ignore SSL validation errors)
+        return true;
+    }
+
     private async Task ReconnectAsync()
     {
-        // Implement a retry mechanism
         int retryCount = 0;
         const int maxRetries = 5;
         const int delayBetweenRetries = 5000; // 5 seconds
@@ -69,6 +78,7 @@ public class WebSocketClientService
 
             _client = new ClientWebSocket();
             _client.Options.SetRequestHeader("Authorization", $"Bearer {_token}");
+            _client.Options.RemoteCertificateValidationCallback = ValidateServerCertificate; // Add the callback again
 
             try
             {
@@ -84,7 +94,6 @@ public class WebSocketClientService
         if (_client.State != WebSocketState.Open)
         {
             Console.WriteLine("Failed to reconnect after multiple attempts.");
-            // Handle failure to reconnect
         }
     }
 
@@ -118,13 +127,11 @@ public class WebSocketClientService
             }
             catch (WebSocketException ex)
             {
-                // Handle WebSocket exception
                 Console.WriteLine($"WebSocketException: {ex.Message}");
                 await ReconnectAsync();
             }
             catch (Exception ex)
             {
-                // Handle other exceptions
                 Console.WriteLine($"Exception: {ex.Message}");
             }
         }

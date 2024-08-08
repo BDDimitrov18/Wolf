@@ -15,10 +15,15 @@ namespace WolfClient.Services
     public class AdminClient : IAdminClient
     {
         private readonly HttpClient _client;
-
-        public AdminClient()
+        string ip = "";
+        public AdminClient(string ip)
         {
-            _client = new HttpClient();
+            this.ip = ip;
+            var handler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true // Always return true
+            };
+            _client = new HttpClient(handler);
         }
 
         public void SetToken(string token)
@@ -34,11 +39,10 @@ namespace WolfClient.Services
 
             try
             {
-                var response = await _client.PostAsync("https://localhost:44359/api/Admin/CreateEmployee", content);
+                var response = await _client.PostAsync("https://" + ip + "/api/Admin/CreateEmployee", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Employee added successfully!");
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddClientForm));
             LegalTypeTextBox = new ComboBox();
             label8 = new Label();
             AddressTextBox = new TextBox();
@@ -43,7 +44,6 @@
             label3 = new Label();
             NameTextBox = new TextBox();
             label2 = new Label();
-            label1 = new Label();
             AddClientButton = new Button();
             UsernameErrorProvider = new ErrorProvider(components);
             NameErrorLabel = new Label();
@@ -56,7 +56,7 @@
             // 
             LegalTypeTextBox.FormattingEnabled = true;
             LegalTypeTextBox.Items.AddRange(new object[] { "Физическо лице", "Юридическо лице", "Държавата", "Общината" });
-            LegalTypeTextBox.Location = new Point(108, 853);
+            LegalTypeTextBox.Location = new Point(285, 274);
             LegalTypeTextBox.Margin = new Padding(3, 4, 3, 4);
             LegalTypeTextBox.Name = "LegalTypeTextBox";
             LegalTypeTextBox.Size = new Size(232, 28);
@@ -66,7 +66,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label8.Location = new Point(103, 801);
+            label8.Location = new Point(285, 226);
             label8.Name = "label8";
             label8.Size = new Size(61, 25);
             label8.TabIndex = 28;
@@ -74,7 +74,7 @@
             // 
             // AddressTextBox
             // 
-            AddressTextBox.Location = new Point(108, 744);
+            AddressTextBox.Location = new Point(285, 163);
             AddressTextBox.Margin = new Padding(3, 4, 3, 4);
             AddressTextBox.Name = "AddressTextBox";
             AddressTextBox.Size = new Size(232, 27);
@@ -84,7 +84,7 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label7.Location = new Point(103, 695);
+            label7.Location = new Point(280, 114);
             label7.Name = "label7";
             label7.Size = new Size(85, 25);
             label7.TabIndex = 26;
@@ -92,7 +92,7 @@
             // 
             // EmailTextBox
             // 
-            EmailTextBox.Location = new Point(108, 630);
+            EmailTextBox.Location = new Point(285, 58);
             EmailTextBox.Margin = new Padding(3, 4, 3, 4);
             EmailTextBox.Name = "EmailTextBox";
             EmailTextBox.Size = new Size(232, 27);
@@ -102,7 +102,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label6.Location = new Point(103, 581);
+            label6.Location = new Point(280, 9);
             label6.Name = "label6";
             label6.Size = new Size(60, 25);
             label6.TabIndex = 24;
@@ -110,7 +110,7 @@
             // 
             // PhoneTextBox
             // 
-            PhoneTextBox.Location = new Point(108, 509);
+            PhoneTextBox.Location = new Point(17, 389);
             PhoneTextBox.Margin = new Padding(3, 4, 3, 4);
             PhoneTextBox.Name = "PhoneTextBox";
             PhoneTextBox.Size = new Size(232, 27);
@@ -120,7 +120,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label5.Location = new Point(103, 460);
+            label5.Location = new Point(12, 340);
             label5.Name = "label5";
             label5.Size = new Size(99, 25);
             label5.TabIndex = 22;
@@ -128,7 +128,7 @@
             // 
             // LastNameTextBox
             // 
-            LastNameTextBox.Location = new Point(108, 395);
+            LastNameTextBox.Location = new Point(17, 275);
             LastNameTextBox.Margin = new Padding(3, 4, 3, 4);
             LastNameTextBox.Name = "LastNameTextBox";
             LastNameTextBox.Size = new Size(232, 27);
@@ -138,7 +138,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.Location = new Point(103, 346);
+            label4.Location = new Point(12, 226);
             label4.Name = "label4";
             label4.Size = new Size(103, 25);
             label4.TabIndex = 20;
@@ -146,7 +146,7 @@
             // 
             // SecondNameTextBox
             // 
-            SecondNameTextBox.Location = new Point(108, 283);
+            SecondNameTextBox.Location = new Point(17, 163);
             SecondNameTextBox.Margin = new Padding(3, 4, 3, 4);
             SecondNameTextBox.Name = "SecondNameTextBox";
             SecondNameTextBox.Size = new Size(232, 27);
@@ -156,7 +156,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(103, 234);
+            label3.Location = new Point(12, 114);
             label3.Name = "label3";
             label3.Size = new Size(98, 25);
             label3.TabIndex = 18;
@@ -164,7 +164,7 @@
             // 
             // NameTextBox
             // 
-            NameTextBox.Location = new Point(108, 177);
+            NameTextBox.Location = new Point(17, 57);
             NameTextBox.Margin = new Padding(3, 4, 3, 4);
             NameTextBox.Name = "NameTextBox";
             NameTextBox.Size = new Size(232, 27);
@@ -174,26 +174,16 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(103, 129);
+            label2.Location = new Point(12, 9);
             label2.Name = "label2";
             label2.Size = new Size(54, 25);
             label2.TabIndex = 16;
             label2.Text = "Име";
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(101, 25);
-            label1.Name = "label1";
-            label1.Size = new Size(374, 42);
-            label1.TabIndex = 15;
-            label1.Text = "Добавяне на клиент";
-            // 
             // AddClientButton
             // 
             AddClientButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            AddClientButton.Location = new Point(215, 914);
+            AddClientButton.Location = new Point(352, 379);
             AddClientButton.Margin = new Padding(3, 4, 3, 4);
             AddClientButton.Name = "AddClientButton";
             AddClientButton.Size = new Size(125, 42);
@@ -213,7 +203,7 @@
             NameErrorLabel.BackColor = Color.Transparent;
             NameErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
             NameErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
-            NameErrorLabel.Location = new Point(108, 158);
+            NameErrorLabel.Location = new Point(17, 38);
             NameErrorLabel.Name = "NameErrorLabel";
             NameErrorLabel.Size = new Size(158, 15);
             NameErrorLabel.TabIndex = 31;
@@ -225,7 +215,7 @@
             PhoneErrorLabel.BackColor = Color.Transparent;
             PhoneErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
             PhoneErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
-            PhoneErrorLabel.Location = new Point(108, 490);
+            PhoneErrorLabel.Location = new Point(17, 370);
             PhoneErrorLabel.Name = "PhoneErrorLabel";
             PhoneErrorLabel.Size = new Size(187, 15);
             PhoneErrorLabel.TabIndex = 32;
@@ -237,7 +227,7 @@
             EmailErrorLabel.BackColor = Color.Transparent;
             EmailErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
             EmailErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
-            EmailErrorLabel.Location = new Point(108, 611);
+            EmailErrorLabel.Location = new Point(285, 39);
             EmailErrorLabel.Name = "EmailErrorLabel";
             EmailErrorLabel.Size = new Size(163, 15);
             EmailErrorLabel.TabIndex = 33;
@@ -248,7 +238,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
-            ClientSize = new Size(602, 1002);
+            ClientSize = new Size(549, 442);
             Controls.Add(EmailErrorLabel);
             Controls.Add(PhoneErrorLabel);
             Controls.Add(NameErrorLabel);
@@ -267,9 +257,9 @@
             Controls.Add(label3);
             Controls.Add(NameTextBox);
             Controls.Add(label2);
-            Controls.Add(label1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AddClientForm";
-            Text = "AddClientForm";
+            Text = "Wolf: Добавяне на клиент";
             Load += AddClientForm_Load;
             ((System.ComponentModel.ISupportInitialize)UsernameErrorProvider).EndInit();
             ResumeLayout(false);
@@ -292,7 +282,6 @@
         private Label label3;
         private TextBox NameTextBox;
         private Label label2;
-        private Label label1;
         private Button AddClientButton;
         private ErrorProvider UsernameErrorProvider;
         private Label NameErrorLabel;

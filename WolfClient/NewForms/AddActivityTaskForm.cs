@@ -43,26 +43,30 @@ namespace WolfClient.NewForms
         {
             string selectedItem = ActivityChoiceComboBox.SelectedItem.ToString();
             UserControl selectedControl = null;
+
             switch (selectedItem)
             {
                 case "От Налични Дейности":
-                    selectedControl = new ExistingActivityAddTask(_apiClient, _userClient, _adminClient, _dataService);
-                    selectedControl.Disposed += onControlDispose;
+                    var existingActivityControl = new ExistingActivityAddTask(_apiClient, _userClient, _adminClient, _dataService);
+                    existingActivityControl.DisposeRequested += OnControlDisposeRequested;
+                    selectedControl = existingActivityControl;
                     break;
+
                 case "Към Нова дейност":
-                    selectedControl = new NonExistingActivityAddTask(_apiClient, _userClient, _adminClient, _dataService);
-                    selectedControl.Disposed += onControlDispose;
+                    var nonExistingActivityControl = new NonExistingActivityAddTask(_apiClient, _userClient, _adminClient, _dataService);
+                    nonExistingActivityControl.DisposeRequested += OnControlDisposeRequested;
+                    selectedControl = nonExistingActivityControl;
                     break;
             }
 
             LoadUserControl(selectedControl);
         }
 
-        public void onControlDispose(object sender, EventArgs e)
+
+        public void OnControlDisposeRequested(object sender, EventArgs e)
         {
             Dispose();
         }
-
         private void LoadUserControl(UserControl userControl)
         {
             if (AvailableChoicePanel.Controls.Count > 0)

@@ -18,10 +18,16 @@ namespace WolfClient.Services
     {
         private readonly HttpClient _client;
         private bool LoggedIn { get; set; }
+        string ip = "";
 
-        public ApiClient()
+        public ApiClient(string ip)
         {
-            _client = new HttpClient();
+            this.ip = ip;
+            var handler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true // Always return true
+            };
+            _client = new HttpClient(handler);
         }
 
         public bool getLoginStatus() {
@@ -39,7 +45,7 @@ namespace WolfClient.Services
             var jsonContent = JsonSerializer.Serialize(loginUser);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync("https://localhost:44359/api/Authentication/Login", content);
+            var response = await _client.PostAsync("https://" + ip + "/api/Authentication/Login", content);
 
             if (response.IsSuccessStatusCode)
             {

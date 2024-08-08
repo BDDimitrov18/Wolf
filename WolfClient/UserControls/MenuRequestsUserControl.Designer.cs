@@ -104,6 +104,7 @@ namespace WolfClient.UserControls
             Comment = new DataGridViewTextBoxColumn();
             tax = new DataGridViewTextBoxColumn();
             taxComment = new DataGridViewTextBoxColumn();
+            Status = new DataGridViewTextBoxColumn();
             ActivityAddButton = new Button();
             tabPage1 = new TabPage();
             panel4 = new Panel();
@@ -837,7 +838,7 @@ namespace WolfClient.UserControls
             ActivityDataGridView.BackgroundColor = Color.Moccasin;
             ActivityDataGridView.ColumnHeadersHeight = 28;
             ActivityDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            ActivityDataGridView.Columns.AddRange(new DataGridViewColumn[] { ParentActivity, Activity, Task, Executant, StartDate, Duration, Control, Plots, Comment, tax, taxComment });
+            ActivityDataGridView.Columns.AddRange(new DataGridViewColumn[] { ParentActivity, Activity, Task, Executant, StartDate, Duration, Control, Plots, Comment, tax, taxComment, Status });
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Window;
             dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
@@ -934,6 +935,13 @@ namespace WolfClient.UserControls
             taxComment.HeaderText = "такса коментар";
             taxComment.MinimumWidth = 6;
             taxComment.Name = "taxComment";
+            // 
+            // Status
+            // 
+            Status.DataPropertyName = "Status";
+            Status.HeaderText = "Статус";
+            Status.MinimumWidth = 6;
+            Status.Name = "Status";
             // 
             // ActivityAddButton
             // 
@@ -1161,6 +1169,7 @@ namespace WolfClient.UserControls
             tabPage3.TabIndex = 2;
             tabPage3.Text = "имоти";
             tabPage3.UseVisualStyleBackColor = true;
+            tabPage3.Click += tabPage3_Click;
             // 
             // panel5
             // 
@@ -1691,17 +1700,6 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn OwnerAddress;
         private DataGridViewTextBoxColumn IdealParts;
         private DataGridViewTextBoxColumn PowerOfAttorney;
-        private DataGridViewTextBoxColumn ParentActivity;
-        private DataGridViewTextBoxColumn Activity;
-        private DataGridViewTextBoxColumn Task;
-        private DataGridViewTextBoxColumn Executant;
-        private DataGridViewTextBoxColumn StartDate;
-        private DataGridViewTextBoxColumn Duration;
-        private DataGridViewTextBoxColumn Control;
-        private DataGridViewTextBoxColumn Plots;
-        private DataGridViewTextBoxColumn Comment;
-        private DataGridViewTextBoxColumn tax;
-        private DataGridViewTextBoxColumn taxComment;
         private DataGridViewTextBoxColumn ClientNumber;
         private DataGridViewTextBoxColumn FirstName;
         private DataGridViewTextBoxColumn MiddleName;
@@ -1777,5 +1775,17 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn number;
         private DataGridViewTextBoxColumn Sum;
         private Button EditInvoiceButton;
+        private DataGridViewTextBoxColumn ParentActivity;
+        private DataGridViewTextBoxColumn Activity;
+        private DataGridViewTextBoxColumn Task;
+        private DataGridViewTextBoxColumn Executant;
+        private DataGridViewTextBoxColumn StartDate;
+        private DataGridViewTextBoxColumn Duration;
+        private DataGridViewTextBoxColumn Control;
+        private DataGridViewTextBoxColumn Plots;
+        private DataGridViewTextBoxColumn Comment;
+        private DataGridViewTextBoxColumn tax;
+        private DataGridViewTextBoxColumn taxComment;
+        private DataGridViewTextBoxColumn Status;
     }
 }

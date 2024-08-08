@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5003" # Maps container port 5002 to host port 5002
+    networks:
+      - my-network
+    depends_on:
+      - db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: "Server=db;Database=Wolf.Data;User Id=sa;Password=Bozhidardimitrov123!;MultipleActiveResultSets=true"
+    volumes:
+      - ./certs:/https:ro # Mount the certs directory as read-only
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "Bozhidardimitrov123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1435:1433" # Exposes SQL Server's port to the host
+    networks:
+      - my-network
+    volumes:
+      - sqlserverdata:/var/opt/mssql # Persistent storage for database files
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  sqlserverdata:

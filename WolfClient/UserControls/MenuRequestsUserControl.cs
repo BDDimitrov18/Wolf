@@ -1100,6 +1100,7 @@ namespace WolfClient.UserControls
                         ParentActivity = first ? activity.ParentActivity == null ? "" : activity.ParentActivity.ActivityTypeName : "",
                         tax = task.tax.ToString(),
                         taxComment = task.CommentTax,
+                        Status = task.Status
                     };
 
                     activityViewModels.Add(viewModel);
@@ -1152,7 +1153,7 @@ namespace WolfClient.UserControls
         {
             if (_dataService.GetSelectedRequest() == null)
             {
-                MessageBox.Show("Моля изберете поръчка!");
+                MessageBox.Show("Please select a request");
             }
 
             AddInvoiceForm addInvoiceForm = new AddInvoiceForm(_apiClient, _adminClient, _userClient, _dataService);
@@ -1165,6 +1166,12 @@ namespace WolfClient.UserControls
         }
         private void button1_Click_1(object sender, EventArgs e)
         {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Please select an request");
+                return;
+            }
+
             if (_dataService.GetSelectedRequest() != null)
             {
                 using (AddClientToRequest form = new AddClientToRequest(_apiClient, _userClient, _adminClient, _dataService.GetSelectedRequest()))
@@ -1258,6 +1265,10 @@ namespace WolfClient.UserControls
                     {
                         row.Height = 60; // Set the height to 60 pixels
                     }
+                }
+                else {
+                    ActivityDataGridView.DataSource = null;
+                    ActivityDataGridView.Refresh();
                 }
             }
             catch (Exception ex)
@@ -1486,6 +1497,12 @@ namespace WolfClient.UserControls
 
         private void ActivityAddButton_Click(object sender, EventArgs e)
         {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Please select an request");
+                return;
+            }
+
             if (_dataService.GetSelectedRequest() != null)
             {
                 AddActivityTaskForm addActivityTaskForm = new AddActivityTaskForm(_apiClient, _userClient, _adminClient, _dataService);
@@ -1516,6 +1533,13 @@ namespace WolfClient.UserControls
 
         private void PlotsAddButton_Click(object sender, EventArgs e)
         {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Please select an request");
+                return;
+            }
+
+
             AddPlotToObject plotForm = new AddPlotToObject(_apiClient, _userClient, _adminClient, _dataService);
             plotForm.Show();
             plotForm.Disposed += PlotFormDispose;
@@ -1533,6 +1557,13 @@ namespace WolfClient.UserControls
 
         private void AddOwnersButton_Click(object sender, EventArgs e)
         {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Please select an request");
+                return;
+            }
+            
+
             AddOwnerForm ownerForm = new AddOwnerForm(_apiClient, _userClient, _adminClient, _dataService);
             ownerForm.Show();
             ownerForm.Disposed += OwnershipFormDispose;
@@ -1570,6 +1601,16 @@ namespace WolfClient.UserControls
 
         private async void deleteClientsButton_Click(object sender, EventArgs e)
         {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Please select an request");
+                return;
+            }
+            if (!(_dataService.getSelectedCLients() != null && _dataService.getSelectedCLients().Count() > 0))
+            {
+                MessageBox.Show("Please select a client");
+                return;
+            }
             List<GetClient_RequestRelashionshipDTO> client_RequestRelashionshipDTOs = new List<GetClient_RequestRelashionshipDTO>();
             var clients = _dataService.getSelectedCLients();
             foreach (var item in clients)
@@ -1594,6 +1635,17 @@ namespace WolfClient.UserControls
 
         private async void DeleteActivityButton_Click(object sender, EventArgs e)
         {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Please select an request");
+                return;
+            }
+
+            if (!(_dataService.getTasksFromViewModel() != null && _dataService.getTasksFromViewModel().Count() > 0))
+            {
+                MessageBox.Show("Please select an task");
+                return;
+            }
             List<GetTaskDTO> taskDTOs = _dataService.getTasksFromViewModel();
             var response = await _userClient.DeleteTasks(taskDTOs);
             if (response.IsSuccess)
@@ -1709,6 +1761,18 @@ namespace WolfClient.UserControls
 
         private async void DeletePlotsButton_Click(object sender, EventArgs e)
         {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Please select an request");
+                return;
+            }
+
+            if (!(_dataService.getSelectedPlotsOnRequestMenu() != null && _dataService.getSelectedPlotsOnRequestMenu().Count > 0))
+            {
+                MessageBox.Show("Please select plots");
+                return;
+            }
+
             List<PlotViewModel> viewModels = _dataService.getSelectedPlotsOnRequestMenu();
             List<GetPlotDTO> getPlotDTOs = new List<GetPlotDTO>();
             foreach (var viewModel in viewModels)
@@ -1735,12 +1799,24 @@ namespace WolfClient.UserControls
             {
                 _dataService.RemovePlots(getPlotDTOs);
                 UpdatePlotsDataGridView();
+                UpdateOwnershipDataGridView();
+                UpdateActivityDataGridView();
             }
 
         }
 
         private async void DeleteOwnershipButton_Click(object sender, EventArgs e)
         {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Please select an request");
+                return;
+            }
+            if (!(_dataService.GetSelectedOwnershipViewModelsRequestMenu() != null && _dataService.GetSelectedOwnershipViewModelsRequestMenu().Count() > 0)) {
+                MessageBox.Show("Please select Ownerships");
+                return;
+            }
+
             List<OwnershipViewModel> ownershipViewModels = _dataService.GetSelectedOwnershipViewModelsRequestMenu();
             List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs = new List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>();
             foreach (var ownershipModel in ownershipViewModels)
@@ -1777,6 +1853,12 @@ namespace WolfClient.UserControls
 
         private void editClientButton_Click(object sender, EventArgs e)
         {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Please select an request");
+                return;
+            }
+
             if (_dataService.getSelectedCLients() != null && _dataService.getSelectedCLients().Count() > 0)
             {
                 EditCientForm editCientForm = new EditCientForm(_apiClient, _userClient, _adminClient, _dataService);
@@ -1796,6 +1878,17 @@ namespace WolfClient.UserControls
 
         private void editActivityButton_Click(object sender, EventArgs e)
         {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Please select an request");
+                return;
+            }
+            if (!(_dataService.getTasksFromViewModel() != null && _dataService.getTasksFromViewModel().Count() > 0))
+            {
+                MessageBox.Show("Please select an task");
+                return;
+            }
+
             EditActivityTaskForm editActivityTaskForm = new EditActivityTaskForm(_apiClient, _userClient, _adminClient, _dataService);
             editActivityTaskForm.Show();
             editActivityTaskForm.Disposed += EditActivityFormDispose;
@@ -1812,6 +1905,18 @@ namespace WolfClient.UserControls
 
         private void editPlotButton_Click(object sender, EventArgs e)
         {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Please select an request");
+                return;
+            }
+
+            if (!(_dataService.getSelectedPlotsOnRequestMenu() != null && _dataService.getSelectedPlotsOnRequestMenu().Count > 0))
+            {
+                MessageBox.Show("Please select plots");
+                return;
+            }
+
             EditPlot editPlot = new EditPlot(_apiClient, _userClient, _adminClient, _dataService);
             editPlot.Show();
             editPlot.Disposed += EditPlotFormDispose;
@@ -1826,6 +1931,18 @@ namespace WolfClient.UserControls
 
         private void editOwnershipButton_Click(object sender, EventArgs e)
         {
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Please select an request");
+                return;
+            }
+            if (!(_dataService.GetSelectedOwnershipViewModelsRequestMenu() != null && _dataService.GetSelectedOwnershipViewModelsRequestMenu().Count() > 0))
+            {
+                MessageBox.Show("Please select Ownerships");
+                return;
+            }
+
+
             EditOwnerForm editOwnerForm = new EditOwnerForm(_apiClient, _userClient, _adminClient, _dataService);
             editOwnerForm.Show();
             editOwnerForm.Disposed += EditOwnershipFormDispose;
@@ -1948,11 +2065,11 @@ namespace WolfClient.UserControls
         {
             if (_dataService.GetSelectedRequest() == null)
             {
-                MessageBox.Show("Моля изберете поръчка!");
+                MessageBox.Show("Please select a request");
             }
             if (_dataService.getSelectedInvoices().Count == 0 || _dataService.getSelectedInvoices() == null)
             {
-                MessageBox.Show("Моля изберете фактура");
+                MessageBox.Show("Please select invoices");
                 return;
             }
             EditInvoiceForm editInvoiceForm = new EditInvoiceForm(_apiClient, _adminClient, _userClient, _dataService);
@@ -1962,18 +2079,24 @@ namespace WolfClient.UserControls
 
         private async void DeleteInvoiceButton_Click(object sender, EventArgs e)
         {
-            if (_dataService.GetSelectedRequest() == null) {
-                MessageBox.Show("Моля изберете поръчка!");
+            if (_dataService.GetSelectedRequest() == null)
+            {
+                MessageBox.Show("Please select a request");
             }
 
             if (_dataService.getSelectedInvoices().Count == 0 || _dataService.getSelectedInvoices() == null)
             {
-                MessageBox.Show("Моля изберете фактури за изтриване!");
+                MessageBox.Show("Please select invoices");
                 return;
             }
             await _userClient.DeleteInvoices(_dataService.getSelectedInvoices());
             _dataService.DeleteInvoices(_dataService.getSelectedInvoices());
             UpdateInvoicessDataGridView();
+        }
+
+        private void tabPage3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -26,7 +26,10 @@ namespace WolfAPI.Controllers
             if (file == null || file.Length == 0)
                 return BadRequest("No file uploaded.");
 
-            var filePath = Path.Combine("C:\\Users\\dell\\Documents\\FilesForWolf\\", file.FileName);
+            string currentDirectory = Directory.GetCurrentDirectory();
+
+            // Combine the current directory with the file name
+            var filePath = Path.Combine(currentDirectory, file.FileName);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
             {

@@ -21,5 +21,7 @@ namespace WolfClient.ViewModels
         public string ParentActivity { get; set; }
         public string tax { get; set; }
         public string taxComment { get; set; }
+
+        public string Status { get; set; }
     }
 }

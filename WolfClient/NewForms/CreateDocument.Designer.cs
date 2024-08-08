@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateDocument));
             label2 = new Label();
             FileComboBox = new ComboBox();
             ActivityComboBox = new ComboBox();
@@ -47,16 +47,6 @@
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 22F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(90, 9);
-            label1.Name = "label1";
-            label1.Size = new Size(441, 50);
-            label1.TabIndex = 0;
-            label1.Text = "Създаване на Заявление";
             // 
             // label2
             // 
@@ -125,7 +115,7 @@
             panel1.Controls.Add(FileComboBox);
             panel1.Controls.Add(label3);
             panel1.Controls.Add(ActivityComboBox);
-            panel1.Location = new Point(12, 87);
+            panel1.Location = new Point(12, 12);
             panel1.Name = "panel1";
             panel1.Size = new Size(305, 212);
             panel1.TabIndex = 7;
@@ -162,7 +152,7 @@
             panel2.Controls.Add(label4);
             panel2.Controls.Add(folderPathTextBox);
             panel2.Controls.Add(UploadButton);
-            panel2.Location = new Point(323, 87);
+            panel2.Location = new Point(323, 12);
             panel2.Name = "panel2";
             panel2.Size = new Size(301, 119);
             panel2.TabIndex = 8;
@@ -201,7 +191,7 @@
             // 
             // OpenFileReaderButton
             // 
-            OpenFileReaderButton.Location = new Point(392, 250);
+            OpenFileReaderButton.Location = new Point(392, 175);
             OpenFileReaderButton.Name = "OpenFileReaderButton";
             OpenFileReaderButton.Size = new Size(179, 49);
             OpenFileReaderButton.TabIndex = 9;
@@ -214,25 +204,22 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
-            ClientSize = new Size(631, 323);
+            ClientSize = new Size(631, 237);
             Controls.Add(OpenFileReaderButton);
             Controls.Add(panel2);
             Controls.Add(panel1);
-            Controls.Add(label1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "CreateDocument";
-            Text = "CreateDocument";
+            Text = "Wolf: Създаване на заявление";
             Load += CreateDocument_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private Label label1;
         private Label label2;
         private ComboBox FileComboBox;
         private ComboBox ActivityComboBox;

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddPlotToObject));
             AddPlotToObjectSubmitButton = new Button();
             StreetTextBox = new TextBox();
             StreetNumberTextBox = new TextBox();
@@ -45,7 +46,6 @@
             CityLabel = new Label();
             PlotNumberComboBox = new ComboBox();
             PlotNumberLabel = new Label();
-            AddPlotInObjectTitleLabel = new Label();
             ActivityComboBox = new ComboBox();
             label1 = new Label();
             CityTextBox = new TextBox();
@@ -58,7 +58,7 @@
             // 
             // AddPlotToObjectSubmitButton
             // 
-            AddPlotToObjectSubmitButton.Location = new Point(321, 780);
+            AddPlotToObjectSubmitButton.Location = new Point(188, 621);
             AddPlotToObjectSubmitButton.Margin = new Padding(3, 4, 3, 4);
             AddPlotToObjectSubmitButton.Name = "AddPlotToObjectSubmitButton";
             AddPlotToObjectSubmitButton.Size = new Size(152, 46);
@@ -69,7 +69,7 @@
             // 
             // StreetTextBox
             // 
-            StreetTextBox.Location = new Point(409, 404);
+            StreetTextBox.Location = new Point(276, 297);
             StreetTextBox.Margin = new Padding(3, 4, 3, 4);
             StreetTextBox.Name = "StreetTextBox";
             StreetTextBox.Size = new Size(208, 27);
@@ -77,7 +77,7 @@
             // 
             // StreetNumberTextBox
             // 
-            StreetNumberTextBox.Location = new Point(409, 529);
+            StreetNumberTextBox.Location = new Point(276, 422);
             StreetNumberTextBox.Margin = new Padding(3, 4, 3, 4);
             StreetNumberTextBox.Name = "StreetNumberTextBox";
             StreetNumberTextBox.Size = new Size(208, 27);
@@ -85,7 +85,7 @@
             // 
             // NeighborhoodTextBox
             // 
-            NeighborhoodTextBox.Location = new Point(409, 280);
+            NeighborhoodTextBox.Location = new Point(276, 173);
             NeighborhoodTextBox.Margin = new Padding(3, 4, 3, 4);
             NeighborhoodTextBox.Name = "NeighborhoodTextBox";
             NeighborhoodTextBox.Size = new Size(208, 27);
@@ -93,7 +93,7 @@
             // 
             // RegulatedNumberTextBox
             // 
-            RegulatedNumberTextBox.Location = new Point(409, 167);
+            RegulatedNumberTextBox.Location = new Point(276, 60);
             RegulatedNumberTextBox.Margin = new Padding(3, 4, 3, 4);
             RegulatedNumberTextBox.Name = "RegulatedNumberTextBox";
             RegulatedNumberTextBox.Size = new Size(208, 27);
@@ -104,7 +104,7 @@
             DesignationComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             DesignationComboBox.FormattingEnabled = true;
             DesignationComboBox.Items.AddRange(new object[] { "горска територия", "урбанизирана", "територия на транспорта", "замеделска", "територия заета от води и водни обекти", "защитена", "нарушена", "урбанизирана територия - защитена", "замеделска територия - защитена", "горска територия - защитена" });
-            DesignationComboBox.Location = new Point(40, 664);
+            DesignationComboBox.Location = new Point(17, 557);
             DesignationComboBox.Margin = new Padding(3, 4, 3, 4);
             DesignationComboBox.Name = "DesignationComboBox";
             DesignationComboBox.Size = new Size(208, 28);
@@ -114,7 +114,7 @@
             // 
             DesignationLabel.AutoSize = true;
             DesignationLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            DesignationLabel.Location = new Point(40, 613);
+            DesignationLabel.Location = new Point(17, 506);
             DesignationLabel.Name = "DesignationLabel";
             DesignationLabel.Size = new Size(168, 25);
             DesignationLabel.TabIndex = 42;
@@ -124,7 +124,7 @@
             // 
             StreetNumberLabel.AutoSize = true;
             StreetNumberLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            StreetNumberLabel.Location = new Point(404, 478);
+            StreetNumberLabel.Location = new Point(271, 371);
             StreetNumberLabel.Name = "StreetNumberLabel";
             StreetNumberLabel.Size = new Size(182, 25);
             StreetNumberLabel.TabIndex = 41;
@@ -134,7 +134,7 @@
             // 
             StreetLabel.AutoSize = true;
             StreetLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            StreetLabel.Location = new Point(404, 353);
+            StreetLabel.Location = new Point(271, 246);
             StreetLabel.Name = "StreetLabel";
             StreetLabel.Size = new Size(69, 25);
             StreetLabel.TabIndex = 40;
@@ -144,7 +144,7 @@
             // 
             neighborhoodLabel.AutoSize = true;
             neighborhoodLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            neighborhoodLabel.Location = new Point(404, 229);
+            neighborhoodLabel.Location = new Point(271, 122);
             neighborhoodLabel.Name = "neighborhoodLabel";
             neighborhoodLabel.Size = new Size(89, 25);
             neighborhoodLabel.TabIndex = 39;
@@ -154,17 +154,17 @@
             // 
             RegulatedNumberLabel.AutoSize = true;
             RegulatedNumberLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            RegulatedNumberLabel.Location = new Point(404, 116);
+            RegulatedNumberLabel.Location = new Point(271, 9);
             RegulatedNumberLabel.Name = "RegulatedNumberLabel";
-            RegulatedNumberLabel.Size = new Size(365, 25);
+            RegulatedNumberLabel.Size = new Size(209, 50);
             RegulatedNumberLabel.TabIndex = 38;
-            RegulatedNumberLabel.Text = "Номер на урегулиран поземлен имот";
+            RegulatedNumberLabel.Text = "Номер на урегулиран\r\nпоземлен имот";
             // 
             // localityLabel
             // 
             localityLabel.AutoSize = true;
             localityLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            localityLabel.Location = new Point(35, 477);
+            localityLabel.Location = new Point(12, 370);
             localityLabel.Name = "localityLabel";
             localityLabel.Size = new Size(82, 25);
             localityLabel.TabIndex = 36;
@@ -174,7 +174,7 @@
             // 
             Municipality.AutoSize = true;
             Municipality.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            Municipality.Location = new Point(35, 353);
+            Municipality.Location = new Point(12, 246);
             Municipality.Name = "Municipality";
             Municipality.Size = new Size(87, 25);
             Municipality.TabIndex = 34;
@@ -184,7 +184,7 @@
             // 
             CityLabel.AutoSize = true;
             CityLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            CityLabel.Location = new Point(35, 229);
+            CityLabel.Location = new Point(12, 122);
             CityLabel.Name = "CityLabel";
             CityLabel.Size = new Size(167, 25);
             CityLabel.TabIndex = 32;
@@ -193,7 +193,7 @@
             // PlotNumberComboBox
             // 
             PlotNumberComboBox.FormattingEnabled = true;
-            PlotNumberComboBox.Location = new Point(40, 167);
+            PlotNumberComboBox.Location = new Point(17, 60);
             PlotNumberComboBox.Margin = new Padding(3, 4, 3, 4);
             PlotNumberComboBox.Name = "PlotNumberComboBox";
             PlotNumberComboBox.Size = new Size(208, 28);
@@ -204,27 +204,17 @@
             // 
             PlotNumberLabel.AutoSize = true;
             PlotNumberLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            PlotNumberLabel.Location = new Point(35, 116);
+            PlotNumberLabel.Location = new Point(12, 9);
             PlotNumberLabel.Name = "PlotNumberLabel";
             PlotNumberLabel.Size = new Size(167, 25);
             PlotNumberLabel.TabIndex = 30;
             PlotNumberLabel.Text = "Номер на имота";
             // 
-            // AddPlotInObjectTitleLabel
-            // 
-            AddPlotInObjectTitleLabel.AutoSize = true;
-            AddPlotInObjectTitleLabel.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Regular, GraphicsUnit.Point);
-            AddPlotInObjectTitleLabel.Location = new Point(151, 26);
-            AddPlotInObjectTitleLabel.Name = "AddPlotInObjectTitleLabel";
-            AddPlotInObjectTitleLabel.Size = new Size(517, 42);
-            AddPlotInObjectTitleLabel.TabIndex = 29;
-            AddPlotInObjectTitleLabel.Text = "Залагане на имот в Дейност";
-            // 
             // ActivityComboBox
             // 
             ActivityComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             ActivityComboBox.FormattingEnabled = true;
-            ActivityComboBox.Location = new Point(414, 664);
+            ActivityComboBox.Location = new Point(281, 557);
             ActivityComboBox.Margin = new Padding(3, 4, 3, 4);
             ActivityComboBox.Name = "ActivityComboBox";
             ActivityComboBox.Size = new Size(208, 28);
@@ -234,7 +224,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(409, 613);
+            label1.Location = new Point(276, 506);
             label1.Name = "label1";
             label1.Size = new Size(202, 25);
             label1.TabIndex = 49;
@@ -242,21 +232,21 @@
             // 
             // CityTextBox
             // 
-            CityTextBox.Location = new Point(40, 280);
+            CityTextBox.Location = new Point(17, 173);
             CityTextBox.Name = "CityTextBox";
             CityTextBox.Size = new Size(208, 27);
             CityTextBox.TabIndex = 51;
             // 
             // MunicipalityTextBox
             // 
-            MunicipalityTextBox.Location = new Point(40, 391);
+            MunicipalityTextBox.Location = new Point(17, 284);
             MunicipalityTextBox.Name = "MunicipalityTextBox";
             MunicipalityTextBox.Size = new Size(208, 27);
             MunicipalityTextBox.TabIndex = 52;
             // 
             // LocalityTextBox
             // 
-            LocalityTextBox.Location = new Point(40, 519);
+            LocalityTextBox.Location = new Point(17, 412);
             LocalityTextBox.Name = "LocalityTextBox";
             LocalityTextBox.Size = new Size(208, 27);
             LocalityTextBox.TabIndex = 53;
@@ -266,7 +256,7 @@
             plotNumberValidationLabel.AutoSize = true;
             plotNumberValidationLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
             plotNumberValidationLabel.ForeColor = SystemColors.GradientActiveCaption;
-            plotNumberValidationLabel.Location = new Point(40, 143);
+            plotNumberValidationLabel.Location = new Point(17, 36);
             plotNumberValidationLabel.Name = "plotNumberValidationLabel";
             plotNumberValidationLabel.Size = new Size(267, 15);
             plotNumberValidationLabel.TabIndex = 54;
@@ -281,7 +271,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
-            ClientSize = new Size(817, 852);
+            ClientSize = new Size(510, 680);
             Controls.Add(plotNumberValidationLabel);
             Controls.Add(LocalityTextBox);
             Controls.Add(MunicipalityTextBox);
@@ -304,9 +294,9 @@
             Controls.Add(CityLabel);
             Controls.Add(PlotNumberComboBox);
             Controls.Add(PlotNumberLabel);
-            Controls.Add(AddPlotInObjectTitleLabel);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AddPlotToObject";
-            Text = "AddPlotToObject";
+            Text = "Wolf: Залагане на имот в дейност";
             Load += AddPlotToObject_Load;
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
@@ -331,7 +321,6 @@
         private Label CityLabel;
         private ComboBox PlotNumberComboBox;
         private Label PlotNumberLabel;
-        private Label AddPlotInObjectTitleLabel;
         private ComboBox ActivityComboBox;
         private Label label1;
         private TextBox CityTextBox;

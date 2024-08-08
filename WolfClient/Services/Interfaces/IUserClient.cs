@@ -90,5 +90,7 @@ namespace WolfClient.Services.Interfaces
         public Task<ClientResponse<HttpResponseMessage>> EditInvoice(GetInvoiceDTO invoiceDTO);
 
         public Task<ClientResponse<HttpResponseMessage>> DeleteInvoices(List<GetInvoiceDTO> invoices);
+
+        public Task<ClientResponse<List<GetDocumentPlot_DocumentOwnerRelashionshipDTO>>> GetLinkedPlotOwnerRelashionshipSinglePlot(GetPlotDTO plotDTO);
     }
 }

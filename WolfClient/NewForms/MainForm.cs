@@ -4,10 +4,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Wolf;
+using WolfClient.Events;
+using WolfClient.Events.EventArgs;
 using WolfClient.NewForms.DocumentsForms;
 using WolfClient.Services;
 using WolfClient.Services.Interfaces;
@@ -30,7 +33,7 @@ namespace WolfClient.NewForms
 
         public MainForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService,
             MenuRequestsUserControl requestsUserControl, MenuClientsUserControl clientsUserControl, MenuEmployeesUserControl employeesUserControl,
-            IFileUploader fileUploader , WebSocketClientService websocketClientService)
+            IFileUploader fileUploader, WebSocketClientService websocketClientService)
         {
             InitializeComponent();
             _apiClient = apiClient;
@@ -43,6 +46,13 @@ namespace WolfClient.NewForms
             _employeesUserControl = employeesUserControl;
             _fileUploader = fileUploader;
             _websocketClientService = websocketClientService;
+
+            LogInEvent.logIn += OnUserLoggedIn;
+            UserLabel.TextChanged += ResizePanelToFitLabel;
+        }
+        private async void OnUserLoggedIn(object sender, LogInEventArgs e)
+        {
+            UserLabel.Text = $"Потребител: {_dataService.getLoggedEmployee().FullName}";
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -51,6 +61,21 @@ namespace WolfClient.NewForms
         }
 
 
+        private void ResizePanelToFitLabel(object sender, EventArgs e)
+        {
+            // Calculate the new panel width based on the text length
+            using (Graphics g = UserLabel.CreateGraphics())
+            {
+                SizeF textSize = g.MeasureString(UserLabel.Text, UserLabel.Font);
+                int newPanelWidth = (int)textSize.Width; // Add padding
+                UserLabel.Width = newPanelWidth;
+            }
+
+            // Center the label within the panel
+            int Previouswidth = UserPanel.Width;
+            UserPanel.Width = UserLabel.Width;
+            UserPanel.Location = new Point(UserPanel.Location.X + Previouswidth - UserPanel.Width, UserPanel.Location.Y);
+        }
 
         private void LoadUserControl(UserControl userControl)
         {
@@ -90,7 +115,7 @@ namespace WolfClient.NewForms
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            LoginForm loginForm = new LoginForm(_apiClient, _userClient, _adminClient, _fileUploader, _websocketClientService,_dataService);
+            LoginForm loginForm = new LoginForm(_apiClient, _userClient, _adminClient, _fileUploader, _websocketClientService, _dataService);
             loginForm.Show();
         }
 
@@ -107,7 +132,12 @@ namespace WolfClient.NewForms
 
         private void DocumentViewer_Click(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }

@@ -16,5 +16,6 @@ namespace DataAccessLayer.Repositories.Interfaces
 
         public Task<bool> deleteRelashionship(DocumentPlot_DocumentOwnerRelashionship relashionship, DocumentPlot_DocumentOwnerRelashionship plotOwner);
         public Task<bool> EditRelashionship(DocumentPlot_DocumentOwnerRelashionship relashionship);
+        public Task<List<DocumentPlot_DocumentOwnerRelashionship>> FetchLinkedRelashionships(Plot plot);
     }
 }

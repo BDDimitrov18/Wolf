@@ -30,26 +30,30 @@ namespace WolfClient.NewForms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             toolStrip1 = new ToolStrip();
             RequestToolStripButton = new ToolStripLabel();
             ClientsStripButton = new ToolStripLabel();
-            EmployeesStripLabel = new ToolStripLabel();
             panelContent = new Panel();
             LoginButton = new Button();
             SpravkiButton = new Button();
+            UserPanel = new Panel();
+            UserLabel = new Label();
             toolStrip1.SuspendLayout();
+            UserPanel.SuspendLayout();
             SuspendLayout();
             // 
             // toolStrip1
             // 
             toolStrip1.BackColor = SystemColors.ActiveCaption;
             toolStrip1.ImageScalingSize = new Size(20, 20);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { RequestToolStripButton, ClientsStripButton, EmployeesStripLabel });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { RequestToolStripButton, ClientsStripButton });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(1358, 25);
             toolStrip1.TabIndex = 5;
             toolStrip1.Text = "toolStrip1";
+            toolStrip1.ItemClicked += toolStrip1_ItemClicked;
             // 
             // RequestToolStripButton
             // 
@@ -64,13 +68,6 @@ namespace WolfClient.NewForms
             ClientsStripButton.Size = new Size(67, 22);
             ClientsStripButton.Text = "Клиенти";
             ClientsStripButton.Click += ClientsStripButton_Click;
-            // 
-            // EmployeesStripLabel
-            // 
-            EmployeesStripLabel.Name = "EmployeesStripLabel";
-            EmployeesStripLabel.Size = new Size(84, 22);
-            EmployeesStripLabel.Text = "Служители";
-            EmployeesStripLabel.Click += EmployeesStripLabel_Click;
             // 
             // panelContent
             // 
@@ -104,20 +101,47 @@ namespace WolfClient.NewForms
             SpravkiButton.Text = "Справки";
             SpravkiButton.UseVisualStyleBackColor = true;
             // 
+            // UserPanel
+            // 
+            UserPanel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            UserPanel.BackColor = SystemColors.ActiveCaption;
+            UserPanel.Controls.Add(UserLabel);
+            UserPanel.Location = new Point(1064, 2);
+            UserPanel.Name = "UserPanel";
+            UserPanel.RightToLeft = RightToLeft.Yes;
+            UserPanel.Size = new Size(294, 22);
+            UserPanel.TabIndex = 24;
+            // 
+            // UserLabel
+            // 
+            UserLabel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            UserLabel.AutoSize = true;
+            UserLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            UserLabel.Location = new Point(0, 0);
+            UserLabel.Name = "UserLabel";
+            UserLabel.RightToLeft = RightToLeft.No;
+            UserLabel.Size = new Size(112, 23);
+            UserLabel.TabIndex = 0;
+            UserLabel.Text = "Потребител: ";
+            // 
             // MainForm
             // 
             AutoScaleMode = AutoScaleMode.None;
             BackColor = SystemColors.AppWorkspace;
             ClientSize = new Size(1358, 706);
+            Controls.Add(UserPanel);
             Controls.Add(SpravkiButton);
             Controls.Add(LoginButton);
             Controls.Add(panelContent);
             Controls.Add(toolStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
-            Text = "Form1";
+            Text = "Wolf: Управление на поръчки";
             Load += MainForm_Load;
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
+            UserPanel.ResumeLayout(false);
+            UserPanel.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -127,9 +151,10 @@ namespace WolfClient.NewForms
         private System.Windows.Forms.ToolStripLabel RequestToolStripButton;
         private System.Windows.Forms.Panel panelContent;
         private System.Windows.Forms.ToolStripLabel ClientsStripButton;
-        private System.Windows.Forms.ToolStripLabel EmployeesStripLabel;
         private Button LoginButton;
         private Button SpravkiButton;
+        private Panel UserPanel;
+        private Label UserLabel;
     }
 }
 
