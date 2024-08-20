@@ -52,6 +52,8 @@
             label1 = new Label();
             openFilesButton = new Button();
             PathTextBox = new TextBox();
+            RequestCreatorComboBox = new ComboBox();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)RequestErrorProvider).BeginInit();
             SuspendLayout();
             // 
@@ -129,7 +131,7 @@
             // 
             // AdvanceTextBox
             // 
-            AdvanceTextBox.Location = new Point(17, 320);
+            AdvanceTextBox.Location = new Point(17, 263);
             AdvanceTextBox.Margin = new Padding(3, 4, 3, 4);
             AdvanceTextBox.Name = "AdvanceTextBox";
             AdvanceTextBox.Size = new Size(253, 27);
@@ -139,7 +141,7 @@
             // 
             AdvanceLabel.AutoSize = true;
             AdvanceLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            AdvanceLabel.Location = new Point(12, 261);
+            AdvanceLabel.Location = new Point(12, 204);
             AdvanceLabel.Name = "AdvanceLabel";
             AdvanceLabel.Size = new Size(164, 25);
             AdvanceLabel.TabIndex = 20;
@@ -147,7 +149,7 @@
             // 
             // PriceOfRequestTextBox
             // 
-            PriceOfRequestTextBox.Location = new Point(17, 191);
+            PriceOfRequestTextBox.Location = new Point(17, 158);
             PriceOfRequestTextBox.Margin = new Padding(3, 4, 3, 4);
             PriceOfRequestTextBox.Name = "PriceOfRequestTextBox";
             PriceOfRequestTextBox.Size = new Size(253, 27);
@@ -157,7 +159,7 @@
             // 
             PriceOfRequestLabel.AutoSize = true;
             PriceOfRequestLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            PriceOfRequestLabel.Location = new Point(12, 132);
+            PriceOfRequestLabel.Location = new Point(12, 99);
             PriceOfRequestLabel.Name = "PriceOfRequestLabel";
             PriceOfRequestLabel.Size = new Size(321, 25);
             PriceOfRequestLabel.TabIndex = 18;
@@ -222,7 +224,7 @@
             FinalPriceErrorLabel.AutoSize = true;
             FinalPriceErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
             FinalPriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
-            FinalPriceErrorLabel.Location = new Point(17, 172);
+            FinalPriceErrorLabel.Location = new Point(17, 139);
             FinalPriceErrorLabel.Name = "FinalPriceErrorLabel";
             FinalPriceErrorLabel.Size = new Size(171, 15);
             FinalPriceErrorLabel.TabIndex = 35;
@@ -233,7 +235,7 @@
             AdvancePriceErrorLabel.AutoSize = true;
             AdvancePriceErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
             AdvancePriceErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
-            AdvancePriceErrorLabel.Location = new Point(17, 301);
+            AdvancePriceErrorLabel.Location = new Point(17, 244);
             AdvancePriceErrorLabel.Name = "AdvancePriceErrorLabel";
             AdvancePriceErrorLabel.Size = new Size(171, 15);
             AdvancePriceErrorLabel.TabIndex = 36;
@@ -266,6 +268,25 @@
             PathTextBox.Size = new Size(316, 27);
             PathTextBox.TabIndex = 39;
             // 
+            // RequestCreatorComboBox
+            // 
+            RequestCreatorComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            RequestCreatorComboBox.FormattingEnabled = true;
+            RequestCreatorComboBox.Location = new Point(17, 360);
+            RequestCreatorComboBox.Name = "RequestCreatorComboBox";
+            RequestCreatorComboBox.Size = new Size(253, 28);
+            RequestCreatorComboBox.TabIndex = 40;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label2.Location = new Point(21, 319);
+            label2.Name = "label2";
+            label2.Size = new Size(185, 25);
+            label2.TabIndex = 41;
+            label2.Text = "Създал поръчката";
+            // 
             // AddRequestForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -273,6 +294,8 @@
             AutoSize = true;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(870, 772);
+            Controls.Add(label2);
+            Controls.Add(RequestCreatorComboBox);
             Controls.Add(PathTextBox);
             Controls.Add(openFilesButton);
             Controls.Add(label1);
@@ -331,5 +354,7 @@
         private Button openFilesButton;
         private Label label1;
         private TextBox PathTextBox;
+        private Label label2;
+        private ComboBox RequestCreatorComboBox;
     }
 }

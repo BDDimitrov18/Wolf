@@ -65,7 +65,6 @@
             WayOfAcquiringLabel = new Label();
             IdealPartsValidatorLabel = new Label();
             AddressValidatorLabel = new Label();
-            NameValidatorLabel = new Label();
             EgnValidatorLabel = new Label();
             wayOfAcquiringComboBox = new ComboBox();
             label15 = new Label();
@@ -228,13 +227,13 @@
             // 
             // Issuer
             // 
-            Issuer.DropDownStyle = ComboBoxStyle.DropDownList;
             Issuer.FormattingEnabled = true;
             Issuer.Items.AddRange(new object[] { "Агенция по Вписвания при РС ", "Община ", "Областен управител", "Общинска служба замеделие", "Окръжен народен съвет", "", "", "", "" });
             Issuer.Location = new Point(17, 548);
             Issuer.Name = "Issuer";
             Issuer.Size = new Size(365, 28);
             Issuer.TabIndex = 19;
+            Issuer.SelectedIndexChanged += Issuer_SelectedIndexChanged;
             // 
             // label11
             // 
@@ -420,7 +419,6 @@
             panel3.Controls.Add(WayOfAcquiringLabel);
             panel3.Controls.Add(IdealPartsValidatorLabel);
             panel3.Controls.Add(AddressValidatorLabel);
-            panel3.Controls.Add(NameValidatorLabel);
             panel3.Controls.Add(EgnValidatorLabel);
             panel3.Controls.Add(wayOfAcquiringComboBox);
             panel3.Controls.Add(label15);
@@ -478,17 +476,6 @@
             AddressValidatorLabel.TabIndex = 31;
             AddressValidatorLabel.Text = "Моля Въведете Адрес";
             // 
-            // NameValidatorLabel
-            // 
-            NameValidatorLabel.AutoSize = true;
-            NameValidatorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
-            NameValidatorLabel.ForeColor = SystemColors.GradientActiveCaption;
-            NameValidatorLabel.Location = new Point(18, 109);
-            NameValidatorLabel.Name = "NameValidatorLabel";
-            NameValidatorLabel.Size = new Size(113, 15);
-            NameValidatorLabel.TabIndex = 30;
-            NameValidatorLabel.Text = "NameValidatorLabel";
-            // 
             // EgnValidatorLabel
             // 
             EgnValidatorLabel.AutoSize = true;
@@ -503,10 +490,9 @@
             // 
             // wayOfAcquiringComboBox
             // 
-            wayOfAcquiringComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             wayOfAcquiringComboBox.DropDownWidth = 366;
             wayOfAcquiringComboBox.FormattingEnabled = true;
-            wayOfAcquiringComboBox.Items.AddRange(new object[] { "Дарение", "Покупко делба", "наследство", "давност" });
+            wayOfAcquiringComboBox.Items.AddRange(new object[] { "Дарение", "Покупко-продажба", "наследство", "давност", "делба" });
             wayOfAcquiringComboBox.Location = new Point(18, 348);
             wayOfAcquiringComboBox.Name = "wayOfAcquiringComboBox";
             wayOfAcquiringComboBox.Size = new Size(364, 28);
@@ -693,9 +679,8 @@
             // 
             // PowerOfAttorneyIssuerComboBox
             // 
-            PowerOfAttorneyIssuerComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             PowerOfAttorneyIssuerComboBox.FormattingEnabled = true;
-            PowerOfAttorneyIssuerComboBox.Items.AddRange(new object[] { "Агенция по Вписвания при РС ", "Община ", "Областен управител", "Общинска служба замеделие", "Окръжен народен съвет", "", "", "", "" });
+            PowerOfAttorneyIssuerComboBox.Items.AddRange(new object[] { "Кмет на община", "Кмет на кметство", "Нотариус № РС - ", "РС - " });
             PowerOfAttorneyIssuerComboBox.Location = new Point(253, 66);
             PowerOfAttorneyIssuerComboBox.Name = "PowerOfAttorneyIssuerComboBox";
             PowerOfAttorneyIssuerComboBox.Size = new Size(365, 28);
@@ -825,7 +810,6 @@
         private Label EgnValidatorLabel;
         private Label IdealPartsValidatorLabel;
         private Label AddressValidatorLabel;
-        private Label NameValidatorLabel;
         private Label CaseValidatorLabel;
         private Label RegisterValidatorLabel;
         private Label TomValidatorLabel;

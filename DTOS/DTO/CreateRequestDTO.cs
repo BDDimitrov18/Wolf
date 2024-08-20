@@ -24,5 +24,8 @@ namespace DTOS.DTO
         public string RequestName { get; set; }
 
         public string? Path { get; set; }
+
+        public int? RequestCreatorId { get; set; }
+
     }
 }

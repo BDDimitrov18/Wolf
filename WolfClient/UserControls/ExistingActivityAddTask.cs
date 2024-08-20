@@ -24,6 +24,8 @@ namespace WolfClient.UserControls
         CreateTaskDTO _taskValidator;
         public GetActivityDTO _selectedActivity;
         public event EventHandler DisposeRequested;
+
+        public List<GetTaskTypeDTO> _getTaskTypeDTOs;
         public ExistingActivityAddTask(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
@@ -32,6 +34,7 @@ namespace WolfClient.UserControls
             _adminClient = adminClient;
             _dataService = dataService;
             _activityTypesDTOs = new List<GetActivityTypeDTO>();
+            _getTaskTypeDTOs = new List<GetTaskTypeDTO>();
             _taskValidator = new CreateTaskDTO();
             _selectedActivity = null;
         }
@@ -39,6 +42,8 @@ namespace WolfClient.UserControls
         
         private async void AddActivityTaskForm_Load(object sender, EventArgs e)
         {
+
+
             var response = await _userClient.GetActivityTypes();
             _dataService.SetActivityTypes(response.ResponseObj);
             var selected = _dataService.GetSelectedRequest();
@@ -72,7 +77,8 @@ namespace WolfClient.UserControls
             ExecitantComboBox.DataSource = employeesListForExecitant;
             ExecitantComboBox.DisplayMember = "FullName";
             ExecitantComboBox.ValueMember = "EmployeeId";
-            ExecitantComboBox.SelectedItem = ActivityComboBox.Text;
+            GetActivityDTO selectedActivity = ActivityComboBox.SelectedItem as GetActivityDTO;
+            ExecitantComboBox.SelectedValue = selectedActivity.mainExecutant.EmployeeId;
 
 
             // Set the data source for the ControlComboBox
@@ -81,6 +87,8 @@ namespace WolfClient.UserControls
             ControlComboBox.ValueMember = "EmployeeId";
 
             StatusComboBox.SelectedIndex = 0;
+
+            TaskComboBox.TextChanged += TaskComboBox_textChanged;
         }
 
         private void ValidateModel()
@@ -189,12 +197,54 @@ namespace WolfClient.UserControls
                 TaskComboBox.DisplayMember = "TaskTypeName";
                 TaskComboBox.ValueMember = "TaskTypeId";
             }
+            _getTaskTypeDTOs = taskTypes;
 
             ActivityTypeLabel.Text = $"Дейност : {selectedActivity.ActivityType.ActivityTypeName}";
             MainExecutantLabel.Text = $"Главен изпълнител : {selectedActivity.mainExecutant.FullName}";
             ParentActivityLabel.Text = $"Произлиза от : {selectedActivity.ParentActivity?.ActivityTypeName}";
             startDateLabel.Text = $"започнато на : {selectedActivity.StartDate}";
             ExpectedDurationLabel.Text = $"завършва на : {selectedActivity.ExpectedDuration}";
+        }
+
+        public void TaskComboBox_textChanged(object sender, EventArgs e)
+        {
+            string text = TaskComboBox.Text;
+
+            // Temporarily remove the event handler to prevent it from firing while updating the items
+            TaskComboBox.TextChanged -= TaskComboBox_textChanged;
+
+            List<GetTaskTypeDTO> filteredTasks = new List<GetTaskTypeDTO>();
+            // Filter the list based on the text input or show all items if the text is empty
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                // If the text is empty, display all clients
+                filteredTasks = _getTaskTypeDTOs;
+
+            }
+            else
+            {
+                // Get the list of clients and filter based on the text input
+                filteredTasks = _getTaskTypeDTOs
+                    .Where(client => client.TaskTypeName.IndexOf(text, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .OrderBy(client => client.TaskTypeName)
+                    .ToList();
+
+                // Clear and repopulate the ComboBox with the filtered and sorted list
+
+            }
+
+            TaskComboBox.DataSource = filteredTasks;
+            TaskComboBox.DisplayMember = "TaskTypeName";
+            TaskComboBox.ValueMember = "TaskTypeId";
+
+
+
+            // Restore the user's text and keep the ComboBox open
+            TaskComboBox.Text = text;
+            TaskComboBox.SelectionStart = text.Length;
+
+            // Reattach the event handler
+            TaskComboBox.TextChanged += TaskComboBox_textChanged;
         }
 
         private bool ValidateActivityComboBox()

@@ -79,6 +79,7 @@ namespace WolfClient.UserControls
             ClientsDataGridView.Name = "ClientsDataGridView";
             ClientsDataGridView.RowHeadersWidth = 51;
             ClientsDataGridView.RowTemplate.Height = 24;
+            ClientsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             ClientsDataGridView.Size = new Size(1344, 671);
             ClientsDataGridView.TabIndex = 0;
             ClientsDataGridView.CellContentClick += ClientsDataGridView_CellContentClick;

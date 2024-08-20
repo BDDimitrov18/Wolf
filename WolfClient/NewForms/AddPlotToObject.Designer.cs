@@ -159,6 +159,7 @@
             RegulatedNumberLabel.Size = new Size(209, 50);
             RegulatedNumberLabel.TabIndex = 38;
             RegulatedNumberLabel.Text = "Номер на урегулиран\r\nпоземлен имот";
+            RegulatedNumberLabel.Click += RegulatedNumberLabel_Click;
             // 
             // localityLabel
             // 

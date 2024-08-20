@@ -22,9 +22,17 @@ namespace DataAccessLayer.Repositories
         {
             foreach (var request in requests)
             {
+                if (request.RequestCreatorId.HasValue && request.RequestCreator == null)
+                {
+                    // Load the RequestCreator based on RequestCreatorId
+                    request.RequestCreator = _WolfDbContext.Employees
+                        .FirstOrDefault(e => e.EmployeeId == request.RequestCreatorId.Value);
+                }
+
                 _WolfDbContext.Requests.Add(request);
-                _WolfDbContext.SaveChanges();
             }
+
+            _WolfDbContext.SaveChanges(); // Save all changes at once
         }
 
         public bool Edit(Request request)
@@ -40,6 +48,7 @@ namespace DataAccessLayer.Repositories
                 existingRequest.Advance = request.Advance;
                 existingRequest.Comments = request.Comments;
                 existingRequest.Path= request.Path;
+                existingRequest.RequestCreatorId = request.RequestCreatorId;
                 // Save changes to the database
                 _WolfDbContext.SaveChanges();
                 return true; // Indicate the operation was successful

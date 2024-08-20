@@ -10,5 +10,7 @@ namespace WolfClient.ViewModels
     public class PlotViewModel : GetPlotDTO
     {
         public string ActivityName { get; set; }
+
+        public int ActivityId { get; set; }
     }
 }

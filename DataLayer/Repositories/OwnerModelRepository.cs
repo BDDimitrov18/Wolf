@@ -27,17 +27,14 @@ namespace DataAccessLayer.Repositories
             if (existingOwnerWithSameEgn != null)
             {
                 // Compare all relevant fields to check for differences
-                bool isDifferent = existingOwnerWithSameEgn.FirstName != owner.FirstName ||
-                                   existingOwnerWithSameEgn.MiddleName != owner.MiddleName ||
-                                   existingOwnerWithSameEgn.LastName != owner.LastName ||
+                bool isDifferent = existingOwnerWithSameEgn.FullName != owner.FullName ||
+                                   existingOwnerWithSameEgn.EGN != owner.EGN ||
                                    existingOwnerWithSameEgn.Address != owner.Address;
 
                 if (isDifferent)
                 {
                     // Update existing entity with the new values
-                    existingOwnerWithSameEgn.FirstName = owner.FirstName;
-                    existingOwnerWithSameEgn.MiddleName = owner.MiddleName;
-                    existingOwnerWithSameEgn.LastName = owner.LastName;
+                    existingOwnerWithSameEgn.FullName = owner.FullName;
                     existingOwnerWithSameEgn.Address = owner.Address;
 
                     _WolfDbContext.Owners.Update(existingOwnerWithSameEgn);
@@ -69,9 +66,7 @@ namespace DataAccessLayer.Repositories
             }
 
             // Update only the necessary fields
-            existingOwner.FirstName = owner.FirstName;
-            existingOwner.MiddleName = owner.MiddleName;
-            existingOwner.LastName = owner.LastName;
+            existingOwner.FullName= owner.FullName;
             existingOwner.EGN = owner.EGN;
             existingOwner.Address = owner.Address;
 

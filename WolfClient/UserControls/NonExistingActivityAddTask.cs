@@ -26,6 +26,8 @@ namespace WolfClient.UserControls
         CreateActivityDTO _activityValidator;
         CreateTaskDTO _taskValidator;
 
+        private List<GetTaskTypeDTO> _getTaskTypeDTO;
+
         public event EventHandler DisposeRequested;
         public NonExistingActivityAddTask(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
@@ -37,6 +39,7 @@ namespace WolfClient.UserControls
             _activityValidator = new CreateActivityDTO();
             _taskValidator = new CreateTaskDTO();
             _activityTypesDTOs = new List<GetActivityTypeDTO>();
+            _getTaskTypeDTO = new List<GetTaskTypeDTO>();
             ActivityComboBox.TextChanged += ActivityComboBox_TextChanged;
         }
 
@@ -65,10 +68,14 @@ namespace WolfClient.UserControls
             MainExecutantComboBox.DisplayMember = "FullName";
             MainExecutantComboBox.ValueMember = "EmployeeId";
 
+            MainExecutantComboBox.SelectedValue = _dataService.getLoggedEmployee().EmployeeId;
+
             // Set the data source for the ExecitantComboBox
             ExecitantComboBox.DataSource = employeesListForExecitant;
             ExecitantComboBox.DisplayMember = "FullName";
             ExecitantComboBox.ValueMember = "EmployeeId";
+
+            ExecitantComboBox.SelectedValue = _dataService.getLoggedEmployee().EmployeeId;
 
             GetEmployeeDTO employeeDTO = new GetEmployeeDTO();
             employeeDTO.FullName = "Няма Контрол";
@@ -102,6 +109,8 @@ namespace WolfClient.UserControls
             ParentActivityComboBox.ValueMember = "ActivityId";
 
             StatusComboBox.SelectedIndex = 0;
+
+            TaskComboBox.TextChanged += TaskComboBox_textChanged;
         }
 
         public void ActivityComboBox_TextChanged(object sender, EventArgs e)
@@ -141,6 +150,47 @@ namespace WolfClient.UserControls
             ActivityComboBox.TextChanged += ActivityComboBox_TextChanged;
 
 
+        }
+
+        public void TaskComboBox_textChanged(object sender, EventArgs e)
+        {
+            string text = TaskComboBox.Text;
+
+            // Temporarily remove the event handler to prevent it from firing while updating the items
+            TaskComboBox.TextChanged -= TaskComboBox_textChanged;
+
+            List<GetTaskTypeDTO> filteredTasks = new List<GetTaskTypeDTO>();
+            // Filter the list based on the text input or show all items if the text is empty
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                // If the text is empty, display all clients
+                filteredTasks = _getTaskTypeDTO;
+
+            }
+            else
+            {
+                // Get the list of clients and filter based on the text input
+                filteredTasks = _getTaskTypeDTO
+                    .Where(client => client.TaskTypeName.IndexOf(text, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .OrderBy(client => client.TaskTypeName)
+                    .ToList();
+
+                // Clear and repopulate the ComboBox with the filtered and sorted list
+                
+            }
+
+            TaskComboBox.DataSource = filteredTasks;
+            TaskComboBox.DisplayMember = "TaskTypeName";
+            TaskComboBox.ValueMember = "TaskTypeId";
+
+
+
+            // Restore the user's text and keep the ComboBox open
+            TaskComboBox.Text = text;
+            TaskComboBox.SelectionStart = text.Length;
+
+            // Reattach the event handler
+            TaskComboBox.TextChanged += TaskComboBox_textChanged;
         }
 
         private void ValidateModel()
@@ -278,6 +328,7 @@ namespace WolfClient.UserControls
                 TaskComboBox.DisplayMember = "TaskTypeName";
                 TaskComboBox.ValueMember = "TaskTypeId";
             }
+            _getTaskTypeDTO = selectedActivity.TaskTypes.ToList();
         }
 
         private bool ValidateActivityComboBox()

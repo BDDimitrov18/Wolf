@@ -55,10 +55,10 @@ namespace WolfClient.NewForms
                 // Clear previous error messages
                 errorProvider.Clear();
                 // Clear all error messages if validation passes
-                    foreach (Control control in Controls)
-                    {
-                        errorProvider.SetError(control, string.Empty);
-                    }
+                foreach (Control control in Controls)
+                {
+                    errorProvider.SetError(control, string.Empty);
+                }
                 if (getIdealPart() == -1)
                 {
                     errorProvider.SetError(IdealPartsPanel, "Моля въведете стойности");
@@ -130,33 +130,7 @@ namespace WolfClient.NewForms
                 // Bind the form controls to the model properties
                 _ownerValidator.EGN = EGNTextBox.Text;
                 _ownerValidator.Address = AddressTextBox.Text;
-                string[] names = NameTextBox.Text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                if (names.Length < 1)
-                {
-                    errorProvider.SetError(NameTextBox, "Въведете три имена");
-                    NameValidatorLabel.Text = "Въведете три имена";
-                }
-                else if (names.Length == 1)
-                {
-                    errorProvider.SetError(NameTextBox, "Въведете три имена");
-                    NameValidatorLabel.Text = "Въведете три имена";
-                }
-                else if (names.Length == 2)
-                {
-                    errorProvider.SetError(NameTextBox, "Въведете три имена");
-                    NameValidatorLabel.Text = "Въведете три имена";
-                }
-                else if (names.Length == 3)
-                {
-                    _ownerValidator.FirstName = names[0];
-                    _ownerValidator.MiddleName = names[1];
-                    _ownerValidator.LastName = names[2];
-                }
-                else if (names.Length > 3)
-                {
-                    errorProvider.SetError(NameTextBox, "Въведете само 3 имена");
-                    NameValidatorLabel.Text = "Въведете саме 3 имена";
-                }
+                
 
                 // Validate the model
                 IList<ValidationResult> memberNameResults = WolfClient.Validators.Validator.Validate(_ownerValidator);
@@ -215,9 +189,7 @@ namespace WolfClient.NewForms
             return memberName switch
             {
                 // Owner Validator
-                nameof(_ownerValidator.FirstName) => "FirstNameTextBox",
-                nameof(_ownerValidator.MiddleName) => "MiddleNameTextBox",
-                nameof(_ownerValidator.LastName) => "LastNameTextBox",
+                
                 nameof(_ownerValidator.EGN) => "EGNTextBox",
                 nameof(_ownerValidator.Address) => "AddressTextBox",
 
@@ -448,7 +420,6 @@ namespace WolfClient.NewForms
 
         private void ResetLabelColors()
         {
-            NameValidatorLabel.ForeColor = SystemColors.GradientActiveCaption;
             EgnValidatorLabel.ForeColor = SystemColors.GradientActiveCaption;
             AddressValidatorLabel.ForeColor = SystemColors.GradientActiveCaption;
             IdealPartsValidatorLabel.ForeColor = SystemColors.GradientActiveCaption;
@@ -464,12 +435,7 @@ namespace WolfClient.NewForms
         private bool SetValidationLabels()
         {
             bool flag = false;
-            if (!string.IsNullOrEmpty(errorProvider.GetError(NameTextBox)))
-            {
-                NameValidatorLabel.ForeColor = Color.Red;
-                flag = true;
-            }
-
+            
             if (!string.IsNullOrEmpty(errorProvider.GetError(IdealPartsPanel)))
             {
                 IdealPartsValidatorLabel.ForeColor = Color.Red;
@@ -536,9 +502,7 @@ namespace WolfClient.NewForms
             string[] names = NameTextBox.Text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
             CreateOwnerDTO createOwnerDTO = new CreateOwnerDTO()
             {
-                FirstName = names[0],
-                MiddleName = names[1],
-                LastName = names[2],
+                FullName = NameTextBox.Text,    
                 EGN = EGNTextBox.Text,
                 Address = AddressTextBox.Text,
             };
@@ -554,7 +518,8 @@ namespace WolfClient.NewForms
                                    OwnerResponse.ResponseObj.LastName != OWNERTOEDIT.LastName ||
                                    OwnerResponse.ResponseObj.Address != OWNERTOEDIT.Address;
 
-                if (isDifferent) {
+                if (isDifferent)
+                {
 
                     _dataService.EditOwner(OwnerResponse.ResponseObj);
                 }
@@ -715,10 +680,15 @@ namespace WolfClient.NewForms
             GetOwnerDTO owner = owners.Where(ow => ow.EGN == egn).FirstOrDefault();
             if (owner != null)
             {
-                NameTextBox.Text = owner.FirstName + " " + owner.MiddleName + " " +owner.LastName;
+                NameTextBox.Text = owner.FullName;
                 AddressTextBox.Text = owner.Address;
             }
-            
+
+        }
+
+        private void Issuer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

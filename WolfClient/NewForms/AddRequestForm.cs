@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using WolfClient.Services;
 using WolfClient.Services.Interfaces;
 using WolfClient.UserControls;
 
@@ -20,6 +21,7 @@ namespace WolfClient.NewForms
         private readonly IApiClient _apiClient;
         private readonly IUserClient _userClient;
         private readonly IAdminClient _adminClient;
+        private readonly IDataService _dataService;
         private List<CreateClientDTO> _clientsList;
         private List<GetClientDTO> _availableClientsList;
 
@@ -29,12 +31,13 @@ namespace WolfClient.NewForms
         private CreateRequestDTO _requestValidator;
 
 
-        public AddRequestForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient)
+        public AddRequestForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
             _apiClient = apiClient;
             _userClient = userClient;
             _adminClient = adminClient;
+            _dataService = dataService;
             _clientsList = new List<CreateClientDTO>();
             _availableClientsList = new List<GetClientDTO>();
 
@@ -146,6 +149,16 @@ namespace WolfClient.NewForms
             }
             PriceOfRequestTextBox.Text = "0";
             AdvanceTextBox.Text = "0";
+
+            var employeesResponse = await _userClient.GetAllEmployees();
+
+            RequestCreatorComboBox.DataSource = employeesResponse.ResponseObj;
+            RequestCreatorComboBox.DisplayMember = "FullName";
+            RequestCreatorComboBox.ValueMember = "EmployeeId";
+
+            RequestCreatorComboBox.SelectedValue = _dataService.getLoggedEmployee().EmployeeId;
+
+
         }
 
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
@@ -222,6 +235,7 @@ namespace WolfClient.NewForms
                 Advance = float.Parse(AdvanceTextBox.Text),
                 Comments = CommentsRichTextBox.Text,
                 RequestName = NameOfRequestTextBox.Text,
+                RequestCreatorId = (int)RequestCreatorComboBox.SelectedValue,
             };
             List<CreateRequestDTO> requestDTOs = new List<CreateRequestDTO>();
             requestDTOs.Add(createRequestDTO);

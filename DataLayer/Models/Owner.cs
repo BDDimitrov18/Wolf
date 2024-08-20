@@ -21,6 +21,7 @@ namespace DataAccessLayer.Models
         public string? EGN { get; set; }
 
         public string? Address { get; set; }
+        public string FullName { get; set; }
 
         public ICollection<DocumentOfOwnership_OwnerRelashionship> documentOfOwnership_OwnerRelashionships{ get; set; }
 

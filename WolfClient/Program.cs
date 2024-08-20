@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.Configuration;
-using Patagames.Pdf.Net;
 using WolfClient.NewForms;
 using WolfClient.Services;
 using WolfClient.Services.Interfaces;
@@ -37,7 +36,6 @@ namespace WolfClient
             string apiBaseUrl = configuration["Api:BaseUrl"];
 
             string currentDirectory = Directory.GetCurrentDirectory();
-            PdfCommon.Initialize(null, pdfiumDllPath);
             string filePath = Path.GetFullPath(Path.Combine(currentDirectory, relativePath));
 
             IApiClient apiClient = new ApiClient(apiBaseUrl);

@@ -162,7 +162,7 @@ namespace WolfClient.NewForms
             editPlot.City = CityTextBox.Text;
             editPlot.Municipality = MunicipalityTextBox.Text;
             editPlot.Street = StreetTextBox.Text;
-            editPlot.StreetNumber = int.Parse(StreetNumberTextBox.Text);
+            editPlot.StreetNumber = StreetNumberTextBox.Text != "" ?int.Parse(StreetNumberTextBox.Text) : null;
             editPlot.designation = DesignationComboBox.Text;
             editPlot.locality = LocalityTextBox.Text;
 

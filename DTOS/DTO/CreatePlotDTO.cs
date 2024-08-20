@@ -24,7 +24,7 @@ namespace DTOS.DTO
 
         public int? StreetNumber { get; set; }
 
-        public string designation { get; set; }
+        public string? designation { get; set; }
 
         public string? locality { get; set; }
 

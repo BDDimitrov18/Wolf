@@ -1,4 +1,5 @@
-﻿using DTOS.DTO;
+﻿using DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using DTOS.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +18,7 @@ using WolfClient.ViewModels;
 
 namespace WolfClient.UserControls
 {
+
     public partial class MenuRequestsUserControl : UserControl
     {
         private readonly IApiClient _apiClient;
@@ -30,6 +32,11 @@ namespace WolfClient.UserControls
         private bool loaded;
 
         private bool _isRefreshing = false;
+        private bool _filterState = false;
+
+        private Panel draggablePanel;
+        private Point dragOffset;
+        private bool isDragging = false;
         public MenuRequestsUserControl(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService, IFileUploader fileUploader)
         {
             InitializeComponent();
@@ -57,6 +64,18 @@ namespace WolfClient.UserControls
             PlotsDataGridView.SelectionChanged += PlotsDataGridView_SelectionChanged;
             OwnershipDataGridView.SelectionChanged += OwnershipDataGridView_SelectionChanged;
             InvoicesDataGridView.SelectionChanged += invoiceDataGridView_SelectionChanged;
+
+            // Enable double buffering to reduce flickering
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint |
+                      ControlStyles.UserPaint |
+                      ControlStyles.OptimizedDoubleBuffer, true);
+            this.UpdateStyles();
+
+            filtersPanel.MouseDown += new MouseEventHandler(Panel_MouseDown);
+            filtersPanel.MouseMove += new MouseEventHandler(Panel_MouseMove);
+            filtersPanel.MouseUp += new MouseEventHandler(Panel_MouseUp);
+
             if (_apiClient.getLoginStatus())
             {
                 setRequestsDataGridView();
@@ -479,13 +498,16 @@ namespace WolfClient.UserControls
 
         private void ActivityDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            // Define the indexes for the Activity and ParentActivity columns
+            // Define the indexes for the Activity, ParentActivity, and Plots columns
             int activityColumnIndex = ActivityDataGridView.Columns["Activity"].Index;
             int parentActivityColumnIndex = ActivityDataGridView.Columns["ParentActivity"].Index;
+            int plotsColumnIndex = ActivityDataGridView.Columns["Plots"].Index;
 
+            // Check if the current column is one of the columns we're interested in
             if (e.RowIndex < 0 ||
                 (e.ColumnIndex != activityColumnIndex &&
-                 e.ColumnIndex != parentActivityColumnIndex))
+                 e.ColumnIndex != parentActivityColumnIndex &&
+                 e.ColumnIndex != plotsColumnIndex))
                 return;
 
             // Get the value of the current cell
@@ -564,6 +586,7 @@ namespace WolfClient.UserControls
                 }
             }
         }
+
 
         private string ConvertFloatToFraction(float value)
         {
@@ -686,7 +709,7 @@ namespace WolfClient.UserControls
                             {
                                 PlotNumber = isFirstEntryForPlot ? plotDictionary[plotEntry.Key].PlotNumber : string.Empty,
                                 NumberTypeDocument = $"{documentDictionary[documentEntry.Key].NumberOfDocument} {documentDictionary[documentEntry.Key].TypeOfDocument}",
-                                NumberTypeOwner = $"{owner.OwnerID} {owner.FirstName} {owner.MiddleName} {owner.LastName}",
+                                NumberTypeOwner = $"{owner.OwnerID} {owner.FullName}",
                                 EGN = owner.EGN,
                                 Address = owner.Address,
                                 IdealParts = idealPartsString,
@@ -783,7 +806,8 @@ namespace WolfClient.UserControls
                             Street = plot.Street,
                             StreetNumber = plot.StreetNumber,
                             designation = plot.designation,
-                            locality = plot.locality
+                            locality = plot.locality,
+                            ActivityId = activityDTO.ActivityId,
                         };
                         plotList.Add(plotViewModel);
                         first = false;
@@ -1092,15 +1116,19 @@ namespace WolfClient.UserControls
                         TaskTypeName = task.taskType.TaskTypeName,
                         TaskId = task.TaskId,
                         ExecutantFullName = task.Executant.FullName,
-                        StartDate = task.StartDate,
+                        StartDate = activity.StartDate,
                         Duration = task.Duration,
                         ControlFullName = task.Control?.FullName,
                         Comments = task.Comments,
-                        Identities = Identities,
+                        Identities = first ? Identities : "",
                         ParentActivity = first ? activity.ParentActivity == null ? "" : activity.ParentActivity.ActivityTypeName : "",
                         tax = task.tax.ToString(),
                         taxComment = task.CommentTax,
-                        Status = task.Status
+                        Status = task.Status,
+                        MainExecutantPayment = activity.employeePayment,
+                        ActivityEndDate = activity.ExpectedDuration,
+                        TaskEndDate = task.FinishDate,
+                        TaskStartDate = task.StartDate,
                     };
 
                     activityViewModels.Add(viewModel);
@@ -1120,7 +1148,7 @@ namespace WolfClient.UserControls
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (AddRequestForm form = new AddRequestForm(_apiClient, _userClient, _adminClient))
+            using (AddRequestForm form = new AddRequestForm(_apiClient, _userClient, _adminClient,_dataService))
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -1266,7 +1294,8 @@ namespace WolfClient.UserControls
                         row.Height = 60; // Set the height to 60 pixels
                     }
                 }
-                else {
+                else
+                {
                     ActivityDataGridView.DataSource = null;
                     ActivityDataGridView.Refresh();
                 }
@@ -1292,17 +1321,103 @@ namespace WolfClient.UserControls
                 UpdateRequestDataGridView(requestDTOs);
             }
         }
+        private List<GetClientDTO> GetAllComboBoxClients(Panel parentPanel)
+        {
+            List<GetClientDTO> comboBoxClients = new List<GetClientDTO>();
+            foreach (Panel panel in parentPanel.Controls.OfType<Panel>()) // Assuming 'parentPanel' is your main container panel
+            {
+                foreach (AddClientFromAvailable userControl in panel.Controls.OfType<AddClientFromAvailable>())
+                {
+                    foreach (Control control in userControl.Controls)
+                    {
+                        if (control is ComboBox)
+                        {
+                            ComboBox comboBox = control as ComboBox;
+                            if (comboBox.SelectedItem != null)
+                            {
+                                // Assuming the value is the object itself or perhaps the Tag property is used
+                                GetClientDTO item = comboBox.SelectedItem as GetClientDTO;
+                                comboBoxClients.Add(item);
+                            }
+                        }
+                    }
 
+                }
+            }
+            return comboBoxClients;
+        }
+        private List<GetOwnerDTO> GetAllComboBoxOwners(Panel parentPanel)
+        {
+            List<GetOwnerDTO> comboBoxClients = new List<GetOwnerDTO>();
+            foreach (Panel panel in parentPanel.Controls.OfType<Panel>()) // Assuming 'parentPanel' is your main container panel
+            {
+                foreach (AddOwnerFromAvailable userControl in panel.Controls.OfType<AddOwnerFromAvailable>())
+                {
+                    foreach (Control control in userControl.Controls)
+                    {
+                        if (control is ComboBox)
+                        {
+                            ComboBox comboBox = control as ComboBox;
+                            if (comboBox.SelectedItem != null)
+                            {
+                                // Assuming the value is the object itself or perhaps the Tag property is used
+                                GetOwnerDTO item = comboBox.SelectedItem as GetOwnerDTO;
+                                comboBoxClients.Add(item);
+                            }
+                        }
+                    }
+
+                }
+            }
+            return comboBoxClients;
+        }
         private List<GetRequestDTO> ApplyFilters(List<GetRequestDTO>? requestDTOs)
         {
             if (requestDTOs == null || requestDTOs.Count() == 0) return requestDTOs;
 
             var filteredList = requestDTOs;
 
-            // Example filter by RequestId (assuming txtNumber.Text contains a valid integer or is empty)
+
+            List<GetClientDTO> filterClients = GetAllComboBoxClients(clientsFlowLayoutPanel);
+            List<GetOwnerDTO> filterOwners = GetAllComboBoxOwners(OwnersFlowLayoutPanelFilter);
+
+            if(filterClients!= null && filterClients.Count > 0) {
+                filteredList = _dataService.filterRequestsByClients(filteredList, filterClients);    
+            }
+
+            if (filterOwners != null && filterOwners.Count > 0)
+            {
+                filteredList = _dataService.filterRequestsByOwner(filteredList, filterOwners);
+            }
+
             if (!string.IsNullOrEmpty(txtNumber.Text) && int.TryParse(txtNumber.Text, out int requestId))
             {
                 filteredList = filteredList.Where(r => r.RequestId == requestId).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(plotNumberTextBox.Text))
+            {
+                filteredList = _dataService.filterRequestByPlotId(filteredList, plotNumberTextBox.Text);
+            }
+
+            if (!string.IsNullOrEmpty(UPITextBox.Text))
+            {
+                filteredList = _dataService.filterRequestByPlotUPI(filteredList, UPITextBox.Text);
+            }
+
+            if (!string.IsNullOrEmpty(CityTextBox.Text))
+            {
+                filteredList = _dataService.filterRequestByPlotCity(filteredList, CityTextBox.Text);
+            }
+
+            if (!string.IsNullOrEmpty(neighborhoodTextBox.Text))
+            {
+                filteredList = _dataService.filterRequestByPlotNeighborhood(filteredList, neighborhoodTextBox.Text);
+            }
+
+            if (!string.IsNullOrEmpty(CommentsTextBox.Text))
+            {
+                filteredList = _dataService.filterRequestsByComments(filteredList, CommentsTextBox.Text);
             }
 
             // Filter by PaymentStatus
@@ -1328,6 +1443,10 @@ namespace WolfClient.UserControls
             if (chkForWeek.Checked)
             {
                 filteredList = _dataService.FilterRequestByWeekSelfActivitiesAndTasks(filteredList);
+            }
+
+            if (overdueFilter.Checked) {
+                filteredList = _dataService.FilterRequestByOverdueActivitiesAndTasks(filteredList);
             }
 
             // Filter by IsStarred (if applicable)
@@ -1367,6 +1486,7 @@ namespace WolfClient.UserControls
 
                 // Apply filters to the requestDTOs list
                 var filteredList = ApplyFilters(requestDTOs);
+                if (filteredList.Count() < 2) { _isRefreshing = false; }
 
                 if (RequestDataGridView.InvokeRequired)
                 {
@@ -1397,6 +1517,7 @@ namespace WolfClient.UserControls
 
         private void RestoreSelectedRow(int? previousSelectedRequestId)
         {
+            _isRefreshing = false;
             if (previousSelectedRequestId.HasValue)
             {
                 int rowIndex = -1;
@@ -1473,7 +1594,30 @@ namespace WolfClient.UserControls
 
             RequestDataGridView.AutoGenerateColumns = false;
             RequestDataGridView.DataSource = null; // Force reset DataSource
-            RequestDataGridView.DataSource = filteredList;
+
+            List<GetRequestDTO> fliteredListNew = new List<GetRequestDTO>();
+
+            foreach (var request in filteredList)
+            {
+                GetRequestDTO tempRequest = new GetRequestDTO();
+                tempRequest.RequestId = request.RequestId;
+                tempRequest.RequestName = request.RequestName;
+                tempRequest.Price = request.Price;
+                tempRequest.Advance = request.Advance;
+                tempRequest.PaymentStatus = request.PaymentStatus;
+                tempRequest.Comments = request.Comments;
+                tempRequest.Path = request.Path;
+
+                List<GetPlotDTO> plots = _dataService.getLinkedPlotsToRequest(request);
+                foreach (var plot in plots)
+                {
+                    tempRequest.PlotsInfo += $"Поземлен имот:{plot.PlotNumber}, {plot.City}, Упи: {plot.RegulatedPlotNumber}, кв: {plot.neighborhood};";
+                }
+                fliteredListNew.Add(tempRequest);
+            }
+            RequestDataGridView.DataSource = fliteredListNew;
+
+
             RequestDataGridView.Refresh();
             _isRefreshing = false;
 
@@ -1562,7 +1706,7 @@ namespace WolfClient.UserControls
                 MessageBox.Show("Please select an request");
                 return;
             }
-            
+
 
             AddOwnerForm ownerForm = new AddOwnerForm(_apiClient, _userClient, _adminClient, _dataService);
             ownerForm.Show();
@@ -1579,6 +1723,13 @@ namespace WolfClient.UserControls
                 MessageBox.Show("Please Select A Request");
                 return;
             }
+            DialogResult result = MessageBox.Show("Искате ли да изтриете поръчката?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.No)
+            {
+                return;
+            }
+
 
             List<GetRequestDTO> requestDTOs = new List<GetRequestDTO>();
             requestDTOs.Add(_dataService.GetSelectedRequest());
@@ -1611,6 +1762,14 @@ namespace WolfClient.UserControls
                 MessageBox.Show("Please select a client");
                 return;
             }
+
+            DialogResult result = MessageBox.Show("Искате ли да изтриете клиента от поръчката?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.No)
+            {
+                return;
+            }
+
             List<GetClient_RequestRelashionshipDTO> client_RequestRelashionshipDTOs = new List<GetClient_RequestRelashionshipDTO>();
             var clients = _dataService.getSelectedCLients();
             foreach (var item in clients)
@@ -1646,6 +1805,14 @@ namespace WolfClient.UserControls
                 MessageBox.Show("Please select an task");
                 return;
             }
+
+            DialogResult result = MessageBox.Show("Искате ли да изтриете задачата?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.No)
+            {
+                return;
+            }
+
             List<GetTaskDTO> taskDTOs = _dataService.getTasksFromViewModel();
             var response = await _userClient.DeleteTasks(taskDTOs);
             if (response.IsSuccess)
@@ -1773,6 +1940,13 @@ namespace WolfClient.UserControls
                 return;
             }
 
+            DialogResult result = MessageBox.Show("Искате ли да изтриете имота/имотите от дейността?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.No)
+            {
+                return;
+            }
+
             List<PlotViewModel> viewModels = _dataService.getSelectedPlotsOnRequestMenu();
             List<GetPlotDTO> getPlotDTOs = new List<GetPlotDTO>();
             foreach (var viewModel in viewModels)
@@ -1793,11 +1967,20 @@ namespace WolfClient.UserControls
                 getPlotDTOs.Add(plot);
             }
 
-            List<GetActivity_PlotRelashionshipDTO> getActivity_PlotRelashionshipDTOs = _dataService.getActivity_PlotRelashionshipDTOs(getPlotDTOs);
-            var response = await _userClient.activityPlotRelashionshipRemove(getActivity_PlotRelashionshipDTOs);
+            List<GetActivity_PlotRelashionshipDTO> relashionshipDTOs = new List<GetActivity_PlotRelashionshipDTO>();
+            foreach(var viewModel in viewModels) { 
+                GetActivity_PlotRelashionshipDTO relashionshipDTO = new GetActivity_PlotRelashionshipDTO()
+                {
+                    ActivityId = viewModel.ActivityId,
+                    PlotId = viewModel.PlotId
+                };
+                relashionshipDTOs.Add(relashionshipDTO);    
+            }
+
+            var response = await _userClient.activityPlotRelashionshipRemove(relashionshipDTOs);
             if (response.IsSuccess)
             {
-                _dataService.RemovePlots(getPlotDTOs);
+                _dataService.removeActivityPlotRelashionships(relashionshipDTOs);
                 UpdatePlotsDataGridView();
                 UpdateOwnershipDataGridView();
                 UpdateActivityDataGridView();
@@ -1812,8 +1995,16 @@ namespace WolfClient.UserControls
                 MessageBox.Show("Please select an request");
                 return;
             }
-            if (!(_dataService.GetSelectedOwnershipViewModelsRequestMenu() != null && _dataService.GetSelectedOwnershipViewModelsRequestMenu().Count() > 0)) {
+            if (!(_dataService.GetSelectedOwnershipViewModelsRequestMenu() != null && _dataService.GetSelectedOwnershipViewModelsRequestMenu().Count() > 0))
+            {
                 MessageBox.Show("Please select Ownerships");
+                return;
+            }
+
+            DialogResult resultConfirm = MessageBox.Show("Искате ли да изтриете собствеността?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (resultConfirm == DialogResult.No)
+            {
                 return;
             }
 
@@ -2089,6 +2280,14 @@ namespace WolfClient.UserControls
                 MessageBox.Show("Please select invoices");
                 return;
             }
+
+            DialogResult result = MessageBox.Show("Искате ли да изтриете фактурата?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.No)
+            {
+                return;
+            }
+
             await _userClient.DeleteInvoices(_dataService.getSelectedInvoices());
             _dataService.DeleteInvoices(_dataService.getSelectedInvoices());
             UpdateInvoicessDataGridView();
@@ -2097,6 +2296,104 @@ namespace WolfClient.UserControls
         private void tabPage3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void statusCheckBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void RequestFiltersApplyButton_Click_1(object sender, EventArgs e)
+        {
+            if (_filterState)
+            {
+                _filterState = false;
+                UpdateRequestDataGridView(_dataService.getRequests());
+                filtersPanel.Visible = false;
+            }
+            else
+            {
+                _filterState = true;
+                filtersPanel.Visible = true;
+            }
+        }
+
+        private void Panel_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = true;
+                dragOffset = e.Location; // Store mouse position relative to panel
+            }
+        }
+
+        private void Panel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                // Calculate new location for the panel based on the mouse movement
+                Point newLocation = new Point(
+                    e.X + filtersPanel.Left - dragOffset.X,
+                    e.Y + filtersPanel.Top - dragOffset.Y);
+
+                filtersPanel.Location = newLocation;
+
+                // Invalidate the form to prevent dragging artifacts
+                this.Invalidate(); // Or, this.Invalidate(new Rectangle(newLocation, draggablePanel.Size));
+            }
+        }
+
+        private void Panel_MouseUp(object sender, MouseEventArgs e)
+        {
+            isDragging = false;
+        }
+
+        private void AddClientButton_Click(object sender, EventArgs e)
+        {
+            AddNewPanelWithUserControlAddClientsFromAvailable();
+        }
+
+        private async void AddNewPanelWithUserControlAddClientsFromAvailable()
+        {
+            var responseClients = await _userClient.GetAllClients();
+            List<GetClientDTO> clientDTOs = responseClients.ResponseObj.ToList();
+            _dataService.SetAllClients(clientDTOs);
+
+            Panel panel = new Panel();
+            panel.Size = new Size(412, 28);
+            panel.BorderStyle = BorderStyle.FixedSingle;
+
+            AddClientFromAvailable userControl = new AddClientFromAvailable(_apiClient, _userClient, _adminClient, clientDTOs, panel);
+            userControl.Dock = DockStyle.Fill;  // Make the user control fill the panel
+            panel.Controls.Add(userControl);
+
+            clientsFlowLayoutPanel.Controls.Add(panel);
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            AddNewPanelWithUserControlAddOwnersFromAvailable();
+        }
+
+        private async void AddNewPanelWithUserControlAddOwnersFromAvailable()
+        {
+            var ownersResponse = await _userClient.GetAllOwners();
+            List<GetOwnerDTO> owners = ownersResponse.ResponseObj;
+
+            Panel panel = new Panel();
+            panel.Size = new Size(412, 28);
+            panel.BorderStyle = BorderStyle.FixedSingle;
+
+            AddOwnerFromAvailable userControl = new AddOwnerFromAvailable(_apiClient, _userClient, _adminClient, owners, panel);
+            userControl.Dock = DockStyle.Fill;  // Make the user control fill the panel
+            panel.Controls.Add(userControl);
+
+            OwnersFlowLayoutPanelFilter.Controls.Add(panel);
         }
     }
 }

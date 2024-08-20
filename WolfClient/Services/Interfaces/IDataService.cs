@@ -10,8 +10,18 @@ namespace WolfClient.Services.Interfaces
 {
     public interface IDataService
     {
+        public void removeActivityPlotRelashionships(List<GetActivity_PlotRelashionshipDTO> activity_PlotRelashionshipDTOs);
+        public List<GetRequestDTO> FilterRequestByOverdueActivitiesAndTasks(List<GetRequestDTO> requestDTOs);
+        public List<GetRequestDTO> filterRequestsByOwner(List<GetRequestDTO> requestDTOs, List<GetOwnerDTO> ownerDTOs);
+        public List<GetRequestDTO> filterRequestsByClients(List<GetRequestDTO> requestDTOs, List<GetClientDTO> clients);
+        public List<GetRequestDTO> filterRequestsByComments(List<GetRequestDTO> requestDTOs, string comment);
+        public List<GetRequestDTO> filterRequestByPlotNeighborhood(List<GetRequestDTO> requestDTOs, string plotNeighborhood);
+        public List<GetRequestDTO> filterRequestByPlotCity(List<GetRequestDTO> requestDTOs, string plotCity);
+        public List<GetRequestDTO> filterRequestByPlotUPI(List<GetRequestDTO> requestDTOs, string plotUPI);
         public void EditOrAddPlotOwnerRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs);
         public void EditInvoice(GetInvoiceDTO invoiceDTO);
+        public List<GetPlotDTO> getLinkedPlotsToRequest(GetRequestDTO requestDTO);
+        public List<GetRequestDTO> filterRequestByPlotId(List<GetRequestDTO> requestDTOs, string plotId);
         public void AddInvoice(GetInvoiceDTO invoiceDTO);
         public void addClientsToAll(GetClientDTO client);
         public List<GetClientDTO> getAllClients();
@@ -93,7 +103,7 @@ namespace WolfClient.Services.Interfaces
 
         public void SetSelectedPlotsOnRequestMenu(List<PlotViewModel> plots);
 
-        public List<GetActivity_PlotRelashionshipDTO> getActivity_PlotRelashionshipDTOs(List<GetPlotDTO> plots);
+        public List<GetActivity_PlotRelashionshipDTO> getActivity_PlotRelashionshipDTOs(List<GetPlotDTO> plots, List<int> activityIds);
 
         public List<PlotViewModel> getSelectedPlotsOnRequestMenu();
 

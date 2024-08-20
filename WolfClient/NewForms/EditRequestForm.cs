@@ -160,6 +160,22 @@ namespace WolfClient.NewForms
             }
             PathTextBox.Text = _dataService.GetSelectedRequest().Path;
 
+            GetEmployeeDTO employeeDTO = new GetEmployeeDTO();
+            employeeDTO.FullName = "";
+           
+            var employeesResponse = await _userClient.GetAllEmployees();
+            List<GetEmployeeDTO> employees = new List<GetEmployeeDTO>(employeesResponse.ResponseObj);
+            employees.Insert(0, employeeDTO);
+
+            RequestCreatorComboBox.DataSource = employees;
+            RequestCreatorComboBox.DisplayMember = "FullName";
+            RequestCreatorComboBox.ValueMember = "EmployeeId";
+
+            if (_dataService.GetSelectedRequest().RequestCreatorId != null)
+            {
+                RequestCreatorComboBox.SelectedValue = _dataService.GetSelectedRequest().RequestCreatorId;
+            }
+
         }
 
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
@@ -263,6 +279,7 @@ namespace WolfClient.NewForms
             editRequest.Advance = float.Parse(AdvanceTextBox.Text);
             editRequest.Comments = CommentsRichTextBox.Text;
             editRequest.RequestName = NameOfRequestTextBox.Text;
+            editRequest.RequestCreatorId = (int)RequestCreatorComboBox.SelectedValue;
             //EditRequestLogic
 
             var responseRequest = await _userClient.EditRequest(editRequest);

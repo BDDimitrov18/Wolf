@@ -13,8 +13,14 @@ namespace WolfAPI.Mapping
             CreateMap<CreateRequestDTO, Request>();
             CreateMap<Client, GetClientDTO>();
             CreateMap<Employee, GetEmployeeDTO>();
-            CreateMap<Request, GetRequestDTO>();
-            CreateMap<GetRequestDTO, Request>();
+            CreateMap<Request, GetRequestDTO>()
+           .ForMember(dest => dest.RequestCreatorId, opt => opt.MapFrom(src => src.RequestCreatorId))
+           .ForMember(dest => dest.RequestCreator, opt => opt.MapFrom(src => src.RequestCreator));
+
+            // Map from GetRequestDTO to Request
+            CreateMap<GetRequestDTO, Request>()
+                .ForMember(dest => dest.RequestCreatorId, opt => opt.MapFrom(src => src.RequestCreatorId))
+                .ForMember(dest => dest.RequestCreator, opt => opt.MapFrom(src => src.RequestCreator));
             CreateMap<GetClientDTO, Client>();
             CreateMap<GetEmployeeDTO, Employee>();
 

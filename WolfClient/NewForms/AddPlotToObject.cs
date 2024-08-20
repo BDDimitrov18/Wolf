@@ -25,7 +25,7 @@ namespace WolfClient.NewForms
         List<GetPlotDTO> allPlots;
 
         private int initial = 0;
-      
+
         public AddPlotToObject(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
@@ -50,7 +50,7 @@ namespace WolfClient.NewForms
                 // Bind the form controls to the model properties
                 plotValidator.PlotNumber = PlotNumberComboBox.Text;
 
-              
+
                 // Validate the model
                 IList<ValidationResult> memberNameResults = WolfClient.Validators.Validator.Validate(plotValidator);
 
@@ -100,7 +100,7 @@ namespace WolfClient.NewForms
 
         private async void AddPlotToObject_Load(object sender, EventArgs e)
         {
-            var allPlotsResponse  = await _userClient.GetAllPlots();
+            var allPlotsResponse = await _userClient.GetAllPlots();
             allPlots = allPlotsResponse.ResponseObj;
             var selected = _dataService.GetSelectedRequest();
             var linkedRequests = _dataService.GetFetchedLinkedRequests();
@@ -126,10 +126,10 @@ namespace WolfClient.NewForms
 
         private void PlotNumberComboBox_TextChanged(object sender, EventArgs e)
         {
-            if (initial <2) 
-            { 
-                initial++; 
-                return; 
+            if (initial < 2)
+            {
+                initial++;
+                return;
             }
             string selectedPlotNumber = PlotNumberComboBox.Text;
 
@@ -141,7 +141,7 @@ namespace WolfClient.NewForms
             if (string.IsNullOrWhiteSpace(selectedPlotNumber))
             {
                 // If the text is empty, display all plots
-                filteredPlots =allPlots;
+                filteredPlots = allPlots;
             }
             else
             {
@@ -160,7 +160,6 @@ namespace WolfClient.NewForms
             // Restore the user's text and keep the ComboBox open
             PlotNumberComboBox.Text = selectedPlotNumber;
             PlotNumberComboBox.SelectionStart = selectedPlotNumber.Length;
-            PlotNumberComboBox.DroppedDown = true;
 
             // Reattach the event handler
             PlotNumberComboBox.TextChanged += PlotNumberComboBox_TextChanged;
@@ -198,16 +197,19 @@ namespace WolfClient.NewForms
                     NeighborhoodTextBox.Enabled = true;
                     StreetTextBox.Enabled = true;
                     StreetNumberTextBox.Enabled = true;
-                    var selectedEKT = _dataService.GetEKTViewModels().FirstOrDefault(x => x.EKTNumber == selectedPlotNumber);
-
-                    if (selectedEKT != null)
+                    if (selectedPlotNumber.Length >= 5)
                     {
-                        CityTextBox.Text = $"{selectedEKT.TypeOfPlace} {selectedEKT.TownName}";
-                        LocalityTextBox.Text = selectedEKT.Localitiy;
-                        MunicipalityTextBox.Text = selectedEKT.Municipality;
-                        CityTextBox.Enabled = false;
-                        LocalityTextBox.Enabled = false;
-                        MunicipalityTextBox.Enabled = false;
+                        var selectedEKT = _dataService.GetEKTViewModels().FirstOrDefault(x => x.EKTNumber == selectedPlotNumber.Substring(0, 5));
+
+                        if (selectedEKT != null)
+                        {
+                            CityTextBox.Text = $"{selectedEKT.TypeOfPlace} {selectedEKT.TownName}";
+                            LocalityTextBox.Text = selectedEKT.Localitiy;
+                            MunicipalityTextBox.Text = selectedEKT.Municipality;
+                            CityTextBox.Enabled = false;
+                            LocalityTextBox.Enabled = false;
+                            MunicipalityTextBox.Enabled = false;
+                        }
                     }
                 }
             }
@@ -226,18 +228,20 @@ namespace WolfClient.NewForms
                 flag = true;
             }
             if (flag) return;
-            CreatePlotDTO newPlot = new CreatePlotDTO() {
+            CreatePlotDTO newPlot = new CreatePlotDTO()
+            {
                 PlotNumber = PlotNumberComboBox.Text,
                 RegulatedPlotNumber = RegulatedNumberTextBox.Text,
                 neighborhood = NeighborhoodTextBox.Text,
                 City = CityTextBox.Text,
                 Municipality = MunicipalityTextBox.Text,
                 Street = StreetTextBox.Text,
-                StreetNumber = int.Parse(StreetNumberTextBox.Text),
+                StreetNumber = StreetNumberTextBox.Text != "" ? int.Parse(StreetNumberTextBox.Text) : null,
                 designation = DesignationComboBox.Text,
                 locality = LocalityTextBox.Text,
             };
-            if (_dataService.ActivityPlotExists(PlotNumberComboBox.Text, ActivityComboBox.SelectedItem as GetActivityDTO)) {
+            if (_dataService.ActivityPlotExists(PlotNumberComboBox.Text, ActivityComboBox.SelectedItem as GetActivityDTO))
+            {
                 MessageBox.Show($"Имот с номер {PlotNumberComboBox.Text} вече е добавен към {ActivityComboBox.Text}");
                 return;
             }
@@ -257,10 +261,13 @@ namespace WolfClient.NewForms
 
             var fetchedLinkes = _dataService.GetFetchedLinkedRequests();
             var selectedRequest = _dataService.GetSelectedRequest();
-            foreach (var fetch in fetchedLinkes) {
-                if (fetch.requestDTO.RequestId == selectedRequest.RequestId) { 
-                    foreach(var activity in fetch.activityDTOs) { 
-                        if(activity.ActivityId == (int)ActivityComboBox.SelectedValue)
+            foreach (var fetch in fetchedLinkes)
+            {
+                if (fetch.requestDTO.RequestId == selectedRequest.RequestId)
+                {
+                    foreach (var activity in fetch.activityDTOs)
+                    {
+                        if (activity.ActivityId == (int)ActivityComboBox.SelectedValue)
                         {
                             activity.Plots.Add(plotResponse.ResponseObj);
                         }
@@ -274,6 +281,9 @@ namespace WolfClient.NewForms
             Dispose();
         }
 
-        
+        private void RegulatedNumberLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

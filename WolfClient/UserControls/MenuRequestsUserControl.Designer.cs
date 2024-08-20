@@ -30,19 +30,19 @@ namespace WolfClient.UserControls
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuRequestsUserControl));
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuRequestsUserControl));
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             RequestDataGridView = new DataGridView();
             RequestId = new DataGridViewTextBoxColumn();
             RequestName = new DataGridViewTextBoxColumn();
-            Price = new DataGridViewTextBoxColumn();
             PaymentStatus = new DataGridViewTextBoxColumn();
-            Advance = new DataGridViewTextBoxColumn();
             Comments = new DataGridViewTextBoxColumn();
+            PlotsInfo = new DataGridViewTextBoxColumn();
             RequestTableLabel = new Label();
             RequestAddButton = new Button();
             label5 = new Label();
@@ -59,22 +59,38 @@ namespace WolfClient.UserControls
             btnNextRequestsDataGridView = new Button();
             btnPreviousRequestsDataGridView = new Button();
             btnFirstRequestsDataGridView = new Button();
-            panel6 = new Panel();
-            RequestFiltersApplyButton = new Button();
-            chkPersonal = new CheckBox();
-            chkStarred = new CheckBox();
-            chkForDay = new CheckBox();
-            label6 = new Label();
-            chkForWeek = new CheckBox();
-            label1 = new Label();
-            statusCheckBox = new ComboBox();
-            txtNumber = new TextBox();
-            label4 = new Label();
-            label3 = new Label();
-            cmbPaymentStatus = new ComboBox();
             editRequestButton = new Button();
             DeleteRequestButton = new Button();
             RefreshButton = new Button();
+            RequestFiltersApplyButton = new Button();
+            filtersPanel = new Panel();
+            OwnersFlowLayoutPanelFilter = new FlowLayoutPanel();
+            button2 = new Button();
+            AddClientButton = new Button();
+            clientsFlowLayoutPanel = new FlowLayoutPanel();
+            overdueFilter = new CheckBox();
+            label14 = new Label();
+            label4 = new Label();
+            cmbPaymentStatus = new ComboBox();
+            label13 = new Label();
+            label3 = new Label();
+            CommentsTextBox = new RichTextBox();
+            txtNumber = new TextBox();
+            label12 = new Label();
+            statusCheckBox = new ComboBox();
+            label11 = new Label();
+            label1 = new Label();
+            CityTextBox = new TextBox();
+            chkForWeek = new CheckBox();
+            label10 = new Label();
+            chkForDay = new CheckBox();
+            neighborhoodTextBox = new TextBox();
+            chkStarred = new CheckBox();
+            label9 = new Label();
+            chkPersonal = new CheckBox();
+            UPITextBox = new TextBox();
+            label8 = new Label();
+            plotNumberTextBox = new TextBox();
             tabPage2 = new TabPage();
             panel2 = new Panel();
             panel1 = new Panel();
@@ -95,12 +111,16 @@ namespace WolfClient.UserControls
             ActivityDataGridView = new DataGridView();
             ParentActivity = new DataGridViewTextBoxColumn();
             Activity = new DataGridViewTextBoxColumn();
+            Plots = new DataGridViewTextBoxColumn();
             Task = new DataGridViewTextBoxColumn();
             Executant = new DataGridViewTextBoxColumn();
+            MainExecutantPayment = new DataGridViewTextBoxColumn();
             StartDate = new DataGridViewTextBoxColumn();
+            ActivityEndDate = new DataGridViewTextBoxColumn();
+            TaskStartDate = new DataGridViewTextBoxColumn();
+            TaskEndDate = new DataGridViewTextBoxColumn();
             Duration = new DataGridViewTextBoxColumn();
             Control = new DataGridViewTextBoxColumn();
-            Plots = new DataGridViewTextBoxColumn();
             Comment = new DataGridViewTextBoxColumn();
             tax = new DataGridViewTextBoxColumn();
             taxComment = new DataGridViewTextBoxColumn();
@@ -172,7 +192,7 @@ namespace WolfClient.UserControls
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).BeginInit();
             panel3.SuspendLayout();
             panel7.SuspendLayout();
-            panel6.SuspendLayout();
+            filtersPanel.SuspendLayout();
             tabPage2.SuspendLayout();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
@@ -191,21 +211,29 @@ namespace WolfClient.UserControls
             // 
             // RequestDataGridView
             // 
-            RequestDataGridView.AllowUserToResizeColumns = false;
             RequestDataGridView.AllowUserToResizeRows = false;
             RequestDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             RequestDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             RequestDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             RequestDataGridView.BackgroundColor = Color.Moccasin;
             RequestDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            RequestDataGridView.Columns.AddRange(new DataGridViewColumn[] { RequestId, RequestName, Price, PaymentStatus, Advance, Comments });
+            RequestDataGridView.Columns.AddRange(new DataGridViewColumn[] { RequestId, RequestName, PaymentStatus, Comments, PlotsInfo });
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            RequestDataGridView.DefaultCellStyle = dataGridViewCellStyle1;
             RequestDataGridView.GridColor = SystemColors.ControlText;
-            RequestDataGridView.Location = new Point(0, 100);
+            RequestDataGridView.Location = new Point(0, 135);
             RequestDataGridView.Margin = new Padding(3, 4, 3, 4);
             RequestDataGridView.Name = "RequestDataGridView";
             RequestDataGridView.RowHeadersWidth = 51;
             RequestDataGridView.RowTemplate.Height = 24;
-            RequestDataGridView.Size = new Size(1334, 434);
+            RequestDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            RequestDataGridView.Size = new Size(1334, 399);
             RequestDataGridView.TabIndex = 0;
             // 
             // RequestId
@@ -222,26 +250,12 @@ namespace WolfClient.UserControls
             RequestName.MinimumWidth = 6;
             RequestName.Name = "RequestName";
             // 
-            // Price
-            // 
-            Price.DataPropertyName = "Price";
-            Price.HeaderText = "Цена";
-            Price.MinimumWidth = 6;
-            Price.Name = "Price";
-            // 
             // PaymentStatus
             // 
             PaymentStatus.DataPropertyName = "PaymentStatus";
             PaymentStatus.HeaderText = "Статус на Плащане";
             PaymentStatus.MinimumWidth = 6;
             PaymentStatus.Name = "PaymentStatus";
-            // 
-            // Advance
-            // 
-            Advance.DataPropertyName = "Advance";
-            Advance.HeaderText = "Аванс";
-            Advance.MinimumWidth = 6;
-            Advance.Name = "Advance";
             // 
             // Comments
             // 
@@ -250,11 +264,18 @@ namespace WolfClient.UserControls
             Comments.MinimumWidth = 6;
             Comments.Name = "Comments";
             // 
+            // PlotsInfo
+            // 
+            PlotsInfo.DataPropertyName = "PlotsInfo";
+            PlotsInfo.HeaderText = "Идентификатори";
+            PlotsInfo.MinimumWidth = 6;
+            PlotsInfo.Name = "PlotsInfo";
+            // 
             // RequestTableLabel
             // 
             RequestTableLabel.AutoSize = true;
             RequestTableLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            RequestTableLabel.Location = new Point(3, 7);
+            RequestTableLabel.Location = new Point(3, 41);
             RequestTableLabel.Name = "RequestTableLabel";
             RequestTableLabel.Size = new Size(95, 28);
             RequestTableLabel.TabIndex = 1;
@@ -267,7 +288,7 @@ namespace WolfClient.UserControls
             RequestAddButton.BackgroundImage = (Image)resources.GetObject("RequestAddButton.BackgroundImage");
             RequestAddButton.BackgroundImageLayout = ImageLayout.Stretch;
             RequestAddButton.ForeColor = Color.Transparent;
-            RequestAddButton.Location = new Point(103, 4);
+            RequestAddButton.Location = new Point(103, 38);
             RequestAddButton.Margin = new Padding(3, 4, 3, 4);
             RequestAddButton.Name = "RequestAddButton";
             RequestAddButton.Size = new Size(35, 35);
@@ -300,6 +321,7 @@ namespace WolfClient.UserControls
             InvoicesDataGridView.Name = "InvoicesDataGridView";
             InvoicesDataGridView.RowHeadersWidth = 51;
             InvoicesDataGridView.RowTemplate.Height = 24;
+            InvoicesDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             InvoicesDataGridView.Size = new Size(1337, 282);
             InvoicesDataGridView.TabIndex = 11;
             InvoicesDataGridView.CellContentClick += InvoicesDataGridView_CellContentClick;
@@ -346,7 +368,6 @@ namespace WolfClient.UserControls
             panel3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel3.Controls.Add(PathLink);
             panel3.Controls.Add(panel7);
-            panel3.Controls.Add(panel6);
             panel3.Controls.Add(editRequestButton);
             panel3.Controls.Add(DeleteRequestButton);
             panel3.Controls.Add(RefreshButton);
@@ -354,6 +375,7 @@ namespace WolfClient.UserControls
             panel3.Controls.Add(label5);
             panel3.Controls.Add(RequestTableLabel);
             panel3.Controls.Add(RequestAddButton);
+            panel3.Controls.Add(RequestFiltersApplyButton);
             panel3.Location = new Point(3, 4);
             panel3.Margin = new Padding(3, 4, 3, 4);
             panel3.Name = "panel3";
@@ -380,7 +402,7 @@ namespace WolfClient.UserControls
             panel7.Controls.Add(btnNextRequestsDataGridView);
             panel7.Controls.Add(btnPreviousRequestsDataGridView);
             panel7.Controls.Add(btnFirstRequestsDataGridView);
-            panel7.Location = new Point(8, 43);
+            panel7.Location = new Point(8, 77);
             panel7.Name = "panel7";
             panel7.Size = new Size(237, 50);
             panel7.TabIndex = 21;
@@ -442,161 +464,12 @@ namespace WolfClient.UserControls
             btnFirstRequestsDataGridView.TabIndex = 0;
             btnFirstRequestsDataGridView.UseVisualStyleBackColor = false;
             // 
-            // panel6
-            // 
-            panel6.BorderStyle = BorderStyle.Fixed3D;
-            panel6.Controls.Add(RequestFiltersApplyButton);
-            panel6.Controls.Add(chkPersonal);
-            panel6.Controls.Add(chkStarred);
-            panel6.Controls.Add(chkForDay);
-            panel6.Controls.Add(label6);
-            panel6.Controls.Add(chkForWeek);
-            panel6.Controls.Add(label1);
-            panel6.Controls.Add(statusCheckBox);
-            panel6.Controls.Add(txtNumber);
-            panel6.Controls.Add(label4);
-            panel6.Controls.Add(label3);
-            panel6.Controls.Add(cmbPaymentStatus);
-            panel6.Location = new Point(251, 24);
-            panel6.Name = "panel6";
-            panel6.Size = new Size(756, 69);
-            panel6.TabIndex = 20;
-            // 
-            // RequestFiltersApplyButton
-            // 
-            RequestFiltersApplyButton.BackColor = Color.Transparent;
-            RequestFiltersApplyButton.BackgroundImage = (Image)resources.GetObject("RequestFiltersApplyButton.BackgroundImage");
-            RequestFiltersApplyButton.BackgroundImageLayout = ImageLayout.Stretch;
-            RequestFiltersApplyButton.Location = new Point(714, 3);
-            RequestFiltersApplyButton.Name = "RequestFiltersApplyButton";
-            RequestFiltersApplyButton.Size = new Size(30, 30);
-            RequestFiltersApplyButton.TabIndex = 22;
-            RequestFiltersApplyButton.UseVisualStyleBackColor = false;
-            RequestFiltersApplyButton.Click += RequestFiltersApplyButton_Click;
-            // 
-            // chkPersonal
-            // 
-            chkPersonal.AutoSize = true;
-            chkPersonal.Location = new Point(294, 7);
-            chkPersonal.Name = "chkPersonal";
-            chkPersonal.RightToLeft = RightToLeft.Yes;
-            chkPersonal.Size = new Size(76, 24);
-            chkPersonal.TabIndex = 3;
-            chkPersonal.Text = "Лични";
-            chkPersonal.UseVisualStyleBackColor = true;
-            // 
-            // chkStarred
-            // 
-            chkStarred.AutoSize = true;
-            chkStarred.Location = new Point(602, 7);
-            chkStarred.Name = "chkStarred";
-            chkStarred.RightToLeft = RightToLeft.Yes;
-            chkStarred.Size = new Size(104, 24);
-            chkStarred.TabIndex = 21;
-            chkStarred.Text = "със звезда";
-            chkStarred.UseVisualStyleBackColor = true;
-            // 
-            // chkForDay
-            // 
-            chkForDay.AutoSize = true;
-            chkForDay.Location = new Point(383, 7);
-            chkForDay.Name = "chkForDay";
-            chkForDay.RightToLeft = RightToLeft.Yes;
-            chkForDay.Size = new Size(83, 24);
-            chkForDay.TabIndex = 2;
-            chkForDay.Text = "за деня";
-            chkForDay.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
-            label6.Location = new Point(-2, -2);
-            label6.Name = "label6";
-            label6.Size = new Size(49, 15);
-            label6.TabIndex = 20;
-            label6.Text = "филтри";
-            // 
-            // chkForWeek
-            // 
-            chkForWeek.AutoSize = true;
-            chkForWeek.Location = new Point(472, 7);
-            chkForWeek.Name = "chkForWeek";
-            chkForWeek.RightToLeft = RightToLeft.Yes;
-            chkForWeek.Size = new Size(124, 24);
-            chkForWeek.TabIndex = 1;
-            chkForWeek.Text = "за седмицата";
-            chkForWeek.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(-1, 35);
-            label1.Name = "label1";
-            label1.Size = new Size(88, 28);
-            label1.TabIndex = 14;
-            label1.Text = "Номер : ";
-            // 
-            // statusCheckBox
-            // 
-            statusCheckBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            statusCheckBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            statusCheckBox.FormattingEnabled = true;
-            statusCheckBox.Items.AddRange(new object[] { "", "Зададена", "Завършена", "Оферта" });
-            statusCheckBox.Location = new Point(627, 35);
-            statusCheckBox.Name = "statusCheckBox";
-            statusCheckBox.Size = new Size(117, 28);
-            statusCheckBox.TabIndex = 19;
-            // 
-            // txtNumber
-            // 
-            txtNumber.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            txtNumber.Location = new Point(89, 37);
-            txtNumber.Name = "txtNumber";
-            txtNumber.Size = new Size(148, 27);
-            txtNumber.TabIndex = 15;
-            // 
-            // label4
-            // 
-            label4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.Location = new Point(539, 35);
-            label4.Name = "label4";
-            label4.Size = new Size(88, 28);
-            label4.TabIndex = 18;
-            label4.Text = "Статус :  ";
-            // 
-            // label3
-            // 
-            label3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(243, 35);
-            label3.Name = "label3";
-            label3.Size = new Size(171, 28);
-            label3.TabIndex = 16;
-            label3.Text = "Статус Плащане : ";
-            // 
-            // cmbPaymentStatus
-            // 
-            cmbPaymentStatus.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            cmbPaymentStatus.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbPaymentStatus.FormattingEnabled = true;
-            cmbPaymentStatus.Items.AddRange(new object[] { "", "Платен", "Не Платен", "Аванс" });
-            cmbPaymentStatus.Location = new Point(416, 35);
-            cmbPaymentStatus.Name = "cmbPaymentStatus";
-            cmbPaymentStatus.Size = new Size(117, 28);
-            cmbPaymentStatus.TabIndex = 17;
-            // 
             // editRequestButton
             // 
             editRequestButton.BackColor = Color.Transparent;
             editRequestButton.BackgroundImage = (Image)resources.GetObject("editRequestButton.BackgroundImage");
             editRequestButton.BackgroundImageLayout = ImageLayout.Stretch;
-            editRequestButton.Location = new Point(175, 4);
+            editRequestButton.Location = new Point(175, 38);
             editRequestButton.Name = "editRequestButton";
             editRequestButton.Size = new Size(35, 35);
             editRequestButton.TabIndex = 13;
@@ -608,7 +481,7 @@ namespace WolfClient.UserControls
             DeleteRequestButton.BackColor = Color.Transparent;
             DeleteRequestButton.BackgroundImage = (Image)resources.GetObject("DeleteRequestButton.BackgroundImage");
             DeleteRequestButton.BackgroundImageLayout = ImageLayout.Stretch;
-            DeleteRequestButton.Location = new Point(139, 4);
+            DeleteRequestButton.Location = new Point(139, 38);
             DeleteRequestButton.Name = "DeleteRequestButton";
             DeleteRequestButton.Size = new Size(35, 35);
             DeleteRequestButton.TabIndex = 12;
@@ -620,12 +493,338 @@ namespace WolfClient.UserControls
             RefreshButton.BackColor = Color.Transparent;
             RefreshButton.BackgroundImage = (Image)resources.GetObject("RefreshButton.BackgroundImage");
             RefreshButton.BackgroundImageLayout = ImageLayout.Stretch;
-            RefreshButton.Location = new Point(211, 4);
+            RefreshButton.Location = new Point(211, 38);
             RefreshButton.Name = "RefreshButton";
             RefreshButton.Size = new Size(35, 35);
             RefreshButton.TabIndex = 11;
             RefreshButton.UseVisualStyleBackColor = false;
             RefreshButton.Click += RefreshButton_Click;
+            // 
+            // RequestFiltersApplyButton
+            // 
+            RequestFiltersApplyButton.BackColor = Color.Transparent;
+            RequestFiltersApplyButton.BackgroundImage = (Image)resources.GetObject("RequestFiltersApplyButton.BackgroundImage");
+            RequestFiltersApplyButton.BackgroundImageLayout = ImageLayout.Stretch;
+            RequestFiltersApplyButton.Location = new Point(251, 83);
+            RequestFiltersApplyButton.Name = "RequestFiltersApplyButton";
+            RequestFiltersApplyButton.Size = new Size(40, 40);
+            RequestFiltersApplyButton.TabIndex = 54;
+            RequestFiltersApplyButton.UseVisualStyleBackColor = false;
+            RequestFiltersApplyButton.Click += RequestFiltersApplyButton_Click_1;
+            // 
+            // filtersPanel
+            // 
+            filtersPanel.BackColor = SystemColors.ActiveCaption;
+            filtersPanel.BorderStyle = BorderStyle.Fixed3D;
+            filtersPanel.Controls.Add(OwnersFlowLayoutPanelFilter);
+            filtersPanel.Controls.Add(button2);
+            filtersPanel.Controls.Add(AddClientButton);
+            filtersPanel.Controls.Add(clientsFlowLayoutPanel);
+            filtersPanel.Controls.Add(overdueFilter);
+            filtersPanel.Controls.Add(label14);
+            filtersPanel.Controls.Add(label4);
+            filtersPanel.Controls.Add(cmbPaymentStatus);
+            filtersPanel.Controls.Add(label13);
+            filtersPanel.Controls.Add(label3);
+            filtersPanel.Controls.Add(CommentsTextBox);
+            filtersPanel.Controls.Add(txtNumber);
+            filtersPanel.Controls.Add(label12);
+            filtersPanel.Controls.Add(statusCheckBox);
+            filtersPanel.Controls.Add(label11);
+            filtersPanel.Controls.Add(label1);
+            filtersPanel.Controls.Add(CityTextBox);
+            filtersPanel.Controls.Add(chkForWeek);
+            filtersPanel.Controls.Add(label10);
+            filtersPanel.Controls.Add(chkForDay);
+            filtersPanel.Controls.Add(neighborhoodTextBox);
+            filtersPanel.Controls.Add(chkStarred);
+            filtersPanel.Controls.Add(label9);
+            filtersPanel.Controls.Add(chkPersonal);
+            filtersPanel.Controls.Add(UPITextBox);
+            filtersPanel.Controls.Add(label8);
+            filtersPanel.Controls.Add(plotNumberTextBox);
+            filtersPanel.Location = new Point(297, 41);
+            filtersPanel.Name = "filtersPanel";
+            filtersPanel.Size = new Size(737, 507);
+            filtersPanel.TabIndex = 23;
+            filtersPanel.Visible = false;
+            // 
+            // OwnersFlowLayoutPanelFilter
+            // 
+            OwnersFlowLayoutPanelFilter.AutoScroll = true;
+            OwnersFlowLayoutPanelFilter.BackColor = SystemColors.GradientActiveCaption;
+            OwnersFlowLayoutPanelFilter.BorderStyle = BorderStyle.Fixed3D;
+            OwnersFlowLayoutPanelFilter.FlowDirection = FlowDirection.RightToLeft;
+            OwnersFlowLayoutPanelFilter.Location = new Point(310, 231);
+            OwnersFlowLayoutPanelFilter.Name = "OwnersFlowLayoutPanelFilter";
+            OwnersFlowLayoutPanelFilter.Size = new Size(421, 113);
+            OwnersFlowLayoutPanelFilter.TabIndex = 69;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(444, 196);
+            button2.Name = "button2";
+            button2.Size = new Size(94, 29);
+            button2.TabIndex = 71;
+            button2.Text = "Добави";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click_1;
+            // 
+            // AddClientButton
+            // 
+            AddClientButton.Location = new Point(401, 33);
+            AddClientButton.Name = "AddClientButton";
+            AddClientButton.Size = new Size(94, 29);
+            AddClientButton.TabIndex = 70;
+            AddClientButton.Text = "Добави";
+            AddClientButton.UseVisualStyleBackColor = true;
+            AddClientButton.Click += AddClientButton_Click;
+            // 
+            // clientsFlowLayoutPanel
+            // 
+            clientsFlowLayoutPanel.AutoScroll = true;
+            clientsFlowLayoutPanel.BackColor = SystemColors.GradientActiveCaption;
+            clientsFlowLayoutPanel.BorderStyle = BorderStyle.Fixed3D;
+            clientsFlowLayoutPanel.FlowDirection = FlowDirection.RightToLeft;
+            clientsFlowLayoutPanel.Location = new Point(309, 61);
+            clientsFlowLayoutPanel.Name = "clientsFlowLayoutPanel";
+            clientsFlowLayoutPanel.Size = new Size(421, 123);
+            clientsFlowLayoutPanel.TabIndex = 68;
+            // 
+            // overdueFilter
+            // 
+            overdueFilter.AutoSize = true;
+            overdueFilter.Location = new Point(194, 1);
+            overdueFilter.Name = "overdueFilter";
+            overdueFilter.RightToLeft = RightToLeft.Yes;
+            overdueFilter.Size = new Size(119, 24);
+            overdueFilter.TabIndex = 67;
+            overdueFilter.Text = "Просрочени";
+            overdueFilter.UseVisualStyleBackColor = true;
+            // 
+            // label14
+            // 
+            label14.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            label14.AutoSize = true;
+            label14.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label14.Location = new Point(309, 193);
+            label14.Name = "label14";
+            label14.Size = new Size(129, 28);
+            label14.TabIndex = 66;
+            label14.Text = "Собственик: ";
+            // 
+            // label4
+            // 
+            label4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label4.Location = new Point(9, 61);
+            label4.Name = "label4";
+            label4.Size = new Size(88, 28);
+            label4.TabIndex = 51;
+            label4.Text = "Статус :  ";
+            // 
+            // cmbPaymentStatus
+            // 
+            cmbPaymentStatus.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            cmbPaymentStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbPaymentStatus.FormattingEnabled = true;
+            cmbPaymentStatus.Items.AddRange(new object[] { "", "Платен", "Не Платен", "Аванс" });
+            cmbPaymentStatus.Location = new Point(181, 156);
+            cmbPaymentStatus.Name = "cmbPaymentStatus";
+            cmbPaymentStatus.Size = new Size(113, 28);
+            cmbPaymentStatus.TabIndex = 50;
+            // 
+            // label13
+            // 
+            label13.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            label13.AutoSize = true;
+            label13.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label13.Location = new Point(309, 30);
+            label13.Name = "label13";
+            label13.Size = new Size(86, 28);
+            label13.TabIndex = 65;
+            label13.Text = "Клиент: ";
+            // 
+            // label3
+            // 
+            label3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label3.Location = new Point(9, 156);
+            label3.Name = "label3";
+            label3.Size = new Size(171, 28);
+            label3.TabIndex = 49;
+            label3.Text = "Статус Плащане : ";
+            // 
+            // CommentsTextBox
+            // 
+            CommentsTextBox.Location = new Point(9, 350);
+            CommentsTextBox.Name = "CommentsTextBox";
+            CommentsTextBox.Size = new Size(721, 148);
+            CommentsTextBox.TabIndex = 64;
+            CommentsTextBox.Text = "";
+            // 
+            // txtNumber
+            // 
+            txtNumber.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            txtNumber.Location = new Point(97, 92);
+            txtNumber.Name = "txtNumber";
+            txtNumber.Size = new Size(197, 27);
+            txtNumber.TabIndex = 48;
+            // 
+            // label12
+            // 
+            label12.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            label12.AutoSize = true;
+            label12.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label12.Location = new Point(9, 319);
+            label12.Name = "label12";
+            label12.Size = new Size(218, 28);
+            label12.TabIndex = 63;
+            label12.Text = "Търсене по коментар: ";
+            // 
+            // statusCheckBox
+            // 
+            statusCheckBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            statusCheckBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            statusCheckBox.FormattingEnabled = true;
+            statusCheckBox.Items.AddRange(new object[] { "", "Зададена", "Завършена", "Оферта" });
+            statusCheckBox.Location = new Point(97, 61);
+            statusCheckBox.Name = "statusCheckBox";
+            statusCheckBox.Size = new Size(197, 28);
+            statusCheckBox.TabIndex = 52;
+            // 
+            // label11
+            // 
+            label11.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            label11.AutoSize = true;
+            label11.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label11.Location = new Point(9, 125);
+            label11.Name = "label11";
+            label11.Size = new Size(171, 28);
+            label11.TabIndex = 61;
+            label11.Text = "Населено Място: ";
+            // 
+            // label1
+            // 
+            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(9, 92);
+            label1.Name = "label1";
+            label1.Size = new Size(88, 28);
+            label1.TabIndex = 47;
+            label1.Text = "Номер : ";
+            // 
+            // CityTextBox
+            // 
+            CityTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            CityTextBox.Location = new Point(180, 125);
+            CityTextBox.Name = "CityTextBox";
+            CityTextBox.Size = new Size(114, 27);
+            CityTextBox.TabIndex = 62;
+            // 
+            // chkForWeek
+            // 
+            chkForWeek.AutoSize = true;
+            chkForWeek.Location = new Point(497, 1);
+            chkForWeek.Name = "chkForWeek";
+            chkForWeek.RightToLeft = RightToLeft.Yes;
+            chkForWeek.Size = new Size(124, 24);
+            chkForWeek.TabIndex = 44;
+            chkForWeek.Text = "за седмицата";
+            chkForWeek.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            label10.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            label10.AutoSize = true;
+            label10.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label10.Location = new Point(9, 248);
+            label10.Name = "label10";
+            label10.Size = new Size(44, 28);
+            label10.TabIndex = 59;
+            label10.Text = "Кв: ";
+            // 
+            // chkForDay
+            // 
+            chkForDay.AutoSize = true;
+            chkForDay.Location = new Point(408, 1);
+            chkForDay.Name = "chkForDay";
+            chkForDay.RightToLeft = RightToLeft.Yes;
+            chkForDay.Size = new Size(83, 24);
+            chkForDay.TabIndex = 45;
+            chkForDay.Text = "за деня";
+            chkForDay.UseVisualStyleBackColor = true;
+            // 
+            // neighborhoodTextBox
+            // 
+            neighborhoodTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            neighborhoodTextBox.Location = new Point(53, 248);
+            neighborhoodTextBox.Name = "neighborhoodTextBox";
+            neighborhoodTextBox.Size = new Size(241, 27);
+            neighborhoodTextBox.TabIndex = 60;
+            // 
+            // chkStarred
+            // 
+            chkStarred.AutoSize = true;
+            chkStarred.Location = new Point(627, 1);
+            chkStarred.Name = "chkStarred";
+            chkStarred.RightToLeft = RightToLeft.Yes;
+            chkStarred.Size = new Size(104, 24);
+            chkStarred.TabIndex = 53;
+            chkStarred.Text = "със звезда";
+            chkStarred.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            label9.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label9.Location = new Point(9, 217);
+            label9.Name = "label9";
+            label9.Size = new Size(56, 28);
+            label9.TabIndex = 57;
+            label9.Text = "Упи: ";
+            // 
+            // chkPersonal
+            // 
+            chkPersonal.AutoSize = true;
+            chkPersonal.Location = new Point(319, 1);
+            chkPersonal.Name = "chkPersonal";
+            chkPersonal.RightToLeft = RightToLeft.Yes;
+            chkPersonal.Size = new Size(76, 24);
+            chkPersonal.TabIndex = 46;
+            chkPersonal.Text = "Лични";
+            chkPersonal.UseVisualStyleBackColor = true;
+            // 
+            // UPITextBox
+            // 
+            UPITextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            UPITextBox.Location = new Point(71, 217);
+            UPITextBox.Name = "UPITextBox";
+            UPITextBox.Size = new Size(223, 27);
+            UPITextBox.TabIndex = 58;
+            // 
+            // label8
+            // 
+            label8.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label8.Location = new Point(9, 186);
+            label8.Name = "label8";
+            label8.Size = new Size(137, 28);
+            label8.TabIndex = 55;
+            label8.Text = "Номер Имот: ";
+            // 
+            // plotNumberTextBox
+            // 
+            plotNumberTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            plotNumberTextBox.Location = new Point(146, 187);
+            plotNumberTextBox.Name = "plotNumberTextBox";
+            plotNumberTextBox.Size = new Size(148, 27);
+            plotNumberTextBox.TabIndex = 56;
             // 
             // tabPage2
             // 
@@ -830,23 +1029,23 @@ namespace WolfClient.UserControls
             // 
             // ActivityDataGridView
             // 
-            ActivityDataGridView.AllowUserToResizeColumns = false;
             ActivityDataGridView.AllowUserToResizeRows = false;
             ActivityDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             ActivityDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             ActivityDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             ActivityDataGridView.BackgroundColor = Color.Moccasin;
-            ActivityDataGridView.ColumnHeadersHeight = 28;
+            ActivityDataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            ActivityDataGridView.ColumnHeadersHeight = 60;
             ActivityDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            ActivityDataGridView.Columns.AddRange(new DataGridViewColumn[] { ParentActivity, Activity, Task, Executant, StartDate, Duration, Control, Plots, Comment, tax, taxComment, Status });
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            ActivityDataGridView.DefaultCellStyle = dataGridViewCellStyle1;
+            ActivityDataGridView.Columns.AddRange(new DataGridViewColumn[] { ParentActivity, Activity, Plots, Task, Executant, MainExecutantPayment, StartDate, ActivityEndDate, TaskStartDate, TaskEndDate, Duration, Control, Comment, tax, taxComment, Status });
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            ActivityDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
             ActivityDataGridView.Location = new Point(0, 46);
             ActivityDataGridView.Margin = new Padding(3, 4, 3, 4);
             ActivityDataGridView.MinimumSize = new Size(933, 188);
@@ -855,6 +1054,7 @@ namespace WolfClient.UserControls
             ActivityDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             ActivityDataGridView.RowTemplate.Height = 350;
             ActivityDataGridView.RowTemplate.Resizable = DataGridViewTriState.False;
+            ActivityDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             ActivityDataGridView.Size = new Size(1330, 282);
             ActivityDataGridView.TabIndex = 22;
             ActivityDataGridView.CellContentClick += ActivityDataGridView_CellContentClick;
@@ -873,6 +1073,13 @@ namespace WolfClient.UserControls
             Activity.MinimumWidth = 6;
             Activity.Name = "Activity";
             // 
+            // Plots
+            // 
+            Plots.DataPropertyName = "Identities";
+            Plots.HeaderText = "Идентификатори";
+            Plots.MinimumWidth = 6;
+            Plots.Name = "Plots";
+            // 
             // Task
             // 
             Task.DataPropertyName = "TaskTypeName";
@@ -887,12 +1094,40 @@ namespace WolfClient.UserControls
             Executant.MinimumWidth = 6;
             Executant.Name = "Executant";
             // 
+            // MainExecutantPayment
+            // 
+            MainExecutantPayment.DataPropertyName = "MainExecutantPayment";
+            MainExecutantPayment.HeaderText = "Хонорар гл. Изпълнител";
+            MainExecutantPayment.MinimumWidth = 6;
+            MainExecutantPayment.Name = "MainExecutantPayment";
+            // 
             // StartDate
             // 
             StartDate.DataPropertyName = "StartDate";
-            StartDate.HeaderText = "Дата";
+            StartDate.HeaderText = "Започване на дейност";
             StartDate.MinimumWidth = 6;
             StartDate.Name = "StartDate";
+            // 
+            // ActivityEndDate
+            // 
+            ActivityEndDate.DataPropertyName = "ActivityEndDate";
+            ActivityEndDate.HeaderText = "Приключване на дейност";
+            ActivityEndDate.MinimumWidth = 6;
+            ActivityEndDate.Name = "ActivityEndDate";
+            // 
+            // TaskStartDate
+            // 
+            TaskStartDate.DataPropertyName = "TaskStartDate";
+            TaskStartDate.HeaderText = "Започване на задача";
+            TaskStartDate.MinimumWidth = 6;
+            TaskStartDate.Name = "TaskStartDate";
+            // 
+            // TaskEndDate
+            // 
+            TaskEndDate.DataPropertyName = "TaskEndDate";
+            TaskEndDate.HeaderText = "Приключване на задача";
+            TaskEndDate.MinimumWidth = 6;
+            TaskEndDate.Name = "TaskEndDate";
             // 
             // Duration
             // 
@@ -907,13 +1142,6 @@ namespace WolfClient.UserControls
             Control.HeaderText = "Контрол";
             Control.MinimumWidth = 6;
             Control.Name = "Control";
-            // 
-            // Plots
-            // 
-            Plots.DataPropertyName = "Identities";
-            Plots.HeaderText = "Идентификатори";
-            Plots.MinimumWidth = 6;
-            Plots.Name = "Plots";
             // 
             // Comment
             // 
@@ -1064,7 +1292,6 @@ namespace WolfClient.UserControls
             // 
             // clientsDataGridView
             // 
-            clientsDataGridView.AllowUserToResizeColumns = false;
             clientsDataGridView.AllowUserToResizeRows = false;
             clientsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             clientsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -1072,20 +1299,21 @@ namespace WolfClient.UserControls
             clientsDataGridView.BackgroundColor = Color.Moccasin;
             clientsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             clientsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ClientNumber, FirstName, MiddleName, LastName, Phone, Email, Address, ClientLegalType });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            clientsDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Window;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            clientsDataGridView.DefaultCellStyle = dataGridViewCellStyle3;
             clientsDataGridView.GridColor = SystemColors.ControlText;
             clientsDataGridView.Location = new Point(1, 46);
             clientsDataGridView.Margin = new Padding(3, 4, 3, 4);
             clientsDataGridView.Name = "clientsDataGridView";
             clientsDataGridView.RowHeadersWidth = 51;
             clientsDataGridView.RowTemplate.Height = 24;
+            clientsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             clientsDataGridView.Size = new Size(1326, 282);
             clientsDataGridView.TabIndex = 8;
             // 
@@ -1167,7 +1395,7 @@ namespace WolfClient.UserControls
             tabPage3.Padding = new Padding(3);
             tabPage3.Size = new Size(1336, 335);
             tabPage3.TabIndex = 2;
-            tabPage3.Text = "имоти";
+            tabPage3.Text = "Имоти";
             tabPage3.UseVisualStyleBackColor = true;
             tabPage3.Click += tabPage3_Click;
             // 
@@ -1257,30 +1485,30 @@ namespace WolfClient.UserControls
             // 
             // PlotsDataGridView
             // 
-            PlotsDataGridView.AllowUserToResizeColumns = false;
             PlotsDataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             PlotsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             PlotsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             PlotsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             PlotsDataGridView.BackgroundColor = Color.Moccasin;
             PlotsDataGridView.ColumnHeadersHeight = 29;
             PlotsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ActivityName, PlotNumber, RegulatedPlotNumber, neighborhood, City, Municipality, Street, StreetNumber, designation, locality });
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            PlotsDataGridView.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = SystemColors.Window;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            PlotsDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
             PlotsDataGridView.Location = new Point(0, 46);
             PlotsDataGridView.Margin = new Padding(100, 4, 3, 4);
             PlotsDataGridView.Name = "PlotsDataGridView";
             PlotsDataGridView.RowHeadersWidth = 51;
             PlotsDataGridView.RowTemplate.Height = 50;
+            PlotsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             PlotsDataGridView.Size = new Size(1330, 282);
             PlotsDataGridView.TabIndex = 21;
             // 
@@ -1479,18 +1707,19 @@ namespace WolfClient.UserControls
             OwnershipDataGridView.BackgroundColor = Color.Moccasin;
             OwnershipDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             OwnershipDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlotNumberDocTable, DocumentId, OwnerId, EKG, OwnerAddress, IdealParts, PowerOfAttorney });
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = SystemColors.Window;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            OwnershipDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            OwnershipDataGridView.DefaultCellStyle = dataGridViewCellStyle6;
             OwnershipDataGridView.Location = new Point(0, 49);
             OwnershipDataGridView.Name = "OwnershipDataGridView";
             OwnershipDataGridView.RowHeadersWidth = 51;
             OwnershipDataGridView.RowTemplate.Height = 29;
+            OwnershipDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             OwnershipDataGridView.Size = new Size(1336, 286);
             OwnershipDataGridView.TabIndex = 0;
             // 
@@ -1621,6 +1850,7 @@ namespace WolfClient.UserControls
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
+            Controls.Add(filtersPanel);
             Controls.Add(DocumentsOfOwnershipTab);
             Controls.Add(panel3);
             Margin = new Padding(3, 4, 3, 4);
@@ -1632,8 +1862,8 @@ namespace WolfClient.UserControls
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             panel7.ResumeLayout(false);
-            panel6.ResumeLayout(false);
-            panel6.PerformLayout();
+            filtersPanel.ResumeLayout(false);
+            filtersPanel.PerformLayout();
             tabPage2.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel1.ResumeLayout(false);
@@ -1663,14 +1893,9 @@ namespace WolfClient.UserControls
         private System.Windows.Forms.Button addInvoiceButton;
         private System.Windows.Forms.Panel panel3;
         private Button RefreshButton;
-        private DataGridViewTextBoxColumn RequestId;
-        private DataGridViewTextBoxColumn RequestName;
-        private DataGridViewTextBoxColumn Price;
-        private DataGridViewTextBoxColumn PaymentStatus;
-        private DataGridViewTextBoxColumn Advance;
-        private DataGridViewTextBoxColumn Comments;
         private TabPage tabPage2;
         private Panel panel2;
+        private Panel panel1;
         private DataGridView ActivityDataGridView;
         private Button ActivityAddButton;
         private TabPage tabPage1;
@@ -1713,21 +1938,12 @@ namespace WolfClient.UserControls
         private Button editClientButton;
         private Button editPlotButton;
         private Button editOwnershipButton;
-        private Label label4;
-        private Panel panel6;
         private Panel panel7;
         private Button btnPreviousRequestsDataGridView;
         private Button btnFirstRequestsDataGridView;
-        private Label label6;
-        private Label label1;
-        private ComboBox statusCheckBox;
-        private TextBox txtNumber;
-        private Label label3;
-        private ComboBox cmbPaymentStatus;
         private Button btnLastRequestsDataGridView;
         private Button btnNextRequestsDataGridView;
         private Button starRequestButton;
-        private CheckBox chkStarred;
         private Button btnLastClientsDataGridView;
         private Button btnNextClientsDataGridView;
         private Button btnPreviousClientsDataGridView;
@@ -1749,12 +1965,7 @@ namespace WolfClient.UserControls
         private Button btnNextInvoicesDataGridView;
         private Button btnPreviousInvoicesDataGridView;
         private Button btnFirstInvoicesDataGridView;
-        private CheckBox chkPersonal;
-        private CheckBox chkForDay;
-        private CheckBox chkForWeek;
-        private Button RequestFiltersApplyButton;
         private CheckBox taskSelfCheck;
-        private Panel panel1;
         private Label label2;
         private CheckBox taskDayCheck;
         private CheckBox taskWeekCheck;
@@ -1775,17 +1986,56 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn number;
         private DataGridViewTextBoxColumn Sum;
         private Button EditInvoiceButton;
+        private DataGridViewTextBoxColumn RequestId;
+        private DataGridViewTextBoxColumn RequestName;
+        private DataGridViewTextBoxColumn PaymentStatus;
+        private DataGridViewTextBoxColumn Comments;
+        private DataGridViewTextBoxColumn PlotsInfo;
+        private Panel filtersPanel;
+        private Button button2;
+        private Button AddClientButton;
+        private FlowLayoutPanel clientsFlowLayoutPanel;
+        private CheckBox overdueFilter;
+        private Label label14;
+        private Label label4;
+        private ComboBox cmbPaymentStatus;
+        private Label label13;
+        private Label label3;
+        private RichTextBox CommentsTextBox;
+        private TextBox txtNumber;
+        private Label label12;
+        private ComboBox statusCheckBox;
+        private Label label11;
+        private Label label1;
+        private TextBox CityTextBox;
+        private CheckBox chkForWeek;
+        private Label label10;
+        private CheckBox chkForDay;
+        private TextBox neighborhoodTextBox;
+        private CheckBox chkStarred;
+        private Label label9;
+        private CheckBox chkPersonal;
+        private TextBox UPITextBox;
+        private Button RequestFiltersApplyButton;
+        private Label label8;
+        private TextBox plotNumberTextBox;
+        private FlowLayoutPanel OwnersFlowLayoutPanelFilter;
         private DataGridViewTextBoxColumn ParentActivity;
         private DataGridViewTextBoxColumn Activity;
+        private DataGridViewTextBoxColumn Plots;
         private DataGridViewTextBoxColumn Task;
         private DataGridViewTextBoxColumn Executant;
+        private DataGridViewTextBoxColumn MainExecutantPayment;
         private DataGridViewTextBoxColumn StartDate;
+        private DataGridViewTextBoxColumn ActivityEndDate;
+        private DataGridViewTextBoxColumn TaskStartDate;
+        private DataGridViewTextBoxColumn TaskEndDate;
         private DataGridViewTextBoxColumn Duration;
         private DataGridViewTextBoxColumn Control;
-        private DataGridViewTextBoxColumn Plots;
         private DataGridViewTextBoxColumn Comment;
         private DataGridViewTextBoxColumn tax;
         private DataGridViewTextBoxColumn taxComment;
         private DataGridViewTextBoxColumn Status;
     }
 }
+

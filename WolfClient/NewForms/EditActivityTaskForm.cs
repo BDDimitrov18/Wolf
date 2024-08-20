@@ -125,7 +125,8 @@ namespace WolfClient.NewForms
             StatusComboBox.Text = getTaskDTO.Status;
 
             // Populate the rest of the controls with data from selectedActivity and getTaskDTO
-            ActivityComboBox.SelectedValue = selectedActivity.ActivityTypeID;
+            ActivityComboBox.Text = selectedActivity.ActivityType.ActivityTypeName;
+            TaskComboBox.Text = getTaskDTO.taskType.TaskTypeName;
             MainExecutantComboBox.SelectedValue = selectedActivity.ExecutantId;
             ParentActivityComboBox.SelectedValue = selectedActivity.ParentActivityId ?? 0;
             ExecitantComboBox.SelectedValue = getTaskDTO.ExecutantId;
@@ -142,7 +143,6 @@ namespace WolfClient.NewForms
             taskStartDateTimePicker.Value = getTaskDTO.StartDate;
             DurationNumericUpDown.Value = (decimal)getTaskDTO.Duration.TotalHours;
 
-            StatusComboBox.SelectedIndex = 0;
         }
         private void ValidateModel()
         {

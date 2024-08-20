@@ -14,6 +14,9 @@ namespace WolfClient.ViewModels
         public int TaskId { get; set; }
         public string ExecutantFullName { get; set; }
         public DateTime StartDate { get; set; }
+        public DateTime ActivityEndDate { get; set; }
+        public DateTime TaskStartDate { get; set; }
+        public DateTime TaskEndDate { get; set; }
         public TimeSpan Duration { get; set; }
         public string ControlFullName { get; set; }
         public string Comments { get; set; }
@@ -22,6 +25,7 @@ namespace WolfClient.ViewModels
         public string tax { get; set; }
         public string taxComment { get; set; }
 
+        public float MainExecutantPayment { get; set; }
         public string Status { get; set; }
     }
 }

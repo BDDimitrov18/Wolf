@@ -128,33 +128,7 @@ namespace WolfClient.NewForms
                 // Bind the form controls to the model properties
                 _ownerValidator.EGN = EGNTextBox.Text;
                 _ownerValidator.Address = AddressTextBox.Text;
-                string[] names = NameTextBox.Text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                if (names.Length < 1)
-                {
-                    errorProvider.SetError(NameTextBox, "Въведете три имена");
-                    NameValidatorLabel.Text = "Въведете три имена";
-                }
-                else if (names.Length == 1)
-                {
-                    errorProvider.SetError(NameTextBox, "Въведете три имена");
-                    NameValidatorLabel.Text = "Въведете три имена";
-                }
-                else if (names.Length == 2)
-                {
-                    errorProvider.SetError(NameTextBox, "Въведете три имена");
-                    NameValidatorLabel.Text = "Въведете три имена";
-                }
-                else if (names.Length == 3)
-                {
-                    _ownerValidator.FirstName = names[0];
-                    _ownerValidator.MiddleName = names[1];
-                    _ownerValidator.LastName = names[2];
-                }
-                else if (names.Length > 3)
-                {
-                    errorProvider.SetError(NameTextBox, "Въведете само 3 имена");
-                    NameValidatorLabel.Text = "Въведете саме 3 имена";
-                }
+                
 
                 // Validate the model
                 IList<ValidationResult> memberNameResults = WolfClient.Validators.Validator.Validate(_ownerValidator);
@@ -213,9 +187,7 @@ namespace WolfClient.NewForms
             return memberName switch
             {
                 // Owner Validator
-                nameof(_ownerValidator.FirstName) => "FirstNameTextBox",
-                nameof(_ownerValidator.MiddleName) => "MiddleNameTextBox",
-                nameof(_ownerValidator.LastName) => "LastNameTextBox",
+               
                 nameof(_ownerValidator.EGN) => "EGNTextBox",
                 nameof(_ownerValidator.Address) => "AddressTextBox",
 
@@ -339,6 +311,7 @@ namespace WolfClient.NewForms
             RegisterComboBox.Text = relashionshipDTO.DocumentOwner.Document.register;
             IssingDateTimePicker.Value = relashionshipDTO.DocumentOwner.Document.DateOfIssuing;
             registeringDateTimePicker.Value = relashionshipDTO.DocumentOwner.Document.DateOfRegistering;
+            Issuer.Text = relashionshipDTO.DocumentOwner.Document.Issuer;
 
             int typeOfOwnershipIndex = TypeOfOwnership.FindStringExact(relashionshipDTO.DocumentOwner.Document.TypeOfOwnership);
             TypeOfOwnership.SelectedIndex = typeOfOwnershipIndex;
@@ -481,7 +454,6 @@ namespace WolfClient.NewForms
 
         private void ResetLabelColors()
         {
-            NameValidatorLabel.ForeColor = SystemColors.GradientActiveCaption;
             EgnValidatorLabel.ForeColor = SystemColors.GradientActiveCaption;
             AddressValidatorLabel.ForeColor = SystemColors.GradientActiveCaption;
             IdealPartsValidatorLabel.ForeColor = SystemColors.GradientActiveCaption;
@@ -497,11 +469,7 @@ namespace WolfClient.NewForms
         private bool SetValidationLabels()
         {
             bool flag = false;
-            if (!string.IsNullOrEmpty(errorProvider.GetError(NameTextBox)))
-            {
-                NameValidatorLabel.ForeColor = Color.Red;
-                flag = true;
-            }
+            
 
             if (!string.IsNullOrEmpty(errorProvider.GetError(IdealPartsPanel)))
             {
@@ -568,14 +536,10 @@ namespace WolfClient.NewForms
             int relashionshipId = _dataService.GetSelectedOwnershipViewModelsRequestMenu()[0].PlotOwnerID;
             GetDocumentPlot_DocumentOwnerRelashionshipDTO relashionshipDTO = _dataService.GetPlotOwnerById(relashionshipId);
             GetOwnerDTO editOwner = relashionshipDTO.DocumentOwner.Owner;
-            string[] names = NameTextBox.Text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-
-            editOwner.FirstName = names[0];
-            editOwner.MiddleName = names[1];
-            editOwner.LastName = names[2];
+            editOwner.FullName = NameTextBox.Text;  
             editOwner.EGN = EGNTextBox.Text;
             editOwner.Address = AddressTextBox.Text;
-            
+
             await _userClient.EditOwner(editOwner);
             _dataService.EditOwner(editOwner);
             GetDocumentOfOwnershipDTO editDocumentOfOwnershipDTO = relashionshipDTO.DocumentOwner.Document;
@@ -599,7 +563,7 @@ namespace WolfClient.NewForms
             EditPowerOfAttorneyDocumentDTO.number = PowerOfAttorneyNumberTextBox.Text;
             EditPowerOfAttorneyDocumentDTO.Issuer = PowerOfAttorneyIssuerComboBox.Text;
             EditPowerOfAttorneyDocumentDTO.dateOfIssuing = PowerOfAttorneyDatetimePicker.Value;
-            
+
 
             await _userClient.EditPowerOfAttorney(EditPowerOfAttorneyDocumentDTO);
             _dataService.EditPowerOfAttorney(EditPowerOfAttorneyDocumentDTO);
@@ -607,7 +571,7 @@ namespace WolfClient.NewForms
             relashionshipDTO.IdealParts = getIdealPart();
             relashionshipDTO.WayOfAcquiring = wayOfAcquiringComboBox.Text;
             relashionshipDTO.isDrob = getIdealPartType();
-            
+
 
             await _userClient.EditPlotOwnerRelashionship(relashionshipDTO);
             _dataService.EditPlotOwnerRelashionship(relashionshipDTO);
@@ -626,6 +590,11 @@ namespace WolfClient.NewForms
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Issuer_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

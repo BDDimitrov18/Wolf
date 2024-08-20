@@ -81,6 +81,101 @@ namespace WolfClient.Services
             }
         }
 
+        public List<GetRequestDTO> filterRequestByPlotId(List<GetRequestDTO> requestDTOs, string plotId) {
+            List<GetRequestDTO> returnRequests = new List<GetRequestDTO>();
+            foreach (var request in requestDTOs) {
+                bool toadd = false;
+                List<GetPlotDTO> plots = getLinkedPlotsToRequest(request);
+                foreach (var plot in plots) {
+                    if (plot.PlotNumber.Contains(plotId)) {
+                        toadd = true;
+                    }
+                }
+                if (toadd)
+                {
+                    returnRequests.Add(request);
+                }
+            }
+            return returnRequests;
+        }
+
+        public List<GetRequestDTO> filterRequestsByComments(List<GetRequestDTO> requestDTOs, string comment)    { 
+            List<GetRequestDTO> returnRequests = new List<GetRequestDTO>();
+
+            foreach (var request in requestDTOs) {
+                bool toadd = false;
+                if (request.Comments.Contains(comment)) {
+                    returnRequests.Add(request);
+                }
+            }
+            return returnRequests;
+        }
+        public List<GetRequestDTO> filterRequestByPlotCity(List<GetRequestDTO> requestDTOs, string plotCity)
+        {
+            List<GetRequestDTO> returnRequests = new List<GetRequestDTO>();
+            foreach (var request in requestDTOs)
+            {
+                bool toadd = false;
+                List<GetPlotDTO> plots = getLinkedPlotsToRequest(request);
+                foreach (var plot in plots)
+                {
+                    if (plot.City.Contains(plotCity))
+                    {
+                        toadd = true;
+                    }
+                }
+                if (toadd)
+                {
+                    returnRequests.Add(request);
+                }
+            }
+            return returnRequests;
+        }
+
+        public List<GetRequestDTO> filterRequestByPlotNeighborhood(List<GetRequestDTO> requestDTOs, string plotNeighborhood)
+        {
+            List<GetRequestDTO> returnRequests = new List<GetRequestDTO>();
+            foreach (var request in requestDTOs)
+            {
+                bool toadd = false;
+                List<GetPlotDTO> plots = getLinkedPlotsToRequest(request);
+                foreach (var plot in plots)
+                {
+                    if (plot.neighborhood.Contains(plotNeighborhood))
+                    {
+                        toadd = true;
+                    }
+                }
+                if (toadd)
+                {
+                    returnRequests.Add(request);
+                }
+            }
+            return returnRequests;
+        }
+
+        public List<GetRequestDTO> filterRequestByPlotUPI(List<GetRequestDTO> requestDTOs, string plotUPI)
+        {
+            List<GetRequestDTO> returnRequests = new List<GetRequestDTO>();
+            foreach (var request in requestDTOs)
+            {
+                bool toadd = false;
+                List<GetPlotDTO> plots = getLinkedPlotsToRequest(request);
+                foreach (var plot in plots)
+                {
+                    if (plot.RegulatedPlotNumber.Contains(plotUPI))
+                    {
+                        toadd = true;
+                    }
+                }
+                if (toadd)
+                {
+                    returnRequests.Add(request);
+                }
+            }
+            return returnRequests;
+        }
+
         public void DeleteInvoices(List<GetInvoiceDTO> invoiceDTOs)
         {
             foreach (var link in compositeData._fetchedLinkedClients)
@@ -97,6 +192,73 @@ namespace WolfClient.Services
                 }
             }
         }
+        private bool clientExists(List<GetClientDTO> clientsOriginal, GetClientDTO clientDTO) {
+            foreach (var client in clientsOriginal) {
+                if (client.ClientId == clientDTO.ClientId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public List<GetRequestDTO> filterRequestsByClients(List<GetRequestDTO> requestDTOs, List<GetClientDTO> clients) {
+            List<GetRequestDTO> returnRequests = new List<GetRequestDTO>();
+            foreach(var link in compositeData._fetchedLinkedClients) {
+                foreach (var request in requestDTOs) { 
+                    if(request.RequestId == link.requestDTO.RequestId) {
+                        bool toadd = true;
+                        foreach (GetClientDTO client in clients) {
+                            if (!clientExists(link.clientDTOs, client)) {
+                                toadd = false;
+                            }
+                        }
+                        if (toadd)
+                        {
+                            returnRequests.Add(request);
+                        }
+                    }
+                }
+            }
+            return returnRequests;
+        }
+
+        private bool requestHasOwner(List<GetPlotDTO> plots, GetOwnerDTO owner) {
+            foreach (var plot in plots) { 
+                foreach(var link in compositeData.linkedDocuments) { 
+                     if(link.DocumentPlot.PlotId == plot.PlotId && link.DocumentOwner.OwnerID == owner.OwnerID)
+                     {
+                        return true;
+                     }      
+                }
+            }
+            return false;
+        }
+        
+
+        public List<GetRequestDTO> filterRequestsByOwner(List<GetRequestDTO> requestDTOs, List<GetOwnerDTO> ownerDTOs) {
+            List<GetRequestDTO> returnRequests = new List<GetRequestDTO>();
+            foreach (var link in compositeData._fetchedLinkedClients) {
+                foreach (var request in requestDTOs) {
+                    bool toadd = true;
+                    List<GetPlotDTO> plots = getLinkedPlotsToRequest(request);
+                    if (plots != null && plots.Count() > 0) {
+                        foreach (var owner in ownerDTOs) {
+                            if (!requestHasOwner(plots, owner)) {
+                                toadd = false;
+                            }
+                        }
+                    }
+                    else {
+                        toadd = false;
+                    }
+                    if (toadd) {
+                        returnRequests.Add(request);
+                    }
+                }
+            }
+            return returnRequests;
+        }
+
+
 
         public List<GetInvoiceDTO> getSelectedInvoices() {
             return _selectedInvoices;
@@ -338,6 +500,54 @@ namespace WolfClient.Services
 
             return returnRequest;
         }
+
+        public List<GetRequestDTO> FilterRequestByOverdueActivitiesAndTasks(List<GetRequestDTO> requestDTOs)
+        {
+            List<GetRequestDTO> returnRequest = new List<GetRequestDTO>();
+
+            // Get today's date
+            DateTime today = DateTime.Today;
+
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                bool toadd = false;
+                foreach (var request in requestDTOs)
+                {
+                    if (link.requestDTO.RequestId == request.RequestId)
+                    {
+                        if (link.activityDTOs != null && link.activityDTOs.Count() > 0)
+                        {
+                            foreach (var activity in link.activityDTOs)
+                            {
+                                // Check if the activity's expected duration is before today (overdue)
+                                if (activity.ExpectedDuration < today)
+                                {
+                                    toadd = true;
+                                }
+                                else
+                                {
+                                    // Check if any of the tasks associated with the activity are overdue
+                                    foreach (var task in activity.Tasks)
+                                    {
+                                        if (task.FinishDate < today)
+                                        {
+                                            toadd = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (toadd)
+                {
+                    returnRequest.Add(link.requestDTO);
+                }
+            }
+
+            return returnRequest;
+        }
+
         public void SetLoggedEmployee(GetEmployeeDTO employeeDTO) {
             LoggedEmployee = employeeDTO;
         }
@@ -690,6 +900,30 @@ namespace WolfClient.Services
             return _selectedClients;
         }
 
+        public List<GetPlotDTO> getLinkedPlotsToRequest(GetRequestDTO requestDTO) {
+            List<GetPlotDTO> plotDTOs = new List<GetPlotDTO>(); 
+            foreach (var link in compositeData._fetchedLinkedClients) {
+                if (link.requestDTO.RequestId == requestDTO.RequestId) {
+                    if(link.activityDTOs!= null & link.activityDTOs.Count() > 0) {
+                        foreach (var activity in link.activityDTOs)
+                        {
+                            if (activity.Plots.Count() > 0)
+                            {
+                                foreach (var plot in activity.Plots)
+                                {
+                                    if (!plotDTOs.Any(p => p.PlotId == plot.PlotId))
+                                    {
+                                        plotDTOs.Add(plot);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return plotDTOs;
+        }
+
         public List<GetClientDTO> getLinkedClients() { 
             foreach(var link in compositeData._fetchedLinkedClients) {
                 if (link.requestDTO.RequestId == _selectedRequest.RequestId) {
@@ -979,7 +1213,7 @@ namespace WolfClient.Services
             _selectedPlotsRequestMenuService = plots;
         }
 
-        public List<GetActivity_PlotRelashionshipDTO> getActivity_PlotRelashionshipDTOs(List<GetPlotDTO> plots) {
+        public List<GetActivity_PlotRelashionshipDTO> getActivity_PlotRelashionshipDTOs(List<GetPlotDTO> plots, List<int> activityIds) {
             List<GetActivity_PlotRelashionshipDTO> relashionshipDTOs = new List<GetActivity_PlotRelashionshipDTO>();
             foreach (var plot in plots) {
                 foreach (var link in compositeData._fetchedLinkedClients)
@@ -1002,6 +1236,31 @@ namespace WolfClient.Services
                 }
             }
             return relashionshipDTOs;
+        }
+
+        public void removeActivityPlotRelashionships(List<GetActivity_PlotRelashionshipDTO> activity_PlotRelashionshipDTOs) { 
+            
+            foreach(var relashionships in activity_PlotRelashionshipDTOs) { 
+               foreach(var link in compositeData._fetchedLinkedClients) {
+                    if (link.activityDTOs != null && link.activityDTOs?.Count() > 0)
+                        foreach (var activity in link.activityDTOs)
+                        {
+                            List<GetPlotDTO> plotstoremove = new List<GetPlotDTO>();
+                            if (activity.ActivityId == relashionships.ActivityId) {
+                                foreach (var plot in activity.Plots)
+                                {
+                                    if (plot.PlotId == relashionships.PlotId) {
+                                        plotstoremove.Add(plot);
+                                        break;
+                                    }
+                                }
+                            }
+                            foreach (var plot in plotstoremove) {
+                                activity.Plots.Remove(plot);
+                            }
+                        }
+                }  
+            }    
         }
 
         public List<PlotViewModel> getSelectedPlotsOnRequestMenu() {

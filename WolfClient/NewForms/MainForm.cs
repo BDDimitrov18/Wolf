@@ -11,7 +11,6 @@ using System.Windows.Forms;
 using Wolf;
 using WolfClient.Events;
 using WolfClient.Events.EventArgs;
-using WolfClient.NewForms.DocumentsForms;
 using WolfClient.Services;
 using WolfClient.Services.Interfaces;
 using WolfClient.UserControls;
@@ -126,8 +125,6 @@ namespace WolfClient.NewForms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            LoadPdfDocument forma = new LoadPdfDocument();
-            forma.Show();
         }
 
         private void DocumentViewer_Click(object sender, EventArgs e)

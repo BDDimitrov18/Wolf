@@ -19,5 +19,14 @@ namespace DTOS.DTO
 
         public string RequestName { get; set; }
         public string? Path { get; set; }
+
+        public string? PlotsInfo { get; set; }
+
+        public int? RequestCreatorId { get; set; }
+
+        public GetEmployeeDTO? RequestCreator { get; set; }
+
+        
+
     }
 }

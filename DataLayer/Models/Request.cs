@@ -23,6 +23,9 @@ namespace DataAccessLayer.Models
         public string? Comments { get; set; }
 
         public string? Path { get; set; }
+        public int? RequestCreatorId { get; set; }
+
+        public Employee? RequestCreator { get; set; }
 
         public ICollection<Client_RequestRelashionship> Client_RequestRelationships { get; set; }
         public ICollection<Invoice> Invoices { get; set; }

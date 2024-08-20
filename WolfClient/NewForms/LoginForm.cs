@@ -50,6 +50,7 @@ namespace WolfClient.NewForms
             if (await ValidateCredentials(username, password))
             {
                 MessageBox.Show("LoggedIn");
+                Dispose();
             }
             else
             {

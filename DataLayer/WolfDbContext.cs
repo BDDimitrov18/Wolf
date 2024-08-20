@@ -259,6 +259,10 @@ namespace DataAccessLayer
                 .HasForeignKey(docRel => docRel.OwnerID)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Owner>()
+        .Property(o => o.FullName)
+        .HasComputedColumnSql("[FirstName] + ' ' + ISNULL([MiddleName] + ' ', '') + [LastName]");
+
             // Plot_DocumentOfOwnershipRelashionship configuration
             modelBuilder.Entity<Plot_DocumentOfOwnershipRelashionship>()
                 .HasKey(pd => pd.DocumentPlotId);
@@ -373,6 +377,14 @@ namespace DataAccessLayer
                 .HasOne(re => re.Employee)
                 .WithMany(e => e.Request_EmployeeRelashionships)
                 .HasForeignKey(re => re.EmployeeID);
+            #endregion
+
+            #region Request config
+             modelBuilder.Entity<Request>()
+             .HasOne(r => r.RequestCreator)
+             .WithMany()
+             .HasForeignKey(r => r.RequestCreatorId)
+             .IsRequired(false);
             #endregion
 
             #region Seed activity and task types
