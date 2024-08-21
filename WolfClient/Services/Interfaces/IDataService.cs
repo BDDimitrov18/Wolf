@@ -10,6 +10,9 @@ namespace WolfClient.Services.Interfaces
 {
     public interface IDataService
     {
+        public void setCurrentStarColor(System.Drawing.Color color);
+        public System.Drawing.Color getCurrentStarColor();
+        public List<System.Drawing.Color> getStaredColorsDistc();
         public void removeActivityPlotRelashionships(List<GetActivity_PlotRelashionshipDTO> activity_PlotRelashionshipDTOs);
         public List<GetRequestDTO> FilterRequestByOverdueActivitiesAndTasks(List<GetRequestDTO> requestDTOs);
         public List<GetRequestDTO> filterRequestsByOwner(List<GetRequestDTO> requestDTOs, List<GetOwnerDTO> ownerDTOs);

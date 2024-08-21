@@ -10,5 +10,7 @@ namespace DTOS.DTO
     {
         public int RequestId { get; set; }
         public int EmployeeID { get; set; }
+
+        public string StarColor { get; set; }
     }
 }

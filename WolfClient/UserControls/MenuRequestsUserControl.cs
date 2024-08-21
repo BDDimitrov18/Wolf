@@ -111,6 +111,14 @@ namespace WolfClient.UserControls
             btnPreviousOwnershipDataGridView.Click += (s, e) => NavigateDataGridView(OwnershipDataGridView, "Previous");
             btnNextOwnershipDataGridView.Click += (s, e) => NavigateDataGridView(OwnershipDataGridView, "Next");
             btnLastOwnershipDataGridView.Click += (s, e) => NavigateDataGridView(OwnershipDataGridView, "Last");
+
+            starRequestButton.MouseDown += starRequestButton_MouseDown;
+
+            // Attach event handler for the "Choose Color" menu item click
+            ChooseColor.Click += ChooseColor_Click;
+
+            // Attach event handler for populating the "Available Colors" menu
+            AvailableColors.DropDownOpening += (s, e) => PopulateUsedColorsMenu();
         }
 
         private async void setRequestsDataGridView()
@@ -1628,13 +1636,25 @@ namespace WolfClient.UserControls
             foreach (DataGridViewRow row in RequestDataGridView.Rows)
             {
                 var requestDTO = row.DataBoundItem as GetRequestDTO;
-                if (requestDTO != null && starredRequests.Any(s => s.RequestId == requestDTO.RequestId))
+
+                if (requestDTO != null)
                 {
-                    row.DefaultCellStyle.BackColor = Color.Yellow;
-                }
-                else
-                {
-                    row.DefaultCellStyle.BackColor = RequestDataGridView.DefaultCellStyle.BackColor;
+                    // Find the corresponding starred request
+                    var starredRequest = starredRequests.FirstOrDefault(s => s.RequestId == requestDTO.RequestId);
+
+                    if (starredRequest != null)
+                    {
+                        // Convert the stored color string to a System.Drawing.Color
+                        System.Drawing.Color starColor = System.Drawing.ColorTranslator.FromHtml(starredRequest.StarColor);
+
+                        // Set the row background color to the star color
+                        row.DefaultCellStyle.BackColor = starColor;
+                    }
+                    else
+                    {
+                        // Set the row background color to the default color if not starred
+                        row.DefaultCellStyle.BackColor = RequestDataGridView.DefaultCellStyle.BackColor;
+                    }
                 }
             }
         }
@@ -2223,7 +2243,9 @@ namespace WolfClient.UserControls
                 {
                     RequestId = _dataService.GetSelectedRequest().RequestId,
                     EmployeeID = _dataService.getLoggedEmployee().EmployeeId,
+                    StarColor = System.Drawing.ColorTranslator.ToHtml(_dataService.getCurrentStarColor()) // Convert Color to hex string
                 };
+
                 var responseStar = await _userClient.AddStar(starRequest_EmployeeRelashionshipDTO);
                 GetstarRequest_EmployeeRelashionshipDTO getstarRequest_EmployeeRelashionshipDTO = responseStar.ResponseObj;
                 _dataService.addStar(getstarRequest_EmployeeRelashionshipDTO);
@@ -2395,5 +2417,57 @@ namespace WolfClient.UserControls
 
             OwnersFlowLayoutPanelFilter.Controls.Add(panel);
         }
+
+        private void PopulateUsedColorsMenu()
+        {
+
+            // Assume you have a list of used colors, for example:
+            List<Color> usedColors = _dataService.getStaredColorsDistc(); // This should be your method to retrieve used colors.
+
+            // Clear any existing items in the submenu
+            AvailableColors.DropDownItems.Clear();
+
+            // Add each color to the menu
+            foreach (var color in usedColors)
+            {
+                ToolStripMenuItem colorItem = new ToolStripMenuItem();
+                colorItem.Text = color.Name; // Or set this to some identifier for the color
+                colorItem.BackColor = color; // Set the background to the color
+                colorItem.Click += (sender, e) => { starRequestButton.BackColor = color; _dataService.setCurrentStarColor(color); }; // Change star color when clicked
+                AvailableColors.DropDownItems.Add(colorItem);
+            }
+        }
+
+        private void ChooseColor_Click(object sender, EventArgs e)
+        {
+            using (ColorDialog colorDialog = new ColorDialog())
+            {
+                // Optionally, set the current color of the star button as the initial color
+                colorDialog.Color = starRequestButton.BackColor;
+
+                if (colorDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Change the star button's background color
+                    starRequestButton.BackColor = colorDialog.Color;
+
+                    // Optionally save the selected color to your used colors list
+
+                    _dataService.setCurrentStarColor(colorDialog.Color);
+                }
+            }
+        }
+
+        private void starRequestButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                // Populate the "Налични цветове" menu with the current colors
+                PopulateUsedColorsMenu();
+
+                // Show the context menu at the current mouse position
+                StarContextMenuStrip.Show(Cursor.Position);
+            }
+        }
+
     }
 }

@@ -377,10 +377,12 @@ namespace DataAccessLayer
                 .HasOne(re => re.Employee)
                 .WithMany(e => e.Request_EmployeeRelashionships)
                 .HasForeignKey(re => re.EmployeeID);
+
+           
             #endregion
 
             #region Request config
-             modelBuilder.Entity<Request>()
+            modelBuilder.Entity<Request>()
              .HasOne(r => r.RequestCreator)
              .WithMany()
              .HasForeignKey(r => r.RequestCreatorId)

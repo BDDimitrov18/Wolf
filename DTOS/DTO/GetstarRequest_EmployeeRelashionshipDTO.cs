@@ -12,5 +12,7 @@ namespace DTOS.DTO
         public GetRequestDTO? Request { get; set; }
         public int EmployeeID { get; set; }
         public GetEmployeeDTO? Employee { get; set; }
+
+        public string StarColor { get; set; }
     }
 }

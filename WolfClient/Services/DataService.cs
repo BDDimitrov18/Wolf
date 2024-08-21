@@ -44,6 +44,8 @@ namespace WolfClient.Services
 
         public List<GetInvoiceDTO> _selectedInvoices { get; set; }
 
+        public System.Drawing.Color CurrentStarColor { get; set; }
+
         public DataService()
         {
             compositeData = new CompositeDataDTO();
@@ -56,6 +58,33 @@ namespace WolfClient.Services
             LoggedEmployee = new GetEmployeeDTO();
             _starredRequests = new List<GetstarRequest_EmployeeRelashionshipDTO>();
             _selectedInvoices = new List<GetInvoiceDTO>();
+
+            CurrentStarColor = System.Drawing.Color.Yellow;
+        }
+
+        public void setCurrentStarColor(System.Drawing.Color color)
+        {
+           CurrentStarColor = color;
+        }
+
+        public System.Drawing.Color getCurrentStarColor() {
+            return CurrentStarColor;
+        }
+
+        public List<System.Drawing.Color> getStaredColorsDistc()
+        {
+            var colors = new List<System.Drawing.Color>();
+
+            foreach (var relashionship in _starredRequests)
+            {
+                // Convert the hexadecimal color string to a System.Drawing.Color object
+                System.Drawing.Color color = System.Drawing.ColorTranslator.FromHtml(relashionship.StarColor);
+
+                colors.Add(color);
+            }
+
+            // Return distinct colors only
+            return colors.Distinct().ToList();
         }
 
         public void EditOrAddPlotOwnerRelashionships(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs) {
@@ -1004,7 +1033,12 @@ namespace WolfClient.Services
 
         public GetRequestDTO GetSelectedRequest()
         {
-            return _selectedRequest;
+            foreach (var link in compositeData._fetchedLinkedClients) {
+                if (link.requestDTO.RequestId == _selectedRequest.RequestId) {
+                    return link.requestDTO;
+                }
+            }
+            return null;
         }
 
         public void AddActivityToTheList(GetActivityDTO activityDTO) {

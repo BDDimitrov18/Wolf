@@ -59,7 +59,9 @@ namespace DataAccessLayer.Repositories
 
         public IEnumerable<Request> GetAll()
         {
-            return _WolfDbContext.Requests.ToList();
+            return _WolfDbContext.Requests
+                .Include(r => r.RequestCreator)  // This includes the related RequestCreator entity
+                .ToList();
         }
 
         public async Task<bool> Delete(List<Request> requests)

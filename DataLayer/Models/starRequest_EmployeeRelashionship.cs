@@ -12,5 +12,7 @@ namespace DataAccessLayer.Models
         public Request Request { get; set; }
         public int EmployeeID { get; set; }
         public Employee Employee { get; set; }
+
+        public string StarColor { get; set; }
     }
 }

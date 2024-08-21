@@ -171,9 +171,9 @@ namespace WolfClient.NewForms
             RequestCreatorComboBox.DisplayMember = "FullName";
             RequestCreatorComboBox.ValueMember = "EmployeeId";
 
-            if (_dataService.GetSelectedRequest().RequestCreatorId != null)
+            if (_dataService.GetSelectedRequest().RequestCreator != null)
             {
-                RequestCreatorComboBox.SelectedValue = _dataService.GetSelectedRequest().RequestCreatorId;
+                RequestCreatorComboBox.SelectedValue = _dataService.GetSelectedRequest().RequestCreator.EmployeeId;
             }
 
         }
