@@ -688,7 +688,7 @@ namespace WolfClient.NewForms
                         allPlotsNumbers += plot.PlotNumber;
                     }
                 }
-                temDictionary.Add("Owner_FullName", $"{owner.FirstName} {owner.MiddleName} {owner.LastName}");
+                temDictionary.Add("Owner_FullName", $"{owner.FullName}");
                 temDictionary.Add("Owner_Address",owner.Address);
                 temDictionary.Add("Plot_City", OwnerAllPLots[0].City);
                 temDictionary.Add("SingleOwner_AllPlots", allPlotsNumbers);

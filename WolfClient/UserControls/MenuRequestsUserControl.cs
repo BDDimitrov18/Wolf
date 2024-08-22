@@ -506,22 +506,30 @@ namespace WolfClient.UserControls
 
         private void ActivityDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            // Define the indexes for the Activity, ParentActivity, and Plots columns
+            // Define the indexes for the existing and new columns
             int activityColumnIndex = ActivityDataGridView.Columns["Activity"].Index;
             int parentActivityColumnIndex = ActivityDataGridView.Columns["ParentActivity"].Index;
             int plotsColumnIndex = ActivityDataGridView.Columns["Plots"].Index;
+            int mainExecutantNameIndex = ActivityDataGridView.Columns["MainExecutantName"].Index;
+            int mainExecutantPaymentIndex = ActivityDataGridView.Columns["MainExecutantPayment"].Index;
+            int startDateIndex = ActivityDataGridView.Columns["StartDate"].Index;
+            int activityEndDateIndex = ActivityDataGridView.Columns["ActivityEndDate"].Index;
 
             // Check if the current column is one of the columns we're interested in
             if (e.RowIndex < 0 ||
                 (e.ColumnIndex != activityColumnIndex &&
                  e.ColumnIndex != parentActivityColumnIndex &&
-                 e.ColumnIndex != plotsColumnIndex))
+                 e.ColumnIndex != plotsColumnIndex &&
+                 e.ColumnIndex != mainExecutantNameIndex &&
+                 e.ColumnIndex != mainExecutantPaymentIndex &&
+                 e.ColumnIndex != startDateIndex &&
+                 e.ColumnIndex != activityEndDateIndex))
                 return;
 
             // Get the value of the current cell
             var cellValue = e.Value as string;
 
-            // Get the value of the corresponding cell in the Activity column
+            // Define the key cell value from the 'Activity' column (common reference)
             var activityCellValue = ActivityDataGridView.Rows[e.RowIndex].Cells[activityColumnIndex].Value as string;
 
             e.Handled = true;  // Always handle the painting
@@ -594,6 +602,7 @@ namespace WolfClient.UserControls
                 }
             }
         }
+
 
 
         private string ConvertFloatToFraction(float value)
@@ -1124,7 +1133,7 @@ namespace WolfClient.UserControls
                         TaskTypeName = task.taskType.TaskTypeName,
                         TaskId = task.TaskId,
                         ExecutantFullName = task.Executant.FullName,
-                        StartDate = activity.StartDate,
+                        StartDate = first ? activity.StartDate.ToString() : "",
                         Duration = task.Duration,
                         ControlFullName = task.Control?.FullName,
                         Comments = task.Comments,
@@ -1133,10 +1142,12 @@ namespace WolfClient.UserControls
                         tax = task.tax.ToString(),
                         taxComment = task.CommentTax,
                         Status = task.Status,
-                        MainExecutantPayment = activity.employeePayment,
-                        ActivityEndDate = activity.ExpectedDuration,
+                        MainExecutantPayment = first ? activity.employeePayment.ToString() : "",
+                        ActivityEndDate = first ? activity.ExpectedDuration.ToString() : "",
                         TaskEndDate = task.FinishDate,
                         TaskStartDate = task.StartDate,
+                        TaskExecutantPayment = task.executantPayment.ToString(),
+                        MainExecutantName = first ? activity.mainExecutant.FullName : ""
                     };
 
                     activityViewModels.Add(viewModel);
@@ -1156,7 +1167,7 @@ namespace WolfClient.UserControls
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (AddRequestForm form = new AddRequestForm(_apiClient, _userClient, _adminClient,_dataService))
+            using (AddRequestForm form = new AddRequestForm(_apiClient, _userClient, _adminClient, _dataService))
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -1389,8 +1400,9 @@ namespace WolfClient.UserControls
             List<GetClientDTO> filterClients = GetAllComboBoxClients(clientsFlowLayoutPanel);
             List<GetOwnerDTO> filterOwners = GetAllComboBoxOwners(OwnersFlowLayoutPanelFilter);
 
-            if(filterClients!= null && filterClients.Count > 0) {
-                filteredList = _dataService.filterRequestsByClients(filteredList, filterClients);    
+            if (filterClients != null && filterClients.Count > 0)
+            {
+                filteredList = _dataService.filterRequestsByClients(filteredList, filterClients);
             }
 
             if (filterOwners != null && filterOwners.Count > 0)
@@ -1453,7 +1465,8 @@ namespace WolfClient.UserControls
                 filteredList = _dataService.FilterRequestByWeekSelfActivitiesAndTasks(filteredList);
             }
 
-            if (overdueFilter.Checked) {
+            if (overdueFilter.Checked)
+            {
                 filteredList = _dataService.FilterRequestByOverdueActivitiesAndTasks(filteredList);
             }
 
@@ -1988,13 +2001,14 @@ namespace WolfClient.UserControls
             }
 
             List<GetActivity_PlotRelashionshipDTO> relashionshipDTOs = new List<GetActivity_PlotRelashionshipDTO>();
-            foreach(var viewModel in viewModels) { 
+            foreach (var viewModel in viewModels)
+            {
                 GetActivity_PlotRelashionshipDTO relashionshipDTO = new GetActivity_PlotRelashionshipDTO()
                 {
                     ActivityId = viewModel.ActivityId,
                     PlotId = viewModel.PlotId
                 };
-                relashionshipDTOs.Add(relashionshipDTO);    
+                relashionshipDTOs.Add(relashionshipDTO);
             }
 
             var response = await _userClient.activityPlotRelashionshipRemove(relashionshipDTOs);
@@ -2397,6 +2411,22 @@ namespace WolfClient.UserControls
             clientsFlowLayoutPanel.Controls.Add(panel);
         }
 
+        private async void AddNewPanelWithUserControlAddEmployeeFromAvailable()
+        {
+            var responseClients = await _userClient.GetAllEmployees();
+            List<GetEmployeeDTO> clientDTOs = responseClients.ResponseObj.ToList();
+
+            Panel panel = new Panel();
+            panel.Size = new Size(412, 28);
+            panel.BorderStyle = BorderStyle.FixedSingle;
+
+            AddEmployeeFilter userControl = new AddEmployeeFilter(_apiClient, _userClient, _adminClient, clientDTOs, panel);
+            userControl.Dock = DockStyle.Fill;  // Make the user control fill the panel
+            panel.Controls.Add(userControl);
+
+            EmployeesFilterLayoutPanel.Controls.Add(panel);
+        }
+
         private void button2_Click_1(object sender, EventArgs e)
         {
             AddNewPanelWithUserControlAddOwnersFromAvailable();
@@ -2469,5 +2499,9 @@ namespace WolfClient.UserControls
             }
         }
 
+        private void AddEmployeButton_Click(object sender, EventArgs e)
+        {
+            AddNewPanelWithUserControlAddEmployeeFromAvailable();
+        }
     }
 }

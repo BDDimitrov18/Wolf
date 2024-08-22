@@ -404,7 +404,7 @@ namespace WolfClient.NewForms
                                 TextBox textBox = control as TextBox;
                                 if (textBox.Text != "")
                                 {
-                                    return float.Parse(textBox.Text, CultureInfo.InvariantCulture);
+                                    return float.Parse(textBox.Text);
                                 }
                                 else
                                 {
@@ -513,9 +513,7 @@ namespace WolfClient.NewForms
             if (OWNERTOEDIT != null)
             {
                 // Compare all relevant fields to check for differences
-                bool isDifferent = OwnerResponse.ResponseObj.FirstName != OWNERTOEDIT.FirstName ||
-                                   OwnerResponse.ResponseObj.MiddleName != OWNERTOEDIT.MiddleName ||
-                                   OwnerResponse.ResponseObj.LastName != OWNERTOEDIT.LastName ||
+                bool isDifferent = OwnerResponse.ResponseObj.FullName != OWNERTOEDIT.FullName ||
                                    OwnerResponse.ResponseObj.Address != OWNERTOEDIT.Address;
 
                 if (isDifferent)

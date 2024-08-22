@@ -313,6 +313,7 @@
             ExecutantPaymentTextBox.Name = "ExecutantPaymentTextBox";
             ExecutantPaymentTextBox.Size = new Size(314, 27);
             ExecutantPaymentTextBox.TabIndex = 57;
+            ExecutantPaymentTextBox.Text = "0";
             // 
             // label10
             // 
@@ -349,6 +350,7 @@
             TaxTextBox.Name = "TaxTextBox";
             TaxTextBox.Size = new Size(314, 27);
             TaxTextBox.TabIndex = 53;
+            TaxTextBox.Text = "0";
             // 
             // label7
             // 

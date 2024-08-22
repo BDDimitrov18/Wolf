@@ -18,7 +18,6 @@ namespace DTOS.DTO
 
         public DateTime ExpectedDuration { get; set; }
         public DateTime StartDate { get; set; }
-        [Float(ErrorMessage = "Invalid float value")]
         public float employeePayment { get; set; }
         public int ExecutantId { get; set; }
 

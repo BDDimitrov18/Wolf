@@ -48,7 +48,7 @@ namespace WolfClient.NewForms
             var password = PasswordTextBox.Text;
 
             if (await ValidateCredentials(username, password))
-            {
+             {
                 MessageBox.Show("LoggedIn");
                 Dispose();
             }
@@ -70,6 +70,7 @@ namespace WolfClient.NewForms
             if (response.IsSuccess)
             {
                 var tokenResponse = response.ResponseObj.jwtTokenResponse;
+                _dataService.setRole(tokenResponse.role[0]);
                 _adminClient.SetToken(tokenResponse.token);
                 _apiClient.SetToken(tokenResponse.token);
                 _userClient.SetToken(tokenResponse.token);

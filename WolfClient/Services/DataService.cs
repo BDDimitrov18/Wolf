@@ -46,6 +46,8 @@ namespace WolfClient.Services
 
         public System.Drawing.Color CurrentStarColor { get; set; }
 
+        public string role { get; set; }
+
         public DataService()
         {
             compositeData = new CompositeDataDTO();
@@ -60,7 +62,12 @@ namespace WolfClient.Services
             _selectedInvoices = new List<GetInvoiceDTO>();
 
             CurrentStarColor = System.Drawing.Color.Yellow;
+            role = "user";
         }
+        public void setRole(string role) { 
+            this.role = role;
+        }
+        public string getRole() { return role; }
 
         public void setCurrentStarColor(System.Drawing.Color color)
         {
@@ -1522,7 +1529,7 @@ namespace WolfClient.Services
                             {
                                 PlotNumber = isFirstEntryForPlot ? plotDictionary[plotEntry.Key].PlotNumber : string.Empty,
                                 NumberTypeDocument = $"{documentDictionary[documentEntry.Key].NumberOfDocument} {documentDictionary[documentEntry.Key].TypeOfDocument}",
-                                NumberTypeOwner = $"{owner.OwnerID} {owner.FirstName} {owner.MiddleName} {owner.LastName}",
+                                NumberTypeOwner = $"{owner.OwnerID} {owner.FullName}",
                                 EGN = owner.EGN,
                                 Address = owner.Address,
                                 IdealParts = idealPartsString,

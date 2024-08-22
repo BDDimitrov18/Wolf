@@ -299,9 +299,7 @@ namespace WolfClient.NewForms
             plotLocalityLabel.Text = $"област : {selectedPlot.locality}";
 
             EGNTextBox.Text = relashionshipDTO.DocumentOwner.Owner.EGN;
-            NameTextBox.Text = relashionshipDTO.DocumentOwner.Owner.FirstName + " " +
-            relashionshipDTO.DocumentOwner.Owner.MiddleName + " " +
-            relashionshipDTO.DocumentOwner.Owner.LastName;
+            NameTextBox.Text = relashionshipDTO.DocumentOwner.Owner.FullName;
             AddressTextBox.Text = relashionshipDTO.DocumentOwner.Owner.Address;
 
             DocumentTypeComboBox.Text = relashionshipDTO.DocumentOwner.Document.TypeOfDocument;
@@ -365,7 +363,7 @@ namespace WolfClient.NewForms
                 {
                     if (control is TextBox textBox && textBox.Name == "numberTextBox")
                     {
-                        textBox.Text = relashionshipDTO.IdealParts.ToString(CultureInfo.InvariantCulture);
+                        textBox.Text = relashionshipDTO.IdealParts.ToString();
                     }
                 }
             }
@@ -438,7 +436,7 @@ namespace WolfClient.NewForms
                                 TextBox textBox = control as TextBox;
                                 if (textBox.Text != "")
                                 {
-                                    return float.Parse(textBox.Text, CultureInfo.InvariantCulture);
+                                    return float.Parse(textBox.Text);
                                 }
                                 else
                                 {

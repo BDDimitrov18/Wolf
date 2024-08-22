@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace WolfClient.UserControls
             ActivityComboBox.TextChanged += ActivityComboBox_TextChanged;
         }
 
-        
+
 
         private async void AddActivityTaskForm_Load(object sender, EventArgs e)
         {
@@ -58,7 +59,7 @@ namespace WolfClient.UserControls
             var employeesResponse = await _userClient.GetAllEmployees();
             var employeesList = employeesResponse.ResponseObj as List<GetEmployeeDTO>;
 
-            
+
             // Create separate copies of the employee list for each ComboBox
             var employeesListForExecitant = new List<GetEmployeeDTO>(employeesList);
             var employeesListForControl = new List<GetEmployeeDTO>(employeesList);
@@ -115,7 +116,7 @@ namespace WolfClient.UserControls
 
         public void ActivityComboBox_TextChanged(object sender, EventArgs e)
         {
-            
+
             string activity = ActivityComboBox.Text;
 
             // Temporarily remove the event handler to prevent it from firing while updating the items
@@ -176,7 +177,7 @@ namespace WolfClient.UserControls
                     .ToList();
 
                 // Clear and repopulate the ComboBox with the filtered and sorted list
-                
+
             }
 
             TaskComboBox.DataSource = filteredTasks;
@@ -298,9 +299,9 @@ namespace WolfClient.UserControls
                         }
                     }
                 }
-                
 
-                
+
+
             }
             finally
             {
@@ -449,7 +450,7 @@ namespace WolfClient.UserControls
                         StartDate = DateTime.Now
                     };
 
-                    
+
                     var responseActivityDTO = await _userClient.AddActivity(createActivityDTO);
 
                     CreateTaskDTO createTaskDTO = new CreateTaskDTO()
@@ -545,6 +546,11 @@ namespace WolfClient.UserControls
         }
 
         private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TaxTextBox_TextChanged(object sender, EventArgs e)
         {
 
         }

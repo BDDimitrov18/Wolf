@@ -10,12 +10,10 @@ namespace DTOS.DTO
 {
     public class CreateRequestDTO
     {
-        [Float(ErrorMessage = "Invalid float value")]
         public float Price { get; set; }
 
         public string PaymentStatus { get ; set; }
 
-        [Float(ErrorMessage = "Invalid float value")]
         public float Advance { get; set; }
 
         public string? Comments { get; set; }
