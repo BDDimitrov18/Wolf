@@ -100,6 +100,7 @@ namespace WolfClient.NewForms
             SpravkiButton.TabIndex = 23;
             SpravkiButton.Text = "Справки";
             SpravkiButton.UseVisualStyleBackColor = true;
+            SpravkiButton.Click += SpravkiButton_Click;
             // 
             // UserPanel
             // 

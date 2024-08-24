@@ -37,6 +37,8 @@ namespace WolfClient.UserControls
         private Panel draggablePanel;
         private Point dragOffset;
         private bool isDragging = false;
+
+        private List<GetEmployeeDTO> _allEmployees;
         public MenuRequestsUserControl(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService, IFileUploader fileUploader)
         {
             InitializeComponent();
@@ -56,8 +58,10 @@ namespace WolfClient.UserControls
             WebSocketDataUpdate.EmployeesUpdated += OnEmployeesUpdated;
             WebSocketDataUpdate.ClientsUpdated += OnClientsUpdated;
             WebSocketDataUpdate.InvoicesUpdated += OnInvoicesUpdated;
+
+            _allEmployees = new List<GetEmployeeDTO>();
         }
-        private void MenuRequestsUserControl_Load(object sender, EventArgs e)
+        private async void MenuRequestsUserControl_Load(object sender, EventArgs e)
         {
             RequestDataGridView.SelectionChanged += RequestDataGridView_SelectionChanged;
             clientsDataGridView.SelectionChanged += clientsDataGridView_SelectionChanged;
@@ -75,6 +79,11 @@ namespace WolfClient.UserControls
             filtersPanel.MouseDown += new MouseEventHandler(Panel_MouseDown);
             filtersPanel.MouseMove += new MouseEventHandler(Panel_MouseMove);
             filtersPanel.MouseUp += new MouseEventHandler(Panel_MouseUp);
+
+            //employee filter logic: 
+
+            // Get employees
+            
 
             if (_apiClient.getLoginStatus())
             {
@@ -120,9 +129,35 @@ namespace WolfClient.UserControls
             // Attach event handler for populating the "Available Colors" menu
             AvailableColors.DropDownOpening += (s, e) => PopulateUsedColorsMenu();
         }
+        private void AdjustPanelSize()
+        {
+            filtersPanel.PerformLayout();
+            filtersPanel.Invalidate();
+            filtersPanel.Update();
+        }
 
         private async void setRequestsDataGridView()
         {
+            var employeesResponse = await _userClient.GetAllEmployees();
+            var employeesList = employeesResponse.ResponseObj as List<GetEmployeeDTO>;
+            _allEmployees = employeesList;
+
+            List<EmployeeListItem> employeeItems = employeesList.Select(emp => new EmployeeListItem
+            {
+                EmployeeId = emp.EmployeeId,
+                FullName = emp.FullName
+            }).ToList();
+
+            EmployeesFilterCheckBoxList.DataSource = employeeItems;
+            EmployeesFilterCheckBoxList.DisplayMember = "FullName";
+            EmployeesFilterCheckBoxList.ValueMember = "EmployeeId";
+
+            if (_dataService.getRole() != "admin") {
+                EmployeesFilterCheckBoxList.Dispose();
+                EmployeesFilterLabel.Dispose();
+                filtersPanel.Controls.Remove(EmployeesFilterCheckBoxList);
+                filtersPanel.Controls.Remove(EmployeesFilterLabel);
+            }
             var response = await _userClient.GetAllRequests();
 
             var requestList = response.ResponseObj;
@@ -1390,6 +1425,24 @@ namespace WolfClient.UserControls
             }
             return comboBoxClients;
         }
+        private List<GetEmployeeDTO> GetSelectedEmployees(List<GetEmployeeDTO> allEmployees)
+        {
+            List<GetEmployeeDTO> selectedEmployees = new List<GetEmployeeDTO>();
+
+            foreach (var item in EmployeesFilterCheckBoxList.CheckedItems)
+            {
+                if (item is EmployeeListItem employeeItem)
+                {
+                    GetEmployeeDTO selectedEmployee = allEmployees.FirstOrDefault(emp => emp.EmployeeId == employeeItem.EmployeeId);
+                    if (selectedEmployee != null)
+                    {
+                        selectedEmployees.Add(selectedEmployee);
+                    }
+                }
+            }
+
+            return selectedEmployees;
+        }
         private List<GetRequestDTO> ApplyFilters(List<GetRequestDTO>? requestDTOs)
         {
             if (requestDTOs == null || requestDTOs.Count() == 0) return requestDTOs;
@@ -1485,6 +1538,17 @@ namespace WolfClient.UserControls
                 filteredList = _dataService.filterRequestByStatusSelfActivitiesAndTasks(filteredList, Status);
             }
 
+            if (_dataService.getRole() != "admin")
+            {
+                return filteredList;
+            }
+
+            List<GetEmployeeDTO> selectedEmployees = GetSelectedEmployees(_allEmployees); // Assuming you have a method to get selected employees
+            if (selectedEmployees != null && selectedEmployees.Count > 0 )
+            {
+                filteredList = _dataService.FilterRequestsByEmployeesActivitiesAndTasks(filteredList, selectedEmployees);
+            }
+
             return filteredList;
         }
 
@@ -1507,7 +1571,6 @@ namespace WolfClient.UserControls
 
                 // Apply filters to the requestDTOs list
                 var filteredList = ApplyFilters(requestDTOs);
-                if (filteredList.Count() < 2) { _isRefreshing = false; }
 
                 if (RequestDataGridView.InvokeRequired)
                 {
@@ -1641,6 +1704,10 @@ namespace WolfClient.UserControls
 
             RequestDataGridView.Refresh();
             _isRefreshing = false;
+            if (filteredList != null && filteredList.Count() < 2)
+            {
+                RequestDataGridView_SelectionChanged(new object { }, new EventArgs());
+            }
 
             // Fetch the starred requests
             var starredRequests = _dataService.GetStarredRequests();
@@ -2229,10 +2296,6 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void RequestFiltersApplyButton_Click(object sender, EventArgs e)
-        {
-            UpdateRequestDataGridView(_dataService.getRequests());
-        }
 
         private void ApplyActivityFiltersButton_Click(object sender, EventArgs e)
         {
@@ -2411,22 +2474,6 @@ namespace WolfClient.UserControls
             clientsFlowLayoutPanel.Controls.Add(panel);
         }
 
-        private async void AddNewPanelWithUserControlAddEmployeeFromAvailable()
-        {
-            var responseClients = await _userClient.GetAllEmployees();
-            List<GetEmployeeDTO> clientDTOs = responseClients.ResponseObj.ToList();
-
-            Panel panel = new Panel();
-            panel.Size = new Size(412, 28);
-            panel.BorderStyle = BorderStyle.FixedSingle;
-
-            AddEmployeeFilter userControl = new AddEmployeeFilter(_apiClient, _userClient, _adminClient, clientDTOs, panel);
-            userControl.Dock = DockStyle.Fill;  // Make the user control fill the panel
-            panel.Controls.Add(userControl);
-
-            EmployeesFilterLayoutPanel.Controls.Add(panel);
-        }
-
         private void button2_Click_1(object sender, EventArgs e)
         {
             AddNewPanelWithUserControlAddOwnersFromAvailable();
@@ -2499,9 +2546,6 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void AddEmployeButton_Click(object sender, EventArgs e)
-        {
-            AddNewPanelWithUserControlAddEmployeeFromAvailable();
-        }
+        
     }
 }

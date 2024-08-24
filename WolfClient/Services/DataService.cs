@@ -418,6 +418,59 @@ namespace WolfClient.Services
             return returnRequest;
         }
 
+        public List<GetRequestDTO> FilterRequestsByEmployeesActivitiesAndTasks(List<GetRequestDTO> requestDTOs, List<GetEmployeeDTO> employees)
+        {
+            List<GetRequestDTO> returnRequests = new List<GetRequestDTO>();
+
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                bool toAdd = false;
+
+                foreach (var request in requestDTOs)
+                {
+                    if (link.requestDTO.RequestId == request.RequestId)
+                    {
+                        if (link.activityDTOs != null && link.activityDTOs.Count() > 0)
+                        {
+                            foreach (var activity in link.activityDTOs)
+                            {
+                                // Check if the main executant is in the list of employees
+                                if (employees.Any(emp => emp.EmployeeId == activity.mainExecutant.EmployeeId))
+                                {
+                                    toAdd = true;
+                                }
+                                else
+                                {
+                                    // Check if any task executant is in the list of employees
+                                    foreach (var task in activity.Tasks)
+                                    {
+                                        if (employees.Any(emp => emp.EmployeeId == task.ExecutantId))
+                                        {
+                                            toAdd = true;
+                                            break; // No need to check further tasks once a match is found
+                                        }
+                                    }
+                                }
+
+                                // No need to check further activities once a match is found
+                                if (toAdd) break;
+                            }
+                        }
+                    }
+
+                    // No need to check further requests once a match is found
+                    if (toAdd) break;
+                }
+
+                if (toAdd)
+                {
+                    returnRequests.Add(link.requestDTO);
+                }
+            }
+
+            return returnRequests;
+        }
+
         public List<GetRequestDTO> filterRequestByDaySelfActivitiesAndTasks(List<GetRequestDTO> requestDTOs) {
             List<GetRequestDTO> returnRequest = new List<GetRequestDTO>();    
             foreach (var link in compositeData._fetchedLinkedClients)
@@ -1041,8 +1094,12 @@ namespace WolfClient.Services
         public GetRequestDTO GetSelectedRequest()
         {
             foreach (var link in compositeData._fetchedLinkedClients) {
-                if (link.requestDTO.RequestId == _selectedRequest.RequestId) {
-                    return link.requestDTO;
+                if (_selectedRequest != null)
+                {
+                    if (link.requestDTO.RequestId == _selectedRequest.RequestId)
+                    {
+                        return link.requestDTO;
+                    }
                 }
             }
             return null;

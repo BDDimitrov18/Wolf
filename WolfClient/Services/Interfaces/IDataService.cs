@@ -10,6 +10,7 @@ namespace WolfClient.Services.Interfaces
 {
     public interface IDataService
     {
+        public List<GetRequestDTO> FilterRequestsByEmployeesActivitiesAndTasks(List<GetRequestDTO> requestDTOs, List<GetEmployeeDTO> employees);
         public string getRole();
         public void setRole(string role);
         public void setCurrentStarColor(System.Drawing.Color color);

@@ -136,5 +136,11 @@ namespace WolfClient.NewForms
         {
 
         }
+
+        private void SpravkiButton_Click(object sender, EventArgs e)
+        {
+             inquiriesAdminForm form = new inquiriesAdminForm(_userClient,_apiClient,_dataService,_adminClient);
+            form.Show();
+        }
     }
 }

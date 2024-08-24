@@ -53,10 +53,20 @@ namespace WolfClient.UserControls
             addInvoiceButton = new Button();
             DeleteInvoiceButton = new Button();
             panel3 = new Panel();
+            PathLink = new LinkLabel();
+            panel7 = new Panel();
+            starRequestButton = new Button();
+            btnLastRequestsDataGridView = new Button();
+            btnNextRequestsDataGridView = new Button();
+            btnPreviousRequestsDataGridView = new Button();
+            btnFirstRequestsDataGridView = new Button();
+            editRequestButton = new Button();
+            DeleteRequestButton = new Button();
+            RefreshButton = new Button();
+            RequestFiltersApplyButton = new Button();
             filtersPanel = new Panel();
-            EmployeesFilterLayoutPanel = new FlowLayoutPanel();
-            AddEmployeButton = new Button();
-            label6 = new Label();
+            EmployeesFilterCheckBoxList = new CheckedListBox();
+            EmployeesFilterLabel = new Label();
             OwnersFlowLayoutPanelFilter = new FlowLayoutPanel();
             button2 = new Button();
             AddClientButton = new Button();
@@ -84,17 +94,6 @@ namespace WolfClient.UserControls
             UPITextBox = new TextBox();
             label8 = new Label();
             plotNumberTextBox = new TextBox();
-            PathLink = new LinkLabel();
-            panel7 = new Panel();
-            starRequestButton = new Button();
-            btnLastRequestsDataGridView = new Button();
-            btnNextRequestsDataGridView = new Button();
-            btnPreviousRequestsDataGridView = new Button();
-            btnFirstRequestsDataGridView = new Button();
-            editRequestButton = new Button();
-            DeleteRequestButton = new Button();
-            RefreshButton = new Button();
-            RequestFiltersApplyButton = new Button();
             tabPage2 = new TabPage();
             panel2 = new Panel();
             panel1 = new Panel();
@@ -200,8 +199,8 @@ namespace WolfClient.UserControls
             ((System.ComponentModel.ISupportInitialize)RequestDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).BeginInit();
             panel3.SuspendLayout();
-            filtersPanel.SuspendLayout();
             panel7.SuspendLayout();
+            filtersPanel.SuspendLayout();
             tabPage2.SuspendLayout();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
@@ -376,7 +375,6 @@ namespace WolfClient.UserControls
             // panel3
             // 
             panel3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            panel3.Controls.Add(filtersPanel);
             panel3.Controls.Add(PathLink);
             panel3.Controls.Add(panel7);
             panel3.Controls.Add(editRequestButton);
@@ -394,13 +392,141 @@ namespace WolfClient.UserControls
             panel3.TabIndex = 17;
             panel3.Paint += panel3_Paint;
             // 
+            // PathLink
+            // 
+            PathLink.AutoSize = true;
+            PathLink.Location = new Point(139, 541);
+            PathLink.Name = "PathLink";
+            PathLink.Size = new Size(76, 20);
+            PathLink.TabIndex = 22;
+            PathLink.TabStop = true;
+            PathLink.Text = "linkLabel1";
+            PathLink.LinkClicked += PathLink_LinkClicked;
+            // 
+            // panel7
+            // 
+            panel7.BorderStyle = BorderStyle.Fixed3D;
+            panel7.Controls.Add(starRequestButton);
+            panel7.Controls.Add(btnLastRequestsDataGridView);
+            panel7.Controls.Add(btnNextRequestsDataGridView);
+            panel7.Controls.Add(btnPreviousRequestsDataGridView);
+            panel7.Controls.Add(btnFirstRequestsDataGridView);
+            panel7.Location = new Point(8, 77);
+            panel7.Name = "panel7";
+            panel7.Size = new Size(237, 50);
+            panel7.TabIndex = 21;
+            // 
+            // starRequestButton
+            // 
+            starRequestButton.BackColor = Color.Transparent;
+            starRequestButton.BackgroundImage = (Image)resources.GetObject("starRequestButton.BackgroundImage");
+            starRequestButton.BackgroundImageLayout = ImageLayout.Stretch;
+            starRequestButton.Location = new Point(187, 3);
+            starRequestButton.Name = "starRequestButton";
+            starRequestButton.Size = new Size(40, 40);
+            starRequestButton.TabIndex = 4;
+            starRequestButton.UseVisualStyleBackColor = false;
+            starRequestButton.Click += starRequestButton_Click;
+            // 
+            // btnLastRequestsDataGridView
+            // 
+            btnLastRequestsDataGridView.BackColor = Color.Transparent;
+            btnLastRequestsDataGridView.BackgroundImage = (Image)resources.GetObject("btnLastRequestsDataGridView.BackgroundImage");
+            btnLastRequestsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnLastRequestsDataGridView.Location = new Point(141, 3);
+            btnLastRequestsDataGridView.Name = "btnLastRequestsDataGridView";
+            btnLastRequestsDataGridView.Size = new Size(40, 40);
+            btnLastRequestsDataGridView.TabIndex = 3;
+            btnLastRequestsDataGridView.UseVisualStyleBackColor = false;
+            // 
+            // btnNextRequestsDataGridView
+            // 
+            btnNextRequestsDataGridView.BackColor = Color.Transparent;
+            btnNextRequestsDataGridView.BackgroundImage = (Image)resources.GetObject("btnNextRequestsDataGridView.BackgroundImage");
+            btnNextRequestsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnNextRequestsDataGridView.Location = new Point(95, 3);
+            btnNextRequestsDataGridView.Name = "btnNextRequestsDataGridView";
+            btnNextRequestsDataGridView.Size = new Size(40, 40);
+            btnNextRequestsDataGridView.TabIndex = 2;
+            btnNextRequestsDataGridView.UseVisualStyleBackColor = false;
+            // 
+            // btnPreviousRequestsDataGridView
+            // 
+            btnPreviousRequestsDataGridView.BackColor = Color.Transparent;
+            btnPreviousRequestsDataGridView.BackgroundImage = (Image)resources.GetObject("btnPreviousRequestsDataGridView.BackgroundImage");
+            btnPreviousRequestsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnPreviousRequestsDataGridView.Location = new Point(49, 3);
+            btnPreviousRequestsDataGridView.Name = "btnPreviousRequestsDataGridView";
+            btnPreviousRequestsDataGridView.Size = new Size(40, 40);
+            btnPreviousRequestsDataGridView.TabIndex = 1;
+            btnPreviousRequestsDataGridView.UseVisualStyleBackColor = false;
+            btnPreviousRequestsDataGridView.Click += button4_Click;
+            // 
+            // btnFirstRequestsDataGridView
+            // 
+            btnFirstRequestsDataGridView.BackColor = Color.Transparent;
+            btnFirstRequestsDataGridView.BackgroundImage = (Image)resources.GetObject("btnFirstRequestsDataGridView.BackgroundImage");
+            btnFirstRequestsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
+            btnFirstRequestsDataGridView.Location = new Point(3, 3);
+            btnFirstRequestsDataGridView.Name = "btnFirstRequestsDataGridView";
+            btnFirstRequestsDataGridView.Size = new Size(40, 40);
+            btnFirstRequestsDataGridView.TabIndex = 0;
+            btnFirstRequestsDataGridView.UseVisualStyleBackColor = false;
+            // 
+            // editRequestButton
+            // 
+            editRequestButton.BackColor = Color.Transparent;
+            editRequestButton.BackgroundImage = (Image)resources.GetObject("editRequestButton.BackgroundImage");
+            editRequestButton.BackgroundImageLayout = ImageLayout.Stretch;
+            editRequestButton.Location = new Point(175, 38);
+            editRequestButton.Name = "editRequestButton";
+            editRequestButton.Size = new Size(35, 35);
+            editRequestButton.TabIndex = 13;
+            editRequestButton.UseVisualStyleBackColor = false;
+            editRequestButton.Click += editRequestButton_Click;
+            // 
+            // DeleteRequestButton
+            // 
+            DeleteRequestButton.BackColor = Color.Transparent;
+            DeleteRequestButton.BackgroundImage = (Image)resources.GetObject("DeleteRequestButton.BackgroundImage");
+            DeleteRequestButton.BackgroundImageLayout = ImageLayout.Stretch;
+            DeleteRequestButton.Location = new Point(139, 38);
+            DeleteRequestButton.Name = "DeleteRequestButton";
+            DeleteRequestButton.Size = new Size(35, 35);
+            DeleteRequestButton.TabIndex = 12;
+            DeleteRequestButton.UseVisualStyleBackColor = false;
+            DeleteRequestButton.Click += DeleteRequestButton_Click;
+            // 
+            // RefreshButton
+            // 
+            RefreshButton.BackColor = Color.Transparent;
+            RefreshButton.BackgroundImage = (Image)resources.GetObject("RefreshButton.BackgroundImage");
+            RefreshButton.BackgroundImageLayout = ImageLayout.Stretch;
+            RefreshButton.Location = new Point(211, 38);
+            RefreshButton.Name = "RefreshButton";
+            RefreshButton.Size = new Size(35, 35);
+            RefreshButton.TabIndex = 11;
+            RefreshButton.UseVisualStyleBackColor = false;
+            RefreshButton.Click += RefreshButton_Click;
+            // 
+            // RequestFiltersApplyButton
+            // 
+            RequestFiltersApplyButton.BackColor = Color.Transparent;
+            RequestFiltersApplyButton.BackgroundImage = (Image)resources.GetObject("RequestFiltersApplyButton.BackgroundImage");
+            RequestFiltersApplyButton.BackgroundImageLayout = ImageLayout.Stretch;
+            RequestFiltersApplyButton.Location = new Point(251, 83);
+            RequestFiltersApplyButton.Name = "RequestFiltersApplyButton";
+            RequestFiltersApplyButton.Size = new Size(40, 40);
+            RequestFiltersApplyButton.TabIndex = 54;
+            RequestFiltersApplyButton.UseVisualStyleBackColor = false;
+            RequestFiltersApplyButton.Click += RequestFiltersApplyButton_Click_1;
+            // 
             // filtersPanel
             // 
             filtersPanel.BackColor = SystemColors.ActiveCaption;
             filtersPanel.BorderStyle = BorderStyle.Fixed3D;
-            filtersPanel.Controls.Add(EmployeesFilterLayoutPanel);
-            filtersPanel.Controls.Add(AddEmployeButton);
-            filtersPanel.Controls.Add(label6);
+            filtersPanel.Controls.Add(EmployeesFilterCheckBoxList);
+            filtersPanel.Controls.Add(EmployeesFilterLabel);
             filtersPanel.Controls.Add(OwnersFlowLayoutPanelFilter);
             filtersPanel.Controls.Add(button2);
             filtersPanel.Controls.Add(AddClientButton);
@@ -430,39 +556,29 @@ namespace WolfClient.UserControls
             filtersPanel.Controls.Add(plotNumberTextBox);
             filtersPanel.Location = new Point(540, 41);
             filtersPanel.Name = "filtersPanel";
-            filtersPanel.Size = new Size(773, 442);
+            filtersPanel.Size = new Size(772, 472);
             filtersPanel.TabIndex = 23;
             filtersPanel.Visible = false;
             // 
-            // EmployeesFilterLayoutPanel
+            // EmployeesFilterCheckBoxList
             // 
-            EmployeesFilterLayoutPanel.BackColor = SystemColors.GradientActiveCaption;
-            EmployeesFilterLayoutPanel.BorderStyle = BorderStyle.Fixed3D;
-            EmployeesFilterLayoutPanel.Location = new Point(179, 359);
-            EmployeesFilterLayoutPanel.Name = "EmployeesFilterLayoutPanel";
-            EmployeesFilterLayoutPanel.Size = new Size(585, 76);
-            EmployeesFilterLayoutPanel.TabIndex = 74;
+            EmployeesFilterCheckBoxList.BackColor = SystemColors.GradientActiveCaption;
+            EmployeesFilterCheckBoxList.FormattingEnabled = true;
+            EmployeesFilterCheckBoxList.Location = new Point(181, 356);
+            EmployeesFilterCheckBoxList.Name = "EmployeesFilterCheckBoxList";
+            EmployeesFilterCheckBoxList.Size = new Size(583, 92);
+            EmployeesFilterCheckBoxList.TabIndex = 74;
             // 
-            // AddEmployeButton
+            // EmployeesFilterLabel
             // 
-            AddEmployeButton.Location = new Point(3, 391);
-            AddEmployeButton.Name = "AddEmployeButton";
-            AddEmployeButton.Size = new Size(158, 29);
-            AddEmployeButton.TabIndex = 73;
-            AddEmployeButton.Text = "Добави";
-            AddEmployeButton.UseVisualStyleBackColor = true;
-            AddEmployeButton.Click += AddEmployeButton_Click;
-            // 
-            // label6
-            // 
-            label6.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label6.Location = new Point(3, 359);
-            label6.Name = "label6";
-            label6.Size = new Size(158, 28);
-            label6.TabIndex = 72;
-            label6.Text = "За Служители :  ";
+            EmployeesFilterLabel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            EmployeesFilterLabel.AutoSize = true;
+            EmployeesFilterLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            EmployeesFilterLabel.Location = new Point(3, 359);
+            EmployeesFilterLabel.Name = "EmployeesFilterLabel";
+            EmployeesFilterLabel.Size = new Size(158, 28);
+            EmployeesFilterLabel.TabIndex = 72;
+            EmployeesFilterLabel.Text = "За Служители :  ";
             // 
             // OwnersFlowLayoutPanelFilter
             // 
@@ -740,135 +856,6 @@ namespace WolfClient.UserControls
             plotNumberTextBox.Name = "plotNumberTextBox";
             plotNumberTextBox.Size = new Size(191, 27);
             plotNumberTextBox.TabIndex = 56;
-            // 
-            // PathLink
-            // 
-            PathLink.AutoSize = true;
-            PathLink.Location = new Point(139, 541);
-            PathLink.Name = "PathLink";
-            PathLink.Size = new Size(76, 20);
-            PathLink.TabIndex = 22;
-            PathLink.TabStop = true;
-            PathLink.Text = "linkLabel1";
-            PathLink.LinkClicked += PathLink_LinkClicked;
-            // 
-            // panel7
-            // 
-            panel7.BorderStyle = BorderStyle.Fixed3D;
-            panel7.Controls.Add(starRequestButton);
-            panel7.Controls.Add(btnLastRequestsDataGridView);
-            panel7.Controls.Add(btnNextRequestsDataGridView);
-            panel7.Controls.Add(btnPreviousRequestsDataGridView);
-            panel7.Controls.Add(btnFirstRequestsDataGridView);
-            panel7.Location = new Point(8, 77);
-            panel7.Name = "panel7";
-            panel7.Size = new Size(237, 50);
-            panel7.TabIndex = 21;
-            // 
-            // starRequestButton
-            // 
-            starRequestButton.BackColor = Color.Transparent;
-            starRequestButton.BackgroundImage = (Image)resources.GetObject("starRequestButton.BackgroundImage");
-            starRequestButton.BackgroundImageLayout = ImageLayout.Stretch;
-            starRequestButton.Location = new Point(187, 3);
-            starRequestButton.Name = "starRequestButton";
-            starRequestButton.Size = new Size(40, 40);
-            starRequestButton.TabIndex = 4;
-            starRequestButton.UseVisualStyleBackColor = false;
-            starRequestButton.Click += starRequestButton_Click;
-            // 
-            // btnLastRequestsDataGridView
-            // 
-            btnLastRequestsDataGridView.BackColor = Color.Transparent;
-            btnLastRequestsDataGridView.BackgroundImage = (Image)resources.GetObject("btnLastRequestsDataGridView.BackgroundImage");
-            btnLastRequestsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
-            btnLastRequestsDataGridView.Location = new Point(141, 3);
-            btnLastRequestsDataGridView.Name = "btnLastRequestsDataGridView";
-            btnLastRequestsDataGridView.Size = new Size(40, 40);
-            btnLastRequestsDataGridView.TabIndex = 3;
-            btnLastRequestsDataGridView.UseVisualStyleBackColor = false;
-            // 
-            // btnNextRequestsDataGridView
-            // 
-            btnNextRequestsDataGridView.BackColor = Color.Transparent;
-            btnNextRequestsDataGridView.BackgroundImage = (Image)resources.GetObject("btnNextRequestsDataGridView.BackgroundImage");
-            btnNextRequestsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
-            btnNextRequestsDataGridView.Location = new Point(95, 3);
-            btnNextRequestsDataGridView.Name = "btnNextRequestsDataGridView";
-            btnNextRequestsDataGridView.Size = new Size(40, 40);
-            btnNextRequestsDataGridView.TabIndex = 2;
-            btnNextRequestsDataGridView.UseVisualStyleBackColor = false;
-            // 
-            // btnPreviousRequestsDataGridView
-            // 
-            btnPreviousRequestsDataGridView.BackColor = Color.Transparent;
-            btnPreviousRequestsDataGridView.BackgroundImage = (Image)resources.GetObject("btnPreviousRequestsDataGridView.BackgroundImage");
-            btnPreviousRequestsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
-            btnPreviousRequestsDataGridView.Location = new Point(49, 3);
-            btnPreviousRequestsDataGridView.Name = "btnPreviousRequestsDataGridView";
-            btnPreviousRequestsDataGridView.Size = new Size(40, 40);
-            btnPreviousRequestsDataGridView.TabIndex = 1;
-            btnPreviousRequestsDataGridView.UseVisualStyleBackColor = false;
-            btnPreviousRequestsDataGridView.Click += button4_Click;
-            // 
-            // btnFirstRequestsDataGridView
-            // 
-            btnFirstRequestsDataGridView.BackColor = Color.Transparent;
-            btnFirstRequestsDataGridView.BackgroundImage = (Image)resources.GetObject("btnFirstRequestsDataGridView.BackgroundImage");
-            btnFirstRequestsDataGridView.BackgroundImageLayout = ImageLayout.Stretch;
-            btnFirstRequestsDataGridView.Location = new Point(3, 3);
-            btnFirstRequestsDataGridView.Name = "btnFirstRequestsDataGridView";
-            btnFirstRequestsDataGridView.Size = new Size(40, 40);
-            btnFirstRequestsDataGridView.TabIndex = 0;
-            btnFirstRequestsDataGridView.UseVisualStyleBackColor = false;
-            // 
-            // editRequestButton
-            // 
-            editRequestButton.BackColor = Color.Transparent;
-            editRequestButton.BackgroundImage = (Image)resources.GetObject("editRequestButton.BackgroundImage");
-            editRequestButton.BackgroundImageLayout = ImageLayout.Stretch;
-            editRequestButton.Location = new Point(175, 38);
-            editRequestButton.Name = "editRequestButton";
-            editRequestButton.Size = new Size(35, 35);
-            editRequestButton.TabIndex = 13;
-            editRequestButton.UseVisualStyleBackColor = false;
-            editRequestButton.Click += editRequestButton_Click;
-            // 
-            // DeleteRequestButton
-            // 
-            DeleteRequestButton.BackColor = Color.Transparent;
-            DeleteRequestButton.BackgroundImage = (Image)resources.GetObject("DeleteRequestButton.BackgroundImage");
-            DeleteRequestButton.BackgroundImageLayout = ImageLayout.Stretch;
-            DeleteRequestButton.Location = new Point(139, 38);
-            DeleteRequestButton.Name = "DeleteRequestButton";
-            DeleteRequestButton.Size = new Size(35, 35);
-            DeleteRequestButton.TabIndex = 12;
-            DeleteRequestButton.UseVisualStyleBackColor = false;
-            DeleteRequestButton.Click += DeleteRequestButton_Click;
-            // 
-            // RefreshButton
-            // 
-            RefreshButton.BackColor = Color.Transparent;
-            RefreshButton.BackgroundImage = (Image)resources.GetObject("RefreshButton.BackgroundImage");
-            RefreshButton.BackgroundImageLayout = ImageLayout.Stretch;
-            RefreshButton.Location = new Point(211, 38);
-            RefreshButton.Name = "RefreshButton";
-            RefreshButton.Size = new Size(35, 35);
-            RefreshButton.TabIndex = 11;
-            RefreshButton.UseVisualStyleBackColor = false;
-            RefreshButton.Click += RefreshButton_Click;
-            // 
-            // RequestFiltersApplyButton
-            // 
-            RequestFiltersApplyButton.BackColor = Color.Transparent;
-            RequestFiltersApplyButton.BackgroundImage = (Image)resources.GetObject("RequestFiltersApplyButton.BackgroundImage");
-            RequestFiltersApplyButton.BackgroundImageLayout = ImageLayout.Stretch;
-            RequestFiltersApplyButton.Location = new Point(251, 83);
-            RequestFiltersApplyButton.Name = "RequestFiltersApplyButton";
-            RequestFiltersApplyButton.Size = new Size(40, 40);
-            RequestFiltersApplyButton.TabIndex = 54;
-            RequestFiltersApplyButton.UseVisualStyleBackColor = false;
-            RequestFiltersApplyButton.Click += RequestFiltersApplyButton_Click_1;
             // 
             // tabPage2
             // 
@@ -1927,6 +1914,7 @@ namespace WolfClient.UserControls
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
+            Controls.Add(filtersPanel);
             Controls.Add(DocumentsOfOwnershipTab);
             Controls.Add(panel3);
             Margin = new Padding(3, 4, 3, 4);
@@ -1937,9 +1925,9 @@ namespace WolfClient.UserControls
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).EndInit();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
+            panel7.ResumeLayout(false);
             filtersPanel.ResumeLayout(false);
             filtersPanel.PerformLayout();
-            panel7.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel1.ResumeLayout(false);
@@ -2068,7 +2056,6 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn PaymentStatus;
         private DataGridViewTextBoxColumn Comments;
         private DataGridViewTextBoxColumn PlotsInfo;
-        private Panel filtersPanel;
         private Button button2;
         private Button AddClientButton;
         private FlowLayoutPanel clientsFlowLayoutPanel;
@@ -2118,9 +2105,9 @@ namespace WolfClient.UserControls
         private DataGridViewTextBoxColumn tax;
         private DataGridViewTextBoxColumn taxComment;
         private DataGridViewTextBoxColumn Status;
-        private FlowLayoutPanel EmployeesFilterLayoutPanel;
-        private Button AddEmployeButton;
-        private Label label6;
+        private Label EmployeesFilterLabel;
+        private CheckedListBox EmployeesFilterCheckBoxList;
+        public Panel filtersPanel;
     }
 }
 
