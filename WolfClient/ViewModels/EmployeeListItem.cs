@@ -16,6 +16,8 @@ namespace WolfClient.ViewModels
         {
             return FullName;
         }
+
+        public bool IsSelected { get; set; }
     }
 
 }

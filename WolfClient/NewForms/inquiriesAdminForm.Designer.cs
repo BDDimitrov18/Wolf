@@ -33,7 +33,7 @@
             firstDate = new Label();
             label1 = new Label();
             SecondDate = new DateTimePicker();
-            checkedListBox1 = new CheckedListBox();
+            employeesCheckBoxList = new CheckedListBox();
             label2 = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
             button1 = new Button();
@@ -41,9 +41,9 @@
             button3 = new Button();
             label3 = new Label();
             label4 = new Label();
-            checkedListBox2 = new CheckedListBox();
-            checkBox1 = new CheckBox();
-            checkBox2 = new CheckBox();
+            paymentStatusCheckBoxList = new CheckedListBox();
+            allEmployeesCheckBox = new CheckBox();
+            allPaymentStatusCheckBox = new CheckBox();
             checkedListBox3 = new CheckedListBox();
             label5 = new Label();
             textBox1 = new TextBox();
@@ -54,15 +54,33 @@
             checkedListBox4 = new CheckedListBox();
             allActivityCheckBox = new CheckBox();
             allTasksButton = new CheckBox();
-            checkBox5 = new CheckBox();
+            taskStatusAllCheckBox = new CheckBox();
             label9 = new Label();
-            checkedListBox5 = new CheckedListBox();
+            taskStatusCheckBoxList = new CheckedListBox();
+            panel1 = new Panel();
+            panel8 = new Panel();
+            panel7 = new Panel();
+            panel2 = new Panel();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            panel6 = new Panel();
+            panel5 = new Panel();
+            panel4 = new Panel();
+            panel3 = new Panel();
             flowLayoutPanel1.SuspendLayout();
+            panel1.SuspendLayout();
+            panel8.SuspendLayout();
+            panel7.SuspendLayout();
+            panel2.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
+            panel6.SuspendLayout();
+            panel5.SuspendLayout();
+            panel4.SuspendLayout();
+            panel3.SuspendLayout();
             SuspendLayout();
             // 
             // dateTimePicker1
             // 
-            dateTimePicker1.Location = new Point(12, 53);
+            dateTimePicker1.Location = new Point(0, 33);
             dateTimePicker1.Name = "dateTimePicker1";
             dateTimePicker1.Size = new Size(250, 27);
             dateTimePicker1.TabIndex = 0;
@@ -71,7 +89,7 @@
             // 
             firstDate.AutoSize = true;
             firstDate.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            firstDate.Location = new Point(12, 22);
+            firstDate.Location = new Point(0, 2);
             firstDate.Name = "firstDate";
             firstDate.Size = new Size(79, 28);
             firstDate.TabIndex = 1;
@@ -81,7 +99,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(12, 98);
+            label1.Location = new Point(0, 78);
             label1.Name = "label1";
             label1.Size = new Size(85, 28);
             label1.TabIndex = 3;
@@ -89,25 +107,26 @@
             // 
             // SecondDate
             // 
-            SecondDate.Location = new Point(12, 129);
+            SecondDate.Location = new Point(0, 109);
             SecondDate.Name = "SecondDate";
             SecondDate.Size = new Size(250, 27);
             SecondDate.TabIndex = 2;
             // 
-            // checkedListBox1
+            // employeesCheckBoxList
             // 
-            checkedListBox1.BackColor = SystemColors.ActiveCaption;
-            checkedListBox1.FormattingEnabled = true;
-            checkedListBox1.Location = new Point(12, 200);
-            checkedListBox1.Name = "checkedListBox1";
-            checkedListBox1.Size = new Size(250, 180);
-            checkedListBox1.TabIndex = 4;
+            employeesCheckBoxList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            employeesCheckBoxList.BackColor = SystemColors.ActiveCaption;
+            employeesCheckBoxList.FormattingEnabled = true;
+            employeesCheckBoxList.Location = new Point(0, 33);
+            employeesCheckBoxList.Name = "employeesCheckBoxList";
+            employeesCheckBoxList.Size = new Size(250, 268);
+            employeesCheckBoxList.TabIndex = 4;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(12, 169);
+            label2.Location = new Point(0, 2);
             label2.Name = "label2";
             label2.Size = new Size(136, 28);
             label2.TabIndex = 5;
@@ -115,14 +134,15 @@
             // 
             // flowLayoutPanel1
             // 
+            flowLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             flowLayoutPanel1.BackColor = SystemColors.ActiveCaption;
             flowLayoutPanel1.BorderStyle = BorderStyle.Fixed3D;
             flowLayoutPanel1.Controls.Add(button1);
             flowLayoutPanel1.Controls.Add(button2);
             flowLayoutPanel1.Controls.Add(button3);
-            flowLayoutPanel1.Location = new Point(594, 53);
+            flowLayoutPanel1.Location = new Point(0, 31);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(250, 604);
+            flowLayoutPanel1.Size = new Size(250, 651);
             flowLayoutPanel1.TabIndex = 6;
             // 
             // button1
@@ -156,7 +176,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(594, 22);
+            label3.Location = new Point(0, 0);
             label3.Name = "label3";
             label3.Size = new Size(195, 28);
             label3.TabIndex = 7;
@@ -166,55 +186,58 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.Location = new Point(12, 394);
+            label4.Location = new Point(3, 2);
             label4.Name = "label4";
             label4.Size = new Size(218, 56);
             label4.TabIndex = 9;
             label4.Text = "За поръчки със статус \r\nна плащане :";
             // 
-            // checkedListBox2
+            // paymentStatusCheckBoxList
             // 
-            checkedListBox2.BackColor = SystemColors.ActiveCaption;
-            checkedListBox2.FormattingEnabled = true;
-            checkedListBox2.Location = new Point(12, 459);
-            checkedListBox2.Name = "checkedListBox2";
-            checkedListBox2.Size = new Size(250, 202);
-            checkedListBox2.TabIndex = 8;
+            paymentStatusCheckBoxList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            paymentStatusCheckBoxList.BackColor = SystemColors.ActiveCaption;
+            paymentStatusCheckBoxList.FormattingEnabled = true;
+            paymentStatusCheckBoxList.Items.AddRange(new object[] { "Платен", "Аванс", "Не платен" });
+            paymentStatusCheckBoxList.Location = new Point(0, 61);
+            paymentStatusCheckBoxList.Name = "paymentStatusCheckBoxList";
+            paymentStatusCheckBoxList.Size = new Size(250, 158);
+            paymentStatusCheckBoxList.TabIndex = 8;
             // 
-            // checkBox1
+            // allEmployeesCheckBox
             // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(154, 175);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(79, 24);
-            checkBox1.TabIndex = 10;
-            checkBox1.Text = "всички";
-            checkBox1.UseVisualStyleBackColor = true;
+            allEmployeesCheckBox.AutoSize = true;
+            allEmployeesCheckBox.Location = new Point(142, 8);
+            allEmployeesCheckBox.Name = "allEmployeesCheckBox";
+            allEmployeesCheckBox.Size = new Size(79, 24);
+            allEmployeesCheckBox.TabIndex = 10;
+            allEmployeesCheckBox.Text = "всички";
+            allEmployeesCheckBox.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // allPaymentStatusCheckBox
             // 
-            checkBox2.AutoSize = true;
-            checkBox2.Location = new Point(154, 429);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(79, 24);
-            checkBox2.TabIndex = 11;
-            checkBox2.Text = "всички";
-            checkBox2.UseVisualStyleBackColor = true;
+            allPaymentStatusCheckBox.AutoSize = true;
+            allPaymentStatusCheckBox.Location = new Point(168, 34);
+            allPaymentStatusCheckBox.Name = "allPaymentStatusCheckBox";
+            allPaymentStatusCheckBox.Size = new Size(79, 24);
+            allPaymentStatusCheckBox.TabIndex = 11;
+            allPaymentStatusCheckBox.Text = "всички";
+            allPaymentStatusCheckBox.UseVisualStyleBackColor = true;
             // 
             // checkedListBox3
             // 
+            checkedListBox3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             checkedListBox3.BackColor = SystemColors.ActiveCaption;
             checkedListBox3.FormattingEnabled = true;
-            checkedListBox3.Location = new Point(302, 104);
+            checkedListBox3.Location = new Point(3, 82);
             checkedListBox3.Name = "checkedListBox3";
-            checkedListBox3.Size = new Size(260, 114);
+            checkedListBox3.Size = new Size(493, 136);
             checkedListBox3.TabIndex = 12;
             // 
             // label5
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label5.Location = new Point(302, 22);
+            label5.Location = new Point(3, 0);
             label5.Name = "label5";
             label5.Size = new Size(197, 28);
             label5.TabIndex = 13;
@@ -222,15 +245,15 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(302, 71);
+            textBox1.Location = new Point(3, 49);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(260, 27);
+            textBox1.Size = new Size(267, 27);
             textBox1.TabIndex = 14;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(302, 50);
+            label6.Location = new Point(3, 28);
             label6.Name = "label6";
             label6.Size = new Size(145, 20);
             label6.TabIndex = 15;
@@ -239,7 +262,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(302, 263);
+            label7.Location = new Point(-1, 26);
             label7.Name = "label7";
             label7.Size = new Size(145, 20);
             label7.TabIndex = 19;
@@ -247,16 +270,16 @@
             // 
             // textBox2
             // 
-            textBox2.Location = new Point(302, 284);
+            textBox2.Location = new Point(-1, 47);
             textBox2.Name = "textBox2";
-            textBox2.Size = new Size(260, 27);
+            textBox2.Size = new Size(274, 27);
             textBox2.TabIndex = 18;
             // 
             // label8
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label8.Location = new Point(302, 235);
+            label8.Location = new Point(-1, -2);
             label8.Name = "label8";
             label8.Size = new Size(174, 28);
             label8.TabIndex = 17;
@@ -264,17 +287,18 @@
             // 
             // checkedListBox4
             // 
+            checkedListBox4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             checkedListBox4.BackColor = SystemColors.ActiveCaption;
             checkedListBox4.FormattingEnabled = true;
-            checkedListBox4.Location = new Point(302, 317);
+            checkedListBox4.Location = new Point(-1, 80);
             checkedListBox4.Name = "checkedListBox4";
-            checkedListBox4.Size = new Size(260, 114);
+            checkedListBox4.Size = new Size(497, 136);
             checkedListBox4.TabIndex = 16;
             // 
             // allActivityCheckBox
             // 
             allActivityCheckBox.AutoSize = true;
-            allActivityCheckBox.Location = new Point(495, 28);
+            allActivityCheckBox.Location = new Point(203, 6);
             allActivityCheckBox.Name = "allActivityCheckBox";
             allActivityCheckBox.Size = new Size(79, 24);
             allActivityCheckBox.TabIndex = 20;
@@ -284,79 +308,194 @@
             // allTasksButton
             // 
             allTasksButton.AutoSize = true;
-            allTasksButton.Location = new Point(483, 241);
+            allTasksButton.Location = new Point(180, 4);
             allTasksButton.Name = "allTasksButton";
             allTasksButton.Size = new Size(79, 24);
             allTasksButton.TabIndex = 21;
             allTasksButton.Text = "всички";
             allTasksButton.UseVisualStyleBackColor = true;
             // 
-            // checkBox5
+            // taskStatusAllCheckBox
             // 
-            checkBox5.AutoSize = true;
-            checkBox5.Location = new Point(502, 463);
-            checkBox5.Name = "checkBox5";
-            checkBox5.Size = new Size(79, 24);
-            checkBox5.TabIndex = 24;
-            checkBox5.Text = "всички";
-            checkBox5.UseVisualStyleBackColor = true;
+            taskStatusAllCheckBox.AutoSize = true;
+            taskStatusAllCheckBox.Location = new Point(200, 13);
+            taskStatusAllCheckBox.Name = "taskStatusAllCheckBox";
+            taskStatusAllCheckBox.Size = new Size(79, 24);
+            taskStatusAllCheckBox.TabIndex = 24;
+            taskStatusAllCheckBox.Text = "всички";
+            taskStatusAllCheckBox.UseVisualStyleBackColor = true;
             // 
             // label9
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label9.Location = new Point(302, 459);
+            label9.Location = new Point(0, 9);
             label9.Name = "label9";
             label9.Size = new Size(204, 28);
             label9.TabIndex = 23;
             label9.Text = "За задачи със статус: ";
             // 
-            // checkedListBox5
+            // taskStatusCheckBoxList
             // 
-            checkedListBox5.BackColor = SystemColors.ActiveCaption;
-            checkedListBox5.FormattingEnabled = true;
-            checkedListBox5.Location = new Point(302, 499);
-            checkedListBox5.Name = "checkedListBox5";
-            checkedListBox5.Size = new Size(250, 158);
-            checkedListBox5.TabIndex = 22;
+            taskStatusCheckBoxList.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            taskStatusCheckBoxList.BackColor = SystemColors.ActiveCaption;
+            taskStatusCheckBoxList.FormattingEnabled = true;
+            taskStatusCheckBoxList.Items.AddRange(new object[] { "Зададена", "Завършена", "Оферта" });
+            taskStatusCheckBoxList.Location = new Point(0, 49);
+            taskStatusCheckBoxList.Name = "taskStatusCheckBoxList";
+            taskStatusCheckBoxList.Size = new Size(502, 158);
+            taskStatusCheckBoxList.TabIndex = 22;
+            // 
+            // panel1
+            // 
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            panel1.BackColor = Color.Transparent;
+            panel1.Controls.Add(panel8);
+            panel1.Controls.Add(panel7);
+            panel1.Controls.Add(firstDate);
+            panel1.Controls.Add(dateTimePicker1);
+            panel1.Controls.Add(SecondDate);
+            panel1.Controls.Add(label1);
+            panel1.Location = new Point(12, 18);
+            panel1.Margin = new Padding(15);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(250, 686);
+            panel1.TabIndex = 25;
+            // 
+            // panel8
+            // 
+            panel8.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel8.Controls.Add(label2);
+            panel8.Controls.Add(allEmployeesCheckBox);
+            panel8.Controls.Add(employeesCheckBoxList);
+            panel8.Location = new Point(1, 151);
+            panel8.Name = "panel8";
+            panel8.Size = new Size(249, 309);
+            panel8.TabIndex = 13;
+            // 
+            // panel7
+            // 
+            panel7.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel7.Controls.Add(allPaymentStatusCheckBox);
+            panel7.Controls.Add(label4);
+            panel7.Controls.Add(paymentStatusCheckBoxList);
+            panel7.Location = new Point(0, 461);
+            panel7.Name = "panel7";
+            panel7.Size = new Size(250, 225);
+            panel7.TabIndex = 12;
+            // 
+            // panel2
+            // 
+            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel2.BackColor = Color.Transparent;
+            panel2.Controls.Add(tableLayoutPanel1);
+            panel2.Controls.Add(panel4);
+            panel2.Location = new Point(281, 18);
+            panel2.Margin = new Padding(15);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(507, 686);
+            panel2.TabIndex = 26;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel1.BackColor = Color.Transparent;
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Controls.Add(panel6, 0, 1);
+            tableLayoutPanel1.Controls.Add(panel5, 0, 0);
+            tableLayoutPanel1.Location = new Point(3, 3);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.Size = new Size(505, 469);
+            tableLayoutPanel1.TabIndex = 26;
+            // 
+            // panel6
+            // 
+            panel6.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel6.Controls.Add(label8);
+            panel6.Controls.Add(label7);
+            panel6.Controls.Add(checkedListBox4);
+            panel6.Controls.Add(textBox2);
+            panel6.Controls.Add(allTasksButton);
+            panel6.Location = new Point(3, 237);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(499, 229);
+            panel6.TabIndex = 26;
+            // 
+            // panel5
+            // 
+            panel5.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel5.BackColor = Color.Transparent;
+            panel5.Controls.Add(label5);
+            panel5.Controls.Add(allActivityCheckBox);
+            panel5.Controls.Add(label6);
+            panel5.Controls.Add(checkedListBox3);
+            panel5.Controls.Add(textBox1);
+            panel5.Location = new Point(3, 3);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(499, 228);
+            panel5.TabIndex = 26;
+            // 
+            // panel4
+            // 
+            panel4.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel4.BackColor = Color.Transparent;
+            panel4.Controls.Add(taskStatusAllCheckBox);
+            panel4.Controls.Add(label9);
+            panel4.Controls.Add(taskStatusCheckBoxList);
+            panel4.Location = new Point(0, 475);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(507, 211);
+            panel4.TabIndex = 25;
+            // 
+            // panel3
+            // 
+            panel3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            panel3.BackColor = Color.Transparent;
+            panel3.Controls.Add(label3);
+            panel3.Controls.Add(flowLayoutPanel1);
+            panel3.Location = new Point(818, 18);
+            panel3.Margin = new Padding(15);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(250, 686);
+            panel3.TabIndex = 27;
             // 
             // inquiriesAdminForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
-            ClientSize = new Size(854, 669);
-            Controls.Add(checkBox5);
-            Controls.Add(label9);
-            Controls.Add(checkedListBox5);
-            Controls.Add(allTasksButton);
-            Controls.Add(allActivityCheckBox);
-            Controls.Add(label7);
-            Controls.Add(textBox2);
-            Controls.Add(label8);
-            Controls.Add(checkedListBox4);
-            Controls.Add(label6);
-            Controls.Add(textBox1);
-            Controls.Add(label5);
-            Controls.Add(checkedListBox3);
-            Controls.Add(checkBox2);
-            Controls.Add(checkBox1);
-            Controls.Add(label4);
-            Controls.Add(checkedListBox2);
-            Controls.Add(label3);
-            Controls.Add(flowLayoutPanel1);
-            Controls.Add(label2);
-            Controls.Add(checkedListBox1);
-            Controls.Add(label1);
-            Controls.Add(SecondDate);
-            Controls.Add(firstDate);
-            Controls.Add(dateTimePicker1);
+            ClientSize = new Size(1080, 716);
+            Controls.Add(panel3);
+            Controls.Add(panel2);
+            Controls.Add(panel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "inquiriesAdminForm";
             Text = "Wolf: Справки Админ";
             flowLayoutPanel1.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            panel8.ResumeLayout(false);
+            panel8.PerformLayout();
+            panel7.ResumeLayout(false);
+            panel7.PerformLayout();
+            panel2.ResumeLayout(false);
+            tableLayoutPanel1.ResumeLayout(false);
+            panel6.ResumeLayout(false);
+            panel6.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -365,14 +504,14 @@
         private Label firstDate;
         private Label label1;
         private DateTimePicker SecondDate;
-        private CheckedListBox checkedListBox1;
+        private CheckedListBox employeesCheckBoxList;
         private Label label2;
         private FlowLayoutPanel flowLayoutPanel1;
         private Label label3;
         private Label label4;
-        private CheckedListBox checkedListBox2;
-        private CheckBox checkBox1;
-        private CheckBox checkBox2;
+        private CheckedListBox paymentStatusCheckBoxList;
+        private CheckBox allEmployeesCheckBox;
+        private CheckBox allPaymentStatusCheckBox;
         private CheckedListBox checkedListBox3;
         private Label label5;
         private TextBox textBox1;
@@ -383,11 +522,20 @@
         private CheckedListBox checkedListBox4;
         private CheckBox allActivityCheckBox;
         private CheckBox allTasksButton;
-        private CheckBox checkBox5;
+        private CheckBox taskStatusAllCheckBox;
         private Label label9;
-        private CheckedListBox checkedListBox5;
+        private CheckedListBox taskStatusCheckBoxList;
         private Button button1;
         private Button button2;
         private Button button3;
+        private Panel panel1;
+        private Panel panel2;
+        private Panel panel3;
+        private Panel panel4;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Panel panel5;
+        private Panel panel6;
+        private Panel panel8;
+        private Panel panel7;
     }
 }
