@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WolfClient.inqueries;
 using WolfClient.Services.Interfaces;
 using WolfClient.TemplateClasses;
 using WolfClient.ViewModels;
@@ -70,6 +71,8 @@ namespace WolfClient.NewForms
             taskStatusAllCheckBox.CheckedChanged += new EventHandler(taskStatusAllCheckBox_CheckedChanged);
 
             this.Load += new EventHandler(inquiriesAdminForm_Load);
+
+            AllTasksInqueri.Click += ExportFilteredRequests;
         }
 
         private async void inquiriesAdminForm_Load(object sender, EventArgs e)
@@ -688,6 +691,45 @@ namespace WolfClient.NewForms
         private bool AreAllTaskStatusesCurrentlySelected()
         {
             return taskStatusCheckBoxList.Items.Count == taskStatusCheckBoxList.CheckedItems.Count;
+        }
+
+        public List<RequestWithClientsDTO> ApplyFilters()
+        {
+            var selectedPaymentStatuses = paymentStatusCheckBoxList.CheckedItems.Cast<string>().ToList();
+            var selectedActivityTypeIds = checkedListBox3.CheckedItems.Cast<ActivityTypeSelection>().Select(a => a.ActivityTypeID).ToList();
+            var selectedTaskTypeIds = checkedListBox4.CheckedItems.Cast<TaskTypeSelection>().Select(t => t.TaskTypeId).ToList();
+            var selectedEmployeeIds = employeesCheckBoxList.CheckedItems.Cast<EmployeeListItem>().Select(e => e.EmployeeId).ToList();
+            var selectedTaskStatuses = taskStatusCheckBoxList.CheckedItems.Cast<string>().ToList();
+
+            var filteredRequests = _dataService.FilterRequestsBySelectedCriteria(
+                selectedPaymentStatuses,
+                selectedActivityTypeIds,
+                selectedTaskTypeIds,
+                selectedEmployeeIds,
+                selectedTaskStatuses
+            );
+            return filteredRequests;
+        }
+
+        public void ExportFilteredRequests(object sender, EventArgs e)
+        {
+            // Apply filters
+            var filteredRequests = ApplyFilters();
+            var selectedEmployees = _employeeSelections
+        .Where(emp => emp.IsSelected)
+        .Select(emp => new GetEmployeeDTO
+        {
+            EmployeeId = emp.EmployeeId,
+            FullName = emp.FullName
+            // You can include other fields if necessary
+        })
+        .ToList();
+
+            // Initialize exporter with filtered requests
+            var exporter = new AllTasksInqueri(filteredRequests, selectedEmployees);
+
+            // Export to Excel and open
+            exporter.ExportToExcel("path_to_save_file.xlsx");
         }
     }
 }

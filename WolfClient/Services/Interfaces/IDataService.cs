@@ -10,6 +10,12 @@ namespace WolfClient.Services.Interfaces
 {
     public interface IDataService
     {
+        public List<RequestWithClientsDTO> FilterRequestsBySelectedCriteria(
+        List<string> selectedPaymentStatuses,
+        List<int> selectedActivityTypeIds,
+        List<int> selectedTaskTypeIds,
+        List<int> selectedEmployeeIds,
+        List<string> selectedTaskStatuses);
         public List<GetRequestDTO> FilterRequestsByEmployeesActivitiesAndTasks(List<GetRequestDTO> requestDTOs, List<GetEmployeeDTO> employees);
         public string getRole();
         public void setRole(string role);

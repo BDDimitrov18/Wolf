@@ -18,7 +18,8 @@ public class RequestWithClientsDTO
                 PaymentStatus = this.requestDTO.PaymentStatus,
                 Advance = this.requestDTO.Advance,
                 Comments = this.requestDTO.Comments,
-                RequestName = this.requestDTO.RequestName
+                RequestName = this.requestDTO.RequestName,
+                Path = this.requestDTO.Path
             } : null,
 
             clientDTOs = this.clientDTOs?.Select(client => new GetClientDTO

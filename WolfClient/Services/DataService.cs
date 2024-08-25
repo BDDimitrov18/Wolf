@@ -64,6 +64,59 @@ namespace WolfClient.Services
             CurrentStarColor = System.Drawing.Color.Yellow;
             role = "user";
         }
+
+        public List<RequestWithClientsDTO> FilterRequestsBySelectedCriteria(
+        List<string> selectedPaymentStatuses,
+        List<int> selectedActivityTypeIds,
+        List<int> selectedTaskTypeIds,
+        List<int> selectedEmployeeIds,
+        List<string> selectedTaskStatuses)
+        {
+            var filteredRequests = new List<RequestWithClientsDTO>();
+
+            foreach (var link in compositeData._fetchedLinkedClients)
+            {
+                // Check if the payment status matches the selected payment statuses
+                if (selectedPaymentStatuses.Contains(link.requestDTO.PaymentStatus))
+                {
+                    // Deep copy the link to avoid modifying the original data
+                    var linkCopy = link.Copy();
+
+                    // Filter the activities
+                    linkCopy.activityDTOs = linkCopy.activityDTOs?.Where(activity =>
+                        selectedActivityTypeIds.Contains(activity.ActivityTypeID) &&
+                        activity.Tasks != null && activity.Tasks.Any(task =>
+                            selectedTaskTypeIds.Contains(task.TaskTypeId) &&
+                            selectedEmployeeIds.Contains(task.ExecutantId) &&
+                            selectedTaskStatuses.Contains(task.Status)
+                        )).ToList();
+
+                    // Filter the tasks within the remaining activities
+                    if (linkCopy.activityDTOs != null)
+                    {
+                        foreach (var activity in linkCopy.activityDTOs)
+                        {
+                            activity.Tasks = activity.Tasks?
+                                .Where(task =>
+                                    selectedTaskTypeIds.Contains(task.TaskTypeId) &&
+                                    selectedEmployeeIds.Contains(task.ExecutantId) &&
+                                    selectedTaskStatuses.Contains(task.Status))
+                                .ToList();
+                        }
+                    }
+
+                    // If there are any matching activities with tasks, add the link copy to the results
+                    if (linkCopy.activityDTOs != null && linkCopy.activityDTOs.Any())
+                    {
+                        filteredRequests.Add(linkCopy);
+                    }
+                }
+            }
+
+            return filteredRequests;
+        }
+
+
         public void setRole(string role) { 
             this.role = role;
         }

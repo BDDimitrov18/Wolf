@@ -36,9 +36,7 @@
             employeesCheckBoxList = new CheckedListBox();
             label2 = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
+            AllTasksInqueri = new Button();
             label3 = new Label();
             label4 = new Label();
             paymentStatusCheckBoxList = new CheckedListBox();
@@ -137,40 +135,20 @@
             flowLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             flowLayoutPanel1.BackColor = SystemColors.ActiveCaption;
             flowLayoutPanel1.BorderStyle = BorderStyle.Fixed3D;
-            flowLayoutPanel1.Controls.Add(button1);
-            flowLayoutPanel1.Controls.Add(button2);
-            flowLayoutPanel1.Controls.Add(button3);
+            flowLayoutPanel1.Controls.Add(AllTasksInqueri);
             flowLayoutPanel1.Location = new Point(0, 31);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(250, 651);
             flowLayoutPanel1.TabIndex = 6;
             // 
-            // button1
+            // AllTasksInqueri
             // 
-            button1.Location = new Point(3, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(243, 29);
-            button1.TabIndex = 0;
-            button1.Text = "Справка1";
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(3, 38);
-            button2.Name = "button2";
-            button2.Size = new Size(243, 29);
-            button2.TabIndex = 1;
-            button2.Text = "Справка2";
-            button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            button3.Location = new Point(3, 73);
-            button3.Name = "button3";
-            button3.Size = new Size(243, 29);
-            button3.TabIndex = 2;
-            button3.Text = "Справка3";
-            button3.UseVisualStyleBackColor = true;
+            AllTasksInqueri.Location = new Point(3, 3);
+            AllTasksInqueri.Name = "AllTasksInqueri";
+            AllTasksInqueri.Size = new Size(243, 57);
+            AllTasksInqueri.TabIndex = 0;
+            AllTasksInqueri.Text = "Справка оборот на Задачи";
+            AllTasksInqueri.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
@@ -525,9 +503,7 @@
         private CheckBox taskStatusAllCheckBox;
         private Label label9;
         private CheckedListBox taskStatusCheckBoxList;
-        private Button button1;
-        private Button button2;
-        private Button button3;
+        private Button AllTasksInqueri;
         private Panel panel1;
         private Panel panel2;
         private Panel panel3;
