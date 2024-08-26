@@ -48,6 +48,8 @@ namespace WolfClient.NewForms
 
             LogInEvent.logIn += OnUserLoggedIn;
             UserLabel.TextChanged += ResizePanelToFitLabel;
+            RequestToolStripButton_Click(new object { }, new EventArgs());
+
         }
         private async void OnUserLoggedIn(object sender, LogInEventArgs e)
         {
@@ -139,8 +141,16 @@ namespace WolfClient.NewForms
 
         private void SpravkiButton_Click(object sender, EventArgs e)
         {
-             inquiriesAdminForm form = new inquiriesAdminForm(_userClient,_apiClient,_dataService,_adminClient);
-            form.Show();
+            string role = _dataService.getRole();
+            if (role == "admin")
+            {
+                inqueriesAdminForm form = new inqueriesAdminForm(_userClient, _apiClient, _dataService, _adminClient);
+                form.Show();
+            }
+            else if(role == "user") {
+                inqueriesUserForm form = new inqueriesUserForm(_userClient, _apiClient, _dataService, _adminClient); 
+                form.Show();
+            }
         }
     }
 }

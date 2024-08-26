@@ -11,7 +11,7 @@ using WolfClient.ViewModels;
 
 namespace WolfClient.NewForms
 {
-    public partial class inquiriesAdminForm : Form
+    public partial class inqueriesAdminForm : Form
     {
         private readonly IAdminClient _adminClient;
         private readonly IUserClient _userClient;
@@ -46,7 +46,7 @@ namespace WolfClient.NewForms
 
         private List<EmployeeListItem> _employeeSelections;
 
-        public inquiriesAdminForm(IUserClient userClient, IApiClient apiClient, IDataService dataService, IAdminClient adminClient)
+        public inqueriesAdminForm(IUserClient userClient, IApiClient apiClient, IDataService dataService, IAdminClient adminClient)
         {
             InitializeComponent();
             _userClient = userClient;
@@ -706,7 +706,9 @@ namespace WolfClient.NewForms
                 selectedActivityTypeIds,
                 selectedTaskTypeIds,
                 selectedEmployeeIds,
-                selectedTaskStatuses
+                selectedTaskStatuses,
+                firstDate.Value,
+                SecondDate.Value
             );
             return filteredRequests;
         }
@@ -730,6 +732,11 @@ namespace WolfClient.NewForms
 
             // Export to Excel and open
             exporter.ExportToExcel("path_to_save_file.xlsx");
+        }
+
+        private void inquiriesAdminForm_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

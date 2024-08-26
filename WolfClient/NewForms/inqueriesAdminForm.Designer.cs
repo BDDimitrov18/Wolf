@@ -1,6 +1,6 @@
 ﻿namespace WolfClient.NewForms
 {
-    partial class inquiriesAdminForm
+    partial class inqueriesAdminForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(inquiriesAdminForm));
-            dateTimePicker1 = new DateTimePicker();
-            firstDate = new Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(inqueriesAdminForm));
+            firstDate = new DateTimePicker();
+            firstDateLabel = new Label();
             label1 = new Label();
             SecondDate = new DateTimePicker();
             employeesCheckBoxList = new CheckedListBox();
@@ -76,22 +76,22 @@
             panel3.SuspendLayout();
             SuspendLayout();
             // 
-            // dateTimePicker1
-            // 
-            dateTimePicker1.Location = new Point(0, 33);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(250, 27);
-            dateTimePicker1.TabIndex = 0;
-            // 
             // firstDate
             // 
-            firstDate.AutoSize = true;
-            firstDate.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            firstDate.Location = new Point(0, 2);
+            firstDate.Location = new Point(0, 33);
             firstDate.Name = "firstDate";
-            firstDate.Size = new Size(79, 28);
-            firstDate.TabIndex = 1;
-            firstDate.Text = "От дата";
+            firstDate.Size = new Size(250, 27);
+            firstDate.TabIndex = 0;
+            // 
+            // firstDateLabel
+            // 
+            firstDateLabel.AutoSize = true;
+            firstDateLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            firstDateLabel.Location = new Point(0, 2);
+            firstDateLabel.Name = "firstDateLabel";
+            firstDateLabel.Size = new Size(79, 28);
+            firstDateLabel.TabIndex = 1;
+            firstDateLabel.Text = "От дата";
             // 
             // label1
             // 
@@ -330,8 +330,8 @@
             panel1.BackColor = Color.Transparent;
             panel1.Controls.Add(panel8);
             panel1.Controls.Add(panel7);
+            panel1.Controls.Add(firstDateLabel);
             panel1.Controls.Add(firstDate);
-            panel1.Controls.Add(dateTimePicker1);
             panel1.Controls.Add(SecondDate);
             panel1.Controls.Add(label1);
             panel1.Location = new Point(12, 18);
@@ -456,6 +456,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "inquiriesAdminForm";
             Text = "Wolf: Справки Админ";
+            Load += inquiriesAdminForm_Load_1;
             flowLayoutPanel1.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -478,8 +479,8 @@
 
         #endregion
 
-        private DateTimePicker dateTimePicker1;
-        private Label firstDate;
+        private DateTimePicker firstDate;
+        private Label firstDateLabel;
         private Label label1;
         private DateTimePicker SecondDate;
         private CheckedListBox employeesCheckBoxList;

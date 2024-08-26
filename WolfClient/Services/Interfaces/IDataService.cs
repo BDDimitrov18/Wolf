@@ -15,7 +15,9 @@ namespace WolfClient.Services.Interfaces
         List<int> selectedActivityTypeIds,
         List<int> selectedTaskTypeIds,
         List<int> selectedEmployeeIds,
-        List<string> selectedTaskStatuses);
+        List<string> selectedTaskStatuses,
+        DateTime startDate,
+        DateTime endDate);
         public List<GetRequestDTO> FilterRequestsByEmployeesActivitiesAndTasks(List<GetRequestDTO> requestDTOs, List<GetEmployeeDTO> employees);
         public string getRole();
         public void setRole(string role);

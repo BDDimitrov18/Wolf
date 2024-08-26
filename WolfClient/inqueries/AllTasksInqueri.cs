@@ -207,15 +207,15 @@ namespace WolfClient.inqueries
             var row = new Row() { RowIndex = 1 };
             sheetData.Append(row);
 
-            AddTextCell(row, 1, "Employees");
-            AddTextCell(row, 2, "Requests");
-            AddTextCell(row, 3, "Request Price");
-            AddTextCell(row, 4, "Path");
-            AddTextCell(row, 5, "Activity");
-            AddTextCell(row, 6, "Activity Main Executant Payment");
-            AddTextCell(row, 7, "Tasks");
-            AddTextCell(row, 8, "Task Employee Payment");
-            AddTextCell(row, 9, "Task Duration");
+            AddTextCell(row, 1, "Служител");
+            AddTextCell(row, 2, "Поръчка");
+            AddTextCell(row, 3, "Поръчка цена");
+            AddTextCell(row, 4, "Път");
+            AddTextCell(row, 5, "Дейност");
+            AddTextCell(row, 6, "Хонорар гл. Изпълнител");
+            AddTextCell(row, 7, "Задачи");
+            AddTextCell(row, 8, "Хонорар изпълнител");
+            AddTextCell(row, 9, "Времетраене");
         }
 
         private void AddTextCell(Row row, int columnIndex, string cellValue, uint styleIndex = 0)
@@ -279,15 +279,15 @@ namespace WolfClient.inqueries
             Columns columns = new Columns();
 
             // Set custom widths for each column
-            columns.Append(new Column() { Min = 1, Max = 1, Width = 20, CustomWidth = true }); // Employees
-            columns.Append(new Column() { Min = 2, Max = 2, Width = 20, CustomWidth = true }); // Requests
-            columns.Append(new Column() { Min = 3, Max = 3, Width = 15, CustomWidth = true }); // Request Price
-            columns.Append(new Column() { Min = 4, Max = 4, Width = 20, CustomWidth = true }); // Path
-            columns.Append(new Column() { Min = 5, Max = 5, Width = 25, CustomWidth = true }); // Activity
-            columns.Append(new Column() { Min = 6, Max = 6, Width = 20, CustomWidth = true }); // Activity Main Executant Payment
-            columns.Append(new Column() { Min = 7, Max = 7, Width = 20, CustomWidth = true }); // Tasks
-            columns.Append(new Column() { Min = 8, Max = 8, Width = 20, CustomWidth = true }); // Task Employee Payment
-            columns.Append(new Column() { Min = 9, Max = 9, Width = 15, CustomWidth = true }); // Task Duration
+            columns.Append(new Column() { Min = 1, Max = 1, Width = 20+5, CustomWidth = true }); // Employees
+            columns.Append(new Column() { Min = 2, Max = 2, Width = 20 + 5, CustomWidth = true }); // Requests
+            columns.Append(new Column() { Min = 3, Max = 3, Width = 15 + 5, CustomWidth = true }); // Request Price
+            columns.Append(new Column() { Min = 4, Max = 4, Width = 20 + 5, CustomWidth = true }); // Path
+            columns.Append(new Column() { Min = 5, Max = 5, Width = 25 + 5, CustomWidth = true }); // Activity
+            columns.Append(new Column() { Min = 6, Max = 6, Width = 20 + 5, CustomWidth = true }); // Activity Main Executant Payment
+            columns.Append(new Column() { Min = 7, Max = 7, Width = 20 + 5, CustomWidth = true }); // Tasks
+            columns.Append(new Column() { Min = 8, Max = 8, Width = 20 + 5, CustomWidth = true }); // Task Employee Payment
+            columns.Append(new Column() { Min = 9, Max = 9, Width = 15 + 5, CustomWidth = true }); // Task Duration
 
             worksheetPart.Worksheet.InsertAt(columns, 0);
         }

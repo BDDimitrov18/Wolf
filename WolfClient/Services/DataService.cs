@@ -66,11 +66,13 @@ namespace WolfClient.Services
         }
 
         public List<RequestWithClientsDTO> FilterRequestsBySelectedCriteria(
-        List<string> selectedPaymentStatuses,
-        List<int> selectedActivityTypeIds,
-        List<int> selectedTaskTypeIds,
-        List<int> selectedEmployeeIds,
-        List<string> selectedTaskStatuses)
+    List<string> selectedPaymentStatuses,
+    List<int> selectedActivityTypeIds,
+    List<int> selectedTaskTypeIds,
+    List<int> selectedEmployeeIds,
+    List<string> selectedTaskStatuses,
+    DateTime startDate,
+    DateTime endDate)
         {
             var filteredRequests = new List<RequestWithClientsDTO>();
 
@@ -88,7 +90,8 @@ namespace WolfClient.Services
                         activity.Tasks != null && activity.Tasks.Any(task =>
                             selectedTaskTypeIds.Contains(task.TaskTypeId) &&
                             selectedEmployeeIds.Contains(task.ExecutantId) &&
-                            selectedTaskStatuses.Contains(task.Status)
+                            selectedTaskStatuses.Contains(task.Status) &&
+                            task.FinishDate >= startDate && task.FinishDate <= endDate // Date range filter
                         )).ToList();
 
                     // Filter the tasks within the remaining activities
@@ -100,8 +103,9 @@ namespace WolfClient.Services
                                 .Where(task =>
                                     selectedTaskTypeIds.Contains(task.TaskTypeId) &&
                                     selectedEmployeeIds.Contains(task.ExecutantId) &&
-                                    selectedTaskStatuses.Contains(task.Status))
-                                .ToList();
+                                    selectedTaskStatuses.Contains(task.Status) &&
+                                    task.FinishDate >= startDate && task.FinishDate <= endDate // Date range filter
+                                ).ToList();
                         }
                     }
 
@@ -115,6 +119,7 @@ namespace WolfClient.Services
 
             return filteredRequests;
         }
+
 
 
         public void setRole(string role) { 
