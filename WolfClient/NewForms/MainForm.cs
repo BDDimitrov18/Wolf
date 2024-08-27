@@ -26,13 +26,15 @@ namespace WolfClient.NewForms
         private readonly IDataService _dataService;
         private readonly IFileUploader _fileUploader;
         private readonly WebSocketClientService _websocketClientService;
-        private MenuRequestsUserControl _requestsUserControl;
+
+        private readonly MenuRequestsUserControlActive _menuRequestsUserControlActive;
+        private readonly MenuRequestsUserControlArchive _menuRequestsUserControlArchive;
         private MenuClientsUserControl _clientsUserControl;
-        private MenuEmployeesUserControl _employeesUserControl;
+
+        private string _ArchiveStatus;
 
         public MainForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService,
-            MenuRequestsUserControl requestsUserControl, MenuClientsUserControl clientsUserControl, MenuEmployeesUserControl employeesUserControl,
-            IFileUploader fileUploader, WebSocketClientService websocketClientService)
+            IFileUploader fileUploader, WebSocketClientService websocketClientService, string ArchiveStatus)
         {
             InitializeComponent();
             _apiClient = apiClient;
@@ -40,11 +42,26 @@ namespace WolfClient.NewForms
             _adminClient = adminClient;
             _dataService = dataService;
 
-            _requestsUserControl = requestsUserControl;
-            _clientsUserControl = clientsUserControl;
-            _employeesUserControl = employeesUserControl;
+            MenuClientsUserControl menuClientsUserControl = new MenuClientsUserControl(apiClient, userClient, adminClient, dataService);
+
+            if (ArchiveStatus == "Active")
+            {
+                _menuRequestsUserControlActive = new MenuRequestsUserControlActive(apiClient, userClient, adminClient, dataService, fileUploader);
+                this.Text = "Wolf : Управление на поръчки"; // Change the form's title
+            }
+            else if (ArchiveStatus == "Archive")
+            {
+                _menuRequestsUserControlArchive = new MenuRequestsUserControlArchive(apiClient, userClient, adminClient, dataService, fileUploader);
+                this.Text = "Wolf Archive : Управление на поръчки"; // Change the form's title
+            }
+
+
+
+            _clientsUserControl = new MenuClientsUserControl(apiClient, userClient, adminClient, dataService);
             _fileUploader = fileUploader;
             _websocketClientService = websocketClientService;
+
+            _ArchiveStatus = ArchiveStatus;
 
             LogInEvent.logIn += OnUserLoggedIn;
             UserLabel.TextChanged += ResizePanelToFitLabel;
@@ -90,7 +107,7 @@ namespace WolfClient.NewForms
             panelContent.Controls.Add(userControl);
 
             // If it's a MenuRequestsUserControl, trigger data and style reapplication
-            if (userControl is MenuRequestsUserControl requestsUserControl)
+            if (userControl is MenuRequestsUserControlBase requestsUserControl)
             {
                 requestsUserControl.UpdateRequestDataGridView(_dataService.getRequests());
             }
@@ -99,19 +116,28 @@ namespace WolfClient.NewForms
 
         private void RequestToolStripButton_Click(object sender, EventArgs e)
         {
-            LoadUserControl(_requestsUserControl);
+            if (_ArchiveStatus == "Active") {
+                this.Text = "Wolf : Управление на поръчки";
+                LoadUserControl(_menuRequestsUserControlActive);
+            }
+            else if(_ArchiveStatus == "Archive")
+            {
+                this.Text = "Wolf Archive : Управление на поръчки";
+                LoadUserControl(_menuRequestsUserControlArchive);
+            }
         }
-
-
 
         private void ClientsStripButton_Click(object sender, EventArgs e)
         {
+            if (_ArchiveStatus == "Active")
+            {
+                this.Text = "Wolf : Управление на клиенти";
+            }
+            else if (_ArchiveStatus == "Archive")
+            {
+                this.Text = "Wolf Archive : Управление на клиенти";
+            }
             LoadUserControl(_clientsUserControl);
-        }
-
-        private void EmployeesStripLabel_Click(object sender, EventArgs e)
-        {
-            LoadUserControl(_employeesUserControl);
         }
 
         private void LoginButton_Click(object sender, EventArgs e)
@@ -144,12 +170,26 @@ namespace WolfClient.NewForms
             string role = _dataService.getRole();
             if (role == "admin")
             {
-                inqueriesAdminForm form = new inqueriesAdminForm(_userClient, _apiClient, _dataService, _adminClient);
-                form.Show();
+                if (_ArchiveStatus == "Archive")
+                {
+                    inqueriesAdminForm form = new inqueriesAdminForm(_userClient, _apiClient, _dataService, _adminClient);
+                    form.Show();
+                }
+                else if(_ArchiveStatus == "Active") {
+                    inqueriesAdminFormActive form = new inqueriesAdminFormActive(_userClient, _apiClient, _dataService, _adminClient);
+                    form.Show();
+                }
             }
             else if(role == "user") {
-                inqueriesUserForm form = new inqueriesUserForm(_userClient, _apiClient, _dataService, _adminClient); 
-                form.Show();
+                if (_ArchiveStatus == "Archive")
+                {
+                    inqueriesUserForm form = new inqueriesUserForm(_userClient, _apiClient, _dataService, _adminClient);
+                    form.Show();
+                }
+                else if (_ArchiveStatus == "Active")
+                {
+
+                }
             }
         }
     }

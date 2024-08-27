@@ -26,7 +26,7 @@ namespace DTOS.DTO
 
         public GetEmployeeDTO? RequestCreator { get; set; }
 
-        
+        public string Status { get; set; }
 
     }
 }

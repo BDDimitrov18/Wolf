@@ -18,17 +18,17 @@ namespace WolfClient.NewForms
 {
     public partial class EditRequestForm : Form
     {
-        private readonly IApiClient _apiClient;
-        private readonly IUserClient _userClient;
-        private readonly IAdminClient _adminClient;
-        private readonly IDataService _dataService;
-        private List<CreateClientDTO> _clientsList;
-        private List<GetClientDTO> _availableClientsList;
+        protected readonly IApiClient _apiClient;
+        protected readonly IUserClient _userClient;
+        protected readonly IAdminClient _adminClient;
+        protected readonly IDataService _dataService;
+        protected List<CreateClientDTO> _clientsList;
+        protected List<GetClientDTO> _availableClientsList;
 
-        private GetRequestDTO _returnRequest;
-        private List<GetClientDTO> _returnClients;
+        protected GetRequestDTO _returnRequest;
+        protected List<GetClientDTO> _returnClients;
 
-        private CreateRequestDTO _requestValidator;
+        protected CreateRequestDTO _requestValidator;
 
 
 
@@ -49,10 +49,14 @@ namespace WolfClient.NewForms
                       ControlStyles.AllPaintingInWmPaint, true);
             this.UpdateStyles();
         }
+        public EditRequestForm() : this(null, null, null, null)
+        {
+            // Optionally, put some designer-specific initialization code here
+            // This constructor won't be used in production, only in the designer
+        }
 
 
-
-        private void ValidateModel()
+        protected void ValidateModel()
         {
             // Temporarily disable redrawing to reduce flickering
             SuspendLayout();
@@ -116,7 +120,7 @@ namespace WolfClient.NewForms
             }
         }
 
-        private string GetControlNameForMember(string memberName)
+        protected string GetControlNameForMember(string memberName)
         {
             return memberName switch
             {
@@ -128,7 +132,7 @@ namespace WolfClient.NewForms
             };
         }
 
-        private void AddNonExistingClientButton_Click(object sender, EventArgs e)
+        protected void AddNonExistingClientButton_Click(object sender, EventArgs e)
         {
             using (AddClientForm form = new AddClientForm(_apiClient, _userClient, _adminClient, false))
             {
@@ -141,8 +145,13 @@ namespace WolfClient.NewForms
             } // 
         }
 
-        private async void AddRequestForm_Load(object sender, EventArgs e)
+        protected virtual async void AddRequestForm_Load(object sender, EventArgs e)
         {
+            if(_apiClient == null || _userClient == null || _adminClient == null || _dataService == null)
+            {
+                return;
+            }
+
             var response = await _userClient.GetAllClients();
             if (response.IsSuccess)
             {
@@ -178,21 +187,21 @@ namespace WolfClient.NewForms
 
         }
 
-        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        protected void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
 
         }
 
-        private void ChooseClientToAddComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        protected void ChooseClientToAddComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void AddClientComboBoxButton_Click(object sender, EventArgs e)
+        protected void AddClientComboBoxButton_Click(object sender, EventArgs e)
         {
             AddNewPanelWithUserControlAddClientsFromAvailable();
         }
-        private void AddNewPanelWithUserControlAddClientsFromAvailable()
+        protected void AddNewPanelWithUserControlAddClientsFromAvailable()
         {
             Panel panel = new Panel();
             panel.Size = new Size(412, 28);  // Adjust size according to your needs
@@ -205,7 +214,7 @@ namespace WolfClient.NewForms
             AvailableClientsFlowPanel.Controls.Add(panel);
         }
 
-        private void AddNewPanelWithUserControlAddClientsFromAvailable(GetClientDTO getClientDTO)
+        protected void AddNewPanelWithUserControlAddClientsFromAvailable(GetClientDTO getClientDTO)
         {
             Panel panel = new Panel();
             panel.Size = new Size(412, 28);  // Adjust size according to your needs
@@ -218,7 +227,7 @@ namespace WolfClient.NewForms
             AvailableClientsFlowPanel.Controls.Add(panel);
         }
 
-        private void AddNewPanelWithUserControlAddClientsFromNotAvailable(CreateClientDTO clientDTO)
+        protected void AddNewPanelWithUserControlAddClientsFromNotAvailable(CreateClientDTO clientDTO)
         {
             Panel panel = new Panel();
             panel.Size = new Size(410, 28);  // Adjust size according to your needs
@@ -231,7 +240,7 @@ namespace WolfClient.NewForms
             NotAvailableClientsFlowPanel.Controls.Add(panel);
         }
 
-        private async void AddRequestButton_Click(object sender, EventArgs e)
+        protected virtual async void AddRequestButton_Click(object sender, EventArgs e)
         {
             ValidateModel();
 
@@ -324,7 +333,7 @@ namespace WolfClient.NewForms
             Close();
         }
 
-        private string createPaymentStatus(string advance, string price)
+        protected string createPaymentStatus(string advance, string price)
         {
             string paymentStatus;
             if (float.Parse(advance) == float.Parse(price))
@@ -343,7 +352,7 @@ namespace WolfClient.NewForms
             return paymentStatus;
         }
 
-        private List<GetClientDTO> GetAllComboBoxClients(Panel parentPanel)
+        protected List<GetClientDTO> GetAllComboBoxClients(Panel parentPanel)
         {
             List<GetClientDTO> comboBoxClients = new List<GetClientDTO>();
             foreach (Panel panel in parentPanel.Controls.OfType<Panel>()) // Assuming 'parentPanel' is your main container panel
@@ -369,7 +378,7 @@ namespace WolfClient.NewForms
             return comboBoxClients;
         }
 
-        private List<CreateClientDTO> GetAllClientDtoFromLabels(Panel parentPanel)
+        protected List<CreateClientDTO> GetAllClientDtoFromLabels(Panel parentPanel)
         {
             List<CreateClientDTO> clientDTOs = new List<CreateClientDTO>();
             foreach (Panel panel in parentPanel.Controls.OfType<Panel>())
@@ -394,12 +403,12 @@ namespace WolfClient.NewForms
             return _returnClients;
         }
 
-        private void AddRequestTitleLabel_Click(object sender, EventArgs e)
+        protected void AddRequestTitleLabel_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void openFilesButton_Click(object sender, EventArgs e)
+        protected void openFilesButton_Click(object sender, EventArgs e)
         {
             using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
             {

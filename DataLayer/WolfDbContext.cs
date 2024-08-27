@@ -387,6 +387,12 @@ namespace DataAccessLayer
              .WithMany()
              .HasForeignKey(r => r.RequestCreatorId)
              .IsRequired(false);
+
+            modelBuilder.Entity<Request>()
+                .Property(r => r.Status)
+                .HasDefaultValue("Active");
+
+
             #endregion
 
             #region Seed activity and task types

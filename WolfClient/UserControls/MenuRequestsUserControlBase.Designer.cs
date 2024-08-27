@@ -2,12 +2,8 @@
 
 namespace WolfClient.UserControls
 {
-    partial class MenuRequestsUserControl
+    partial class MenuRequestsUserControlBase
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
 
         /// <summary> 
         /// Clean up any resources being used.
@@ -28,11 +24,11 @@ namespace WolfClient.UserControls
         /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        protected void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuRequestsUserControl));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuRequestsUserControlBase));
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
@@ -651,9 +647,9 @@ namespace WolfClient.UserControls
             label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             label4.Location = new Point(3, 34);
             label4.Name = "label4";
-            label4.Size = new Size(88, 28);
+            label4.Size = new Size(151, 28);
             label4.TabIndex = 51;
-            label4.Text = "Статус :  ";
+            label4.Text = "Статус Задача:  ";
             // 
             // cmbPaymentStatus
             // 
@@ -721,9 +717,9 @@ namespace WolfClient.UserControls
             statusCheckBox.DropDownStyle = ComboBoxStyle.DropDownList;
             statusCheckBox.FormattingEnabled = true;
             statusCheckBox.Items.AddRange(new object[] { "", "Зададена", "Завършена", "Оферта" });
-            statusCheckBox.Location = new Point(91, 34);
+            statusCheckBox.Location = new Point(156, 34);
             statusCheckBox.Name = "statusCheckBox";
-            statusCheckBox.Size = new Size(240, 28);
+            statusCheckBox.Size = new Size(175, 28);
             statusCheckBox.TabIndex = 52;
             // 
             // label11
@@ -1765,7 +1761,7 @@ namespace WolfClient.UserControls
             OwnershipDataGridView.RowHeadersWidth = 51;
             OwnershipDataGridView.RowTemplate.Height = 29;
             OwnershipDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            OwnershipDataGridView.Size = new Size(1336, 286);
+            OwnershipDataGridView.Size = new Size(1333, 286);
             OwnershipDataGridView.TabIndex = 0;
             // 
             // PlotNumberDocTable
@@ -1909,7 +1905,7 @@ namespace WolfClient.UserControls
             ChooseColor.Size = new Size(200, 24);
             ChooseColor.Text = "Избери Цвят";
             // 
-            // MenuRequestsUserControl
+            // MenuRequestsUserControlBase
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -1918,7 +1914,7 @@ namespace WolfClient.UserControls
             Controls.Add(DocumentsOfOwnershipTab);
             Controls.Add(panel3);
             Margin = new Padding(3, 4, 3, 4);
-            Name = "MenuRequestsUserControl";
+            Name = "MenuRequestsUserControlBase";
             Size = new Size(1350, 972);
             Load += MenuRequestsUserControl_Load;
             ((System.ComponentModel.ISupportInitialize)RequestDataGridView).EndInit();
@@ -1950,164 +1946,165 @@ namespace WolfClient.UserControls
 
         #endregion
 
-        private System.Windows.Forms.DataGridView RequestDataGridView;
-        private System.Windows.Forms.Label RequestTableLabel;
-        private System.Windows.Forms.Button RequestAddButton;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.DataGridView InvoicesDataGridView;
-        private System.Windows.Forms.Button addInvoiceButton;
-        private System.Windows.Forms.Panel panel3;
-        private Button RefreshButton;
-        private TabPage tabPage2;
-        private Panel panel2;
-        private Panel panel1;
-        private DataGridView ActivityDataGridView;
-        private Button ActivityAddButton;
-        private TabPage tabPage1;
-        private Panel panel4;
-        private Button button1;
-        private DataGridView clientsDataGridView;
-        private TabControl DocumentsOfOwnershipTab;
-        private TabPage tabPage3;
-        private Panel panel5;
-        private DataGridView PlotsDataGridView;
-        private Button PlotsAddButton;
-        private Label DestinationOfPlotLabel;
-        private TabPage tabPage5;
-        private DataGridView OwnershipDataGridView;
-        private Button AddOwnersButton;
-        private Button DeleteInvoiceButton;
-        private Button DeleteRequestButton;
-        private Button DeleteActivityButton;
-        private Button deleteClientsButton;
-        private Button DeletePlotsButton;
-        private Button DeleteOwnershipButton;
-        private Button CreateDocumentButton;
-        private DataGridViewTextBoxColumn PlotNumberDocTable;
-        private DataGridViewTextBoxColumn DocumentId;
-        private DataGridViewTextBoxColumn OwnerId;
-        private DataGridViewTextBoxColumn EKG;
-        private DataGridViewTextBoxColumn OwnerAddress;
-        private DataGridViewTextBoxColumn IdealParts;
-        private DataGridViewTextBoxColumn PowerOfAttorney;
-        private DataGridViewTextBoxColumn ClientNumber;
-        private DataGridViewTextBoxColumn FirstName;
-        private DataGridViewTextBoxColumn MiddleName;
-        private DataGridViewTextBoxColumn LastName;
-        private DataGridViewTextBoxColumn Phone;
-        private DataGridViewTextBoxColumn Email;
-        private DataGridViewTextBoxColumn Address;
-        private DataGridViewTextBoxColumn ClientLegalType;
-        private Button editRequestButton;
-        private Button editActivityButton;
-        private Button editClientButton;
-        private Button editPlotButton;
-        private Button editOwnershipButton;
-        private Panel panel7;
-        private Button btnPreviousRequestsDataGridView;
-        private Button btnFirstRequestsDataGridView;
-        private Button btnLastRequestsDataGridView;
-        private Button btnNextRequestsDataGridView;
-        private Button starRequestButton;
-        private Button btnLastClientsDataGridView;
-        private Button btnNextClientsDataGridView;
-        private Button btnPreviousClientsDataGridView;
-        private Button btnFirstClientsDataGridView;
-        private Button btnLastActivityDataGridView;
-        private Button btnNextActivityDataGridView;
-        private Button btnPreviousActivityDataGridView;
-        private Button btnFirstActivityDataGridView;
-        private Button btnLastPlotsDataGridView;
-        private Button btnNextPlotsDataGridView;
-        private Button btnPreviousPlotsDataGridView;
-        private Button btnFirstPlotsDataGridView;
-        private Button btnLastOwnershipDataGridView;
-        private Button btnNextOwnershipDataGridView;
-        private Button btnPreviousOwnershipDataGridView;
-        private Button btnFirstOwnershipDataGridView;
-        private TabPage tabPage4;
-        private Button btnLastInvoicesDataGridView;
-        private Button btnNextInvoicesDataGridView;
-        private Button btnPreviousInvoicesDataGridView;
-        private Button btnFirstInvoicesDataGridView;
-        private CheckBox taskSelfCheck;
-        private Label label2;
-        private CheckBox taskDayCheck;
-        private CheckBox taskWeekCheck;
-        private Button ApplyActivityFiltersButton;
-        private ComboBox taskStatusComboBox;
-        private Label label7;
-        private DataGridViewTextBoxColumn ActivityName;
-        private DataGridViewTextBoxColumn PlotNumber;
-        private DataGridViewTextBoxColumn RegulatedPlotNumber;
-        private DataGridViewTextBoxColumn neighborhood;
-        private DataGridViewTextBoxColumn City;
-        private DataGridViewTextBoxColumn Municipality;
-        private DataGridViewTextBoxColumn Street;
-        private DataGridViewTextBoxColumn StreetNumber;
-        private DataGridViewTextBoxColumn designation;
-        private DataGridViewTextBoxColumn locality;
-        private LinkLabel PathLink;
-        private DataGridViewTextBoxColumn number;
-        private DataGridViewTextBoxColumn Sum;
-        private Button EditInvoiceButton;
-        private DataGridViewTextBoxColumn RequestId;
-        private DataGridViewTextBoxColumn RequestName;
-        private DataGridViewTextBoxColumn PaymentStatus;
-        private DataGridViewTextBoxColumn Comments;
-        private DataGridViewTextBoxColumn PlotsInfo;
-        private Button button2;
-        private Button AddClientButton;
-        private FlowLayoutPanel clientsFlowLayoutPanel;
-        private CheckBox overdueFilter;
-        private Label label14;
-        private Label label4;
-        private ComboBox cmbPaymentStatus;
-        private Label label13;
-        private Label label3;
-        private RichTextBox CommentsTextBox;
-        private TextBox txtNumber;
-        private Label label12;
-        private ComboBox statusCheckBox;
-        private Label label11;
-        private Label label1;
-        private TextBox CityTextBox;
-        private CheckBox chkForWeek;
-        private Label label10;
-        private CheckBox chkForDay;
-        private TextBox neighborhoodTextBox;
-        private CheckBox chkStarred;
-        private Label label9;
-        private CheckBox chkPersonal;
-        private TextBox UPITextBox;
-        private Button RequestFiltersApplyButton;
-        private Label label8;
-        private TextBox plotNumberTextBox;
-        private FlowLayoutPanel OwnersFlowLayoutPanelFilter;
-        private ContextMenuStrip StarContextMenuStrip;
-        private ToolStripMenuItem AvailableColors;
-        private ToolStripMenuItem ChooseColor;
-        private DataGridViewTextBoxColumn ParentActivity;
-        private DataGridViewTextBoxColumn Activity;
-        private DataGridViewTextBoxColumn MainExecutantName;
-        private DataGridViewTextBoxColumn MainExecutantPayment;
-        private DataGridViewTextBoxColumn Plots;
-        private DataGridViewTextBoxColumn StartDate;
-        private DataGridViewTextBoxColumn ActivityEndDate;
-        private DataGridViewTextBoxColumn Task;
-        private DataGridViewTextBoxColumn Executant;
-        private DataGridViewTextBoxColumn TaskExecutantPayment;
-        private DataGridViewTextBoxColumn TaskStartDate;
-        private DataGridViewTextBoxColumn TaskEndDate;
-        private DataGridViewTextBoxColumn Duration;
-        private DataGridViewTextBoxColumn Control;
-        private DataGridViewTextBoxColumn Comment;
-        private DataGridViewTextBoxColumn tax;
-        private DataGridViewTextBoxColumn taxComment;
-        private DataGridViewTextBoxColumn Status;
-        private Label EmployeesFilterLabel;
-        private CheckedListBox EmployeesFilterCheckBoxList;
+        protected System.Windows.Forms.DataGridView RequestDataGridView;
+        protected System.Windows.Forms.Label RequestTableLabel;
+        protected System.Windows.Forms.Button RequestAddButton;
+        protected System.Windows.Forms.Label label5;
+        protected System.Windows.Forms.DataGridView InvoicesDataGridView;
+        protected System.Windows.Forms.Button addInvoiceButton;
+        protected System.Windows.Forms.Panel panel3;
+        protected Button RefreshButton;
+        protected TabPage tabPage2;
+        protected Panel panel2;
+        protected Panel panel1;
+        protected DataGridView ActivityDataGridView;
+        protected Button ActivityAddButton;
+        protected TabPage tabPage1;
+        protected Panel panel4;
+        protected Button button1;
+        protected DataGridView clientsDataGridView;
+        protected TabControl DocumentsOfOwnershipTab;
+        protected TabPage tabPage3;
+        protected Panel panel5;
+        protected DataGridView PlotsDataGridView;
+        protected Button PlotsAddButton;
+        protected Label DestinationOfPlotLabel;
+        protected TabPage tabPage5;
+        protected DataGridView OwnershipDataGridView;
+        protected Button AddOwnersButton;
+        protected Button DeleteInvoiceButton;
+        protected Button DeleteRequestButton;
+        protected Button DeleteActivityButton;
+        protected Button deleteClientsButton;
+        protected Button DeletePlotsButton;
+        protected Button DeleteOwnershipButton;
+        protected Button CreateDocumentButton;
+        protected DataGridViewTextBoxColumn PlotNumberDocTable;
+        protected DataGridViewTextBoxColumn DocumentId;
+        protected DataGridViewTextBoxColumn OwnerId;
+        protected DataGridViewTextBoxColumn EKG;
+        protected DataGridViewTextBoxColumn OwnerAddress;
+        protected DataGridViewTextBoxColumn IdealParts;
+        protected DataGridViewTextBoxColumn PowerOfAttorney;
+        protected DataGridViewTextBoxColumn ClientNumber;
+        protected DataGridViewTextBoxColumn FirstName;
+        protected DataGridViewTextBoxColumn MiddleName;
+        protected DataGridViewTextBoxColumn LastName;
+        protected DataGridViewTextBoxColumn Phone;
+        protected DataGridViewTextBoxColumn Email;
+        protected DataGridViewTextBoxColumn Address;
+        protected DataGridViewTextBoxColumn ClientLegalType;
+        protected Button editRequestButton;
+        protected Button editActivityButton;
+        protected Button editClientButton;
+        protected Button editPlotButton;
+        protected Button editOwnershipButton;
+        protected Panel panel7;
+        protected Button btnPreviousRequestsDataGridView;
+        protected Button btnFirstRequestsDataGridView;
+        protected Button btnLastRequestsDataGridView;
+        protected Button btnNextRequestsDataGridView;
+        protected Button starRequestButton;
+        protected Button btnLastClientsDataGridView;
+        protected Button btnNextClientsDataGridView;
+        protected Button btnPreviousClientsDataGridView;
+        protected Button btnFirstClientsDataGridView;
+        protected Button btnLastActivityDataGridView;
+        protected Button btnNextActivityDataGridView;
+        protected Button btnPreviousActivityDataGridView;
+        protected Button btnFirstActivityDataGridView;
+        protected Button btnLastPlotsDataGridView;
+        protected Button btnNextPlotsDataGridView;
+        protected Button btnPreviousPlotsDataGridView;
+        protected Button btnFirstPlotsDataGridView;
+        protected Button btnLastOwnershipDataGridView;
+        protected Button btnNextOwnershipDataGridView;
+        protected Button btnPreviousOwnershipDataGridView;
+        protected Button btnFirstOwnershipDataGridView;
+        protected TabPage tabPage4;
+        protected Button btnLastInvoicesDataGridView;
+        protected Button btnNextInvoicesDataGridView;
+        protected Button btnPreviousInvoicesDataGridView;
+        protected Button btnFirstInvoicesDataGridView;
+        protected CheckBox taskSelfCheck;
+        protected Label label2;
+        protected CheckBox taskDayCheck;
+        protected CheckBox taskWeekCheck;
+        protected Button ApplyActivityFiltersButton;
+        protected ComboBox taskStatusComboBox;
+        protected Label label7;
+        protected DataGridViewTextBoxColumn ActivityName;
+        protected DataGridViewTextBoxColumn PlotNumber;
+        protected DataGridViewTextBoxColumn RegulatedPlotNumber;
+        protected DataGridViewTextBoxColumn neighborhood;
+        protected DataGridViewTextBoxColumn City;
+        protected DataGridViewTextBoxColumn Municipality;
+        protected DataGridViewTextBoxColumn Street;
+        protected DataGridViewTextBoxColumn StreetNumber;
+        protected DataGridViewTextBoxColumn designation;
+        protected DataGridViewTextBoxColumn locality;
+        protected LinkLabel PathLink;
+        protected DataGridViewTextBoxColumn number;
+        protected DataGridViewTextBoxColumn Sum;
+        protected Button EditInvoiceButton;
+        protected DataGridViewTextBoxColumn RequestId;
+        protected DataGridViewTextBoxColumn RequestName;
+        protected DataGridViewTextBoxColumn PaymentStatus;
+        protected DataGridViewTextBoxColumn Comments;
+        protected DataGridViewTextBoxColumn PlotsInfo;
+        protected Button button2;
+        protected Button AddClientButton;
+        protected FlowLayoutPanel clientsFlowLayoutPanel;
+        protected CheckBox overdueFilter;
+        protected Label label14;
+        protected Label label4;
+        protected ComboBox cmbPaymentStatus;
+        protected Label label13;
+        protected Label label3;
+        protected RichTextBox CommentsTextBox;
+        protected TextBox txtNumber;
+        protected Label label12;
+        protected ComboBox statusCheckBox;
+        protected Label label11;
+        protected Label label1;
+        protected TextBox CityTextBox;
+        protected CheckBox chkForWeek;
+        protected Label label10;
+        protected CheckBox chkForDay;
+        protected TextBox neighborhoodTextBox;
+        protected CheckBox chkStarred;
+        protected Label label9;
+        protected CheckBox chkPersonal;
+        protected TextBox UPITextBox;
+        protected Button RequestFiltersApplyButton;
+        protected Label label8;
+        protected TextBox plotNumberTextBox;
+        protected FlowLayoutPanel OwnersFlowLayoutPanelFilter;
+        protected ContextMenuStrip StarContextMenuStrip;
+        protected ToolStripMenuItem AvailableColors;
+        protected ToolStripMenuItem ChooseColor;
+        protected DataGridViewTextBoxColumn ParentActivity;
+        protected DataGridViewTextBoxColumn Activity;
+        protected DataGridViewTextBoxColumn MainExecutantName;
+        protected DataGridViewTextBoxColumn MainExecutantPayment;
+        protected DataGridViewTextBoxColumn Plots;
+        protected DataGridViewTextBoxColumn StartDate;
+        protected DataGridViewTextBoxColumn ActivityEndDate;
+        protected DataGridViewTextBoxColumn Task;
+        protected DataGridViewTextBoxColumn Executant;
+        protected DataGridViewTextBoxColumn TaskExecutantPayment;
+        protected DataGridViewTextBoxColumn TaskStartDate;
+        protected DataGridViewTextBoxColumn TaskEndDate;
+        protected DataGridViewTextBoxColumn Duration;
+        protected DataGridViewTextBoxColumn Control;
+        protected DataGridViewTextBoxColumn Comment;
+        protected DataGridViewTextBoxColumn tax;
+        protected DataGridViewTextBoxColumn taxComment;
+        protected DataGridViewTextBoxColumn Status;
+        protected Label EmployeesFilterLabel;
+        protected CheckedListBox EmployeesFilterCheckBoxList;
         public Panel filtersPanel;
+        private System.ComponentModel.IContainer components;
     }
 }
 

@@ -5,7 +5,7 @@
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        protected System.ComponentModel.IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -26,7 +26,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        protected void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(inqueriesUserForm));
             firstDate = new DateTimePicker();
@@ -53,24 +53,24 @@
             label9 = new Label();
             taskStatusCheckBoxList = new CheckedListBox();
             panel1 = new Panel();
-            panel8 = new Panel();
+            tableLayoutPanel2 = new TableLayoutPanel();
             panel7 = new Panel();
+            panel8 = new Panel();
             panel2 = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel6 = new Panel();
             panel5 = new Panel();
             panel3 = new Panel();
-            tableLayoutPanel2 = new TableLayoutPanel();
             flowLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
-            panel8.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
             panel7.SuspendLayout();
+            panel8.SuspendLayout();
             panel2.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             panel6.SuspendLayout();
             panel5.SuspendLayout();
             panel3.SuspendLayout();
-            tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // firstDate
@@ -155,7 +155,7 @@
             paymentStatusCheckBoxList.Items.AddRange(new object[] { "Платен", "Аванс", "Не платен" });
             paymentStatusCheckBoxList.Location = new Point(0, 61);
             paymentStatusCheckBoxList.Name = "paymentStatusCheckBoxList";
-            paymentStatusCheckBoxList.Size = new Size(244, 158);
+            paymentStatusCheckBoxList.Size = new Size(244, 180);
             paymentStatusCheckBoxList.TabIndex = 8;
             // 
             // allPaymentStatusCheckBox
@@ -175,7 +175,7 @@
             checkedListBox3.FormattingEnabled = true;
             checkedListBox3.Location = new Point(3, 82);
             checkedListBox3.Name = "checkedListBox3";
-            checkedListBox3.Size = new Size(451, 224);
+            checkedListBox3.Size = new Size(492, 224);
             checkedListBox3.TabIndex = 12;
             // 
             // label5
@@ -237,7 +237,7 @@
             checkedListBox4.FormattingEnabled = true;
             checkedListBox4.Location = new Point(-1, 80);
             checkedListBox4.Name = "checkedListBox4";
-            checkedListBox4.Size = new Size(455, 246);
+            checkedListBox4.Size = new Size(496, 246);
             checkedListBox4.TabIndex = 16;
             // 
             // allActivityCheckBox
@@ -263,7 +263,7 @@
             // taskStatusAllCheckBox
             // 
             taskStatusAllCheckBox.AutoSize = true;
-            taskStatusAllCheckBox.Location = new Point(199, 23);
+            taskStatusAllCheckBox.Location = new Point(116, 34);
             taskStatusAllCheckBox.Name = "taskStatusAllCheckBox";
             taskStatusAllCheckBox.Size = new Size(79, 24);
             taskStatusAllCheckBox.TabIndex = 24;
@@ -274,11 +274,11 @@
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label9.Location = new Point(-1, 19);
+            label9.Location = new Point(0, 2);
             label9.Name = "label9";
-            label9.Size = new Size(204, 28);
+            label9.Size = new Size(110, 56);
             label9.TabIndex = 23;
-            label9.Text = "За задачи със статус: ";
+            label9.Text = "За задачи \r\nсъс статус: ";
             // 
             // taskStatusCheckBoxList
             // 
@@ -306,16 +306,20 @@
             panel1.Size = new Size(250, 666);
             panel1.TabIndex = 25;
             // 
-            // panel8
+            // tableLayoutPanel2
             // 
-            panel8.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel8.Controls.Add(taskStatusAllCheckBox);
-            panel8.Controls.Add(label9);
-            panel8.Controls.Add(taskStatusCheckBoxList);
-            panel8.Location = new Point(3, 3);
-            panel8.Name = "panel8";
-            panel8.Size = new Size(244, 255);
-            panel8.TabIndex = 13;
+            tableLayoutPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel2.ColumnCount = 1;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.Controls.Add(panel7, 0, 1);
+            tableLayoutPanel2.Controls.Add(panel8, 0, 0);
+            tableLayoutPanel2.Location = new Point(1, 143);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 2;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.Size = new Size(250, 523);
+            tableLayoutPanel2.TabIndex = 4;
             // 
             // panel7
             // 
@@ -327,6 +331,17 @@
             panel7.Name = "panel7";
             panel7.Size = new Size(244, 256);
             panel7.TabIndex = 12;
+            // 
+            // panel8
+            // 
+            panel8.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel8.Controls.Add(taskStatusAllCheckBox);
+            panel8.Controls.Add(label9);
+            panel8.Controls.Add(taskStatusCheckBoxList);
+            panel8.Location = new Point(3, 3);
+            panel8.Name = "panel8";
+            panel8.Size = new Size(244, 255);
+            panel8.TabIndex = 13;
             // 
             // panel2
             // 
@@ -355,7 +370,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new Size(463, 663);
+            tableLayoutPanel1.Size = new Size(504, 663);
             tableLayoutPanel1.TabIndex = 26;
             // 
             // panel6
@@ -368,7 +383,7 @@
             panel6.Controls.Add(allTasksButton);
             panel6.Location = new Point(3, 334);
             panel6.Name = "panel6";
-            panel6.Size = new Size(457, 326);
+            panel6.Size = new Size(498, 326);
             panel6.TabIndex = 26;
             // 
             // panel5
@@ -382,7 +397,7 @@
             panel5.Controls.Add(textBox1);
             panel5.Location = new Point(3, 3);
             panel5.Name = "panel5";
-            panel5.Size = new Size(457, 325);
+            panel5.Size = new Size(498, 325);
             panel5.TabIndex = 26;
             // 
             // panel3
@@ -397,40 +412,25 @@
             panel3.Size = new Size(250, 666);
             panel3.TabIndex = 27;
             // 
-            // tableLayoutPanel2
+            // inqueriesUserForm
             // 
-            tableLayoutPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tableLayoutPanel2.ColumnCount = 1;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.Controls.Add(panel7, 0, 1);
-            tableLayoutPanel2.Controls.Add(panel8, 0, 0);
-            tableLayoutPanel2.Location = new Point(1, 143);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 2;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.Size = new Size(250, 523);
-            tableLayoutPanel2.TabIndex = 4;
-            // 
-            // inquiriesUserForm
-            // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.None;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(1080, 696);
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "inquiriesUserForm";
-            Text = "Wolf: Справки Админ";
+            Name = "inqueriesUserForm";
+            Text = "Wolf Archive: Справки ";
             flowLayoutPanel1.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            panel8.ResumeLayout(false);
-            panel8.PerformLayout();
+            tableLayoutPanel2.ResumeLayout(false);
             panel7.ResumeLayout(false);
             panel7.PerformLayout();
+            panel8.ResumeLayout(false);
+            panel8.PerformLayout();
             panel2.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             panel6.ResumeLayout(false);
@@ -439,43 +439,42 @@
             panel5.PerformLayout();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
-            tableLayoutPanel2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private DateTimePicker firstDate;
-        private Label firstDateLabel;
-        private Label label1;
-        private DateTimePicker SecondDate;
-        private FlowLayoutPanel flowLayoutPanel1;
-        private Label label3;
-        private Label label4;
-        private CheckedListBox paymentStatusCheckBoxList;
-        private CheckBox allPaymentStatusCheckBox;
-        private CheckedListBox checkedListBox3;
-        private Label label5;
-        private TextBox textBox1;
-        private Label label6;
-        private Label label7;
-        private TextBox textBox2;
-        private Label label8;
-        private CheckedListBox checkedListBox4;
-        private CheckBox allActivityCheckBox;
-        private CheckBox allTasksButton;
-        private CheckBox taskStatusAllCheckBox;
-        private Label label9;
-        private CheckedListBox taskStatusCheckBoxList;
-        private Button AllTasksInqueri;
-        private Panel panel1;
-        private Panel panel2;
-        private Panel panel3;
-        private TableLayoutPanel tableLayoutPanel1;
-        private Panel panel5;
-        private Panel panel6;
-        private Panel panel8;
-        private Panel panel7;
-        private TableLayoutPanel tableLayoutPanel2;
+        protected DateTimePicker firstDate;
+        protected Label firstDateLabel;
+        protected Label label1;
+        protected DateTimePicker SecondDate;
+        protected FlowLayoutPanel flowLayoutPanel1;
+        protected Label label3;
+        protected Label label4;
+        protected CheckedListBox paymentStatusCheckBoxList;
+        protected CheckBox allPaymentStatusCheckBox;
+        protected CheckedListBox checkedListBox3;
+        protected Label label5;
+        protected TextBox textBox1;
+        protected Label label6;
+        protected Label label7;
+        protected TextBox textBox2;
+        protected Label label8;
+        protected CheckedListBox checkedListBox4;
+        protected CheckBox allActivityCheckBox;
+        protected CheckBox allTasksButton;
+        protected CheckBox taskStatusAllCheckBox;
+        protected Label label9;
+        protected CheckedListBox taskStatusCheckBoxList;
+        protected Button AllTasksInqueri;
+        protected Panel panel1;
+        protected Panel panel2;
+        protected Panel panel3;
+        protected TableLayoutPanel tableLayoutPanel1;
+        protected Panel panel5;
+        protected Panel panel6;
+        protected Panel panel8;
+        protected Panel panel7;
+        protected TableLayoutPanel tableLayoutPanel2;
     }
 }

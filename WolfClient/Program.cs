@@ -34,6 +34,7 @@ namespace WolfClient
             string relativePath = configuration["Paths:RelativePath"];
             string webSocketUrl = configuration["WebSocketClientService:Url"];
             string apiBaseUrl = configuration["Api:BaseUrl"];
+            string controlType = configuration["ControlSettings:ControlType"] ?? "Active";
 
             string currentDirectory = Directory.GetCurrentDirectory();
             string filePath = Path.GetFullPath(Path.Combine(currentDirectory, relativePath));
@@ -57,10 +58,8 @@ namespace WolfClient
                Task.Run(async () => await Updater.CheckForUpdatesAsync()).Wait();
             }
 
-            MenuRequestsUserControl menuRequestsUserControl = new MenuRequestsUserControl(apiClient, userClient, adminClient, dataService, fileUploader);
-            MenuClientsUserControl menuClientsUserControl = new MenuClientsUserControl(apiClient, userClient, adminClient, dataService);
-            MenuEmployeesUserControl menuEmployeesUserControl = new MenuEmployeesUserControl(apiClient, userClient, adminClient, dataService);
-            Application.Run(new MainForm(apiClient, userClient, adminClient, dataService, menuRequestsUserControl, menuClientsUserControl, menuEmployeesUserControl, fileUploader, _webSocketClientService));
+            
+            Application.Run(new MainForm(apiClient, userClient, adminClient, dataService, fileUploader, _webSocketClientService, controlType));
         }
 
         public static async Task ConnectWebSocketAsync(string token)

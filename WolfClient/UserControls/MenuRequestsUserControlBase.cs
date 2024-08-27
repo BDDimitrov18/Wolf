@@ -19,27 +19,27 @@ using WolfClient.ViewModels;
 namespace WolfClient.UserControls
 {
 
-    public partial class MenuRequestsUserControl : UserControl
+    public partial class MenuRequestsUserControlBase : UserControl
     {
-        private readonly IApiClient _apiClient;
-        private readonly IUserClient _userClient;
-        private readonly IAdminClient _adminClient;
-        private readonly IDataService _dataService;
-        private readonly IFileUploader _fileUploader;
+        protected readonly IApiClient _apiClient;
+        protected readonly IUserClient _userClient;
+        protected readonly IAdminClient _adminClient;
+        protected readonly IDataService _dataService;
+        protected readonly IFileUploader _fileUploader;
 
-        private bool _isSelectedRequest;
+        protected bool _isSelectedRequest;
 
-        private bool loaded;
+        protected bool loaded;
 
-        private bool _isRefreshing = false;
-        private bool _filterState = false;
+        protected bool _isRefreshing = false;
+        protected bool _filterState = false;
 
-        private Panel draggablePanel;
-        private Point dragOffset;
-        private bool isDragging = false;
+        protected Panel draggablePanel;
+        protected Point dragOffset;
+        protected bool isDragging = false;
 
-        private List<GetEmployeeDTO> _allEmployees;
-        public MenuRequestsUserControl(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService, IFileUploader fileUploader)
+        protected List<GetEmployeeDTO> _allEmployees;
+        public MenuRequestsUserControlBase(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService, IFileUploader fileUploader)
         {
             InitializeComponent();
             _apiClient = apiClient;
@@ -48,6 +48,7 @@ namespace WolfClient.UserControls
             _isSelectedRequest = false;
             _dataService = dataService;
             _fileUploader = fileUploader;
+            LogInEvent.logIn += OnUserLoggedIn;
             WebSocketDataUpdate.RequestsUpdated += OnRequestsUpdated;
             WebSocketDataUpdate.ClientRelationshipsUpdated += OnClientRelationshipsUpdated;
             WebSocketDataUpdate.TasksUpdated += OnTasksUpdated;
@@ -58,11 +59,29 @@ namespace WolfClient.UserControls
             WebSocketDataUpdate.EmployeesUpdated += OnEmployeesUpdated;
             WebSocketDataUpdate.ClientsUpdated += OnClientsUpdated;
             WebSocketDataUpdate.InvoicesUpdated += OnInvoicesUpdated;
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint |
+                      ControlStyles.UserPaint |
+                      ControlStyles.OptimizedDoubleBuffer, true);
+            this.UpdateStyles();
 
             _allEmployees = new List<GetEmployeeDTO>();
         }
-        private async void MenuRequestsUserControl_Load(object sender, EventArgs e)
+
+        public MenuRequestsUserControlBase() : this(null, null, null, null, null)
         {
+            // Optionally, put some designer-specific initialization code here
+            // This constructor won't be used in production, only in the designer
+        }
+        // Parameterless constructor for Designer
+
+        public async  void MenuRequestsUserControl_Load(object sender, EventArgs e)
+        {
+            if (_apiClient == null || _userClient == null || _adminClient == null || _dataService == null || _fileUploader == null)
+            {
+                return;
+            }
+
             RequestDataGridView.SelectionChanged += RequestDataGridView_SelectionChanged;
             clientsDataGridView.SelectionChanged += clientsDataGridView_SelectionChanged;
             PlotsDataGridView.SelectionChanged += PlotsDataGridView_SelectionChanged;
@@ -70,11 +89,7 @@ namespace WolfClient.UserControls
             InvoicesDataGridView.SelectionChanged += invoiceDataGridView_SelectionChanged;
 
             // Enable double buffering to reduce flickering
-            this.DoubleBuffered = true;
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint |
-                      ControlStyles.UserPaint |
-                      ControlStyles.OptimizedDoubleBuffer, true);
-            this.UpdateStyles();
+            
 
             filtersPanel.MouseDown += new MouseEventHandler(Panel_MouseDown);
             filtersPanel.MouseMove += new MouseEventHandler(Panel_MouseMove);
@@ -83,13 +98,13 @@ namespace WolfClient.UserControls
             //employee filter logic: 
 
             // Get employees
-            
 
-            if (_apiClient.getLoginStatus())
-            {
-                setRequestsDataGridView();
-                loaded = true;
-            }
+            
+                if (_apiClient.getLoginStatus())
+                {
+                    setRequestsDataGridView();
+                    loaded = true;
+                }
             LogInEvent.logIn += OnUserLoggedIn;
             OwnershipDataGridView.CellPainting += OwnershipDataGridView_CellPainting;
             ActivityDataGridView.CellPainting += ActivityDataGridView_CellPainting;
@@ -129,14 +144,14 @@ namespace WolfClient.UserControls
             // Attach event handler for populating the "Available Colors" menu
             AvailableColors.DropDownOpening += (s, e) => PopulateUsedColorsMenu();
         }
-        private void AdjustPanelSize()
+        protected void AdjustPanelSize()
         {
             filtersPanel.PerformLayout();
             filtersPanel.Invalidate();
             filtersPanel.Update();
         }
 
-        private async void setRequestsDataGridView()
+        protected async void setRequestsDataGridView()
         {
             var employeesResponse = await _userClient.GetAllEmployees();
             var employeesList = employeesResponse.ResponseObj as List<GetEmployeeDTO>;
@@ -185,96 +200,100 @@ namespace WolfClient.UserControls
 
         }
 
-        private void OnRequestsUpdated(List<GetRequestDTO> requests)
+        protected void OnRequestsUpdated(List<GetRequestDTO> requests)
         {
             UpdateRequestDataGridView(_dataService.getRequests());
         }
 
-        private void OnInvoicesUpdated(List<GetInvoiceDTO> requests)
+        protected void OnInvoicesUpdated(List<GetInvoiceDTO> requests)
         {
             UpdateInvoicessDataGridView();
         }
 
-        private void OnClientRelationshipsUpdated(List<GetClient_RequestRelashionshipDTO> clientRelationships)
+        protected void OnClientRelationshipsUpdated(List<GetClient_RequestRelashionshipDTO> clientRelationships)
         {
             UpdateClientsDataGridView();
         }
 
-        private void OnTasksUpdated(List<GetTaskDTO> tasks)
+        protected void OnTasksUpdated(List<GetTaskDTO> tasks)
         {
             UpdateActivityDataGridView();
         }
 
-        private void OnActivitiesUpdated(List<GetActivityDTO> activities)
+        protected void OnActivitiesUpdated(List<GetActivityDTO> activities)
         {
             UpdateActivityDataGridView();
         }
 
-        private void OnActivityPlotRelationshipsUpdated(List<GetActivity_PlotRelashionshipDTO> activityPlotRelationships)
+        protected void OnActivityPlotRelationshipsUpdated(List<GetActivity_PlotRelashionshipDTO> activityPlotRelationships)
         {
             UpdateActivityDataGridView();
             UpdatePlotsDataGridView();
         }
 
-        private void OnDocumentPlotOwnerRelationshipsUpdated(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> documentPlotOwnerRelationships)
+        protected void OnDocumentPlotOwnerRelationshipsUpdated(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> documentPlotOwnerRelationships)
         {
             UpdateOwnershipDataGridView();
         }
 
-        private void OnActivityTypeUpdated(GetActivityTypeDTO activityType)
+        protected void OnActivityTypeUpdated(GetActivityTypeDTO activityType)
         {
             // Add your logic here if needed to handle activity type updates
         }
 
-        private void OnEmployeesUpdated(List<GetEmployeeDTO> employees)
+        protected void OnEmployeesUpdated(List<GetEmployeeDTO> employees)
         {
             // Add your logic here if needed to handle employee updates
         }
 
-        private void OnClientsUpdated(List<GetClientDTO> clients)
+        protected void OnClientsUpdated(List<GetClientDTO> clients)
         {
             // Add your logic here if needed to handle client updates
         }
-        private async void OnUserLoggedIn(object sender, LogInEventArgs e)
+        protected async void OnUserLoggedIn(object sender, LogInEventArgs e)
         {
+            if (_apiClient == null || _userClient == null || _adminClient == null || _dataService == null || _fileUploader == null)
+            {
+                return;
+            }
             if (!loaded)
             {
                 setRequestsDataGridView();
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        protected void label1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void label1_Click_1(object sender, EventArgs e)
+        protected void label1_Click_1(object sender, EventArgs e)
         {
 
         }
 
-        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        protected void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        protected void label2_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void label3_Click(object sender, EventArgs e)
+        protected void label3_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        protected void panel1_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
 
-        private void RequestDataGridView_SelectionChanged(object sender, EventArgs e)
+        protected void RequestDataGridView_SelectionChanged(object sender, EventArgs e)
         {
             if (_isRefreshing)
             {
@@ -310,11 +329,11 @@ namespace WolfClient.UserControls
                 UpdateInvoicessDataGridView();
             }
         }
-        public void UpdatePathLink()
+        protected void UpdatePathLink()
         {
             PathLink.Text = _dataService.GetSelectedRequest().Path;
         }
-        private void clientsDataGridView_SelectionChanged(object sender, EventArgs e)
+        protected void clientsDataGridView_SelectionChanged(object sender, EventArgs e)
         {
             // Check if any rows are selected
             if (clientsDataGridView.SelectedRows.Count > 0)
@@ -340,7 +359,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void invoiceDataGridView_SelectionChanged(object sender, EventArgs e)
+        protected void invoiceDataGridView_SelectionChanged(object sender, EventArgs e)
         {
             // Check if any rows are selected
             if (InvoicesDataGridView.SelectedRows.Count > 0)
@@ -366,7 +385,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void UpdateOwnershipDataGridView()
+        protected void UpdateOwnershipDataGridView()
         {
             try
             {
@@ -398,7 +417,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void OwnershipDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        protected void OwnershipDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex != OwnershipDataGridView.Columns["PlotNumberDocTable"].Index)
                 return;
@@ -469,7 +488,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void PlotsDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        protected void PlotsDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex != PlotsDataGridView.Columns["ActivityName"].Index)
                 return;
@@ -539,7 +558,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void ActivityDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        protected void ActivityDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             // Define the indexes for the existing and new columns
             int activityColumnIndex = ActivityDataGridView.Columns["Activity"].Index;
@@ -640,7 +659,7 @@ namespace WolfClient.UserControls
 
 
 
-        private string ConvertFloatToFraction(float value)
+        protected string ConvertFloatToFraction(float value)
         {
             // Tolerance for floating point comparison
             const double TOLERANCE = 1.0E-6;
@@ -686,7 +705,7 @@ namespace WolfClient.UserControls
                 }
             }
         }
-        public List<OwnershipViewModel> GetOwnershipViewModels(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs)
+        protected List<OwnershipViewModel> GetOwnershipViewModels(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs)
         {
             // Initialize the dictionary
             var RelashionshipDictionary = new Dictionary<int, Dictionary<int, List<Dictionary<GetOwnerDTO, string>>>>();
@@ -779,7 +798,7 @@ namespace WolfClient.UserControls
             return ownershipViewModels;
         }
 
-        private void BindOwnershipDataGridView(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs)
+        protected void BindOwnershipDataGridView(List<GetDocumentPlot_DocumentOwnerRelashionshipDTO> relashionshipDTOs)
         {
             OwnershipDataGridView.AutoGenerateColumns = false;
             OwnershipDataGridView.DataSource = null; // Force reset DataSource
@@ -798,7 +817,7 @@ namespace WolfClient.UserControls
             OwnershipDataGridView.Refresh();
         }
 
-        private void UpdateClientsDataGridView()
+        protected void UpdateClientsDataGridView()
         {
             try
             {
@@ -833,7 +852,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void BindPlotDataGridView(RequestWithClientsDTO matchingRequestWithClients)
+        protected void BindPlotDataGridView(RequestWithClientsDTO matchingRequestWithClients)
         {
             PlotsDataGridView.AutoGenerateColumns = false;
             PlotsDataGridView.DataSource = null; // Force reset DataSource
@@ -878,7 +897,7 @@ namespace WolfClient.UserControls
 
             PlotsDataGridView.Refresh();
         }
-        private void BindClientsDataGridView(RequestWithClientsDTO matchingRequestWithClients)
+        protected void BindClientsDataGridView(RequestWithClientsDTO matchingRequestWithClients)
         {
             clientsDataGridView.AutoGenerateColumns = false;
             clientsDataGridView.DataSource = null; // Force reset DataSource
@@ -895,7 +914,7 @@ namespace WolfClient.UserControls
             clientsDataGridView.Refresh();
         }
 
-        private void UpdateInvoicessDataGridView()
+        protected void UpdateInvoicessDataGridView()
         {
             try
             {
@@ -930,7 +949,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void BindInvoicesDataGridView(RequestWithClientsDTO matchingRequestWithClients)
+        protected void BindInvoicesDataGridView(RequestWithClientsDTO matchingRequestWithClients)
         {
             InvoicesDataGridView.AutoGenerateColumns = false;
             InvoicesDataGridView.DataSource = null; // Force reset DataSource
@@ -947,7 +966,7 @@ namespace WolfClient.UserControls
             InvoicesDataGridView.Refresh();
         }
 
-        private List<GetActivityDTO> ApplyActivityFilters(List<GetActivityDTO>? activityDTOs)
+        protected List<GetActivityDTO> ApplyActivityFilters(List<GetActivityDTO>? activityDTOs)
         {
             if (activityDTOs == null || activityDTOs.Count() == 0) return activityDTOs;
 
@@ -1140,7 +1159,7 @@ namespace WolfClient.UserControls
             return filteredList;
         }
 
-        private void BindActivityDataGridView(List<GetActivityDTO> activityDTOs)
+        protected void BindActivityDataGridView(List<GetActivityDTO> activityDTOs)
         {
             ActivityDataGridView.AutoGenerateColumns = false;
             ActivityDataGridView.DataSource = null; // Force reset DataSource
@@ -1195,12 +1214,12 @@ namespace WolfClient.UserControls
         }
 
 
-        private void panel3_Paint(object sender, PaintEventArgs e)
+        protected void panel3_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        protected virtual void button1_Click(object sender, EventArgs e)
         {
             using (AddRequestForm form = new AddRequestForm(_apiClient, _userClient, _adminClient, _dataService))
             {
@@ -1224,14 +1243,14 @@ namespace WolfClient.UserControls
             UpdateRequestDataGridView(_dataService.getRequests());
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        protected void button2_Click(object sender, EventArgs e)
         {
             AddActivityTaskForm addActivityTaskForm = new AddActivityTaskForm(_apiClient, _userClient, _adminClient, _dataService);
             addActivityTaskForm.Show();
             UpdateActivityDataGridView();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        protected virtual void button3_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -1242,11 +1261,11 @@ namespace WolfClient.UserControls
             addInvoiceForm.Show();
             addInvoiceForm.Disposed += InvoiceForm_Disposed;
         }
-        private void InvoiceForm_Disposed(object sender, EventArgs e)
+        protected void InvoiceForm_Disposed(object sender, EventArgs e)
         {
             UpdateInvoicessDataGridView();
         }
-        private void button1_Click_1(object sender, EventArgs e)
+        protected virtual void button1_Click_1(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -1275,7 +1294,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        public void UpdatePlotsDataGridView()
+        protected void UpdatePlotsDataGridView()
         {
             try
             {
@@ -1311,7 +1330,7 @@ namespace WolfClient.UserControls
 
         }
 
-        public void UpdateActivityDataGridView()
+        protected void UpdateActivityDataGridView()
         {
             try
             {
@@ -1362,7 +1381,7 @@ namespace WolfClient.UserControls
         }
 
 
-        private async void RefreshButton_Click(object sender, EventArgs e)
+        protected async void RefreshButton_Click(object sender, EventArgs e)
         {
             var response = await _userClient.GetAllRequests();
             var linkedResponse = await _userClient.GetLinked(response.ResponseObj);
@@ -1375,7 +1394,7 @@ namespace WolfClient.UserControls
                 UpdateRequestDataGridView(requestDTOs);
             }
         }
-        private List<GetClientDTO> GetAllComboBoxClients(Panel parentPanel)
+        protected List<GetClientDTO> GetAllComboBoxClients(Panel parentPanel)
         {
             List<GetClientDTO> comboBoxClients = new List<GetClientDTO>();
             foreach (Panel panel in parentPanel.Controls.OfType<Panel>()) // Assuming 'parentPanel' is your main container panel
@@ -1400,7 +1419,7 @@ namespace WolfClient.UserControls
             }
             return comboBoxClients;
         }
-        private List<GetOwnerDTO> GetAllComboBoxOwners(Panel parentPanel)
+        protected List<GetOwnerDTO> GetAllComboBoxOwners(Panel parentPanel)
         {
             List<GetOwnerDTO> comboBoxClients = new List<GetOwnerDTO>();
             foreach (Panel panel in parentPanel.Controls.OfType<Panel>()) // Assuming 'parentPanel' is your main container panel
@@ -1425,7 +1444,7 @@ namespace WolfClient.UserControls
             }
             return comboBoxClients;
         }
-        private List<GetEmployeeDTO> GetSelectedEmployees(List<GetEmployeeDTO> allEmployees)
+        protected List<GetEmployeeDTO> GetSelectedEmployees(List<GetEmployeeDTO> allEmployees)
         {
             List<GetEmployeeDTO> selectedEmployees = new List<GetEmployeeDTO>();
 
@@ -1443,7 +1462,7 @@ namespace WolfClient.UserControls
 
             return selectedEmployees;
         }
-        private List<GetRequestDTO> ApplyFilters(List<GetRequestDTO>? requestDTOs)
+        protected List<GetRequestDTO> ApplyFilters(List<GetRequestDTO>? requestDTOs)
         {
             if (requestDTOs == null || requestDTOs.Count() == 0) return requestDTOs;
 
@@ -1552,7 +1571,7 @@ namespace WolfClient.UserControls
             return filteredList;
         }
 
-        public void UpdateRequestDataGridView(List<GetRequestDTO> requestDTOs)
+        public virtual void UpdateRequestDataGridView(List<GetRequestDTO> requestDTOs)
         {
             int? previousSelectedRequestId = null;
             _isRefreshing = true;
@@ -1599,7 +1618,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void RestoreSelectedRow(int? previousSelectedRequestId)
+        protected void RestoreSelectedRow(int? previousSelectedRequestId)
         {
             _isRefreshing = false;
             if (previousSelectedRequestId.HasValue)
@@ -1661,7 +1680,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private int FindRowIndexByRequestId(int requestId)
+        protected int FindRowIndexByRequestId(int requestId)
         {
             for (int i = 0; i < RequestDataGridView.Rows.Count; i++)
             {
@@ -1673,7 +1692,7 @@ namespace WolfClient.UserControls
             return -1;
         }
 
-        private void UpdateRequestGridViewRows(List<GetRequestDTO> filteredList)
+        protected void UpdateRequestGridViewRows(List<GetRequestDTO> filteredList)
         {
 
             RequestDataGridView.AutoGenerateColumns = false;
@@ -1739,7 +1758,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void ActivityAddButton_Click(object sender, EventArgs e)
+        protected virtual void ActivityAddButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -1758,24 +1777,24 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void AddActivityTaskForm_Disposed(object sender, EventArgs e)
+        protected void AddActivityTaskForm_Disposed(object sender, EventArgs e)
         {
             var selectedRequest = _dataService.GetSelectedRequest();
             // Invoke the method to update the DataGridView
             UpdateActivityDataGridView();
         }
 
-        private void PlotsDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        protected void PlotsDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
-        private void InvoicesDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        protected void InvoicesDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
-        private void PlotsAddButton_Click(object sender, EventArgs e)
+        protected virtual void PlotsAddButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -1788,18 +1807,18 @@ namespace WolfClient.UserControls
             plotForm.Show();
             plotForm.Disposed += PlotFormDispose;
         }
-        private void PlotFormDispose(object sender, EventArgs e)
+        protected void PlotFormDispose(object sender, EventArgs e)
         {
             UpdatePlotsDataGridView();
             UpdateActivityDataGridView();
             UpdateOwnershipDataGridView();
         }
-        private void panel6_Paint(object sender, PaintEventArgs e)
+        protected void panel6_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-        private void AddOwnersButton_Click(object sender, EventArgs e)
+        protected virtual void AddOwnersButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -1812,11 +1831,11 @@ namespace WolfClient.UserControls
             ownerForm.Show();
             ownerForm.Disposed += OwnershipFormDispose;
         }
-        private void OwnershipFormDispose(object sender, EventArgs e)
+        protected void OwnershipFormDispose(object sender, EventArgs e)
         {
             UpdateOwnershipDataGridView();
         }
-        private async void DeleteRequestButton_Click(object sender, EventArgs e)
+        protected virtual async void DeleteRequestButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -1850,7 +1869,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private async void deleteClientsButton_Click(object sender, EventArgs e)
+        protected virtual async void deleteClientsButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -1892,7 +1911,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private async void DeleteActivityButton_Click(object sender, EventArgs e)
+        protected virtual async void DeleteActivityButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -1937,18 +1956,18 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void CreateDocumentButton_Click(object sender, EventArgs e)
+        protected void CreateDocumentButton_Click(object sender, EventArgs e)
         {
             CreateDocument createDocumentForm = new CreateDocument(_dataService, _fileUploader);
             createDocumentForm.Show();
         }
 
-        private void ActivityDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        protected void ActivityDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
-        private void ActivityDataGridView_SelectionChanged(object sender, EventArgs e)
+        protected void ActivityDataGridView_SelectionChanged(object sender, EventArgs e)
         {
             // Check if any rows are selected
             if (ActivityDataGridView.SelectedRows.Count > 0)
@@ -1974,7 +1993,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void PlotsDataGridView_SelectionChanged(object sender, EventArgs e)
+        protected void PlotsDataGridView_SelectionChanged(object sender, EventArgs e)
         {
             // Check if any rows are selected
             if (PlotsDataGridView.SelectedRows.Count > 0)
@@ -2000,7 +2019,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void OwnershipDataGridView_SelectionChanged(object sender, EventArgs e)
+        protected void OwnershipDataGridView_SelectionChanged(object sender, EventArgs e)
         {
             // Check if any rows are selected
             if (OwnershipDataGridView.SelectedRows.Count > 0)
@@ -2026,7 +2045,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private async void DeletePlotsButton_Click(object sender, EventArgs e)
+        protected virtual async void DeletePlotsButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -2089,7 +2108,7 @@ namespace WolfClient.UserControls
 
         }
 
-        private async void DeleteOwnershipButton_Click(object sender, EventArgs e)
+        protected virtual async void DeleteOwnershipButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -2124,7 +2143,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void editRequestButton_Click(object sender, EventArgs e)
+        protected virtual void editRequestButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() != null)
             {
@@ -2138,12 +2157,12 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void EditRequestFormDispose(object sender, EventArgs e)
+        protected void EditRequestFormDispose(object sender, EventArgs e)
         {
             UpdateRequestDataGridView(_dataService.getRequests());
         }
 
-        private void editClientButton_Click(object sender, EventArgs e)
+        protected virtual void editClientButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -2163,12 +2182,12 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void EditClientFormDispose(object sender, EventArgs e)
+        protected void EditClientFormDispose(object sender, EventArgs e)
         {
             UpdateClientsDataGridView();
         }
 
-        private void editActivityButton_Click(object sender, EventArgs e)
+        protected virtual void editActivityButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -2185,17 +2204,17 @@ namespace WolfClient.UserControls
             editActivityTaskForm.Show();
             editActivityTaskForm.Disposed += EditActivityFormDispose;
         }
-        private void EditActivityFormDispose(object sender, EventArgs e)
+        protected void EditActivityFormDispose(object sender, EventArgs e)
         {
             UpdateActivityDataGridView();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        protected void button4_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void editPlotButton_Click(object sender, EventArgs e)
+        protected virtual void editPlotButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -2214,14 +2233,14 @@ namespace WolfClient.UserControls
             editPlot.Disposed += EditPlotFormDispose;
         }
 
-        private void EditPlotFormDispose(object sender, EventArgs e)
+        protected void EditPlotFormDispose(object sender, EventArgs e)
         {
             UpdateActivityDataGridView();
             UpdatePlotsDataGridView();
             UpdateOwnershipDataGridView();
         }
 
-        private void editOwnershipButton_Click(object sender, EventArgs e)
+        protected virtual void editOwnershipButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -2239,12 +2258,12 @@ namespace WolfClient.UserControls
             editOwnerForm.Show();
             editOwnerForm.Disposed += EditOwnershipFormDispose;
         }
-        private void EditOwnershipFormDispose(object sender, EventArgs e)
+        protected void EditOwnershipFormDispose(object sender, EventArgs e)
         {
             UpdateOwnershipDataGridView();
         }
 
-        private void NavigateDataGridView(DataGridView dgv, string direction)
+        protected void NavigateDataGridView(DataGridView dgv, string direction)
         {
             if (dgv.Rows.Count == 0) return;
 
@@ -2297,17 +2316,17 @@ namespace WolfClient.UserControls
         }
 
 
-        private void ApplyActivityFiltersButton_Click(object sender, EventArgs e)
+        protected void ApplyActivityFiltersButton_Click(object sender, EventArgs e)
         {
             UpdateActivityDataGridView();
         }
 
-        private void label7_Click(object sender, EventArgs e)
+        protected void label7_Click(object sender, EventArgs e)
         {
 
         }
 
-        private async void starRequestButton_Click(object sender, EventArgs e)
+        protected async void starRequestButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -2336,7 +2355,7 @@ namespace WolfClient.UserControls
             UpdateRequestDataGridView(_dataService.getRequests());
         }
 
-        private void PathLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        protected void PathLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string path = PathLink.Text;
 
@@ -2351,7 +2370,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void EditInvoiceButton_Click(object sender, EventArgs e)
+        protected virtual void EditInvoiceButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -2367,7 +2386,7 @@ namespace WolfClient.UserControls
             editInvoiceForm.Disposed += InvoiceForm_Disposed;
         }
 
-        private async void DeleteInvoiceButton_Click(object sender, EventArgs e)
+        protected virtual async void DeleteInvoiceButton_Click(object sender, EventArgs e)
         {
             if (_dataService.GetSelectedRequest() == null)
             {
@@ -2392,22 +2411,22 @@ namespace WolfClient.UserControls
             UpdateInvoicessDataGridView();
         }
 
-        private void tabPage3_Click(object sender, EventArgs e)
+        protected void tabPage3_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void statusCheckBox_SelectedIndexChanged(object sender, EventArgs e)
+        protected void statusCheckBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        protected void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void RequestFiltersApplyButton_Click_1(object sender, EventArgs e)
+        protected void RequestFiltersApplyButton_Click_1(object sender, EventArgs e)
         {
             if (_filterState)
             {
@@ -2422,7 +2441,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void Panel_MouseDown(object sender, MouseEventArgs e)
+        protected void Panel_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -2431,7 +2450,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void Panel_MouseMove(object sender, MouseEventArgs e)
+        protected void Panel_MouseMove(object sender, MouseEventArgs e)
         {
             if (isDragging)
             {
@@ -2447,17 +2466,17 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void Panel_MouseUp(object sender, MouseEventArgs e)
+        protected void Panel_MouseUp(object sender, MouseEventArgs e)
         {
             isDragging = false;
         }
 
-        private void AddClientButton_Click(object sender, EventArgs e)
+        protected void AddClientButton_Click(object sender, EventArgs e)
         {
             AddNewPanelWithUserControlAddClientsFromAvailable();
         }
 
-        private async void AddNewPanelWithUserControlAddClientsFromAvailable()
+        protected async void AddNewPanelWithUserControlAddClientsFromAvailable()
         {
             var responseClients = await _userClient.GetAllClients();
             List<GetClientDTO> clientDTOs = responseClients.ResponseObj.ToList();
@@ -2474,12 +2493,12 @@ namespace WolfClient.UserControls
             clientsFlowLayoutPanel.Controls.Add(panel);
         }
 
-        private void button2_Click_1(object sender, EventArgs e)
+        protected void button2_Click_1(object sender, EventArgs e)
         {
             AddNewPanelWithUserControlAddOwnersFromAvailable();
         }
 
-        private async void AddNewPanelWithUserControlAddOwnersFromAvailable()
+        protected async void AddNewPanelWithUserControlAddOwnersFromAvailable()
         {
             var ownersResponse = await _userClient.GetAllOwners();
             List<GetOwnerDTO> owners = ownersResponse.ResponseObj;
@@ -2495,7 +2514,7 @@ namespace WolfClient.UserControls
             OwnersFlowLayoutPanelFilter.Controls.Add(panel);
         }
 
-        private void PopulateUsedColorsMenu()
+        protected void PopulateUsedColorsMenu()
         {
 
             // Assume you have a list of used colors, for example:
@@ -2515,7 +2534,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void ChooseColor_Click(object sender, EventArgs e)
+        protected void ChooseColor_Click(object sender, EventArgs e)
         {
             using (ColorDialog colorDialog = new ColorDialog())
             {
@@ -2534,7 +2553,7 @@ namespace WolfClient.UserControls
             }
         }
 
-        private void starRequestButton_MouseDown(object sender, MouseEventArgs e)
+        protected void starRequestButton_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {

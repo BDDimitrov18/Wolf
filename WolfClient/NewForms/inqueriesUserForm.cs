@@ -13,38 +13,38 @@ namespace WolfClient.NewForms
 {
     public partial class inqueriesUserForm : Form
     {
-        private readonly IAdminClient _adminClient;
-        private readonly IUserClient _userClient;
-        private readonly IApiClient _apiClient;
-        private readonly IDataService _dataService;
+        protected readonly IAdminClient _adminClient;
+        protected readonly IUserClient _userClient;
+        protected readonly IApiClient _apiClient;
+        protected readonly IDataService _dataService;
 
-        private List<ActivityTypeSelection> _activityTypeSelections;
-        private List<TaskTypeSelection> _taskTypeSelections;
+        protected List<ActivityTypeSelection> _activityTypeSelections;
+        protected List<TaskTypeSelection> _taskTypeSelections;
 
-        private bool _isSelectingAllActivities = false;
-        private List<ActivityTypeSelection> _previouslySelectedActivities;
-        private bool _allItemsManuallySelected = false;
-        private bool _allItemsSelectedBeforeToggle = false;
+        protected bool _isSelectingAllActivities = false;
+        protected List<ActivityTypeSelection> _previouslySelectedActivities;
+        protected bool _allItemsManuallySelected = false;
+        protected bool _allItemsSelectedBeforeToggle = false;
 
-        private bool _isSelectingAllTasks = false;
-        private List<TaskTypeSelection> _previouslySelectedTasks;
-        private bool _allTasksManuallySelected = false;
-        private bool _allTasksSelectedBeforeToggle = false;
+        protected bool _isSelectingAllTasks = false;
+        protected List<TaskTypeSelection> _previouslySelectedTasks;
+        protected bool _allTasksManuallySelected = false;
+        protected bool _allTasksSelectedBeforeToggle = false;
 
-        private bool _isSelectingAllEmployees = false;
-        private List<EmployeeListItem> _previouslySelectedEmployees;
-        private bool _allEmployeesManuallySelected = false;
-        private bool _allEmployeesSelectedBeforeToggle = false;
+        protected bool _isSelectingAllEmployees = false;
+        protected List<EmployeeListItem> _previouslySelectedEmployees;
+        protected bool _allEmployeesManuallySelected = false;
+        protected bool _allEmployeesSelectedBeforeToggle = false;
 
-        private bool _isSelectingAllPaymentStatuses = false;
-        private bool _allPaymentStatusesManuallySelected = false;
-        private bool _allPaymentStatusesSelectedBeforeToggle = false;
+        protected bool _isSelectingAllPaymentStatuses = false;
+        protected bool _allPaymentStatusesManuallySelected = false;
+        protected bool _allPaymentStatusesSelectedBeforeToggle = false;
 
-        private bool _isSelectingAllTaskStatuses = false;
-        private bool _allTaskStatusesManuallySelected = false;
-        private bool _allTaskStatusesSelectedBeforeToggle = false;
+        protected bool _isSelectingAllTaskStatuses = false;
+        protected bool _allTaskStatusesManuallySelected = false;
+        protected bool _allTaskStatusesSelectedBeforeToggle = false;
 
-        private List<EmployeeListItem> _employeeSelections;
+        protected List<EmployeeListItem> _employeeSelections;
 
         public inqueriesUserForm(IUserClient userClient, IApiClient apiClient, IDataService dataService, IAdminClient adminClient)
         {
@@ -73,12 +73,21 @@ namespace WolfClient.NewForms
             AllTasksInqueri.Click += ExportFilteredRequests;
         }
 
-        private async void inquiriesAdminForm_Load(object sender, EventArgs e)
+        public inqueriesUserForm() : this(null, null, null, null)
         {
+            // Optionally, put some designer-specific initialization code here
+            // This constructor won't be used in production, only in the designer
+        }
+        protected async void inquiriesAdminForm_Load(object sender, EventArgs e)
+        {
+            if (_userClient == null || _apiClient == null || _dataService == null || _adminClient == null)
+            {
+                return;
+            }
             await InitializeForm();
         }
 
-        private async Task InitializeForm()
+        protected async Task InitializeForm()
         {
             var response = await _userClient.GetActivityTypes();
             _activityTypeSelections = response.ResponseObj.Select(a => new ActivityTypeSelection
@@ -123,7 +132,7 @@ namespace WolfClient.NewForms
 
         }
 
-        private void PopulateActivityTypes()
+        protected void PopulateActivityTypes()
         {
             checkedListBox3.Items.Clear();
 
@@ -138,7 +147,7 @@ namespace WolfClient.NewForms
             UpdateTaskTypesBasedOnActivities();
         }
 
-        private void PopulateTaskTypes()
+        protected void PopulateTaskTypes()
         {
             checkedListBox4.Items.Clear();
 
@@ -152,7 +161,7 @@ namespace WolfClient.NewForms
         }
 
 
-        private void FilterActivityTypes()
+        protected void FilterActivityTypes()
         {
             string filterText = textBox1.Text.ToLower();
 
@@ -174,7 +183,7 @@ namespace WolfClient.NewForms
             UpdateTaskTypesBasedOnActivities();
         }
 
-        private void FilterTaskTypes()
+        protected void FilterTaskTypes()
         {
             string filterText = textBox2.Text.ToLower();
 
@@ -194,17 +203,17 @@ namespace WolfClient.NewForms
             }
         }
 
-        private void textBoxActivityTypeFilter_TextChanged(object sender, EventArgs e)
+        protected void textBoxActivityTypeFilter_TextChanged(object sender, EventArgs e)
         {
             FilterActivityTypes();
         }
 
-        private void textBoxTaskTypeFilter_TextChanged(object sender, EventArgs e)
+        protected void textBoxTaskTypeFilter_TextChanged(object sender, EventArgs e)
         {
             FilterTaskTypes();
         }
 
-        private void checkedListBox3_ItemCheck(object sender, ItemCheckEventArgs e)
+        protected void checkedListBox3_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             if (_isSelectingAllActivities) return;
 
@@ -233,7 +242,7 @@ namespace WolfClient.NewForms
             UpdateTaskTypesBasedOnActivities();
         }
 
-        private void checkedListBox4_ItemCheck(object sender, ItemCheckEventArgs e)
+        protected void checkedListBox4_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             if (_isSelectingAllTasks) return;
 
@@ -261,7 +270,7 @@ namespace WolfClient.NewForms
         }
 
         
-        private void allActivityCheckBox_CheckedChanged(object sender, EventArgs e)
+        protected void allActivityCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (_isSelectingAllActivities) return;
 
@@ -317,7 +326,7 @@ namespace WolfClient.NewForms
             UpdateTaskTypesBasedOnActivities();
         }
 
-        private void allTasksButton_CheckedChanged(object sender, EventArgs e)
+        protected void allTasksButton_CheckedChanged(object sender, EventArgs e)
         {
             if (_isSelectingAllTasks) return;
 
@@ -373,7 +382,7 @@ namespace WolfClient.NewForms
 
         
 
-        private void allPaymentStatusCheckBox_CheckedChanged(object sender, EventArgs e)
+        protected void allPaymentStatusCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (_isSelectingAllPaymentStatuses) return;
 
@@ -406,7 +415,7 @@ namespace WolfClient.NewForms
             _isSelectingAllPaymentStatuses = false;
         }
 
-        private void taskStatusAllCheckBox_CheckedChanged(object sender, EventArgs e)
+        protected void taskStatusAllCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (_isSelectingAllTaskStatuses) return;
 
@@ -439,7 +448,7 @@ namespace WolfClient.NewForms
             _isSelectingAllTaskStatuses = false;
         }
 
-        private void SelectAllActivityTypes(bool select)
+        protected void SelectAllActivityTypes(bool select)
         {
             foreach (var activitySelection in _activityTypeSelections)
             {
@@ -455,7 +464,7 @@ namespace WolfClient.NewForms
             UpdateTaskTypesBasedOnActivities();
         }
 
-        private void SelectAllTaskTypes(bool select)
+        protected void SelectAllTaskTypes(bool select)
         {
             foreach (var taskSelection in _taskTypeSelections)
             {
@@ -470,7 +479,7 @@ namespace WolfClient.NewForms
         }
 
 
-        private void SelectAllPaymentStatuses(bool select)
+        protected void SelectAllPaymentStatuses(bool select)
         {
             for (int i = 0; i < paymentStatusCheckBoxList.Items.Count; i++)
             {
@@ -478,7 +487,7 @@ namespace WolfClient.NewForms
             }
         }
 
-        private void SelectAllTaskStatuses(bool select)
+        protected void SelectAllTaskStatuses(bool select)
         {
             for (int i = 0; i < taskStatusCheckBoxList.Items.Count; i++)
             {
@@ -486,7 +495,7 @@ namespace WolfClient.NewForms
             }
         }
 
-        private void UpdateTaskTypesBasedOnActivities()
+        protected void UpdateTaskTypesBasedOnActivities()
         {
             var selectedActivityTypes = _activityTypeSelections.Where(a => a.IsSelected).ToList();
 
@@ -514,7 +523,7 @@ namespace WolfClient.NewForms
             }
         }
 
-        private void RestorePreviousActivitySelections()
+        protected void RestorePreviousActivitySelections()
         {
             foreach (var activitySelection in _activityTypeSelections)
             {
@@ -525,7 +534,7 @@ namespace WolfClient.NewForms
             PopulateActivityTypes();
         }
 
-        private void RestorePreviousTaskSelections()
+        protected void RestorePreviousTaskSelections()
         {
             foreach (var taskSelection in _taskTypeSelections)
             {
@@ -537,43 +546,43 @@ namespace WolfClient.NewForms
         }
 
 
-        private void RestorePreviousPaymentStatusSelections()
+        protected void RestorePreviousPaymentStatusSelections()
         {
             // Implement logic to restore previous payment status selections if needed
             // For now, resetting all items to unchecked
             SelectAllPaymentStatuses(false);
         }
 
-        private void RestorePreviousTaskStatusSelections()
+        protected void RestorePreviousTaskStatusSelections()
         {
             // Implement logic to restore previous task status selections if needed
             // For now, resetting all items to unchecked
             SelectAllTaskStatuses(false);
         }
 
-        private bool AreAllItemsCurrentlySelected()
+        protected bool AreAllItemsCurrentlySelected()
         {
             return checkedListBox3.Items.Count == checkedListBox3.CheckedItems.Count;
         }
 
-        private bool AreAllTasksCurrentlySelected()
+        protected bool AreAllTasksCurrentlySelected()
         {
             return checkedListBox4.Items.Count == checkedListBox4.CheckedItems.Count;
         }
 
         
 
-        private bool AreAllPaymentStatusesCurrentlySelected()
+        protected bool AreAllPaymentStatusesCurrentlySelected()
         {
             return paymentStatusCheckBoxList.Items.Count == paymentStatusCheckBoxList.CheckedItems.Count;
         }
 
-        private bool AreAllTaskStatusesCurrentlySelected()
+        protected bool AreAllTaskStatusesCurrentlySelected()
         {
             return taskStatusCheckBoxList.Items.Count == taskStatusCheckBoxList.CheckedItems.Count;
         }
 
-        public List<RequestWithClientsDTO> ApplyFilters()
+        public virtual List<RequestWithClientsDTO> ApplyFilters()
         {
             var selectedPaymentStatuses = paymentStatusCheckBoxList.CheckedItems.Cast<string>().ToList();
             var selectedActivityTypeIds = checkedListBox3.CheckedItems.Cast<ActivityTypeSelection>().Select(a => a.ActivityTypeID).ToList();

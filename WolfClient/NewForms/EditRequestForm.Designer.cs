@@ -2,10 +2,6 @@
 {
     partial class EditRequestForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -26,7 +22,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        protected void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditRequestForm));
@@ -289,8 +285,7 @@
             // 
             // EditRequestForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.None;
             AutoSize = true;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(878, 760);
@@ -330,31 +325,32 @@
 
         #endregion
 
-        private Button AddRequestButton;
-        private Button AddNonExistingClientButton;
-        private Label AddNonExistingClientLabel;
-        private Button AddClientComboBoxButton;
-        private Label AddExistingClientToRequestLabel;
-        private RichTextBox CommentsRichTextBox;
-        private Label NewClientsFlowPanel;
-        private TextBox AdvanceTextBox;
-        private Label AdvanceLabel;
-        private TextBox PriceOfRequestTextBox;
-        private Label PriceOfRequestLabel;
-        private TextBox NameOfRequestTextBox;
-        private Label NameOfRequestTiltleLabel;
-        private Panel NewClientsPanel;
-        private FlowLayoutPanel AvailableClientsFlowPanel;
-        private Panel panel1;
-        private FlowLayoutPanel NotAvailableClientsFlowPanel;
-        private ErrorProvider RequestErrorProvider;
-        private Label NameOfRequestErrorLabel;
-        private Label AdvancePriceErrorLabel;
-        private Label FinalPriceErrorLabel;
-        private TextBox PathTextBox;
-        private Button openFilesButton;
-        private Label label1;
-        private Label label2;
-        private ComboBox RequestCreatorComboBox;
+        protected Button AddRequestButton;
+        protected Button AddNonExistingClientButton;
+        protected Label AddNonExistingClientLabel;
+        protected Button AddClientComboBoxButton;
+        protected Label AddExistingClientToRequestLabel;
+        protected RichTextBox CommentsRichTextBox;
+        protected Label NewClientsFlowPanel;
+        protected TextBox AdvanceTextBox;
+        protected Label AdvanceLabel;
+        protected TextBox PriceOfRequestTextBox;
+        protected Label PriceOfRequestLabel;
+        protected TextBox NameOfRequestTextBox;
+        protected Label NameOfRequestTiltleLabel;
+        protected Panel NewClientsPanel;
+        protected FlowLayoutPanel AvailableClientsFlowPanel;
+        protected Panel panel1;
+        protected FlowLayoutPanel NotAvailableClientsFlowPanel;
+        protected ErrorProvider RequestErrorProvider;
+        protected Label NameOfRequestErrorLabel;
+        protected Label AdvancePriceErrorLabel;
+        protected Label FinalPriceErrorLabel;
+        protected TextBox PathTextBox;
+        protected Button openFilesButton;
+        protected Label label1;
+        protected Label label2;
+        protected ComboBox RequestCreatorComboBox;
+        private System.ComponentModel.IContainer components;
     }
 }

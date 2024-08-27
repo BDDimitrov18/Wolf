@@ -236,6 +236,7 @@ namespace WolfClient.NewForms
                 Comments = CommentsRichTextBox.Text,
                 RequestName = NameOfRequestTextBox.Text,
                 RequestCreatorId = (int)RequestCreatorComboBox.SelectedValue,
+                Status = "Active"
             };
             List<CreateRequestDTO> requestDTOs = new List<CreateRequestDTO>();
             requestDTOs.Add(createRequestDTO);

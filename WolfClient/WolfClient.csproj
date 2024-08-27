@@ -64,7 +64,7 @@
     <Compile Update="UserControls\MenuEmployeesUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="UserControls\MenuRequestsUserControl.cs" />
+    <Compile Update="UserControls\MenuRequestsUserControlBase.cs" />
   </ItemGroup>
 
   <ItemGroup>

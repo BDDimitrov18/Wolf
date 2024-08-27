@@ -5,7 +5,7 @@
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        protected System.ComponentModel.IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -26,7 +26,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        protected void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(inqueriesAdminForm));
             firstDate = new DateTimePicker();
@@ -444,18 +444,17 @@
             panel3.Size = new Size(250, 686);
             panel3.TabIndex = 27;
             // 
-            // inquiriesAdminForm
+            // inqueriesAdminForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.None;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(1080, 716);
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "inquiriesAdminForm";
-            Text = "Wolf: Справки Админ";
+            Name = "inqueriesAdminForm";
+            Text = "Wolf Archive : Справки Админ";
             Load += inquiriesAdminForm_Load_1;
             flowLayoutPanel1.ResumeLayout(false);
             panel1.ResumeLayout(false);
@@ -479,40 +478,40 @@
 
         #endregion
 
-        private DateTimePicker firstDate;
-        private Label firstDateLabel;
-        private Label label1;
-        private DateTimePicker SecondDate;
-        private CheckedListBox employeesCheckBoxList;
-        private Label label2;
-        private FlowLayoutPanel flowLayoutPanel1;
-        private Label label3;
-        private Label label4;
-        private CheckedListBox paymentStatusCheckBoxList;
-        private CheckBox allEmployeesCheckBox;
-        private CheckBox allPaymentStatusCheckBox;
-        private CheckedListBox checkedListBox3;
-        private Label label5;
-        private TextBox textBox1;
-        private Label label6;
-        private Label label7;
-        private TextBox textBox2;
-        private Label label8;
-        private CheckedListBox checkedListBox4;
-        private CheckBox allActivityCheckBox;
-        private CheckBox allTasksButton;
-        private CheckBox taskStatusAllCheckBox;
-        private Label label9;
-        private CheckedListBox taskStatusCheckBoxList;
-        private Button AllTasksInqueri;
-        private Panel panel1;
-        private Panel panel2;
-        private Panel panel3;
-        private Panel panel4;
-        private TableLayoutPanel tableLayoutPanel1;
-        private Panel panel5;
-        private Panel panel6;
-        private Panel panel8;
-        private Panel panel7;
+        protected DateTimePicker firstDate;
+        protected Label firstDateLabel;
+        protected Label label1;
+        protected DateTimePicker SecondDate;
+        protected CheckedListBox employeesCheckBoxList;
+        protected Label label2;
+        protected FlowLayoutPanel flowLayoutPanel1;
+        protected Label label3;
+        protected Label label4;
+        protected CheckedListBox paymentStatusCheckBoxList;
+        protected CheckBox allEmployeesCheckBox;
+        protected CheckBox allPaymentStatusCheckBox;
+        protected CheckedListBox checkedListBox3;
+        protected Label label5;
+        protected TextBox textBox1;
+        protected Label label6;
+        protected Label label7;
+        protected TextBox textBox2;
+        protected Label label8;
+        protected CheckedListBox checkedListBox4;
+        protected CheckBox allActivityCheckBox;
+        protected CheckBox allTasksButton;
+        protected CheckBox taskStatusAllCheckBox;
+        protected Label label9;
+        protected CheckedListBox taskStatusCheckBoxList;
+        protected Button AllTasksInqueri;
+        protected Panel panel1;
+        protected Panel panel2;
+        protected Panel panel3;
+        protected Panel panel4;
+        protected TableLayoutPanel tableLayoutPanel1;
+        protected Panel panel5;
+        protected Panel panel6;
+        protected Panel panel8;
+        protected Panel panel7;
     }
 }

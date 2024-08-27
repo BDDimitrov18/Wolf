@@ -26,6 +26,7 @@ namespace DataAccessLayer.Models
         public int? RequestCreatorId { get; set; }
 
         public Employee? RequestCreator { get; set; }
+        public string Status { get; set; }
 
         public ICollection<Client_RequestRelashionship> Client_RequestRelationships { get; set; }
         public ICollection<Invoice> Invoices { get; set; }

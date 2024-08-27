@@ -25,5 +25,7 @@ namespace DTOS.DTO
 
         public int? RequestCreatorId { get; set; }
 
+        public string Status { get; set; }
+
     }
 }
