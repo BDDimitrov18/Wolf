@@ -64,6 +64,7 @@
             Name = "AddActivityTaskForm";
             Text = "Wolf: Добавяне на задача";
             WindowState = FormWindowState.Maximized;
+            Load += AddActivityTaskForm_Load;
             ResumeLayout(false);
         }
 

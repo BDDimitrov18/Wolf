@@ -8,9 +8,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <PlatformTarget>x64</PlatformTarget>
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <ApplicationIcon>if-09-harry-potter-colour-sirius-black-wolf-2730322_88141 (1) (1).ico</ApplicationIcon>
+    <ApplicationIcon>if-09-harry-potter-colour-sirius-black-wolf-2730322_88141 (1).ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AssemblyVersion>1.11.0.0</AssemblyVersion>
+    <AssemblyVersion>1.10.0.0</AssemblyVersion>
     <PackageIcon>if-09-harry-potter-colour-sirius-black-wolf-2730322_88141 (1).ico</PackageIcon>
   </PropertyGroup>
 
@@ -93,8 +93,6 @@
     <None Remove="appsettings.json" />
     <None Remove="appsettings.Production.json" />
     <None Remove="EKT\ek_atte.xlsx" />
-    <None Remove="Properties\icons\active.ico" />
-    <None Remove="Properties\icons\cross.ico" />
     <None Remove="Properties\icons\WolfArchiveIcon.ico" />
     <None Remove="Properties\icons\WolfIcon.ico" />
   </ItemGroup>
@@ -112,13 +110,7 @@
     <Content Include="EKT\ek_atte.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="if-09-harry-potter-colour-sirius-black-wolf-2730322_88141 (1) (1).ico" />
-    <Content Include="Properties\icons\active.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Properties\icons\cross.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="if-09-harry-potter-colour-sirius-black-wolf-2730322_88141 (1).ico" />
     <Content Include="Properties\icons\WolfArchiveIcon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -48,7 +48,10 @@ namespace DataAccessLayer.Repositories
                 existingRequest.Advance = request.Advance;
                 existingRequest.Comments = request.Comments;
                 existingRequest.Path= request.Path;
-                existingRequest.RequestCreatorId = request.RequestCreatorId;
+                if (request.RequestCreatorId != null && request.RequestCreatorId != 0)
+                {
+                    existingRequest.RequestCreatorId = request.RequestCreatorId;
+                }
                 existingRequest.Status = request.Status;
                 // Save changes to the database
                 _WolfDbContext.SaveChanges();

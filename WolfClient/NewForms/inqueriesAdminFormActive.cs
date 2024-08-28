@@ -19,6 +19,8 @@ namespace WolfClient.NewForms
         : base(userClient, apiClient, dataService, adminClient)
         {
             InitializeComponent();
+            this.Text = GlobalSettings.FormTitle + " : Справки Админ";
+            this.Icon = new Icon(GlobalSettings.IconPath);
         }
 
         public override List<RequestWithClientsDTO> ApplyFilters()

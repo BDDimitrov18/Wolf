@@ -3,17 +3,38 @@ using System.Reflection;
 
 public class Updater
 {
-    private const string UpdateUrl = "https://192.168.0.25:8443/updates/WolfVersion.txt";
-    private const string InstallerUrl = "https://192.168.0.25:8443/updates/WolfSetup.exe";
+    private static string UpdateUrl;
+    private static string InstallerUrl;
 
-    public static async Task CheckForUpdatesAsync()
+    public static async Task CheckForUpdatesAsync(string controlType)
     {
+        // Set URLs based on ControlType
+        SetUrls(controlType);
+
         string currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         string newVersion = await GetLatestVersionAsync();
 
         if (IsNewVersionAvailable(currentVersion, newVersion))
         {
             await DownloadAndUpdateAsync();
+        }
+    }
+
+    private static void SetUrls(string controlType)
+    {
+        if (controlType == "Active")
+        {
+            UpdateUrl = "https://192.168.0.25:8443/updates/WolfVersion.txt";
+            InstallerUrl = "https://192.168.0.25:8443/updates/WolfSetup.exe";
+        }
+        else if (controlType == "Archive")
+        {
+            UpdateUrl = "https://192.168.0.25:8443/updates/WolfVersionArchive.txt";
+            InstallerUrl = "https://192.168.0.25:8443/updates/WolfSetupArchive.exe";
+        }
+        else
+        {
+            throw new InvalidOperationException("Invalid ControlType specified.");
         }
     }
 
@@ -43,7 +64,7 @@ public class Updater
 
     private static async Task DownloadAndUpdateAsync()
     {
-        string installerPath = Path.Combine(Path.GetTempPath(), "WolfSetup.exe");
+        string installerPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(InstallerUrl));
 
         using (HttpClient client = CreateHttpClient())
         {

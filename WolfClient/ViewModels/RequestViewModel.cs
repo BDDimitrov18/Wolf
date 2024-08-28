@@ -18,5 +18,7 @@ namespace WolfClient.ViewModels
         public string RequestName { get; set; }
 
         public string PlotsInfo { get; set; }
+
+        public  string Status { get; set; }
     }
 }

@@ -33,6 +33,9 @@ namespace WolfClient.NewForms
             _fileUploader = fileUploader;
             _webSocketClientService = webSocketClientService;
             _dataService = dataService;
+
+            this.Text = GlobalSettings.FormTitle + " : Log In";
+            this.Icon = new Icon(GlobalSettings.IconPath);
         }
 
 

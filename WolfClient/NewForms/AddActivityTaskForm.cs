@@ -32,6 +32,9 @@ namespace WolfClient.NewForms
             _adminClient = adminClient;
             _dataService = dataService;
             _activityTypesDTOs = new List<GetActivityTypeDTO>();
+
+            this.Text = GlobalSettings.FormTitle + " : Добавяне на дейности и задачи";
+            this.Icon = new Icon(GlobalSettings.IconPath);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -82,6 +85,8 @@ namespace WolfClient.NewForms
             }
         }
 
-        
+        private void AddActivityTaskForm_Load(object sender, EventArgs e)
+        {
+        }
     }
 }

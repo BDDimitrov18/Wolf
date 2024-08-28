@@ -18,6 +18,8 @@ namespace WolfClient.NewForms
         : base(apiClient, userClient, adminClient, dataService)
         {
             InitializeComponent();
+            this.Text = GlobalSettings.FormTitle + " : Редактиране на поръчка";
+            this.Icon = new Icon(GlobalSettings.IconPath);
         }
 
         protected override async void AddRequestForm_Load(object sender, EventArgs e)
@@ -32,8 +34,31 @@ namespace WolfClient.NewForms
             {
                 _availableClientsList = response.ResponseObj.ToList();
             }
-            PriceOfRequestTextBox.Text = _dataService.GetSelectedRequest().Price.ToString();
-            AdvanceTextBox.Text = _dataService.GetSelectedRequest().Advance.ToString();
+            if (_dataService.GetSelectedRequest().PaymentStatus != "Неопределен")
+            {
+                PriceOfRequestTextBox.Text = _dataService.GetSelectedRequest().Price.ToString();
+                AdvanceTextBox.Text = _dataService.GetSelectedRequest().Advance.ToString();
+            }
+            else
+            {
+                if (_dataService.GetSelectedRequest().Price.ToString() == "0")
+                {
+                    PriceOfRequestTextBox.Text = "";
+                }
+                else
+                {
+                    PriceOfRequestTextBox.Text = _dataService.GetSelectedRequest().Price.ToString();
+                }
+                if (_dataService.GetSelectedRequest().Advance.ToString() == "0")
+                {
+                    AdvanceTextBox.Text = "";
+                }
+                else
+                {
+                    AdvanceTextBox.Text = _dataService.GetSelectedRequest().Advance.ToString();
+                }
+            }
+
             NameOfRequestTextBox.Text = _dataService.GetSelectedRequest().RequestName;
             CommentsRichTextBox.Text = _dataService.GetSelectedRequest().Comments;
             ArchiveStatusComboBox.SelectedItem = _dataService.GetSelectedRequest().Status;
@@ -105,9 +130,9 @@ namespace WolfClient.NewForms
             GetRequestDTO editRequest = new GetRequestDTO();
             editRequest = _dataService.GetSelectedRequest();
             editRequest.Path = PathTextBox.Text;
-            editRequest.Price = float.Parse(PriceOfRequestTextBox.Text);
+            editRequest.Price = PriceOfRequestTextBox.Text ==""? 0 : float.Parse(PriceOfRequestTextBox.Text);
             editRequest.PaymentStatus = createPaymentStatus(AdvanceTextBox.Text, PriceOfRequestTextBox.Text);
-            editRequest.Advance = float.Parse(AdvanceTextBox.Text);
+            editRequest.Advance = AdvanceTextBox.Text == "" ? 0 : float.Parse(AdvanceTextBox.Text);
             editRequest.Comments = CommentsRichTextBox.Text;
             editRequest.RequestName = NameOfRequestTextBox.Text;
             editRequest.RequestCreatorId = (int)RequestCreatorComboBox.SelectedValue;

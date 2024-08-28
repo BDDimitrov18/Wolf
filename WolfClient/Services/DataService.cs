@@ -467,6 +467,11 @@ namespace WolfClient.Services
                             }
                         }
                     }
+                    if (request.RequestCreatorId != null) {
+                        if (request.RequestCreatorId == LoggedEmployee.EmployeeId) {
+                            toAdd = true;
+                        }
+                    }
                 }
                 if (toAdd)
                 {

@@ -30,6 +30,10 @@ namespace WolfClient.NewForms
         public DocumentEditor(IDataService dataService, byte[] fileData, GetActivityDTO activity)
         {
             InitializeComponent();
+
+            this.Text = GlobalSettings.FormTitle + " : Редактор на документ";
+            this.Icon = new Icon(GlobalSettings.IconPath);
+
             _dataService = dataService;
             _fileData = fileData;
             _selectedActivity = activity;

@@ -29,6 +29,10 @@ namespace WolfClient.NewForms
         public EditActivityTaskForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
+
+            this.Text = GlobalSettings.FormTitle + " : Редактиране на Дейност и задача";
+            this.Icon = new Icon(GlobalSettings.IconPath);
+
             _apiClient = apiClient;
             _userClient = userClient;
             _adminClient = adminClient;

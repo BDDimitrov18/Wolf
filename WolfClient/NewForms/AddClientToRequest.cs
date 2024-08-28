@@ -33,6 +33,9 @@ namespace WolfClient.NewForms
             _clientsList = new List<CreateClientDTO>();
             _requestDTO = requestDTO;
             _clientsToReturn = null;
+
+            this.Text = GlobalSettings.FormTitle + " : Добавяне на клиенти към поръчка";
+            this.Icon = new Icon(GlobalSettings.IconPath);
         }
 
         private void AddNonExistingClientButton_Click(object sender, EventArgs e)

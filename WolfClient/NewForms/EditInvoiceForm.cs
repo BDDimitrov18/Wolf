@@ -31,6 +31,9 @@ namespace WolfClient.NewForms
             selectedInvoice = _dataService.getSelectedInvoices()[0];
             _invoiceValidation = new CreateInvoiceDTO();
             InitializeComponent();
+
+            this.Text = GlobalSettings.FormTitle + " : Редактиране на фактура";
+            this.Icon = new Icon(GlobalSettings.IconPath);
         }
         private void ValidateModel()
         {

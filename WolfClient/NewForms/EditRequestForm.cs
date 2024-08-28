@@ -44,6 +44,9 @@ namespace WolfClient.NewForms
             _dataService = dataService;
             _requestValidator = new CreateRequestDTO();
 
+            this.Text = GlobalSettings.FormTitle + " : Редактиране на поръчка";
+            this.Icon = new Icon(GlobalSettings.IconPath);
+
             this.SetStyle(ControlStyles.DoubleBuffer |
                       ControlStyles.UserPaint |
                       ControlStyles.AllPaintingInWmPaint, true);
@@ -73,22 +76,28 @@ namespace WolfClient.NewForms
                 // Bind the form controls to the model properties
                 _requestValidator.RequestName = NameOfRequestTextBox.Text;
 
-                if (float.TryParse(PriceOfRequestTextBox.Text, out float price))
+                if (PriceOfRequestTextBox.Text != "")
                 {
-                    _requestValidator.Price = price;
-                }
-                else
-                {
-                    RequestErrorProvider.SetError(PriceOfRequestTextBox, "Invalid Price format");
+                    if (float.TryParse(PriceOfRequestTextBox.Text, out float price))
+                    {
+                        _requestValidator.Price = price;
+                    }
+                    else
+                    {
+                        RequestErrorProvider.SetError(PriceOfRequestTextBox, "Invalid Price format");
+                    }
                 }
 
-                if (float.TryParse(AdvanceTextBox.Text, out float advance))
+                if (AdvanceTextBox.Text != "")
                 {
-                    _requestValidator.Advance = advance;
-                }
-                else
-                {
-                    RequestErrorProvider.SetError(AdvanceTextBox, "Invalid Advance format");
+                    if (float.TryParse(AdvanceTextBox.Text, out float advance))
+                    {
+                        _requestValidator.Advance = advance;
+                    }
+                    else
+                    {
+                        RequestErrorProvider.SetError(AdvanceTextBox, "Invalid Advance format");
+                    }
                 }
                 // Validate the model
                 IList<ValidationResult> memberNameResults = WolfClient.Validators.Validator.Validate(_requestValidator);
@@ -157,8 +166,27 @@ namespace WolfClient.NewForms
             {
                 _availableClientsList = response.ResponseObj.ToList();
             }
-            PriceOfRequestTextBox.Text = _dataService.GetSelectedRequest().Price.ToString();
-            AdvanceTextBox.Text = _dataService.GetSelectedRequest().Advance.ToString();
+            if (_dataService.GetSelectedRequest().PaymentStatus != "Неопределен")
+            {
+                PriceOfRequestTextBox.Text = _dataService.GetSelectedRequest().Price.ToString();
+                AdvanceTextBox.Text = _dataService.GetSelectedRequest().Advance.ToString();
+            }
+            else { 
+                if(_dataService.GetSelectedRequest().Price.ToString() == "0")
+                {
+                    PriceOfRequestTextBox.Text = "";
+                }
+                else {
+                    PriceOfRequestTextBox.Text = _dataService.GetSelectedRequest().Price.ToString();
+                }
+                if (_dataService.GetSelectedRequest().Advance.ToString() == "0")
+                {
+                    AdvanceTextBox.Text = "";
+                }
+                else {
+                    AdvanceTextBox.Text = _dataService.GetSelectedRequest().Advance.ToString();
+                }
+            }
             NameOfRequestTextBox.Text = _dataService.GetSelectedRequest().RequestName;
             CommentsRichTextBox.Text = _dataService.GetSelectedRequest().Comments;
 
@@ -283,9 +311,10 @@ namespace WolfClient.NewForms
             GetRequestDTO editRequest = new GetRequestDTO();
             editRequest = _dataService.GetSelectedRequest();
             editRequest.Path = PathTextBox.Text;
-            editRequest.Price = float.Parse(PriceOfRequestTextBox.Text);
+            
+            editRequest.Price = PriceOfRequestTextBox.Text == "" ? 0 :float.Parse(PriceOfRequestTextBox.Text);
             editRequest.PaymentStatus = createPaymentStatus(AdvanceTextBox.Text, PriceOfRequestTextBox.Text);
-            editRequest.Advance = float.Parse(AdvanceTextBox.Text);
+            editRequest.Advance = AdvanceTextBox.Text == "" ? 0 : float.Parse(AdvanceTextBox.Text);
             editRequest.Comments = CommentsRichTextBox.Text;
             editRequest.RequestName = NameOfRequestTextBox.Text;
             editRequest.RequestCreatorId = (int)RequestCreatorComboBox.SelectedValue;
@@ -336,6 +365,13 @@ namespace WolfClient.NewForms
         protected string createPaymentStatus(string advance, string price)
         {
             string paymentStatus;
+
+            if (advance == "" || price == "")
+            {
+                paymentStatus = "Неопределен";
+                return paymentStatus;
+            }
+
             if (float.Parse(advance) == float.Parse(price))
             {
                 paymentStatus = "Платен";

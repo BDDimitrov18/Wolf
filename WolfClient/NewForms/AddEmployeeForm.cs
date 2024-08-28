@@ -30,6 +30,8 @@ namespace WolfClient.NewForms
             _userClient = userClient;
             _adminClient = adminClient;
             _dataService = dataService;
+            this.Text = GlobalSettings.FormTitle + " : Добавяне на служител";
+            this.Icon = new Icon(GlobalSettings.IconPath);
         }
 
         private void AddEmployeeForm_Load(object sender, EventArgs e)

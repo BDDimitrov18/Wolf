@@ -37,6 +37,9 @@ namespace WolfClient.NewForms
 
             _clientValidator = new CreateClientDTO();
 
+            this.Text = GlobalSettings.FormTitle + " : Добавяне на клиент";
+            this.Icon = new Icon(GlobalSettings.IconPath);
+
             this.SetStyle(ControlStyles.DoubleBuffer |
                       ControlStyles.UserPaint |
                       ControlStyles.AllPaintingInWmPaint, true);

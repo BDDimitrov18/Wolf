@@ -37,6 +37,9 @@ namespace WolfClient.NewForms
 
             _ownerValidator = new CreateOwnerDTO();
             _documentOfOwnershipValidator = new CreateDocumentOfOwnershipDTO();
+
+            this.Text = GlobalSettings.FormTitle + " : Добавяне на собственост";
+            this.Icon = new Icon(GlobalSettings.IconPath);
         }
 
         private void label14_Click(object sender, EventArgs e)

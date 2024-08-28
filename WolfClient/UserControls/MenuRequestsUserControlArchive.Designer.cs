@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             label6 = new Label();
-            comboBox1 = new ComboBox();
+            ArchiveStatusComboBox = new ComboBox();
             panel3.SuspendLayout();
             tabPage2.SuspendLayout();
             panel2.SuspendLayout();
@@ -51,6 +51,7 @@
             // 
             // cmbPaymentStatus
             // 
+            cmbPaymentStatus.Items.AddRange(new object[] { "", "Платен", "Не Платен", "Аванс" });
             cmbPaymentStatus.Location = new Point(175, 219);
             // 
             // label3
@@ -72,6 +73,7 @@
             // 
             // statusCheckBox
             // 
+            statusCheckBox.Items.AddRange(new object[] { "", "Зададена", "Завършена", "Оферта" });
             statusCheckBox.Location = new Point(156, 96);
             // 
             // label11
@@ -121,7 +123,7 @@
             // 
             // filtersPanel
             // 
-            filtersPanel.Controls.Add(comboBox1);
+            filtersPanel.Controls.Add(ArchiveStatusComboBox);
             filtersPanel.Controls.Add(label6);
             filtersPanel.Size = new Size(772, 510);
             filtersPanel.Controls.SetChildIndex(plotNumberTextBox, 0);
@@ -152,7 +154,7 @@
             filtersPanel.Controls.SetChildIndex(EmployeesFilterLabel, 0);
             filtersPanel.Controls.SetChildIndex(EmployeesFilterCheckBoxList, 0);
             filtersPanel.Controls.SetChildIndex(label6, 0);
-            filtersPanel.Controls.SetChildIndex(comboBox1, 0);
+            filtersPanel.Controls.SetChildIndex(ArchiveStatusComboBox, 0);
             // 
             // label6
             // 
@@ -164,15 +166,15 @@
             label6.TabIndex = 75;
             label6.Text = "Архивен Статус :";
             // 
-            // comboBox1
+            // ArchiveStatusComboBox
             // 
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Всички", "Активни", "Архивни" });
-            comboBox1.Location = new Point(171, 59);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(160, 28);
-            comboBox1.TabIndex = 76;
+            ArchiveStatusComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            ArchiveStatusComboBox.FormattingEnabled = true;
+            ArchiveStatusComboBox.Items.AddRange(new object[] { "Всички", "Активни", "Архивни" });
+            ArchiveStatusComboBox.Location = new Point(171, 59);
+            ArchiveStatusComboBox.Name = "ArchiveStatusComboBox";
+            ArchiveStatusComboBox.Size = new Size(160, 28);
+            ArchiveStatusComboBox.TabIndex = 76;
             // 
             // MenuRequestsUserControlArchive
             // 
@@ -205,6 +207,6 @@
         #endregion
 
         private Label label6;
-        private ComboBox comboBox1;
+        private ComboBox ArchiveStatusComboBox;
     }
 }

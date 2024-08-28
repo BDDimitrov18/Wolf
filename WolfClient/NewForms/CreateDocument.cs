@@ -24,6 +24,9 @@ namespace WolfClient.NewForms
             _dataService = dataService;
             _fileUploader = fileUploader;
             InitializeComponent();
+
+            this.Text = GlobalSettings.FormTitle + " : Добавяне на създаване на документ";
+            this.Icon = new Icon(GlobalSettings.IconPath);
         }
 
         private async void UploadButton_Click(object sender, EventArgs e)

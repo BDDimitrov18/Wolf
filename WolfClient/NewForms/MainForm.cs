@@ -37,6 +37,10 @@ namespace WolfClient.NewForms
             IFileUploader fileUploader, WebSocketClientService websocketClientService, string ArchiveStatus)
         {
             InitializeComponent();
+
+            this.Text = GlobalSettings.FormTitle + " : Управление на поръчки";
+            this.Icon = new Icon(GlobalSettings.IconPath);
+
             _apiClient = apiClient;
             _userClient = userClient;
             _adminClient = adminClient;
@@ -188,7 +192,8 @@ namespace WolfClient.NewForms
                 }
                 else if (_ArchiveStatus == "Active")
                 {
-
+                    inqueriesUserFormActive form = new inqueriesUserFormActive(_userClient, _apiClient, _dataService, _adminClient);
+                    form.Show();
                 }
             }
         }

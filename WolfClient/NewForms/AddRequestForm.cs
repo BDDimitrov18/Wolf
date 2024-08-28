@@ -43,6 +43,9 @@ namespace WolfClient.NewForms
 
             _requestValidator = new CreateRequestDTO();
 
+            this.Text = GlobalSettings.FormTitle + " : Добавяне на поръчка";
+            this.Icon = new Icon(GlobalSettings.IconPath);
+
             this.SetStyle(ControlStyles.DoubleBuffer |
                       ControlStyles.UserPaint |
                       ControlStyles.AllPaintingInWmPaint, true);
@@ -68,22 +71,28 @@ namespace WolfClient.NewForms
                 // Bind the form controls to the model properties
                 _requestValidator.RequestName = NameOfRequestTextBox.Text;
 
-                if (float.TryParse(PriceOfRequestTextBox.Text, out float price))
+                if (PriceOfRequestTextBox.Text != "")
                 {
-                    _requestValidator.Price = price;
-                }
-                else
-                {
-                    RequestErrorProvider.SetError(PriceOfRequestTextBox, "Invalid Price format");
+                    if (float.TryParse(PriceOfRequestTextBox.Text, out float price))
+                    {
+                        _requestValidator.Price = price;
+                    }
+                    else
+                    {
+                        RequestErrorProvider.SetError(PriceOfRequestTextBox, "Invalid Price format");
+                    }
                 }
 
-                if (float.TryParse(AdvanceTextBox.Text, out float advance))
+                if (AdvanceTextBox.Text != "")
                 {
-                    _requestValidator.Advance = advance;
-                }
-                else
-                {
-                    RequestErrorProvider.SetError(AdvanceTextBox, "Invalid Advance format");
+                    if (float.TryParse(AdvanceTextBox.Text, out float advance))
+                    {
+                        _requestValidator.Advance = advance;
+                    }
+                    else
+                    {
+                        RequestErrorProvider.SetError(AdvanceTextBox, "Invalid Advance format");
+                    }
                 }
                 // Validate the model
                 IList<ValidationResult> memberNameResults = WolfClient.Validators.Validator.Validate(_requestValidator);
@@ -94,16 +103,17 @@ namespace WolfClient.NewForms
                     {
                         foreach (var memberName in result.MemberNames)
                         {
-                            // Map property names to control names
-                            string controlName = GetControlNameForMember(memberName);
-                            if (controlName != null)
-                            {
-                                Control control = Controls.Find(controlName, true).FirstOrDefault();
-                                if (control != null)
+                            
+                                // Map property names to control names
+                                string controlName = GetControlNameForMember(memberName);
+                                if (controlName != null)
                                 {
-                                    RequestErrorProvider.SetError(control, result.ErrorMessage);
+                                    Control control = Controls.Find(controlName, true).FirstOrDefault();
+                                    if (control != null)
+                                    {
+                                        RequestErrorProvider.SetError(control, result.ErrorMessage);
+                                    }
                                 }
-                            }
                         }
                     }
                 }
@@ -230,9 +240,9 @@ namespace WolfClient.NewForms
             CreateRequestDTO createRequestDTO = new CreateRequestDTO()
             {
                 Path = PathTextBox.Text,
-                Price = float.Parse(PriceOfRequestTextBox.Text),
+                Price = paymentStatus == "Неопределен" ? 0 :float.Parse(PriceOfRequestTextBox.Text),
                 PaymentStatus = paymentStatus,
-                Advance = float.Parse(AdvanceTextBox.Text),
+                Advance = paymentStatus == "Неопределен" ? 0 : float.Parse(AdvanceTextBox.Text),
                 Comments = CommentsRichTextBox.Text,
                 RequestName = NameOfRequestTextBox.Text,
                 RequestCreatorId = (int)RequestCreatorComboBox.SelectedValue,
@@ -278,6 +288,12 @@ namespace WolfClient.NewForms
         private string createPaymentStatus(string advance, string price)
         {
             string paymentStatus;
+            if(advance == "" || price == "")
+            {
+                paymentStatus = "Неопределен";
+                return paymentStatus;
+            } 
+
             if (float.Parse(advance) == float.Parse(price))
             {
                 paymentStatus = "Платен";

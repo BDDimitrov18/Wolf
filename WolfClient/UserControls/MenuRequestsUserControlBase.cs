@@ -1082,7 +1082,7 @@ namespace WolfClient.UserControls
 
                     foreach (var task in activity.Tasks)
                     {
-                        if (!(task.FinishDate >= startOfWeek && task.FinishDate < endOfWeek))
+                        if (!(task.FinishDate >= startOfWeek && task.FinishDate < endOfWeek) && task.Status != "Зададена")
                         {
                             tasksToRemove.Add(task);
                         }
@@ -1152,6 +1152,53 @@ namespace WolfClient.UserControls
                     {
                         activitiesToRemove.Add(activity);
                     }
+                }
+            }
+            if (overdueTasksFilter.Checked)
+            {
+                var activitiesToRemove = new List<GetActivityDTO>();
+                DateTime today = DateTime.Today;
+
+                foreach (var activity in filteredList)
+                {
+                    bool toRemove = true;
+                    var tasksToRemove = new List<GetTaskDTO>();
+
+                    foreach (var task in activity.Tasks)
+                    {
+                        // Check if the task is overdue
+                        if (task.Status == "Зададена" && task.FinishDate < today)
+                        {
+                            toRemove = false; // Do not remove this activity if there is at least one overdue task
+                        }
+                        else
+                        {
+                            tasksToRemove.Add(task); // Mark task for removal if it's not overdue
+                        }
+                    }
+
+                    // Remove the non-overdue tasks after iterating over them
+                    foreach (var task in tasksToRemove)
+                    {
+                        activity.Tasks.Remove(task);
+                    }
+
+                    // If there are no tasks left in the activity, mark the activity for removal
+                    if (activity.Tasks.Count == 0)
+                    {
+                        toRemove = true;
+                    }
+
+                    if (toRemove)
+                    {
+                        activitiesToRemove.Add(activity);
+                    }
+                }
+
+                // Remove the activities that have no overdue tasks
+                foreach (var activity in activitiesToRemove)
+                {
+                    filteredList.Remove(activity);
                 }
             }
 
@@ -1462,7 +1509,7 @@ namespace WolfClient.UserControls
 
             return selectedEmployees;
         }
-        protected List<GetRequestDTO> ApplyFilters(List<GetRequestDTO>? requestDTOs)
+        protected virtual List<GetRequestDTO> ApplyFilters(List<GetRequestDTO>? requestDTOs)
         {
             if (requestDTOs == null || requestDTOs.Count() == 0) return requestDTOs;
 
@@ -1692,7 +1739,7 @@ namespace WolfClient.UserControls
             return -1;
         }
 
-        protected void UpdateRequestGridViewRows(List<GetRequestDTO> filteredList)
+        protected virtual void UpdateRequestGridViewRows(List<GetRequestDTO> filteredList)
         {
 
             RequestDataGridView.AutoGenerateColumns = false;

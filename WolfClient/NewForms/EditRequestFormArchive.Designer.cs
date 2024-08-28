@@ -89,7 +89,7 @@
             // 
             ArchiveStatusComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             ArchiveStatusComboBox.FormattingEnabled = true;
-            ArchiveStatusComboBox.Items.AddRange(new object[] { "Active", "Acrchived" });
+            ArchiveStatusComboBox.Items.AddRange(new object[] { "Active", "Archived" });
             ArchiveStatusComboBox.Location = new Point(17, 492);
             ArchiveStatusComboBox.Name = "ArchiveStatusComboBox";
             ArchiveStatusComboBox.Size = new Size(316, 28);

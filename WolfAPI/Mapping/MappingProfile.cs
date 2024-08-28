@@ -14,13 +14,16 @@ namespace WolfAPI.Mapping
             CreateMap<Client, GetClientDTO>();
             CreateMap<Employee, GetEmployeeDTO>();
             CreateMap<Request, GetRequestDTO>()
-           .ForMember(dest => dest.RequestCreatorId, opt => opt.MapFrom(src => src.RequestCreatorId))
-           .ForMember(dest => dest.RequestCreator, opt => opt.MapFrom(src => src.RequestCreator));
+            .ForMember(dest => dest.RequestCreatorId, opt => opt.MapFrom(src => src.RequestCreatorId))
+            .ForMember(dest => dest.RequestCreator, opt => opt.MapFrom(src => src.RequestCreator))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status)); // Explicit mapping for Status
 
             // Map from GetRequestDTO to Request
             CreateMap<GetRequestDTO, Request>()
                 .ForMember(dest => dest.RequestCreatorId, opt => opt.MapFrom(src => src.RequestCreatorId))
-                .ForMember(dest => dest.RequestCreator, opt => opt.MapFrom(src => src.RequestCreator));
+                .ForMember(dest => dest.RequestCreator, opt => opt.MapFrom(src => src.RequestCreator))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status)); // Explicit mapping for Status
+
             CreateMap<GetClientDTO, Client>();
             CreateMap<GetEmployeeDTO, Employee>();
 

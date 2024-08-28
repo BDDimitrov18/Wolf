@@ -49,6 +49,9 @@ namespace WolfClient.NewForms
         public inqueriesUserForm(IUserClient userClient, IApiClient apiClient, IDataService dataService, IAdminClient adminClient)
         {
             InitializeComponent();
+            this.Text = GlobalSettings.FormTitle + " : Справки Потребител";
+            this.Icon = new Icon(GlobalSettings.IconPath);
+
             _userClient = userClient;
             _apiClient = apiClient;
             _dataService = dataService;

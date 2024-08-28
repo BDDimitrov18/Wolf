@@ -35,6 +35,9 @@ namespace WolfClient.NewForms
             _dataService = dataService;
             allPlots = new List<GetPlotDTO>();
             plotValidator = new CreatePlotDTO();
+
+            this.Text = GlobalSettings.FormTitle + " : Добавяне на имот";
+            this.Icon = new Icon(GlobalSettings.IconPath);
         }
 
         private void ValidateModel()
