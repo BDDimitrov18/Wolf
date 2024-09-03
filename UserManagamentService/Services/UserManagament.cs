@@ -18,6 +18,7 @@ using UserManagamentService.Models;
 using UserManagamentService.Models.Authentication.Login;
 using UserManagamentService.Models.Authentication.SignUp;
 using UserManagamentService.Services.Interfaces;
+using WolfClient;
 
 namespace UserManagamentService.Services
 {
@@ -150,7 +151,7 @@ namespace UserManagamentService.Services
             var token = new JwtSecurityToken(
                     issuer: _config["JWT:ValidIssuer"],
                     audience: _config["JWT:ValidAudience"],
-                    expires: DateTime.Now.AddHours(4),
+                    expires: TimeSettingsUserManagament.GetCurrentTime().AddHours(4),
                     claims: authClaims,
                     signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
 

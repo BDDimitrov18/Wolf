@@ -11,6 +11,7 @@ internal static class Program
     [STAThread]
     static void Main()
     {
+
         // Set up configuration
         var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())

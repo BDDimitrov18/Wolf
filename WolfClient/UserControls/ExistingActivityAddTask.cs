@@ -275,18 +275,26 @@ namespace WolfClient.UserControls
 
         private async void AddActivitySubmit_Click(object sender, EventArgs e)
         {
+            TimeZoneInfo bulgariaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time");
+            DateTime utcNow = DateTime.UtcNow;
+
+            // Convert UTC time to Bulgarian time
+            DateTime bulgariaTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, bulgariaTimeZone);
+
             if (ValidateTaskComboBox())
             {
 
                 GetTaskTypeDTO taskTypeDTO = TaskComboBox.SelectedItem as GetTaskTypeDTO;
                 GetActivityDTO activityDTO = ActivityComboBox.SelectedItem as GetActivityDTO;
 
+
+
                 CreateTaskDTO createTaskDTO = new CreateTaskDTO()
                 {
                     FinishDate = endDateDateTimePicker.Value,
                     ActivityId = (int)ActivityComboBox.SelectedValue,
                     Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
-                    StartDate = DateTime.Now,
+                    StartDate = bulgariaTime,
                     ExecutantId = (int)ExecitantComboBox.SelectedValue,
                     ControlId = ControlComboBox.Text == "Няма Контрол" ? null : (int)ControlComboBox.SelectedValue,
                     Comments = CommentsRichTextBox.Text,
@@ -323,7 +331,7 @@ namespace WolfClient.UserControls
                     FinishDate = endDateDateTimePicker.Value,
                     ActivityId = activityDTO.ActivityId,
                     Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
-                    StartDate = DateTime.Now,
+                    StartDate = bulgariaTime,
                     ExecutantId = (int)ExecitantComboBox.SelectedValue,
                     ControlId = ControlComboBox.Text == "Няма Контрол" ? null : (int)ControlComboBox.SelectedValue,
                     Comments = CommentsRichTextBox.Text,

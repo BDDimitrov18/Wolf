@@ -441,11 +441,12 @@ namespace WolfClient.Services
             List<GetRequestDTO> returnRequest = new List<GetRequestDTO>();
             foreach (var link in compositeData._fetchedLinkedClients)
             {
-                bool toAdd = false;
+               
                 foreach (var request in requestDTOs)
                 {
                     if (link.requestDTO.RequestId == request.RequestId)
                     {
+                        bool toAdd = false;
                         if (link.activityDTOs != null && link.activityDTOs.Count() > 0)
                         {
                             foreach (var activity in link.activityDTOs)
@@ -466,16 +467,19 @@ namespace WolfClient.Services
                                 }
                             }
                         }
-                    }
-                    if (request.RequestCreatorId != null) {
-                        if (request.RequestCreatorId == LoggedEmployee.EmployeeId) {
-                            toAdd = true;
+                        if (request.RequestCreatorId != null)
+                        {
+                            if (request.RequestCreatorId == LoggedEmployee.EmployeeId)
+                            {
+                                toAdd = true;
+                            }
+                        }
+                        if (toAdd)
+                        {
+                            returnRequest.Add(request);
                         }
                     }
-                }
-                if (toAdd)
-                {
-                    returnRequest.Add(link.requestDTO);
+                    
                 }
             }
             return returnRequest;
@@ -545,9 +549,9 @@ namespace WolfClient.Services
                         {
                             foreach (var activity in link.activityDTOs)
                             {
-                                if (activity.ExpectedDuration.Year == DateTime.Now.Year &&
-                                    activity.ExpectedDuration.Month == DateTime.Now.Month &&
-                                    activity.ExpectedDuration.Day == DateTime.Now.Day)
+                                if (activity.ExpectedDuration.Year == GlobalSettings.GetCurrentTime().Year &&
+                                    activity.ExpectedDuration.Month == GlobalSettings.GetCurrentTime().Month &&
+                                    activity.ExpectedDuration.Day == GlobalSettings.GetCurrentTime().Day)
                                 {
                                     toadd = true;
                                 }
@@ -555,9 +559,9 @@ namespace WolfClient.Services
                                 {
                                     foreach (var task in activity.Tasks)
                                     {
-                                        if (task.FinishDate.Year == DateTime.Now.Year &&
-                                            task.FinishDate.Month == DateTime.Now.Month &&
-                                            task.FinishDate.Day == DateTime.Now.Day)
+                                        if (task.FinishDate.Year == GlobalSettings.GetCurrentTime().Year &&
+                                            task.FinishDate.Month == GlobalSettings.GetCurrentTime().Month &&
+                                            task.FinishDate.Day == GlobalSettings.GetCurrentTime().Day)
                                         {
                                             toadd = true;
                                         }

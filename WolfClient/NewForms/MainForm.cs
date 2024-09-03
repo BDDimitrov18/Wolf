@@ -33,6 +33,8 @@ namespace WolfClient.NewForms
 
         private string _ArchiveStatus;
 
+        private MenuRequestsUserControlBase _currentUserControl;
+
         public MainForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService,
             IFileUploader fileUploader, WebSocketClientService websocketClientService, string ArchiveStatus)
         {
@@ -71,6 +73,48 @@ namespace WolfClient.NewForms
             UserLabel.TextChanged += ResizePanelToFitLabel;
             RequestToolStripButton_Click(new object { }, new EventArgs());
 
+            this.KeyDown += new KeyEventHandler(MainForm_KeyDown);
+
+            // Ensure the form can receive key events
+            this.KeyPreview = true;
+
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Check if Control + F is pressed
+            if (e.Control && e.KeyCode == Keys.F)
+            {
+                // Invoke the method on the currently loaded user control
+                _currentUserControl?.OnControlFPressed();
+                e.Handled = true;  // Optionally mark the event as handled
+            }
+            else if (e.KeyCode == Keys.F5)
+            {
+                // Invoke the method on the currently loaded user control
+                _currentUserControl?.OnF5Pressed();
+                e.Handled = true;  // Optionally mark the event as handled
+            }
+            else if (e.Shift && e.KeyCode == Keys.F1)
+            {
+                _currentUserControl?.OnShiftF1Pressed();
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.F1)
+            {
+                _currentUserControl?.OnF1Pressed();
+                e.Handled = true;
+            }
+            else if (e.Shift && e.KeyCode == Keys.F2)
+            {
+                _currentUserControl?.OnShiftF2Pressed();
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.F2)
+            {
+                _currentUserControl?.OnF2Pressed();
+                e.Handled = true;
+            }
         }
         private async void OnUserLoggedIn(object sender, LogInEventArgs e)
         {
@@ -113,11 +157,12 @@ namespace WolfClient.NewForms
             // If it's a MenuRequestsUserControl, trigger data and style reapplication
             if (userControl is MenuRequestsUserControlBase requestsUserControl)
             {
+                _currentUserControl = requestsUserControl;
                 requestsUserControl.UpdateRequestDataGridView(_dataService.getRequests());
             }
         }
 
-
+        
         private void RequestToolStripButton_Click(object sender, EventArgs e)
         {
             if (_ArchiveStatus == "Active") {

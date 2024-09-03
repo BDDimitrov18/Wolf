@@ -396,7 +396,7 @@ namespace WolfClient.UserControls
                         ActivityTypeID = activityTypeDTO.ActivityTypeID,
                         ExpectedDuration = expectedDurationDateTime.Value,
                         ParentActivityId = ParentActivityComboBox.Text != "Без Произлизаща Дейност" ? (int)ParentActivityComboBox.SelectedValue : null,
-                        StartDate = DateTime.Now,
+                        StartDate = GlobalSettings.GetCurrentTime(),
                         ExecutantId = (int)MainExecutantComboBox.SelectedValue,
                         employeePayment = float.Parse(PaymentMainExecutantTextBox.Text),
                     };
@@ -408,7 +408,7 @@ namespace WolfClient.UserControls
                     {
                         ActivityId = responseActivityDTO.ResponseObj.ActivityId,
                         Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
-                        StartDate = DateTime.Now,
+                        StartDate = GlobalSettings.GetCurrentTime(),
                         ExecutantId = (int)ExecitantComboBox.SelectedValue,
                         ControlId = ControlComboBox.Text == "Няма Контрол" ? null : (int)ControlComboBox.SelectedValue,
                         Comments = CommentsRichTextBox.Text,
@@ -447,7 +447,7 @@ namespace WolfClient.UserControls
                         ParentActivityId = ParentActivityComboBox.Text != "Без Произлизаща Дейност" ? (int)ParentActivityComboBox.SelectedValue : null,
                         ExecutantId = (int)MainExecutantComboBox.SelectedValue,
                         employeePayment = float.Parse(PaymentMainExecutantTextBox.Text),
-                        StartDate = DateTime.Now
+                        StartDate = GlobalSettings.GetCurrentTime()
                     };
 
 
@@ -457,7 +457,7 @@ namespace WolfClient.UserControls
                     {
                         ActivityId = responseActivityDTO.ResponseObj.ActivityId,
                         Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
-                        StartDate = DateTime.Now,
+                        StartDate = GlobalSettings.GetCurrentTime(),
                         ExecutantId = (int)ExecitantComboBox.SelectedValue,
                         ControlId = ControlComboBox.Text == "Няма Контрол" ? null : (int)ControlComboBox.SelectedValue,
                         Comments = CommentsRichTextBox.Text,
@@ -507,7 +507,7 @@ namespace WolfClient.UserControls
                     ParentActivityId = ParentActivityComboBox.Text != "Без Произлизаща Дейност" ? (int)ParentActivityComboBox.SelectedValue : null,
                     ExecutantId = (int)MainExecutantComboBox.SelectedValue,
                     employeePayment = float.Parse(PaymentMainExecutantTextBox.Text),
-                    StartDate = DateTime.Now
+                    StartDate = GlobalSettings.GetCurrentTime()
                 };
 
                 //DOESNT MAP THE TASKS PROPERLY
@@ -517,7 +517,7 @@ namespace WolfClient.UserControls
                 {
                     ActivityId = responseActivityDTO.ResponseObj.ActivityId,
                     Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
-                    StartDate = DateTime.Now,
+                    StartDate = GlobalSettings.GetCurrentTime(),
                     ExecutantId = (int)ExecitantComboBox.SelectedValue,
                     ControlId = ControlComboBox.Text == "Няма Контрол" ? null : (int)ControlComboBox.SelectedValue,
                     Comments = CommentsRichTextBox.Text,

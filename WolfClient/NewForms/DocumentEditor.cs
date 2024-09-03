@@ -310,7 +310,7 @@ namespace WolfClient.NewForms
         { "[Activity_AllPlots]", AllPlots },
         { "[Activity_AllPlots_UPI]", AllPlotsUpis },
         { "[Activity_AllPlots_neighborhoods]", AllPlotsNeigborhoods },
-        { "[Date]", DateTime.Now.Day.ToString() + "." + DateTime.Now.Month.ToString() + "." + DateTime.Now.Year.ToString()},
+        { "[Date]", GlobalSettings.GetCurrentTime().Day.ToString() + "." + GlobalSettings.GetCurrentTime().Month.ToString() + "." + GlobalSettings.GetCurrentTime().Year.ToString()},
     };
 
             foreach (var client in _selectedClients)

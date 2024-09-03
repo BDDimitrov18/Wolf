@@ -27,13 +27,13 @@ namespace WolfClient.UserControls
         protected void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuRequestsUserControlBase));
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             RequestDataGridView = new DataGridView();
             RequestId = new DataGridViewTextBoxColumn();
             RequestName = new DataGridViewTextBoxColumn();
@@ -93,6 +93,7 @@ namespace WolfClient.UserControls
             tabPage2 = new TabPage();
             panel2 = new Panel();
             panel1 = new Panel();
+            overdueTasksFilter = new CheckBox();
             taskStatusComboBox = new ComboBox();
             label7 = new Label();
             ApplyActivityFiltersButton = new Button();
@@ -192,7 +193,6 @@ namespace WolfClient.UserControls
             StarContextMenuStrip = new ContextMenuStrip(components);
             AvailableColors = new ToolStripMenuItem();
             ChooseColor = new ToolStripMenuItem();
-            overdueTasksFilter = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)RequestDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).BeginInit();
             panel3.SuspendLayout();
@@ -224,14 +224,14 @@ namespace WolfClient.UserControls
             RequestDataGridView.BackgroundColor = Color.Moccasin;
             RequestDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             RequestDataGridView.Columns.AddRange(new DataGridViewColumn[] { RequestId, RequestName, PaymentStatus, Comments, PlotsInfo });
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = SystemColors.Window;
-            dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle7.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-            RequestDataGridView.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            RequestDataGridView.DefaultCellStyle = dataGridViewCellStyle1;
             RequestDataGridView.GridColor = SystemColors.ControlText;
             RequestDataGridView.Location = new Point(0, 135);
             RequestDataGridView.Margin = new Padding(3, 4, 3, 4);
@@ -294,10 +294,10 @@ namespace WolfClient.UserControls
             RequestAddButton.BackgroundImage = (Image)resources.GetObject("RequestAddButton.BackgroundImage");
             RequestAddButton.BackgroundImageLayout = ImageLayout.Stretch;
             RequestAddButton.ForeColor = Color.Transparent;
-            RequestAddButton.Location = new Point(103, 38);
+            RequestAddButton.Location = new Point(92, 31);
             RequestAddButton.Margin = new Padding(3, 4, 3, 4);
             RequestAddButton.Name = "RequestAddButton";
-            RequestAddButton.Size = new Size(35, 35);
+            RequestAddButton.Size = new Size(45, 45);
             RequestAddButton.TabIndex = 2;
             RequestAddButton.UseVisualStyleBackColor = false;
             RequestAddButton.Click += button1_Click;
@@ -372,6 +372,7 @@ namespace WolfClient.UserControls
             // panel3
             // 
             panel3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            panel3.Controls.Add(RequestAddButton);
             panel3.Controls.Add(PathLink);
             panel3.Controls.Add(panel7);
             panel3.Controls.Add(editRequestButton);
@@ -380,7 +381,6 @@ namespace WolfClient.UserControls
             panel3.Controls.Add(RequestDataGridView);
             panel3.Controls.Add(label5);
             panel3.Controls.Add(RequestTableLabel);
-            panel3.Controls.Add(RequestAddButton);
             panel3.Controls.Add(RequestFiltersApplyButton);
             panel3.Location = new Point(3, 4);
             panel3.Margin = new Padding(3, 4, 3, 4);
@@ -475,9 +475,9 @@ namespace WolfClient.UserControls
             editRequestButton.BackColor = Color.Transparent;
             editRequestButton.BackgroundImage = (Image)resources.GetObject("editRequestButton.BackgroundImage");
             editRequestButton.BackgroundImageLayout = ImageLayout.Stretch;
-            editRequestButton.Location = new Point(175, 38);
+            editRequestButton.Location = new Point(194, 31);
             editRequestButton.Name = "editRequestButton";
-            editRequestButton.Size = new Size(35, 35);
+            editRequestButton.Size = new Size(45, 45);
             editRequestButton.TabIndex = 13;
             editRequestButton.UseVisualStyleBackColor = false;
             editRequestButton.Click += editRequestButton_Click;
@@ -487,9 +487,9 @@ namespace WolfClient.UserControls
             DeleteRequestButton.BackColor = Color.Transparent;
             DeleteRequestButton.BackgroundImage = (Image)resources.GetObject("DeleteRequestButton.BackgroundImage");
             DeleteRequestButton.BackgroundImageLayout = ImageLayout.Stretch;
-            DeleteRequestButton.Location = new Point(139, 38);
+            DeleteRequestButton.Location = new Point(143, 31);
             DeleteRequestButton.Name = "DeleteRequestButton";
-            DeleteRequestButton.Size = new Size(35, 35);
+            DeleteRequestButton.Size = new Size(45, 45);
             DeleteRequestButton.TabIndex = 12;
             DeleteRequestButton.UseVisualStyleBackColor = false;
             DeleteRequestButton.Click += DeleteRequestButton_Click;
@@ -499,9 +499,9 @@ namespace WolfClient.UserControls
             RefreshButton.BackColor = Color.Transparent;
             RefreshButton.BackgroundImage = (Image)resources.GetObject("RefreshButton.BackgroundImage");
             RefreshButton.BackgroundImageLayout = ImageLayout.Stretch;
-            RefreshButton.Location = new Point(211, 38);
+            RefreshButton.Location = new Point(245, 32);
             RefreshButton.Name = "RefreshButton";
-            RefreshButton.Size = new Size(35, 35);
+            RefreshButton.Size = new Size(45, 45);
             RefreshButton.TabIndex = 11;
             RefreshButton.UseVisualStyleBackColor = false;
             RefreshButton.Click += RefreshButton_Click;
@@ -902,6 +902,16 @@ namespace WolfClient.UserControls
             panel1.Size = new Size(667, 41);
             panel1.TabIndex = 35;
             // 
+            // overdueTasksFilter
+            // 
+            overdueTasksFilter.AutoSize = true;
+            overdueTasksFilter.Location = new Point(3, 16);
+            overdueTasksFilter.Name = "overdueTasksFilter";
+            overdueTasksFilter.Size = new Size(119, 24);
+            overdueTasksFilter.TabIndex = 28;
+            overdueTasksFilter.Text = "Просрочени";
+            overdueTasksFilter.UseVisualStyleBackColor = true;
+            // 
             // taskStatusComboBox
             // 
             taskStatusComboBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
@@ -1067,14 +1077,14 @@ namespace WolfClient.UserControls
             ActivityDataGridView.ColumnHeadersHeight = 60;
             ActivityDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             ActivityDataGridView.Columns.AddRange(new DataGridViewColumn[] { ParentActivity, Activity, MainExecutantName, MainExecutantPayment, Plots, StartDate, ActivityEndDate, Task, Executant, TaskExecutantPayment, TaskStartDate, TaskEndDate, Duration, Control, Comment, tax, taxComment, Status });
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = SystemColors.Window;
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle8.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
-            ActivityDataGridView.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            ActivityDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
             ActivityDataGridView.Location = new Point(0, 46);
             ActivityDataGridView.Margin = new Padding(3, 4, 3, 4);
             ActivityDataGridView.MinimumSize = new Size(933, 188);
@@ -1342,14 +1352,14 @@ namespace WolfClient.UserControls
             clientsDataGridView.BackgroundColor = Color.Moccasin;
             clientsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             clientsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ClientNumber, FirstName, MiddleName, LastName, Phone, Email, Address, ClientLegalType });
-            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = SystemColors.Window;
-            dataGridViewCellStyle9.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle9.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
-            clientsDataGridView.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Window;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            clientsDataGridView.DefaultCellStyle = dataGridViewCellStyle3;
             clientsDataGridView.GridColor = SystemColors.ControlText;
             clientsDataGridView.Location = new Point(1, 46);
             clientsDataGridView.Margin = new Padding(3, 4, 3, 4);
@@ -1529,23 +1539,23 @@ namespace WolfClient.UserControls
             // PlotsDataGridView
             // 
             PlotsDataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.WrapMode = DataGridViewTriState.True;
-            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            PlotsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             PlotsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             PlotsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             PlotsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             PlotsDataGridView.BackgroundColor = Color.Moccasin;
             PlotsDataGridView.ColumnHeadersHeight = 29;
             PlotsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ActivityName, PlotNumber, RegulatedPlotNumber, neighborhood, City, Municipality, Street, StreetNumber, designation, locality });
-            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = SystemColors.Window;
-            dataGridViewCellStyle11.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle11.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle11.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = DataGridViewTriState.True;
-            PlotsDataGridView.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = SystemColors.Window;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            PlotsDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
             PlotsDataGridView.Location = new Point(0, 46);
             PlotsDataGridView.Margin = new Padding(100, 4, 3, 4);
             PlotsDataGridView.Name = "PlotsDataGridView";
@@ -1750,14 +1760,14 @@ namespace WolfClient.UserControls
             OwnershipDataGridView.BackgroundColor = Color.Moccasin;
             OwnershipDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             OwnershipDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlotNumberDocTable, DocumentId, OwnerId, EKG, OwnerAddress, IdealParts, PowerOfAttorney });
-            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = SystemColors.Window;
-            dataGridViewCellStyle12.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle12.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle12.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = DataGridViewTriState.True;
-            OwnershipDataGridView.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            OwnershipDataGridView.DefaultCellStyle = dataGridViewCellStyle6;
             OwnershipDataGridView.Location = new Point(0, 49);
             OwnershipDataGridView.Name = "OwnershipDataGridView";
             OwnershipDataGridView.RowHeadersWidth = 51;
@@ -1906,16 +1916,6 @@ namespace WolfClient.UserControls
             ChooseColor.Name = "ChooseColor";
             ChooseColor.Size = new Size(200, 24);
             ChooseColor.Text = "Избери Цвят";
-            // 
-            // overdueTasksFilter
-            // 
-            overdueTasksFilter.AutoSize = true;
-            overdueTasksFilter.Location = new Point(3, 16);
-            overdueTasksFilter.Name = "overdueTasksFilter";
-            overdueTasksFilter.Size = new Size(119, 24);
-            overdueTasksFilter.TabIndex = 28;
-            overdueTasksFilter.Text = "Просрочени";
-            overdueTasksFilter.UseVisualStyleBackColor = true;
             // 
             // MenuRequestsUserControlBase
             // 

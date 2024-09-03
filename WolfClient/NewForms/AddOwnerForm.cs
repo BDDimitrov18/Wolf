@@ -338,8 +338,8 @@ namespace WolfClient.NewForms
             TOMComboBox.Text = "";
             RegisterComboBox.Text = "";
             CaseComboBox.Text = "";
-            IssingDateTimePicker.Value = DateTime.Now;
-            registeringDateTimePicker.Value = DateTime.Now;
+            IssingDateTimePicker.Value = GlobalSettings.GetCurrentTime();
+            registeringDateTimePicker.Value = GlobalSettings.GetCurrentTime();
 
         }
 
@@ -615,8 +615,8 @@ namespace WolfClient.NewForms
                 TOMComboBox.Text = "";
                 RegisterComboBox.Text = "";
                 CaseComboBox.Text = "";
-                IssingDateTimePicker.Value = DateTime.Now;
-                registeringDateTimePicker.Value = DateTime.Now;
+                IssingDateTimePicker.Value = GlobalSettings.GetCurrentTime();
+                registeringDateTimePicker.Value = GlobalSettings.GetCurrentTime();
             }
         }
         private void panel2_Paint(object sender, PaintEventArgs e)

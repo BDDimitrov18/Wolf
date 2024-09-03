@@ -66,8 +66,48 @@ namespace WolfClient.UserControls
             this.UpdateStyles();
 
             _allEmployees = new List<GetEmployeeDTO>();
+
+            
         }
 
+        public virtual void OnShiftF2Pressed()
+        {
+            // Default behavior (optional, can be empty)
+        }
+        public virtual void OnShiftF1Pressed()
+        {
+            // Default behavior (optional, can be empty)
+        }
+
+        public virtual void OnControlFPressed()
+        {
+            // Default behavior (can be empty or have a generic implementation)
+        }
+
+        public virtual void OnF5Pressed()
+        {
+            // Default behavior (can be empty or have a generic implementation)
+        }
+        public virtual void OnF1Pressed()
+        {
+            // Default behavior (optional, can be empty)
+        }
+        public virtual void OnF2Pressed()
+        {
+            // Default behavior (optional, can be empty)
+        }
+        protected virtual int GetSelectedTabIndex()
+        {
+            // Assuming you have a TabControl named "tabControl1"
+            if (DocumentsOfOwnershipTab.SelectedTab != null)
+            {
+                return DocumentsOfOwnershipTab.SelectedIndex;  // Returns the index of the selected tab
+            }
+            else
+            {
+                return -1;  // Return -1 if no tab is selected
+            }
+        }
         public MenuRequestsUserControlBase() : this(null, null, null, null, null)
         {
             // Optionally, put some designer-specific initialization code here

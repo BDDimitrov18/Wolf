@@ -14,7 +14,7 @@ namespace WolfClient.Events
 
 
         public static void OnLogIn(string username, string role) {
-            logIn?.Invoke(null, new LogInEventArgs(role, DateTime.Now, username));    
+            logIn?.Invoke(null, new LogInEventArgs(role, GlobalSettings.GetCurrentTime(), username));    
         }
     }
 }

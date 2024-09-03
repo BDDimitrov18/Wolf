@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace WolfClient
 {
-    public static class GlobalSettings
+    public static class TimeSettingsUserManagament
     {
-        public static string FormTitle { get; set; } = "Wolf";
-        public static string IconPath { get; set; } = "";
 
-        static GlobalSettings()
+        static TimeSettingsUserManagament()
         {
             // Get the current system time zone
             CurrentTimeZone = TimeZoneInfo.Local;

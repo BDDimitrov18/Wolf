@@ -68,6 +68,67 @@ namespace WolfClient.UserControls
                 _isRefreshing = false;
             }
         }
+        public override void OnControlFPressed()
+        {
+            this.RequestFiltersApplyButton_Click_1(new object(), new EventArgs());
+        }
+        public override void OnF5Pressed()
+        {
+            // Implement the behavior specific to Active Requests
+            this.RefreshButton_Click(new object(), new EventArgs());
+            // Add your custom logic here
+        }
 
+        public override void OnF1Pressed()
+        {
+            int tab = GetSelectedTabIndex();
+
+            if (tab == 0) {
+                this.button1_Click_1(new object(), new EventArgs());
+            }
+            if (tab == 1) {
+                this.ActivityAddButton_Click(new object(), new EventArgs());
+            }
+            if (tab == 2) {
+                this.PlotsAddButton_Click(new object(), new EventArgs());
+            }
+            if (tab == 3) {
+                this.AddOwnersButton_Click(new object(), new EventArgs());
+            }
+            if (tab == 4) {
+                this.button3_Click(new object(), new EventArgs());
+            }
+            // Custom logic for Archived Requests
+        }
+        public override void OnShiftF2Pressed()
+        {
+            this.editRequestButton_Click(new object(), new EventArgs());
+            // Custom logic for Archived Requests
+        }
+        public override void OnF2Pressed()
+        {
+            int tab = GetSelectedTabIndex();
+
+            if (tab == 0)
+            {
+                this.editClientButton_Click(new object(), new EventArgs());
+            }
+            if (tab == 1)
+            {
+                this.editActivityButton_Click(new object(), new EventArgs());
+            }
+            if (tab == 2)
+            {
+                this.editPlotButton_Click(new object(), new EventArgs());
+            }
+            if (tab == 3)
+            {
+                this.editOwnershipButton_Click(new object(), new EventArgs());
+            }
+            if (tab == 4)
+            {
+                this.EditInvoiceButton_Click(new object(), new EventArgs());
+            }
+        }
     }
 }

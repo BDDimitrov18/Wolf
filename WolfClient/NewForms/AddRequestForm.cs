@@ -272,14 +272,9 @@ namespace WolfClient.NewForms
             var linkResponse = await _userClient.LinkClientsWithRequest(requestsResponseDTOs[0], SelectedClients);
             if (linkResponse.IsSuccess)
             {
-                MessageBox.Show("Success");
                 _returnRequest = requestsResponseDTOs[0];
                 _returnClients = SelectedClients;
                 DialogResult = DialogResult.OK;
-            }
-            else
-            {
-                MessageBox.Show("Not Success");
             }
 
             Close();
