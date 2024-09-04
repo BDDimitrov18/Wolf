@@ -26,32 +26,9 @@ namespace WolfClient.UserControls
 
             // Insert the column at the first position (index 0)
             RequestDataGridView.Columns.Insert(0, statusIconColumn);
-            RequestDataGridView.MouseDown += RequestDataGridView_MouseDown;
-            RequestDataGridView.CellBeginEdit += RequestDataGridView_CellBeginEdit;
+            
         }
-        private void RequestDataGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
-        {
-            try
-            {
-                // Example: Perform checks or adjustments before the cell enters edit mode
-                if (e.ColumnIndex == RequestDataGridView.Columns["Comments"].Index)
-                {
-                    // Ensure that the cell's font is properly set, or perform any other necessary actions
-                    var cell = RequestDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    cell.Style.Font = new Font("Segoe UI", 9); // Ensure a consistent font
-                }
-
-                // Additional logic to handle specific cells or conditions can be added here
-            }
-            catch (Exception ex)
-            {
-                // Handle any exceptions that might occur
-                MessageBox.Show("Error in CellBeginEdit: " + ex.Message);
-
-                // Optionally, cancel the edit operation if something goes wrong
-                e.Cancel = true;
-            }
-        }
+        
         public override void OnControlFPressed()
         {
             this.RequestFiltersApplyButton_Click_1(new object(), new EventArgs());
@@ -136,240 +113,83 @@ namespace WolfClient.UserControls
             }
         }
 
-
-
         protected override void UpdateRequestGridViewRows(List<GetRequestDTO> filteredList)
         {
-
             RequestDataGridView.AutoGenerateColumns = false;
             RequestDataGridView.DataSource = null; // Force reset DataSource
 
-            List<GetRequestDTO> fliteredListNew = new List<GetRequestDTO>();
+            List<GetRequestDTO> filteredListNew = new List<GetRequestDTO>();
 
             foreach (var request in filteredList)
             {
-                GetRequestDTO tempRequest = new GetRequestDTO();
-                tempRequest.RequestId = request.RequestId;
-                tempRequest.RequestName = request.RequestName;
-                tempRequest.Price = request.Price;
-                tempRequest.Advance = request.Advance;
-                tempRequest.PaymentStatus = request.PaymentStatus;
-                tempRequest.Comments = request.Comments;
-                tempRequest.Path = request.Path;
+                GetRequestDTO tempRequest = new GetRequestDTO
+                {
+                    RequestId = request.RequestId,
+                    RequestName = request.RequestName,
+                    Price = request.Price,
+                    Advance = request.Advance,
+                    PaymentStatus = request.PaymentStatus,
+                    Comments = request.Comments,
+                    Path = request.Path,
+                    Status = request.Status,
+                };
 
                 List<GetPlotDTO> plots = _dataService.getLinkedPlotsToRequest(request);
                 foreach (var plot in plots)
                 {
                     tempRequest.PlotsInfo += $"Поземлен имот:{plot.PlotNumber}, {plot.City}, Упи: {plot.RegulatedPlotNumber}, кв: {plot.neighborhood};";
                 }
-                fliteredListNew.Add(tempRequest);
+                filteredListNew.Add(tempRequest);
             }
-            RequestDataGridView.DataSource = fliteredListNew;
-
+            RequestDataGridView.DataSource = filteredListNew;
 
             RequestDataGridView.Refresh();
             _isRefreshing = false;
-            if (filteredList != null && filteredList.Count() < 2)
+            if (filteredList != null && filteredList.Count < 2)
             {
                 RequestDataGridView_SelectionChanged(new object { }, new EventArgs());
             }
 
-            // Fetch the starred requests
-            var starredRequests = _dataService.GetStarredRequests();
+            string projectRootPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\..\"));
+            // Load icons
+            Image activeIcon = Image.FromFile(Path.Combine("Properties", "icons", "active.ico"));
+            Image inactiveIcon = Image.FromFile(Path.Combine("Properties", "icons", "cross.ico"));
 
-            // Paint the rows that match the requestId in starred requests
+            // Paint the rows based on their status and star condition
             foreach (DataGridViewRow row in RequestDataGridView.Rows)
             {
                 var requestDTO = row.DataBoundItem as GetRequestDTO;
 
                 if (requestDTO != null)
                 {
-                    // Find the corresponding starred request
-                    var starredRequest = starredRequests.FirstOrDefault(s => s.RequestId == requestDTO.RequestId);
+                    if (requestDTO.Status == "Archived")
+                    {
+                        row.Cells["StatusIcon"].Value = inactiveIcon;
+                    }
+                    else
+                    {
+                        row.Cells["StatusIcon"].Value = activeIcon;
+                    }
+
+                    // Handle star color
+                    var starredRequest = _dataService.GetStarredRequests()
+                        .FirstOrDefault(s => s.RequestId == requestDTO.RequestId);
 
                     if (starredRequest != null)
                     {
-                        // Convert the stored color string to a System.Drawing.Color
                         System.Drawing.Color starColor = System.Drawing.ColorTranslator.FromHtml(starredRequest.StarColor);
-
-                        // Set the row background color to the star color
                         row.DefaultCellStyle.BackColor = starColor;
                     }
                     else
                     {
-                        // Set the row background color to the default color if not starred
                         row.DefaultCellStyle.BackColor = RequestDataGridView.DefaultCellStyle.BackColor;
                     }
                 }
             }
-
-            RequestDataGridView.CellPainting -= RequestDataGridView_CellPainting; // Remove existing handler if any
             RequestDataGridView.CellPainting += RequestDataGridView_CellPainting;
         }
 
 
-
-
-        private void RequestDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
-        {
-            // Check if we're in the "Comments" column and the row index is valid
-            if (e.ColumnIndex == RequestDataGridView.Columns["Comments"].Index && e.RowIndex >= 0)
-            {
-                string cellValue = e.FormattedValue?.ToString() ?? string.Empty;
-
-                // Check if the cell contains any hyperlinks
-                bool containsHyperlink = cellValue.Split(' ').Any(word => Uri.IsWellFormedUriString(word, UriKind.Absolute));
-
-                // If the cell contains hyperlinks, apply custom painting
-                if (containsHyperlink)
-                {
-                    // If the cell is in edit mode, skip custom painting to avoid interfering with editing logic
-                    if (RequestDataGridView.CurrentCell != null &&
-                        RequestDataGridView.CurrentCell.RowIndex == e.RowIndex &&
-                        RequestDataGridView.CurrentCell.ColumnIndex == e.ColumnIndex &&
-                        RequestDataGridView.IsCurrentCellInEditMode)
-                    {
-                        // Let the default painting handle this situation
-                        return;
-                    }
-
-                    // Custom painting logic
-                    e.PaintBackground(e.ClipBounds, true);
-
-                    // Split the text into lines first, then process each line
-                    string[] lines = cellValue.Split(new[] { '\n' }, StringSplitOptions.None);
-
-                    TextFormatFlags flags = TextFormatFlags.Left | TextFormatFlags.NoPadding;
-                    Rectangle textRect = new Rectangle(e.CellBounds.Left + 2, e.CellBounds.Top + 2, e.CellBounds.Width - 4, e.CellBounds.Height - 4);
-
-                    using (Font regularFont = e.CellStyle.Font)
-                    using (Font linkFont = new Font(e.CellStyle.Font, FontStyle.Underline))
-                    {
-                        int currentY = textRect.Top;
-
-                        foreach (var line in lines)
-                        {
-                            int currentX = textRect.Left;
-                            int lineHeight = 0;
-
-                            // Split the line into words for processing
-                            string[] words = line.Split(' ');
-
-                            foreach (var word in words)
-                            {
-                                bool isHyperlink = Uri.IsWellFormedUriString(word, UriKind.Absolute);
-
-                                Font fontToUse = isHyperlink ? linkFont : regularFont;
-                                Color colorToUse = isHyperlink ? Color.Blue : e.CellStyle.ForeColor;
-
-                                Size wordSize = TextRenderer.MeasureText(word + " ", fontToUse, new Size(int.MaxValue, int.MaxValue), flags);
-
-                                // Move to the next line if the word doesn't fit in the current line
-                                if (currentX + wordSize.Width > textRect.Right)
-                                {
-                                    currentX = textRect.Left;
-                                    currentY += lineHeight;
-                                    lineHeight = 0;
-                                }
-
-                                // Update the line height based on the tallest word in the line
-                                lineHeight = Math.Max(lineHeight, wordSize.Height);
-
-                                TextRenderer.DrawText(e.Graphics, word + " ", fontToUse, new Rectangle(currentX, currentY, wordSize.Width, wordSize.Height), colorToUse, flags);
-
-                                currentX += wordSize.Width;
-                            }
-
-                            // After processing all words in the current line, move to the next line
-                            currentY += lineHeight;
-                        }
-                    }
-
-                    // Draw the border around the cell
-                    e.Paint(e.CellBounds, DataGridViewPaintParts.Border);
-                    e.Handled = true;
-                }
-                else
-                {
-                    // If there are no hyperlinks, use default painting
-                    e.Handled = false;
-                }
-            }
-            else
-            {
-                // For all other cells, use default painting
-                e.Handled = false;
-            }
-        }
-
-        private void RequestDataGridView_MouseDown(object sender, MouseEventArgs e)
-        {
-            var hitTestInfo = RequestDataGridView.HitTest(e.X, e.Y);
-
-            // Ensure the click was on a valid cell in the "Comments" column
-            if (hitTestInfo.Type == DataGridViewHitTestType.Cell && hitTestInfo.ColumnIndex == RequestDataGridView.Columns["Comments"].Index)
-            {
-                var cell = RequestDataGridView.Rows[hitTestInfo.RowIndex].Cells[hitTestInfo.ColumnIndex];
-                var cellValue = cell?.Value?.ToString();
-
-                // Proceed only if the cell value is not null or empty
-                if (!string.IsNullOrEmpty(cellValue))
-                {
-                    // Split the text into lines and then into words to identify URLs
-                    string[] lines = cellValue.Split(new[] { '\n' }, StringSplitOptions.None);
-
-                    // Get the cell's display rectangle and adjust for scrolling
-                    var cellRect = RequestDataGridView.GetCellDisplayRectangle(hitTestInfo.ColumnIndex, hitTestInfo.RowIndex, false);
-                    float currentY = cellRect.Top + 2;
-
-                    using (Graphics g = RequestDataGridView.CreateGraphics())
-                    {
-                        foreach (var line in lines)
-                        {
-                            float currentX = cellRect.Left + 2;
-                            string[] words = line.Split(' ');
-
-                            foreach (var word in words)
-                            {
-                                bool isHyperlink = Uri.IsWellFormedUriString(word, UriKind.Absolute);
-
-                                // Only consider the word if it's a hyperlink
-                                if (isHyperlink)
-                                {
-                                    // Measure the size of the word
-                                    SizeF wordSize = g.MeasureString(word + " ", RequestDataGridView.Font);
-
-                                    // Check if the click is within the bounds of this word
-                                    RectangleF wordRect = new RectangleF(currentX, currentY, wordSize.Width, wordSize.Height);
-                                    if (wordRect.Contains(e.Location))
-                                    {
-                                        // Open the link in the default web browser
-                                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                                        {
-                                            FileName = word,
-                                            UseShellExecute = true // This ensures the URL opens in the default browser
-                                        });
-                                        return; // Exit after opening the link
-                                    }
-
-                                    // Move the starting point to the next word's position
-                                    currentX += wordSize.Width;
-                                }
-                                else
-                                {
-                                    // Even if it's not a hyperlink, move to the next word's position
-                                    SizeF wordSize = g.MeasureString(word + " ", RequestDataGridView.Font);
-                                    currentX += wordSize.Width;
-                                }
-                            }
-
-                            // Move to the next line
-                            currentY += RequestDataGridView.Font.Height;
-                        }
-                    }
-                }
-            }
-        }
 
         protected override async void DeleteRequestButton_Click(object sender, EventArgs e)
         {

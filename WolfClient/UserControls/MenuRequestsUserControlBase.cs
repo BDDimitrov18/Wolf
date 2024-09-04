@@ -67,8 +67,209 @@ namespace WolfClient.UserControls
 
             _allEmployees = new List<GetEmployeeDTO>();
 
-            
+            RequestDataGridView.MouseDown += RequestDataGridView_MouseDown;
+            RequestDataGridView.CellBeginEdit += RequestDataGridView_CellBeginEdit;
+            RequestDataGridView.CellPainting += RequestDataGridView_CellPainting;
+
         }
+
+
+        protected void RequestDataGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            try
+            {
+                // Example: Perform checks or adjustments before the cell enters edit mode
+                if (e.ColumnIndex == RequestDataGridView.Columns["Comments"].Index)
+                {
+                    // Ensure that the cell's font is properly set, or perform any other necessary actions
+                    var cell = RequestDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    cell.Style.Font = new Font("Segoe UI", 9); // Ensure a consistent font
+                }
+
+                // Additional logic to handle specific cells or conditions can be added here
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that might occur
+                MessageBox.Show("Error in CellBeginEdit: " + ex.Message);
+
+                // Optionally, cancel the edit operation if something goes wrong
+                e.Cancel = true;
+            }
+        }
+        protected void RequestDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            // Check if we're in the "Comments" column and the row index is valid
+            if (e.ColumnIndex == RequestDataGridView.Columns["Comments"].Index && e.RowIndex >= 0)
+            {
+                string cellValue = e.FormattedValue?.ToString() ?? string.Empty;
+
+                // Check if the cell contains any hyperlinks
+                bool containsHyperlink = cellValue.Split(' ').Any(word => Uri.IsWellFormedUriString(word, UriKind.Absolute));
+
+                // If the cell contains hyperlinks, apply custom painting
+                if (containsHyperlink)
+                {
+                    // If the cell is in edit mode, skip custom painting to avoid interfering with editing logic
+                    if (RequestDataGridView.CurrentCell != null &&
+                        RequestDataGridView.CurrentCell.RowIndex == e.RowIndex &&
+                        RequestDataGridView.CurrentCell.ColumnIndex == e.ColumnIndex &&
+                        RequestDataGridView.IsCurrentCellInEditMode)
+                    {
+                        // Let the default painting handle this situation
+                        return;
+                    }
+
+                    // Custom painting logic
+                    e.PaintBackground(e.ClipBounds, true);
+
+                    // Split the text into lines first, then process each line
+                    string[] lines = cellValue.Split(new[] { '\n' }, StringSplitOptions.None);
+
+                    TextFormatFlags flags = TextFormatFlags.Left | TextFormatFlags.NoPadding;
+                    Rectangle textRect = new Rectangle(e.CellBounds.Left + 2, e.CellBounds.Top + 2, e.CellBounds.Width - 4, e.CellBounds.Height - 4);
+
+                    using (Font regularFont = e.CellStyle.Font)
+                    using (Font linkFont = new Font(e.CellStyle.Font, FontStyle.Underline))
+                    {
+                        int currentY = textRect.Top;
+
+                        foreach (var line in lines)
+                        {
+                            int currentX = textRect.Left;
+                            int lineHeight = 0;
+
+                            // Split the line into words for processing
+                            string[] words = line.Split(' ');
+
+                            foreach (var word in words)
+                            {
+                                bool isHyperlink = Uri.IsWellFormedUriString(word, UriKind.Absolute);
+
+                                Font fontToUse = isHyperlink ? linkFont : regularFont;
+                                Color colorToUse = isHyperlink ? Color.Blue : e.CellStyle.ForeColor;
+
+                                Size wordSize = TextRenderer.MeasureText(word + " ", fontToUse, new Size(int.MaxValue, int.MaxValue), flags);
+
+                                // Move to the next line if the word doesn't fit in the current line
+                                if (currentX + wordSize.Width > textRect.Right)
+                                {
+                                    currentX = textRect.Left;
+                                    currentY += lineHeight;
+                                    lineHeight = 0;
+                                }
+
+                                // Update the line height based on the tallest word in the line
+                                lineHeight = Math.Max(lineHeight, wordSize.Height);
+
+                                TextRenderer.DrawText(e.Graphics, word + " ", fontToUse, new Rectangle(currentX, currentY, wordSize.Width, wordSize.Height), colorToUse, flags);
+
+                                currentX += wordSize.Width;
+                            }
+
+                            // After processing all words in the current line, move to the next line
+                            currentY += lineHeight;
+                        }
+                    }
+
+                    // Draw the border around the cell
+                    e.Paint(e.CellBounds, DataGridViewPaintParts.Border);
+                    e.Handled = true;
+                }
+                else
+                {
+                    // If there are no hyperlinks, use default painting
+                    e.Handled = false;
+                }
+            }
+            else
+            {
+                // For all other cells, use default painting
+                e.Handled = false;
+            }
+        }
+
+        protected void RequestDataGridView_MouseDown(object sender, MouseEventArgs e)
+        {
+            var hitTestInfo = RequestDataGridView.HitTest(e.X, e.Y);
+
+            // Ensure the click was on a valid cell in the "Comments" column
+            if (hitTestInfo.Type == DataGridViewHitTestType.Cell && hitTestInfo.ColumnIndex == RequestDataGridView.Columns["Comments"].Index)
+            {
+                var cell = RequestDataGridView.Rows[hitTestInfo.RowIndex].Cells[hitTestInfo.ColumnIndex];
+                var cellValue = cell?.Value?.ToString();
+
+                // Proceed only if the cell value is not null or empty
+                if (!string.IsNullOrEmpty(cellValue))
+                {
+                    // Split the text into lines and then into words to identify URLs
+                    string[] lines = cellValue.Split(new[] { '\n' }, StringSplitOptions.None);
+
+                    // Get the cell's display rectangle and adjust for scrolling
+                    var cellRect = RequestDataGridView.GetCellDisplayRectangle(hitTestInfo.ColumnIndex, hitTestInfo.RowIndex, false);
+                    float currentY = cellRect.Top + 2;
+
+                    using (Graphics g = RequestDataGridView.CreateGraphics())
+                    {
+                        TextFormatFlags flags = TextFormatFlags.Left | TextFormatFlags.NoPadding;
+
+                        foreach (var line in lines)
+                        {
+                            float currentX = cellRect.Left + 2; // Start with a small padding
+                            int lineHeight = 0;
+
+                            // Split the line into words
+                            string[] words = line.Split(' ');
+
+                            foreach (var word in words)
+                            {
+                                bool isHyperlink = Uri.IsWellFormedUriString(word, UriKind.Absolute);
+
+                                // Measure the size of the word using the same logic as in CellPainting
+                                Size wordSize = TextRenderer.MeasureText(word + " ", RequestDataGridView.Font, new Size(int.MaxValue, int.MaxValue), flags);
+
+                                // Check if the word fits within the current line, if not move to the next line
+                                if (currentX + wordSize.Width > cellRect.Right)
+                                {
+                                    currentX = cellRect.Left + 2; // Reset X to the left with padding
+                                    currentY += lineHeight;      // Move Y to the next line
+                                    lineHeight = 0;
+                                }
+
+                                // Update the line height to account for wrapped text
+                                lineHeight = Math.Max(lineHeight, wordSize.Height);
+
+                                // If the word is a hyperlink, check if the mouse click is within this word's bounds
+                                if (isHyperlink)
+                                {
+                                    RectangleF wordRect = new RectangleF(currentX, currentY, wordSize.Width, wordSize.Height);
+
+                                    // Convert the mouse position to the cell's coordinate system
+                                    Point clickPoint = new Point(e.X, e.Y);
+                                    if (wordRect.Contains(clickPoint))
+                                    {
+                                        // Open the link in the default web browser
+                                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                                        {
+                                            FileName = word,
+                                            UseShellExecute = true // This ensures the URL opens in the default browser
+                                        });
+                                        return; // Exit after opening the link
+                                    }
+                                }
+
+                                // Move to the next word's position
+                                currentX += wordSize.Width;
+                            }
+
+                            // Move to the next line after processing all words in the current line
+                            currentY += lineHeight;
+                        }
+                    }
+                }
+            }
+        }
+
 
         public virtual void OnShiftF2Pressed()
         {
