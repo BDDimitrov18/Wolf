@@ -14,7 +14,7 @@ using WolfClient.Services.Interfaces;
 
 namespace WolfClient.NewForms
 {
-    public partial class AddEmployeeForm : Form
+    public partial class EditEmployeeForm : Form
     {
 
         private readonly IApiClient _apiClient;
@@ -23,7 +23,7 @@ namespace WolfClient.NewForms
         private readonly IDataService _dataService;
 
         private CreateEmployeeDTO _employeeValidation;
-        public AddEmployeeForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
+        public EditEmployeeForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
             _apiClient = apiClient;

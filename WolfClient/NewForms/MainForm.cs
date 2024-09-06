@@ -29,6 +29,7 @@ namespace WolfClient.NewForms
 
         private readonly MenuRequestsUserControlActive _menuRequestsUserControlActive;
         private readonly MenuRequestsUserControlArchive _menuRequestsUserControlArchive;
+        private readonly MenuEmployeesUserControl _menuEmployeesUserControl;
         private MenuClientsUserControl _clientsUserControl;
 
         private string _ArchiveStatus;
@@ -64,6 +65,7 @@ namespace WolfClient.NewForms
 
 
             _clientsUserControl = new MenuClientsUserControl(apiClient, userClient, adminClient, dataService);
+            _menuEmployeesUserControl = new MenuEmployeesUserControl(apiClient, userClient, adminClient, dataService);
             _fileUploader = fileUploader;
             _websocketClientService = websocketClientService;
 
@@ -162,14 +164,15 @@ namespace WolfClient.NewForms
             }
         }
 
-        
+
         private void RequestToolStripButton_Click(object sender, EventArgs e)
         {
-            if (_ArchiveStatus == "Active") {
+            if (_ArchiveStatus == "Active")
+            {
                 this.Text = "Wolf : Управление на поръчки";
                 LoadUserControl(_menuRequestsUserControlActive);
             }
-            else if(_ArchiveStatus == "Archive")
+            else if (_ArchiveStatus == "Archive")
             {
                 this.Text = "Wolf Archive : Управление на поръчки";
                 LoadUserControl(_menuRequestsUserControlArchive);
@@ -224,12 +227,14 @@ namespace WolfClient.NewForms
                     inqueriesAdminForm form = new inqueriesAdminForm(_userClient, _apiClient, _dataService, _adminClient);
                     form.Show();
                 }
-                else if(_ArchiveStatus == "Active") {
+                else if (_ArchiveStatus == "Active")
+                {
                     inqueriesAdminFormActive form = new inqueriesAdminFormActive(_userClient, _apiClient, _dataService, _adminClient);
                     form.Show();
                 }
             }
-            else if(role == "user") {
+            else if (role == "user")
+            {
                 if (_ArchiveStatus == "Archive")
                 {
                     inqueriesUserForm form = new inqueriesUserForm(_userClient, _apiClient, _dataService, _adminClient);
@@ -241,6 +246,19 @@ namespace WolfClient.NewForms
                     form.Show();
                 }
             }
+        }
+
+        private void Employees_Click(object sender, EventArgs e)
+        {
+            if (_ArchiveStatus == "Active")
+            {
+                this.Text = "Wolf : Управление на клиенти";
+            }
+            else if (_ArchiveStatus == "Archive")
+            {
+                this.Text = "Wolf Archive : Управление на клиенти";
+            }
+            LoadUserControl(_menuEmployeesUserControl);
         }
     }
 }

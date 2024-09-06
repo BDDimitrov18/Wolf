@@ -47,8 +47,20 @@ namespace WolfClient.NewForms
 
             // Generate the document
             GenerateDocument();
+            this.KeyPreview = true;
+
+            // Add the KeyDown event handler
+            this.KeyDown += new KeyEventHandler(Form_KeyDown);
         }
 
+        private void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Check if the ESC key was pressed
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close(); // Close the form
+            }
+        }
 
 
         private string ConvertDocToDocx(byte[] fileData)

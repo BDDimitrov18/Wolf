@@ -20,5 +20,7 @@ namespace DTOS.DTO
         [Required]
         [OptionalEmailAddress(ErrorMessage = "Ivalid Email")]
         public string Email { get; set; }
+
+        public bool Outsider { get; set; }
     }
 }

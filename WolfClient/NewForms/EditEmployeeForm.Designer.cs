@@ -1,6 +1,6 @@
 ﻿namespace WolfClient.NewForms
 {
-    partial class AddEmployeeForm
+    partial class EditEmployeeForm
     {
         /// <summary>
         /// Required designer variable.

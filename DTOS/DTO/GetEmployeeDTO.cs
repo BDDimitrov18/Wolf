@@ -23,6 +23,8 @@ namespace DTOS.DTO
 
         private string _fullName = "";
 
+        public bool Outsider { get; set; }
+
         public string FullName
         {
             get

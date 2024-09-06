@@ -28,6 +28,8 @@ namespace WolfClient.NewForms
         protected GetRequestDTO _returnRequest;
         protected List<GetClientDTO> _returnClients;
 
+        protected List<GetClientDTO> _InitialClients;
+
         protected CreateRequestDTO _requestValidator;
 
 
@@ -44,14 +46,38 @@ namespace WolfClient.NewForms
             _dataService = dataService;
             _requestValidator = new CreateRequestDTO();
 
-            this.Text = GlobalSettings.FormTitle + " : Редактиране на поръчка";
-            this.Icon = new Icon(GlobalSettings.IconPath);
+            if (GlobalSettings.IconPath != "")
+            {
+                this.Text = GlobalSettings.FormTitle + " : Редактиране на поръчка";
+                this.Icon = new Icon(GlobalSettings.IconPath);
+
+
+                this.KeyPreview = true;
+
+                // Add the KeyDown event handler
+                this.KeyDown += new KeyEventHandler(Form_KeyDown);
+            }
 
             this.SetStyle(ControlStyles.DoubleBuffer |
                       ControlStyles.UserPaint |
                       ControlStyles.AllPaintingInWmPaint, true);
             this.UpdateStyles();
         }
+
+        private void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Check if the ESC key was pressed
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close(); // Close the form
+            }
+            if (e.KeyCode == Keys.Enter)
+            {
+                AddRequestButton_Click(new object(), new EventArgs());
+            }
+        }
+
+
         public EditRequestForm() : this(null, null, null, null)
         {
             // Optionally, put some designer-specific initialization code here
@@ -160,7 +186,7 @@ namespace WolfClient.NewForms
             {
                 return;
             }
-
+           
             var response = await _userClient.GetAllClients();
             if (response.IsSuccess)
             {
@@ -191,6 +217,7 @@ namespace WolfClient.NewForms
             CommentsRichTextBox.Text = _dataService.GetSelectedRequest().Comments;
 
             List<GetClientDTO> clientDTOs = new List<GetClientDTO>(_dataService.getLinkedClients());
+            _InitialClients = clientDTOs;
             foreach (var client in clientDTOs)
             {
                 AddNewPanelWithUserControlAddClientsFromAvailable(client);
@@ -331,8 +358,10 @@ namespace WolfClient.NewForms
                 return;
             }
 
-
-            await _userClient.DeleteClientRequest(client_RequestRelashionshipDTOs);
+            if (!(_InitialClients == null || _InitialClients.Count() == 0))
+            {
+                await _userClient.DeleteClientRequest(client_RequestRelashionshipDTOs);
+            }
             List<GetClientDTO> SelectedClients = GetAllComboBoxClients(AvailableClientsFlowPanel);
             List<CreateClientDTO> newClientsToAdd = GetAllClientDtoFromLabels(NotAvailableClientsFlowPanel);
 
@@ -347,7 +376,6 @@ namespace WolfClient.NewForms
             var linkResponse = await _userClient.LinkClientsWithRequest(_dataService.GetSelectedRequest(), SelectedClients);
             if (linkResponse.IsSuccess)
             {
-                MessageBox.Show("Success");
                 _dataService.EditRequest(editRequest);
                 _dataService.SetEditedRequestClients(SelectedClients, editRequest);
                 _returnRequest = _dataService.GetSelectedRequest();
@@ -357,7 +385,6 @@ namespace WolfClient.NewForms
             }
             else
             {
-                MessageBox.Show("Not Success");
             }
             Close();
         }
@@ -439,10 +466,7 @@ namespace WolfClient.NewForms
             return _returnClients;
         }
 
-        protected void AddRequestTitleLabel_Click(object sender, EventArgs e)
-        {
-
-        }
+       
 
         protected void openFilesButton_Click(object sender, EventArgs e)
         {

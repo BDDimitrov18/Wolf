@@ -351,6 +351,6 @@
         protected Label label1;
         protected Label label2;
         protected ComboBox RequestCreatorComboBox;
-        private System.ComponentModel.IContainer components;
+        protected System.ComponentModel.IContainer components;
     }
 }

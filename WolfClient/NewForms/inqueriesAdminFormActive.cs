@@ -23,6 +23,7 @@ namespace WolfClient.NewForms
             this.Icon = new Icon(GlobalSettings.IconPath);
         }
 
+     
         public override List<RequestWithClientsDTO> ApplyFilters()
         {
             var selectedPaymentStatuses = paymentStatusCheckBoxList.CheckedItems.Cast<string>().ToList();

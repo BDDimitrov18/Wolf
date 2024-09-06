@@ -20,6 +20,7 @@ namespace WolfClient.NewForms
             InitializeComponent();
             this.Text = GlobalSettings.FormTitle + " : Редактиране на поръчка";
             this.Icon = new Icon(GlobalSettings.IconPath);
+           
         }
 
         protected override async void AddRequestForm_Load(object sender, EventArgs e)
@@ -63,6 +64,7 @@ namespace WolfClient.NewForms
             CommentsRichTextBox.Text = _dataService.GetSelectedRequest().Comments;
             ArchiveStatusComboBox.SelectedItem = _dataService.GetSelectedRequest().Status;
             List<GetClientDTO> clientDTOs = new List<GetClientDTO>(_dataService.getLinkedClients());
+            _InitialClients = clientDTOs;
             foreach (var client in clientDTOs)
             {
                 AddNewPanelWithUserControlAddClientsFromAvailable(client);
@@ -86,6 +88,7 @@ namespace WolfClient.NewForms
             }
 
         }
+
 
         protected override async void AddRequestButton_Click(object sender, EventArgs e)
         {
@@ -142,16 +145,16 @@ namespace WolfClient.NewForms
             var responseRequest = await _userClient.EditRequest(editRequest);
             if (responseRequest.IsSuccess)
             {
-                MessageBox.Show("Edited Successfully");
             }
             else
             {
-                MessageBox.Show("Not Success");
                 return;
             }
 
-
-            await _userClient.DeleteClientRequest(client_RequestRelashionshipDTOs);
+            if (!(_InitialClients == null || _InitialClients.Count() == 0))
+            {
+                await _userClient.DeleteClientRequest(client_RequestRelashionshipDTOs);
+            }
             List<GetClientDTO> SelectedClients = GetAllComboBoxClients(AvailableClientsFlowPanel);
             List<CreateClientDTO> newClientsToAdd = GetAllClientDtoFromLabels(NotAvailableClientsFlowPanel);
 
@@ -166,7 +169,6 @@ namespace WolfClient.NewForms
             var linkResponse = await _userClient.LinkClientsWithRequest(_dataService.GetSelectedRequest(), SelectedClients);
             if (linkResponse.IsSuccess)
             {
-                MessageBox.Show("Success");
                 _dataService.EditRequest(editRequest);
                 _dataService.SetEditedRequestClients(SelectedClients, editRequest);
                 _returnRequest = _dataService.GetSelectedRequest();
@@ -176,7 +178,6 @@ namespace WolfClient.NewForms
             }
             else
             {
-                MessageBox.Show("Not Success");
             }
             Close();
         }

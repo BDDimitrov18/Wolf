@@ -273,7 +273,7 @@ namespace WolfClient.UserControls
 
 
 
-        private async void AddActivitySubmit_Click(object sender, EventArgs e)
+        public async void AddActivitySubmit_Click(object sender, EventArgs e)
         {
             TimeZoneInfo bulgariaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time");
             DateTime utcNow = DateTime.UtcNow;
@@ -291,7 +291,6 @@ namespace WolfClient.UserControls
 
                 CreateTaskDTO createTaskDTO = new CreateTaskDTO()
                 {
-                    FinishDate = endDateDateTimePicker.Value,
                     ActivityId = (int)ActivityComboBox.SelectedValue,
                     Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
                     StartDate = bulgariaTime,
@@ -303,8 +302,9 @@ namespace WolfClient.UserControls
                     executantPayment = float.Parse(ExecutantPaymentTextBox.Text),
                     CommentTax = taxCommentRichTexBox.Text,
                     tax = float.Parse(TaxTextBox.Text),
+                    FinishDate = endDateDateTimePicker.Value.AddHours(3 + (double)DurationNumericUpDown.Value)
                 };
-
+                createTaskDTO.FinishDate = DateTime.SpecifyKind(createTaskDTO.FinishDate, DateTimeKind.Unspecified);
                 var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
 
 
@@ -328,7 +328,6 @@ namespace WolfClient.UserControls
 
                 CreateTaskDTO createTaskDTO = new CreateTaskDTO()
                 {
-                    FinishDate = endDateDateTimePicker.Value,
                     ActivityId = activityDTO.ActivityId,
                     Duration = TimeSpan.FromHours((double)DurationNumericUpDown.Value),
                     StartDate = bulgariaTime,
@@ -339,9 +338,10 @@ namespace WolfClient.UserControls
                     Status = StatusComboBox.Text,
                     executantPayment = float.Parse(ExecutantPaymentTextBox.Text),
                     CommentTax = taxCommentRichTexBox.Text,
-                    tax = float.Parse(TaxTextBox.Text)
+                    tax = float.Parse(TaxTextBox.Text),
+                    FinishDate = endDateDateTimePicker.Value.AddHours(3 + (double)DurationNumericUpDown.Value)
                 };
-
+                createTaskDTO.FinishDate = DateTime.SpecifyKind(createTaskDTO.FinishDate, DateTimeKind.Unspecified);
                 var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
 
 

@@ -61,6 +61,8 @@ namespace WolfClient.UserControls
             RefreshButton = new Button();
             RequestFiltersApplyButton = new Button();
             filtersPanel = new Panel();
+            requestNameFilter = new TextBox();
+            label6 = new Label();
             EmployeesFilterCheckBoxList = new CheckedListBox();
             EmployeesFilterLabel = new Label();
             OwnersFlowLayoutPanelFilter = new FlowLayoutPanel();
@@ -193,6 +195,7 @@ namespace WolfClient.UserControls
             StarContextMenuStrip = new ContextMenuStrip(components);
             AvailableColors = new ToolStripMenuItem();
             ChooseColor = new ToolStripMenuItem();
+            toolTip1 = new ToolTip(components);
             ((System.ComponentModel.ISupportInitialize)RequestDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)InvoicesDataGridView).BeginInit();
             panel3.SuspendLayout();
@@ -290,6 +293,7 @@ namespace WolfClient.UserControls
             // 
             // RequestAddButton
             // 
+            RequestAddButton.AccessibleDescription = "Shift + F1";
             RequestAddButton.BackColor = Color.Transparent;
             RequestAddButton.BackgroundImage = (Image)resources.GetObject("RequestAddButton.BackgroundImage");
             RequestAddButton.BackgroundImageLayout = ImageLayout.Stretch;
@@ -299,6 +303,7 @@ namespace WolfClient.UserControls
             RequestAddButton.Name = "RequestAddButton";
             RequestAddButton.Size = new Size(45, 45);
             RequestAddButton.TabIndex = 2;
+            toolTip1.SetToolTip(RequestAddButton, "Shift+F1");
             RequestAddButton.UseVisualStyleBackColor = false;
             RequestAddButton.Click += button1_Click;
             // 
@@ -355,6 +360,7 @@ namespace WolfClient.UserControls
             addInvoiceButton.Name = "addInvoiceButton";
             addInvoiceButton.Size = new Size(35, 35);
             addInvoiceButton.TabIndex = 13;
+            toolTip1.SetToolTip(addInvoiceButton, "F1");
             addInvoiceButton.UseVisualStyleBackColor = true;
             addInvoiceButton.Click += button3_Click;
             // 
@@ -457,7 +463,6 @@ namespace WolfClient.UserControls
             btnPreviousRequestsDataGridView.Size = new Size(40, 40);
             btnPreviousRequestsDataGridView.TabIndex = 1;
             btnPreviousRequestsDataGridView.UseVisualStyleBackColor = false;
-            btnPreviousRequestsDataGridView.Click += button4_Click;
             // 
             // btnFirstRequestsDataGridView
             // 
@@ -479,6 +484,7 @@ namespace WolfClient.UserControls
             editRequestButton.Name = "editRequestButton";
             editRequestButton.Size = new Size(45, 45);
             editRequestButton.TabIndex = 13;
+            toolTip1.SetToolTip(editRequestButton, "Shift+F2");
             editRequestButton.UseVisualStyleBackColor = false;
             editRequestButton.Click += editRequestButton_Click;
             // 
@@ -503,6 +509,7 @@ namespace WolfClient.UserControls
             RefreshButton.Name = "RefreshButton";
             RefreshButton.Size = new Size(45, 45);
             RefreshButton.TabIndex = 11;
+            toolTip1.SetToolTip(RefreshButton, "F5");
             RefreshButton.UseVisualStyleBackColor = false;
             RefreshButton.Click += RefreshButton_Click;
             // 
@@ -515,6 +522,7 @@ namespace WolfClient.UserControls
             RequestFiltersApplyButton.Name = "RequestFiltersApplyButton";
             RequestFiltersApplyButton.Size = new Size(40, 40);
             RequestFiltersApplyButton.TabIndex = 54;
+            toolTip1.SetToolTip(RequestFiltersApplyButton, "Cntrl + F");
             RequestFiltersApplyButton.UseVisualStyleBackColor = false;
             RequestFiltersApplyButton.Click += RequestFiltersApplyButton_Click_1;
             // 
@@ -522,6 +530,8 @@ namespace WolfClient.UserControls
             // 
             filtersPanel.BackColor = SystemColors.ActiveCaption;
             filtersPanel.BorderStyle = BorderStyle.Fixed3D;
+            filtersPanel.Controls.Add(requestNameFilter);
+            filtersPanel.Controls.Add(label6);
             filtersPanel.Controls.Add(EmployeesFilterCheckBoxList);
             filtersPanel.Controls.Add(EmployeesFilterLabel);
             filtersPanel.Controls.Add(OwnersFlowLayoutPanelFilter);
@@ -553,15 +563,34 @@ namespace WolfClient.UserControls
             filtersPanel.Controls.Add(plotNumberTextBox);
             filtersPanel.Location = new Point(540, 41);
             filtersPanel.Name = "filtersPanel";
-            filtersPanel.Size = new Size(772, 472);
+            filtersPanel.Size = new Size(772, 507);
             filtersPanel.TabIndex = 23;
             filtersPanel.Visible = false;
+            // 
+            // requestNameFilter
+            // 
+            requestNameFilter.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            requestNameFilter.Location = new Point(3, 280);
+            requestNameFilter.Name = "requestNameFilter";
+            requestNameFilter.Size = new Size(328, 27);
+            requestNameFilter.TabIndex = 76;
+            // 
+            // label6
+            // 
+            label6.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label6.Location = new Point(3, 249);
+            label6.Name = "label6";
+            label6.Size = new Size(149, 28);
+            label6.TabIndex = 75;
+            label6.Text = "Име поръчка : ";
             // 
             // EmployeesFilterCheckBoxList
             // 
             EmployeesFilterCheckBoxList.BackColor = SystemColors.GradientActiveCaption;
             EmployeesFilterCheckBoxList.FormattingEnabled = true;
-            EmployeesFilterCheckBoxList.Location = new Point(181, 356);
+            EmployeesFilterCheckBoxList.Location = new Point(181, 408);
             EmployeesFilterCheckBoxList.Name = "EmployeesFilterCheckBoxList";
             EmployeesFilterCheckBoxList.Size = new Size(583, 92);
             EmployeesFilterCheckBoxList.TabIndex = 74;
@@ -571,7 +600,7 @@ namespace WolfClient.UserControls
             EmployeesFilterLabel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             EmployeesFilterLabel.AutoSize = true;
             EmployeesFilterLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            EmployeesFilterLabel.Location = new Point(3, 359);
+            EmployeesFilterLabel.Location = new Point(3, 411);
             EmployeesFilterLabel.Name = "EmployeesFilterLabel";
             EmployeesFilterLabel.Size = new Size(158, 28);
             EmployeesFilterLabel.TabIndex = 72;
@@ -583,14 +612,14 @@ namespace WolfClient.UserControls
             OwnersFlowLayoutPanelFilter.BackColor = SystemColors.GradientActiveCaption;
             OwnersFlowLayoutPanelFilter.BorderStyle = BorderStyle.Fixed3D;
             OwnersFlowLayoutPanelFilter.FlowDirection = FlowDirection.RightToLeft;
-            OwnersFlowLayoutPanelFilter.Location = new Point(344, 231);
+            OwnersFlowLayoutPanelFilter.Location = new Point(344, 251);
             OwnersFlowLayoutPanelFilter.Name = "OwnersFlowLayoutPanelFilter";
-            OwnersFlowLayoutPanelFilter.Size = new Size(421, 113);
+            OwnersFlowLayoutPanelFilter.Size = new Size(421, 151);
             OwnersFlowLayoutPanelFilter.TabIndex = 69;
             // 
             // button2
             // 
-            button2.Location = new Point(478, 196);
+            button2.Location = new Point(479, 220);
             button2.Name = "button2";
             button2.Size = new Size(94, 29);
             button2.TabIndex = 71;
@@ -616,7 +645,7 @@ namespace WolfClient.UserControls
             clientsFlowLayoutPanel.FlowDirection = FlowDirection.RightToLeft;
             clientsFlowLayoutPanel.Location = new Point(343, 61);
             clientsFlowLayoutPanel.Name = "clientsFlowLayoutPanel";
-            clientsFlowLayoutPanel.Size = new Size(421, 123);
+            clientsFlowLayoutPanel.Size = new Size(421, 153);
             clientsFlowLayoutPanel.TabIndex = 68;
             // 
             // overdueFilter
@@ -635,7 +664,7 @@ namespace WolfClient.UserControls
             label14.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             label14.AutoSize = true;
             label14.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label14.Location = new Point(343, 193);
+            label14.Location = new Point(344, 217);
             label14.Name = "label14";
             label14.Size = new Size(129, 28);
             label14.TabIndex = 66;
@@ -687,9 +716,9 @@ namespace WolfClient.UserControls
             // 
             // CommentsTextBox
             // 
-            CommentsTextBox.Location = new Point(3, 282);
+            CommentsTextBox.Location = new Point(3, 343);
             CommentsTextBox.Name = "CommentsTextBox";
-            CommentsTextBox.Size = new Size(328, 62);
+            CommentsTextBox.Size = new Size(328, 59);
             CommentsTextBox.TabIndex = 64;
             CommentsTextBox.Text = "";
             // 
@@ -706,7 +735,7 @@ namespace WolfClient.UserControls
             label12.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             label12.AutoSize = true;
             label12.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label12.Location = new Point(3, 251);
+            label12.Location = new Point(3, 310);
             label12.Name = "label12";
             label12.Size = new Size(218, 28);
             label12.TabIndex = 63;
@@ -1041,6 +1070,7 @@ namespace WolfClient.UserControls
             editActivityButton.Name = "editActivityButton";
             editActivityButton.Size = new Size(35, 35);
             editActivityButton.TabIndex = 14;
+            toolTip1.SetToolTip(editActivityButton, "F2");
             editActivityButton.UseVisualStyleBackColor = true;
             editActivityButton.Click += editActivityButton_Click;
             // 
@@ -1233,6 +1263,7 @@ namespace WolfClient.UserControls
             ActivityAddButton.Name = "ActivityAddButton";
             ActivityAddButton.Size = new Size(35, 35);
             ActivityAddButton.TabIndex = 28;
+            toolTip1.SetToolTip(ActivityAddButton, "F1");
             ActivityAddButton.UseVisualStyleBackColor = true;
             ActivityAddButton.Click += ActivityAddButton_Click;
             // 
@@ -1284,6 +1315,7 @@ namespace WolfClient.UserControls
             editClientButton.Name = "editClientButton";
             editClientButton.Size = new Size(35, 35);
             editClientButton.TabIndex = 14;
+            toolTip1.SetToolTip(editClientButton, "F2");
             editClientButton.UseVisualStyleBackColor = true;
             editClientButton.Click += editClientButton_Click;
             // 
@@ -1329,6 +1361,7 @@ namespace WolfClient.UserControls
             button1.Name = "button1";
             button1.Size = new Size(35, 35);
             button1.TabIndex = 11;
+            toolTip1.SetToolTip(button1, "F1");
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click_1;
             // 
@@ -1439,6 +1472,7 @@ namespace WolfClient.UserControls
             DocumentsOfOwnershipTab.SelectedIndex = 0;
             DocumentsOfOwnershipTab.Size = new Size(1344, 368);
             DocumentsOfOwnershipTab.TabIndex = 12;
+            toolTip1.SetToolTip(DocumentsOfOwnershipTab, "F1");
             // 
             // tabPage3
             // 
@@ -1522,6 +1556,7 @@ namespace WolfClient.UserControls
             editPlotButton.Name = "editPlotButton";
             editPlotButton.Size = new Size(35, 35);
             editPlotButton.TabIndex = 14;
+            toolTip1.SetToolTip(editPlotButton, "F2");
             editPlotButton.UseVisualStyleBackColor = true;
             editPlotButton.Click += editPlotButton_Click;
             // 
@@ -1644,6 +1679,7 @@ namespace WolfClient.UserControls
             PlotsAddButton.Name = "PlotsAddButton";
             PlotsAddButton.Size = new Size(35, 35);
             PlotsAddButton.TabIndex = 31;
+            toolTip1.SetToolTip(PlotsAddButton, "F1");
             PlotsAddButton.UseVisualStyleBackColor = true;
             PlotsAddButton.Click += PlotsAddButton_Click;
             // 
@@ -1727,6 +1763,7 @@ namespace WolfClient.UserControls
             editOwnershipButton.Name = "editOwnershipButton";
             editOwnershipButton.Size = new Size(35, 35);
             editOwnershipButton.TabIndex = 14;
+            toolTip1.SetToolTip(editOwnershipButton, "F2");
             editOwnershipButton.UseVisualStyleBackColor = true;
             editOwnershipButton.Click += editOwnershipButton_Click;
             // 
@@ -1749,6 +1786,7 @@ namespace WolfClient.UserControls
             AddOwnersButton.Name = "AddOwnersButton";
             AddOwnersButton.Size = new Size(35, 35);
             AddOwnersButton.TabIndex = 2;
+            toolTip1.SetToolTip(AddOwnersButton, "F1");
             AddOwnersButton.UseVisualStyleBackColor = true;
             AddOwnersButton.Click += AddOwnersButton_Click;
             // 
@@ -1851,6 +1889,7 @@ namespace WolfClient.UserControls
             EditInvoiceButton.Name = "EditInvoiceButton";
             EditInvoiceButton.Size = new Size(35, 35);
             EditInvoiceButton.TabIndex = 47;
+            toolTip1.SetToolTip(EditInvoiceButton, "F2");
             EditInvoiceButton.UseVisualStyleBackColor = true;
             EditInvoiceButton.Click += EditInvoiceButton_Click;
             // 
@@ -2116,8 +2155,11 @@ namespace WolfClient.UserControls
         protected Label EmployeesFilterLabel;
         protected CheckedListBox EmployeesFilterCheckBoxList;
         public Panel filtersPanel;
+        protected CheckBox overdueTasksFilter;
+        protected TextBox requestNameFilter;
+        protected Label label6;
         private System.ComponentModel.IContainer components;
-        private CheckBox overdueTasksFilter;
+        private ToolTip toolTip1;
     }
 }
 

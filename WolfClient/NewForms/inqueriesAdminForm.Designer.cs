@@ -455,7 +455,6 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "inqueriesAdminForm";
             Text = "Wolf Archive : Справки Админ";
-            Load += inquiriesAdminForm_Load_1;
             flowLayoutPanel1.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();

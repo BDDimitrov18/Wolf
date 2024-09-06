@@ -41,6 +41,22 @@ namespace WolfClient.NewForms
 
             this.Text = GlobalSettings.FormTitle + " : Добавяне на собственост";
             this.Icon = new Icon(GlobalSettings.IconPath);
+            this.KeyPreview = true;
+
+            // Add the KeyDown event handler
+            this.KeyDown += new KeyEventHandler(Form_KeyDown);
+        }
+
+        private void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Check if the ESC key was pressed
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close(); // Close the form
+            }
+            if (e.KeyCode == Keys.Enter) {
+                SubmitButton_Click(new object(), new EventArgs());
+            }
         }
 
         private void label14_Click(object sender, EventArgs e)

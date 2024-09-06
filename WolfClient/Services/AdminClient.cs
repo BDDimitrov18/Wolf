@@ -31,6 +31,53 @@ namespace WolfClient.Services
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
+        public async Task<ClientResponse<HttpResponseMessage>> EditEmployee(GetEmployeeDTO employeeDTO)
+        {
+            var jsonContent = JsonSerializer.Serialize(employeeDTO);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("https://" + ip + "/api/Admin/EditEmployee", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    var responseRequests = JsonSerializer.Deserialize<HttpResponseMessage>(jsonResponse, options);
+                    return new ClientResponse<HttpResponseMessage> { IsSuccess = true, Message = "Employee Edited Successfully", ResponseObj = responseRequests };
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Optionally refresh the token and retry
+                        MessageBox.Show("You are not authorized or your session has expired.");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Unauthorized", ResponseObj = null };
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Failed to edit employee: {response.ReasonPhrase}\nDetails: {error}");
+                        return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Error", ResponseObj = null };
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Network error: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = "Network Error", ResponseObj = null };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception occurred: {ex.Message}");
+                return new ClientResponse<HttpResponseMessage> { IsSuccess = false, Message = ex.Message, ResponseObj = null };
+            }
+        }
+
         public async Task<ClientResponse<List<GetEmployeeDTO>?>> AddEmployee(List<CreateEmployeeDTO> employee)
         {
             var jsonContent = JsonSerializer.Serialize(employee);

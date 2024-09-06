@@ -41,6 +41,22 @@ namespace WolfClient.NewForms
                       ControlStyles.UserPaint |
                       ControlStyles.AllPaintingInWmPaint, true);
             this.UpdateStyles();
+            this.KeyPreview = true;
+
+            // Add the KeyDown event handler
+            this.KeyDown += new KeyEventHandler(Form_KeyDown);
+        }
+
+        private void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Check if the ESC key was pressed
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close(); // Close the form
+            }
+            if (e.KeyCode == Keys.Enter) {
+                AddClientButton_Click(new object(), new EventArgs());
+            }
         }
 
         private void ValidateModel()

@@ -89,7 +89,9 @@
             // SumErrorLabel
             // 
             SumErrorLabel.AutoSize = true;
+            SumErrorLabel.BackColor = Color.Transparent;
             SumErrorLabel.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point);
+            SumErrorLabel.ForeColor = SystemColors.GradientActiveCaption;
             SumErrorLabel.Location = new Point(12, 110);
             SumErrorLabel.Name = "SumErrorLabel";
             SumErrorLabel.Size = new Size(147, 15);

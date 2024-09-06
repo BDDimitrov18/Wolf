@@ -1,4 +1,5 @@
-﻿using DTOS.DTO;
+﻿using DocumentFormat.OpenXml.Office2021.DocumentTasks;
+using DTOS.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -356,7 +357,7 @@ namespace WolfClient.UserControls
         }
 
 
-        private async void AddActivitySubmit_Click(object sender, EventArgs e)
+        public async void AddActivitySubmit_Click(object sender, EventArgs e)
         {
             ValidateModel();
 
@@ -382,7 +383,6 @@ namespace WolfClient.UserControls
             if (flag) { return; }
 
 
-
             if (ValidateActivityComboBox())
             {
                 if (ValidateTaskComboBox())
@@ -394,11 +394,11 @@ namespace WolfClient.UserControls
                     {
                         RequestId = _dataService.GetSelectedRequest().RequestId,
                         ActivityTypeID = activityTypeDTO.ActivityTypeID,
-                        ExpectedDuration = expectedDurationDateTime.Value,
                         ParentActivityId = ParentActivityComboBox.Text != "Без Произлизаща Дейност" ? (int)ParentActivityComboBox.SelectedValue : null,
                         StartDate = GlobalSettings.GetCurrentTime(),
                         ExecutantId = (int)MainExecutantComboBox.SelectedValue,
                         employeePayment = float.Parse(PaymentMainExecutantTextBox.Text),
+                        ExpectedDuration = expectedDurationDateTime.Value.AddHours(3)
                     };
 
 
@@ -416,10 +416,12 @@ namespace WolfClient.UserControls
                         executantPayment = float.Parse(ExecutantPaymentTextBox.Text),
                         tax = float.Parse(TaxTextBox.Text),
                         CommentTax = TaxCommentRichTextBox.Text,
-                        FinishDate = startDateDateTimePicker.Value,
+                        FinishDate = startDateDateTimePicker.Value.AddHours((double)DurationNumericUpDown.Value),
                         Status = StatusComboBox.Text,
                     };
+                    createTaskDTO.FinishDate = DateTime.SpecifyKind(createTaskDTO.FinishDate, DateTimeKind.Unspecified);
 
+                    // Now try converting from Local to UTC
                     var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
 
 
@@ -443,11 +445,11 @@ namespace WolfClient.UserControls
                     {
                         RequestId = _dataService.GetSelectedRequest().RequestId,
                         ActivityTypeID = activityTypeDTO.ActivityTypeID,
-                        ExpectedDuration = expectedDurationDateTime.Value,
                         ParentActivityId = ParentActivityComboBox.Text != "Без Произлизаща Дейност" ? (int)ParentActivityComboBox.SelectedValue : null,
                         ExecutantId = (int)MainExecutantComboBox.SelectedValue,
                         employeePayment = float.Parse(PaymentMainExecutantTextBox.Text),
-                        StartDate = GlobalSettings.GetCurrentTime()
+                        StartDate = GlobalSettings.GetCurrentTime(),
+                        ExpectedDuration = expectedDurationDateTime.Value.AddHours(3)
                     };
 
 
@@ -465,10 +467,11 @@ namespace WolfClient.UserControls
                         executantPayment = float.Parse(ExecutantPaymentTextBox.Text),
                         tax = float.Parse(TaxTextBox.Text),
                         CommentTax = TaxCommentRichTextBox.Text,
-                        FinishDate = startDateDateTimePicker.Value,
+                        FinishDate = startDateDateTimePicker.Value.AddHours((double)DurationNumericUpDown.Value),
                         Status = StatusComboBox.Text
                     };
-
+                    // Ensure the FinishDate has a specified DateTimeKind
+                    createTaskDTO.FinishDate = DateTime.SpecifyKind(createTaskDTO.FinishDate, DateTimeKind.Unspecified);
                     var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
 
 
@@ -503,11 +506,12 @@ namespace WolfClient.UserControls
                 {
                     RequestId = requestDto.RequestId,
                     ActivityTypeID = createTaskTypeResponse.ResponseObj.ActivityTypeID,
-                    ExpectedDuration = expectedDurationDateTime.Value,
                     ParentActivityId = ParentActivityComboBox.Text != "Без Произлизаща Дейност" ? (int)ParentActivityComboBox.SelectedValue : null,
                     ExecutantId = (int)MainExecutantComboBox.SelectedValue,
                     employeePayment = float.Parse(PaymentMainExecutantTextBox.Text),
-                    StartDate = GlobalSettings.GetCurrentTime()
+                    StartDate = GlobalSettings.GetCurrentTime(),
+                    ExpectedDuration = expectedDurationDateTime.Value.AddHours(3),
+
                 };
 
                 //DOESNT MAP THE TASKS PROPERLY
@@ -525,10 +529,11 @@ namespace WolfClient.UserControls
                     executantPayment = float.Parse(ExecutantPaymentTextBox.Text),
                     tax = float.Parse(TaxTextBox.Text),
                     CommentTax = TaxCommentRichTextBox.Text,
-                    FinishDate = startDateDateTimePicker.Value,
+                    FinishDate = startDateDateTimePicker.Value.AddHours((double)DurationNumericUpDown.Value),
                     Status = StatusComboBox.Text,
                 };
-
+                // Ensure the FinishDate has a specified DateTimeKind
+                createTaskDTO.FinishDate = DateTime.SpecifyKind(createTaskDTO.FinishDate, DateTimeKind.Unspecified);
                 var responseActivityFromTask = await _userClient.AddTask(createTaskDTO);
 
 

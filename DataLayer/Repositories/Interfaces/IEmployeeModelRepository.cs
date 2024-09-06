@@ -14,5 +14,6 @@ namespace DataAccessLayer.Repositories.Interfaces
         public IEnumerable<Employee> GetAll();
 
         public Task<Employee> Get(int id);
+        public Task<bool> EditEmployee(Employee employee);
     }
 }

@@ -88,11 +88,6 @@ namespace WolfAPI.Mapping
                 .ForMember(dest => dest.Control, opt => opt.MapFrom(src => src.Control))
                 .ForMember(dest => dest.taskType, opt => opt.MapFrom(src => src.taskType));
 
-            CreateMap<GetTaskDTO, WorkTask>()
-                .ForMember(dest => dest.Executant, opt => opt.MapFrom(src => src.Executant))
-                .ForMember(dest => dest.Control, opt => opt.MapFrom(src => src.Control))
-                .ForMember(dest => dest.taskType, opt => opt.MapFrom(src => src.taskType));
-
             CreateMap<CreateTaskDTO, WorkTask>()
                 .ForMember(dest => dest.TaskId, opt => opt.Ignore()) // Assuming TaskId is auto-generated
                 .ForMember(dest => dest.Activity, opt => opt.Ignore()) // Assuming related entities will be mapped separately

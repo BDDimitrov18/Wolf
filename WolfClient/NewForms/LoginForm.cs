@@ -36,8 +36,23 @@ namespace WolfClient.NewForms
 
             this.Text = GlobalSettings.FormTitle + " : Log In";
             this.Icon = new Icon(GlobalSettings.IconPath);
+            this.KeyPreview = true;
+
+            // Add the KeyDown event handler
+            this.KeyDown += new KeyEventHandler(Form_KeyDown);
         }
 
+        private void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Check if the ESC key was pressed
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close(); // Close the form
+            }
+            if(e.KeyCode == Keys.Enter) {
+                LogInButton_Click(new object(),new EventArgs());
+            }
+        }
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
@@ -52,12 +67,10 @@ namespace WolfClient.NewForms
 
             if (await ValidateCredentials(username, password))
              {
-                MessageBox.Show("LoggedIn");
                 Dispose();
             }
             else
             {
-                MessageBox.Show("Not logged In");
             }
 
         }

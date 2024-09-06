@@ -64,5 +64,20 @@ namespace WolfAPI.Services
         public async Task<GetEmployeeDTO> GetEmployeeById(int id) {
            return _mapper.Map<GetEmployeeDTO>(await _employeeRepository.Get(id));
         }
+
+
+        public async Task<bool> EditEmployee(GetEmployeeDTO employeeDTO, string clientId) { 
+            Employee employee = _mapper.Map<Employee>(employeeDTO);
+            bool result = await _employeeRepository.EditEmployee(employee);
+
+            var updateNotification = new UpdateNotification<GetEmployeeDTO>
+            {
+                OperationType = "Edit",
+                EntityType = "GetEmployeeDTO",
+                UpdatedEntity = employeeDTO
+            };
+            await _webSocketService.SendMessageToRolesAsync(updateNotification, clientId, "admin", "user");
+            return result;
+        }
     }
 }

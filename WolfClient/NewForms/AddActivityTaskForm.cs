@@ -24,6 +24,9 @@ namespace WolfClient.NewForms
         private readonly IDataService _dataService;
 
         public List<GetActivityTypeDTO> _activityTypesDTOs;
+        private ExistingActivityAddTask currentExisting;
+        private NonExistingActivityAddTask currentNonExisting;
+        private bool existing = false;
         public AddActivityTaskForm(IApiClient apiClient, IUserClient userClient, IAdminClient adminClient, IDataService dataService)
         {
             InitializeComponent();
@@ -35,6 +38,31 @@ namespace WolfClient.NewForms
 
             this.Text = GlobalSettings.FormTitle + " : Добавяне на дейности и задачи";
             this.Icon = new Icon(GlobalSettings.IconPath);
+
+            ActivityChoiceComboBox.SelectedIndex = 1;
+
+            this.KeyPreview = true;
+
+            // Add the KeyDown event handler
+            this.KeyDown += new KeyEventHandler(Form_KeyDown);
+        }
+
+        private void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Check if the ESC key was pressed
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close(); // Close the form
+            }
+            if (e.KeyCode == Keys.Enter) {
+                if (existing)
+                {
+                    currentExisting.AddActivitySubmit_Click(new object(), new EventArgs());
+                }
+                else {
+                    currentNonExisting.AddActivitySubmit_Click(new object(), new EventArgs());
+                }
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -53,12 +81,16 @@ namespace WolfClient.NewForms
                     var existingActivityControl = new ExistingActivityAddTask(_apiClient, _userClient, _adminClient, _dataService);
                     existingActivityControl.DisposeRequested += OnControlDisposeRequested;
                     selectedControl = existingActivityControl;
+                    currentExisting = existingActivityControl;
+                    existing = true;
                     break;
 
                 case "Към Нова дейност":
                     var nonExistingActivityControl = new NonExistingActivityAddTask(_apiClient, _userClient, _adminClient, _dataService);
                     nonExistingActivityControl.DisposeRequested += OnControlDisposeRequested;
                     selectedControl = nonExistingActivityControl;
+                    currentNonExisting = nonExistingActivityControl;
+                    existing = false;
                     break;
             }
 

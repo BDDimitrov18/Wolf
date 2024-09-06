@@ -57,6 +57,7 @@
             AddWorkObjectSubmitFormButton.TabIndex = 14;
             AddWorkObjectSubmitFormButton.Text = "Добави Обект";
             AddWorkObjectSubmitFormButton.UseVisualStyleBackColor = true;
+            AddWorkObjectSubmitFormButton.Click += AddWorkObjectSubmitFormButton_Click;
             // 
             // panel1
             // 

@@ -35,5 +35,24 @@ namespace DataAccessLayer.Repositories
         public async Task<Employee> Get(int id) {
             return await _WolfDbContext.Employees.FindAsync(id);
         }
+
+        public async Task<bool> EditEmployee(Employee employee)
+        {
+            var existingEmployee = await _WolfDbContext.Employees.FindAsync(employee.EmployeeId);
+            if (existingEmployee != null)
+            {
+                existingEmployee.FirstName = employee.FirstName;
+                existingEmployee.Email = employee.Email;
+                existingEmployee.SecondName = employee.SecondName;
+                existingEmployee.LastName = employee.LastName;
+                existingEmployee.phone = employee.phone;
+                existingEmployee.Outsider = employee.Outsider;
+                
+                _WolfDbContext.Employees.Update(existingEmployee);
+                await _WolfDbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
     }
 }

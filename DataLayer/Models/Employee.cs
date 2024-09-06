@@ -22,6 +22,8 @@ namespace DataAccessLayer.Models
 
         public string Email { get; set; }
 
+        public bool Outsider { get; set; }
+
         public ICollection<starRequest_EmployeeRelashionship> Request_EmployeeRelashionships { get; set; }
 
         [Timestamp]

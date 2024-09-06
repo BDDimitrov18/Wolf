@@ -34,6 +34,7 @@ namespace WolfClient.NewForms
             toolStrip1 = new ToolStrip();
             RequestToolStripButton = new ToolStripLabel();
             ClientsStripButton = new ToolStripLabel();
+            Employees = new ToolStripButton();
             panelContent = new Panel();
             LoginButton = new Button();
             SpravkiButton = new Button();
@@ -47,10 +48,10 @@ namespace WolfClient.NewForms
             // 
             toolStrip1.BackColor = SystemColors.ActiveCaption;
             toolStrip1.ImageScalingSize = new Size(20, 20);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { RequestToolStripButton, ClientsStripButton });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { RequestToolStripButton, ClientsStripButton, Employees });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(1358, 25);
+            toolStrip1.Size = new Size(1358, 27);
             toolStrip1.TabIndex = 5;
             toolStrip1.Text = "toolStrip1";
             toolStrip1.ItemClicked += toolStrip1_ItemClicked;
@@ -58,16 +59,26 @@ namespace WolfClient.NewForms
             // RequestToolStripButton
             // 
             RequestToolStripButton.Name = "RequestToolStripButton";
-            RequestToolStripButton.Size = new Size(71, 22);
+            RequestToolStripButton.Size = new Size(71, 24);
             RequestToolStripButton.Text = "Поръчки";
             RequestToolStripButton.Click += RequestToolStripButton_Click;
             // 
             // ClientsStripButton
             // 
             ClientsStripButton.Name = "ClientsStripButton";
-            ClientsStripButton.Size = new Size(67, 22);
+            ClientsStripButton.Size = new Size(67, 24);
             ClientsStripButton.Text = "Клиенти";
             ClientsStripButton.Click += ClientsStripButton_Click;
+            // 
+            // Employees
+            // 
+            Employees.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            Employees.Image = (Image)resources.GetObject("Employees.Image");
+            Employees.ImageTransparentColor = Color.Magenta;
+            Employees.Name = "Employees";
+            Employees.Size = new Size(88, 24);
+            Employees.Text = "Служители";
+            Employees.Click += Employees_Click;
             // 
             // panelContent
             // 
@@ -156,6 +167,7 @@ namespace WolfClient.NewForms
         private Button SpravkiButton;
         private Panel UserPanel;
         private Label UserLabel;
+        private ToolStripButton Employees;
     }
 }
 

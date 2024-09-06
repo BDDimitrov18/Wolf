@@ -20,8 +20,20 @@ namespace WolfClient.NewForms
             InitializeComponent();
             this.Text = GlobalSettings.FormTitle + " : Справки потребител";
             this.Icon = new Icon(GlobalSettings.IconPath);
+            this.KeyPreview = true;
+
+            // Add the KeyDown event handler
+            this.KeyDown += new KeyEventHandler(Form_KeyDown);
         }
 
+        private void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Check if the ESC key was pressed
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close(); // Close the form
+            }
+        }
         public override List<RequestWithClientsDTO> ApplyFilters()
         {
             var selectedPaymentStatuses = paymentStatusCheckBoxList.CheckedItems.Cast<string>().ToList();

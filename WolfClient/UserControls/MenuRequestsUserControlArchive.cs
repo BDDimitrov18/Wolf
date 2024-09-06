@@ -406,6 +406,11 @@ namespace WolfClient.UserControls
                 filteredList = _dataService.filterRequestsByOwner(filteredList, filterOwners);
             }
 
+            if (!string.IsNullOrEmpty(requestNameFilter.Text))
+            {
+                filteredList = filteredList.Where(r => r.RequestName == requestNameFilter.Text).ToList();
+            }
+
             if (!string.IsNullOrEmpty(txtNumber.Text) && int.TryParse(txtNumber.Text, out int requestId))
             {
                 filteredList = filteredList.Where(r => r.RequestId == requestId).ToList();

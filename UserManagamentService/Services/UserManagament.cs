@@ -151,7 +151,7 @@ namespace UserManagamentService.Services
             var token = new JwtSecurityToken(
                     issuer: _config["JWT:ValidIssuer"],
                     audience: _config["JWT:ValidAudience"],
-                    expires: TimeSettingsUserManagament.GetCurrentTime().AddHours(4),
+                    expires: TimeSettingsUserManagament.GetCurrentTime().AddHours(10),
                     claims: authClaims,
                     signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
 

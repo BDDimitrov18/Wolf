@@ -259,9 +259,6 @@ namespace DataAccessLayer
                 .HasForeignKey(docRel => docRel.OwnerID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Owner>()
-        .Property(o => o.FullName)
-        .HasComputedColumnSql("[FirstName] + ' ' + ISNULL([MiddleName] + ' ', '') + [LastName]");
 
             // Plot_DocumentOfOwnershipRelashionship configuration
             modelBuilder.Entity<Plot_DocumentOfOwnershipRelashionship>()
@@ -378,9 +375,11 @@ namespace DataAccessLayer
                 .WithMany(e => e.Request_EmployeeRelashionships)
                 .HasForeignKey(re => re.EmployeeID);
 
-           
-            #endregion
 
+            #endregion
+            modelBuilder.Entity<Owner>()
+    .Property(o => o.FullName)
+    .IsRequired();
             #region Request config
             modelBuilder.Entity<Request>()
              .HasOne(r => r.RequestCreator)

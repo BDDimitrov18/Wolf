@@ -28,104 +28,96 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label6 = new Label();
             ArchiveStatusComboBox = new ComboBox();
-            panel3.SuspendLayout();
-            tabPage2.SuspendLayout();
-            panel2.SuspendLayout();
-            panel1.SuspendLayout();
-            tabPage1.SuspendLayout();
-            panel4.SuspendLayout();
-            DocumentsOfOwnershipTab.SuspendLayout();
-            tabPage3.SuspendLayout();
-            panel5.SuspendLayout();
-            tabPage5.SuspendLayout();
-            panel7.SuspendLayout();
-            tabPage4.SuspendLayout();
-            filtersPanel.SuspendLayout();
+            label15 = new Label();
+          
             SuspendLayout();
             // 
             // label4
             // 
-            label4.Location = new Point(3, 96);
+            label4.Location = new Point(3, 72);
             // 
             // cmbPaymentStatus
             // 
-            cmbPaymentStatus.Items.AddRange(new object[] { "", "Платен", "Не Платен", "Аванс" });
-            cmbPaymentStatus.Location = new Point(175, 219);
+            cmbPaymentStatus.Location = new Point(174, 177);
+            cmbPaymentStatus.Size = new Size(160, 28);
             // 
             // label3
             // 
-            label3.Location = new Point(3, 219);
+            label3.Location = new Point(3, 177);
             // 
             // CommentsTextBox
             // 
-            CommentsTextBox.Location = new Point(3, 400);
+            CommentsTextBox.Location = new Point(3, 443);
             CommentsTextBox.Size = new Size(328, 95);
             // 
             // txtNumber
             // 
-            txtNumber.Location = new Point(91, 139);
+            txtNumber.Location = new Point(97, 106);
+            txtNumber.Size = new Size(237, 27);
             // 
             // label12
             // 
-            label12.Location = new Point(3, 369);
+            label12.Location = new Point(3, 412);
             // 
             // statusCheckBox
             // 
-            statusCheckBox.Items.AddRange(new object[] { "", "Зададена", "Завършена", "Оферта" });
-            statusCheckBox.Location = new Point(156, 96);
+            statusCheckBox.Location = new Point(162, 72);
+            statusCheckBox.Size = new Size(172, 28);
             // 
             // label11
             // 
-            label11.Location = new Point(3, 179);
+            label11.Location = new Point(3, 139);
             // 
             // label1
             // 
-            label1.Location = new Point(3, 139);
+            label1.Location = new Point(3, 105);
             // 
             // CityTextBox
             // 
-            CityTextBox.Location = new Point(174, 179);
+            CityTextBox.Location = new Point(180, 140);
+            CityTextBox.Size = new Size(154, 27);
             // 
             // label10
             // 
-            label10.Location = new Point(3, 341);
+            label10.Location = new Point(3, 335);
             // 
             // neighborhoodTextBox
             // 
-            neighborhoodTextBox.Location = new Point(47, 341);
+            neighborhoodTextBox.Location = new Point(50, 336);
             // 
             // label9
             // 
-            label9.Location = new Point(3, 300);
+            label9.Location = new Point(3, 302);
             // 
             // UPITextBox
             // 
-            UPITextBox.Location = new Point(65, 300);
+            UPITextBox.Location = new Point(68, 303);
             // 
             // label8
             // 
-            label8.Location = new Point(3, 258);
+            label8.Location = new Point(3, 210);
             // 
             // plotNumberTextBox
             // 
-            plotNumberTextBox.Location = new Point(140, 259);
+            plotNumberTextBox.Location = new Point(146, 211);
+            plotNumberTextBox.Size = new Size(188, 27);
             // 
             // EmployeesFilterLabel
             // 
-            EmployeesFilterLabel.Location = new Point(337, 369);
+            EmployeesFilterLabel.Location = new Point(337, 415);
             // 
             // EmployeesFilterCheckBoxList
             // 
-            EmployeesFilterCheckBoxList.Location = new Point(344, 400);
+            EmployeesFilterCheckBoxList.Location = new Point(344, 446);
             EmployeesFilterCheckBoxList.Size = new Size(420, 92);
             // 
             // filtersPanel
             // 
+            filtersPanel.Controls.Add(label15);
             filtersPanel.Controls.Add(ArchiveStatusComboBox);
-            filtersPanel.Controls.Add(label6);
-            filtersPanel.Size = new Size(772, 510);
+            filtersPanel.Size = new Size(772, 546);
+            filtersPanel.Controls.SetChildIndex(requestNameFilter, 0);
             filtersPanel.Controls.SetChildIndex(plotNumberTextBox, 0);
             filtersPanel.Controls.SetChildIndex(label8, 0);
             filtersPanel.Controls.SetChildIndex(UPITextBox, 0);
@@ -155,26 +147,36 @@
             filtersPanel.Controls.SetChildIndex(EmployeesFilterCheckBoxList, 0);
             filtersPanel.Controls.SetChildIndex(label6, 0);
             filtersPanel.Controls.SetChildIndex(ArchiveStatusComboBox, 0);
+            filtersPanel.Controls.SetChildIndex(label15, 0);
+            // 
+            // requestNameFilter
+            // 
+            requestNameFilter.Location = new Point(3, 272);
+            requestNameFilter.Size = new Size(331, 27);
             // 
             // label6
             // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label6.Location = new Point(3, 55);
-            label6.Name = "label6";
-            label6.Size = new Size(162, 28);
-            label6.TabIndex = 75;
-            label6.Text = "Архивен Статус :";
+            label6.Location = new Point(3, 241);
             // 
             // ArchiveStatusComboBox
             // 
             ArchiveStatusComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             ArchiveStatusComboBox.FormattingEnabled = true;
             ArchiveStatusComboBox.Items.AddRange(new object[] { "Всички", "Активни", "Архивни" });
-            ArchiveStatusComboBox.Location = new Point(171, 59);
+            ArchiveStatusComboBox.Location = new Point(171, 38);
             ArchiveStatusComboBox.Name = "ArchiveStatusComboBox";
             ArchiveStatusComboBox.Size = new Size(160, 28);
             ArchiveStatusComboBox.TabIndex = 76;
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label15.Location = new Point(3, 38);
+            label15.Name = "label15";
+            label15.Size = new Size(162, 28);
+            label15.TabIndex = 77;
+            label15.Text = "Архивен Статус :";
             // 
             // MenuRequestsUserControlArchive
             // 
@@ -206,7 +208,7 @@
 
         #endregion
 
-        private Label label6;
         private ComboBox ArchiveStatusComboBox;
+        private Label label15;
     }
 }

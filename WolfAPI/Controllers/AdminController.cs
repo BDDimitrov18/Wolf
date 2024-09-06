@@ -51,6 +51,22 @@ namespace WolfApi.Controllers
             return StatusCode(result.StatusCode, result.Message);
         }
 
+        [HttpPost("EditEmployee")]
+        public async Task<IActionResult> EditEmployee([FromBody] GetEmployeeDTO employee)
+        {
+            var token = GetJwtTokenFromRequest();
+            var clientId = GetClientIdFromJwt(token);
+            bool result = await _employeeService.EditEmployee(employee, clientId);
+
+            if (result)
+            {
+                return Ok(employee); // Return the updated employee DTO with HTTP 200 OK status
+            }
+            else
+            {
+                return NotFound(); // Return HTTP 404 Not Found if the employee was not found
+            }
+        }
         private string GetJwtTokenFromRequest()
         {
             var authHeader = HttpContext.Request.Headers["Authorization"].ToString();

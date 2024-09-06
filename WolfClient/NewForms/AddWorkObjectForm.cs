@@ -22,9 +22,9 @@ namespace WolfClient.NewForms
             InitializeComponent();
         }
 
-       
+        private void AddWorkObjectSubmitFormButton_Click(object sender, EventArgs e)
+        {
 
-
-        
+        }
     }
 }

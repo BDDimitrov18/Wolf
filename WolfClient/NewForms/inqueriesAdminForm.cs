@@ -44,8 +44,16 @@ namespace WolfClient.NewForms
         public inqueriesAdminForm(IUserClient userClient, IApiClient apiClient, IDataService dataService, IAdminClient adminClient)
         {
             InitializeComponent();
-            this.Text = GlobalSettings.FormTitle + " : Справки Админ";
-            this.Icon = new Icon(GlobalSettings.IconPath);
+            if (GlobalSettings.IconPath != "")
+            {
+                this.Text = GlobalSettings.FormTitle + " : Справки Админ";
+                this.Icon = new Icon(GlobalSettings.IconPath);
+
+                this.KeyPreview = true;
+
+                // Add the KeyDown event handler
+                this.KeyDown += new KeyEventHandler(Form_KeyDown);
+            }
 
             _userClient = userClient;
             _apiClient = apiClient;
@@ -71,8 +79,21 @@ namespace WolfClient.NewForms
             this.Load += new EventHandler(inquiriesAdminForm_Load);
 
             AllTasksInqueri.Click += ExportFilteredRequests;
+
         }
 
+        private void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Check if the ESC key was pressed
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close(); // Close the form
+            }
+            if (e.KeyCode == Keys.Enter)
+            {
+                ExportFilteredRequests(new object(), new EventArgs());
+            }
+        }
         public inqueriesAdminForm() : this(null, null, null, null)
         {
             // Optionally, put some designer-specific initialization code here
@@ -742,9 +763,6 @@ namespace WolfClient.NewForms
             exporter.ExportToExcel("path_to_save_file.xlsx");
         }
 
-        protected void inquiriesAdminForm_Load_1(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }

@@ -78,7 +78,10 @@ namespace WolfClient.UserControls
             this.RefreshButton_Click(new object(), new EventArgs());
             // Add your custom logic here
         }
-
+        public override void OnShiftF1Pressed()
+        {
+            this.button1_Click(new object(), new EventArgs());
+        }
         public override void OnF1Pressed()
         {
             int tab = GetSelectedTabIndex();
